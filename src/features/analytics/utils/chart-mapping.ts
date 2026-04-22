@@ -40,6 +40,7 @@ export const ChartMappingUtils = {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
       label: String(item[labelKey] || ''),
+      frontColor: color,
       dataPointText: String(item[valueKey] || '0'),
     }));
   },
@@ -48,7 +49,7 @@ export const ChartMappingUtils = {
    * Creates an empty data set for placeholders.
    */
   createEmptyData: (count: number = 7): ChartDataItem[] => {
-    return Array.from({ length: count }, (_, i) => ({
+    return Array.from({ length: count }, () => ({
       value: 0,
       label: '',
     }));

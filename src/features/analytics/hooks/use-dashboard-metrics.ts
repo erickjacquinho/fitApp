@@ -40,7 +40,7 @@ export const useDashboardMetrics = (daysAgo: number = 7) => {
       });
     } catch (err) {
       setError('Failed to load dashboard metrics');
-      console.error(err);
+      console.error('[useDashboardMetrics]', err instanceof Error ? err.message : err);
     } finally {
       setIsLoading(false);
     }
