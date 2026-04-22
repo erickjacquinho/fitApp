@@ -17,7 +17,7 @@ const WorkoutList: React.FC<WorkoutListProps> = ({ workouts }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View className="mb-2 p-4 bg-gray-100 rounded">
-            <Text className="font-semibold">Data: {item.date.toLocaleDateString()}</Text>
+            <Text className="font-semibold">Date: {item.date?.toLocaleDateString() ?? 'N/A'}</Text>
             {item.notes ? <Text>Notas: {item.notes}</Text> : null}
           </View>
         )}

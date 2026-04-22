@@ -19,12 +19,12 @@ export const ChartMappingUtils = {
     data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
-    color: string = '#4F46E5'
+    color?: string
   ): ChartDataItem[] => {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
       label: String(item[labelKey] || ''),
-      frontColor: color,
+      ...(color !== undefined && { frontColor: color }),
     }));
   },
 
@@ -35,12 +35,12 @@ export const ChartMappingUtils = {
     data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
-    color: string = '#4F46E5'
+    color?: string
   ): ChartDataItem[] => {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
       label: String(item[labelKey] || ''),
-      frontColor: color,
+      ...(color !== undefined && { frontColor: color }),
       dataPointText: String(item[valueKey] || '0'),
     }));
   },
