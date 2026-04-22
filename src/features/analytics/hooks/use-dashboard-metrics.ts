@@ -12,10 +12,7 @@ export interface DashboardMetrics {
   };
 }
 
-/**
- * Hook to fetch main dashboard metrics using Raw SQL.
- * Follows 'Raw SQL' guidelines for periodic/historical data.
- */
+/** Fetches main dashboard metrics for a trailing N-day window. */
 export const useDashboardMetrics = (daysAgo: number = 7) => {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +25,6 @@ export const useDashboardMetrics = (daysAgo: number = 7) => {
       const startDate = subDays(startOfDay(new Date()), daysAgo).getTime();
       const endDate = endOfDay(new Date()).getTime();
 
-      // Parallel execution for better performance
       const [volume, nutrition] = await Promise.all([
         AnalyticsService.calculateRawTotalVolume(startDate, endDate),
         AnalyticsService.calculateRawNutritionSummary(startDate, endDate),

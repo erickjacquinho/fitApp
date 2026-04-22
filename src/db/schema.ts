@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 1, // Versão inicial do esquema
+  version: 1,
   tables: [
     tableSchema({
       name: 'users',
@@ -14,7 +14,7 @@ export default appSchema({
     tableSchema({
       name: 'workouts',
       columns: [
-        { name: 'date', type: 'number', isIndexed: true }, // timestamp para a data do treino
+        { name: 'date', type: 'number', isIndexed: true },
         { name: 'notes', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
@@ -23,10 +23,10 @@ export default appSchema({
     tableSchema({
       name: 'exercises',
       columns: [
-        { name: 'workout_id', type: 'string', isIndexed: true }, // Foreign key para workouts
+        { name: 'workout_id', type: 'string', isIndexed: true },
         { name: 'name', type: 'string' },
         { name: 'sets', type: 'number' },
-        { name: 'reps', type: 'string' }, // Pode ser '8-12', ou 'até a falha'
+        { name: 'reps', type: 'string' }, // e.g. '8-12' or 'to failure'
         { name: 'weight', type: 'number' },
         { name: 'notes', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
@@ -48,19 +48,19 @@ export default appSchema({
     tableSchema({
       name: 'meals',
       columns: [
-        { name: 'date', type: 'number', isIndexed: true }, // timestamp para a data da refeição
-        { name: 'name', type: 'string' }, // Ex: 'Café da Manhã', 'Almoço'
+        { name: 'date', type: 'number', isIndexed: true },
+        { name: 'name', type: 'string' },
         { name: 'notes', type: 'string', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({
-      name: 'meal_foods', // Tabela de junção para refeições e alimentos
+      name: 'meal_foods',
       columns: [
-        { name: 'meal_id', type: 'string', isIndexed: true }, // Foreign key para meals
-        { name: 'food_id', type: 'string', isIndexed: true }, // Foreign key para foods
-        { name: 'quantity_grams', type: 'number' }, // Quantidade do alimento na refeição
+        { name: 'meal_id', type: 'string', isIndexed: true },
+        { name: 'food_id', type: 'string', isIndexed: true },
+        { name: 'quantity_grams', type: 'number' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

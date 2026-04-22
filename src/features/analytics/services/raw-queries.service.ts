@@ -30,10 +30,13 @@ export const AnalyticsService = {
         )
         .fetch();
 
+      const foods = await Promise.all(mealFoods.map((mf) => mf.food.fetch()));
+
       let calories = 0, protein = 0, carbs = 0, fat = 0;
 
-      for (const mf of mealFoods) {
-        const food = await mf.food.fetch();
+      for (let i = 0; i < mealFoods.length; i++) {
+        const mf = mealFoods[i];
+        const food = foods[i];
         if (!food) continue;
         const factor = mf.quantityGrams / 100;
         calories += food.caloriesPer100g * factor;

@@ -1,8 +1,3 @@
-/**
- * Utility functions to map database result sets to chart data formats.
- * Primarily designed for 'react-native-gifted-charts'.
- */
-
 export interface ChartDataItem {
   value: number;
   label?: string;
@@ -11,10 +6,6 @@ export interface ChartDataItem {
 }
 
 export const ChartMappingUtils = {
-  /**
-   * Maps a simple object array to BarChart format.
-   * Expects items with a numeric value and a label.
-   */
   mapToBarChart: (
     data: Record<string, unknown>[],
     valueKey: string,
@@ -28,9 +19,6 @@ export const ChartMappingUtils = {
     }));
   },
 
-  /**
-   * Maps time-series data to LineChart format.
-   */
   mapToLineChart: (
     data: Record<string, unknown>[],
     valueKey: string,
@@ -45,9 +33,6 @@ export const ChartMappingUtils = {
     }));
   },
 
-  /**
-   * Creates an empty data set for placeholders.
-   */
   createEmptyData: (count: number = 7): ChartDataItem[] => {
     return Array.from({ length: count }, () => ({
       value: 0,

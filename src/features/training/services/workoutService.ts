@@ -3,9 +3,6 @@ import Workout from '../../../db/models/Workout';
 import Exercise from '../../../db/models/Exercise';
 
 export class WorkoutService {
-  /**
-   * Adiciona um novo treino.
-   */
   static async addWorkout(date: Date, notes?: string): Promise<Workout> {
     return await database.write(async () => {
       const workoutCollection = database.get<Workout>('workouts');
@@ -17,9 +14,6 @@ export class WorkoutService {
     });
   }
 
-  /**
-   * Adiciona um exercício a um treino existente.
-   */
   static async addExercise(
     workout: Workout,
     name: string,
