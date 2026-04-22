@@ -16,7 +16,7 @@ const WorkoutList = ({ workouts }: WorkoutListProps) => {
         data={workouts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View className="mb-2 p-4 bg-gray-100 rounded">
+          <View className="mb-2 p-4 bg-white-soft rounded-sm">
             <Typography variant="subtitle">Date: {item.date?.toLocaleDateString() ?? 'N/A'}</Typography>
             {item.notes ? <Typography variant="text" color="muted">Notes: {item.notes}</Typography> : null}
           </View>
