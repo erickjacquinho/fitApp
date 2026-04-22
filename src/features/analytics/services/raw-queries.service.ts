@@ -8,7 +8,7 @@ export const AnalyticsService = {
     try {
       const exercises = await database
         .get<Exercise>('exercises')
-        .query(Q.where('created_at', Q.between(startDate, endDate)))
+        .query(Q.on('workouts', Q.where('date', Q.between(startDate, endDate))))
         .fetch();
 
       return exercises.reduce((total, e) => {
