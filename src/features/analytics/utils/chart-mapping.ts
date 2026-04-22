@@ -19,7 +19,7 @@ export const ChartMappingUtils = {
     data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
-    color?: string
+    color: string = '#4F46E5'
   ): ChartDataItem[] => {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
@@ -35,7 +35,7 @@ export const ChartMappingUtils = {
     data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
-    color?: string
+    color: string = '#4F46E5'
   ): ChartDataItem[] => {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
