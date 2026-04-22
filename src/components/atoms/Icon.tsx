@@ -1,6 +1,7 @@
-import { LucideIcon, icons } from 'lucide-react-native';
+import React from 'react';
+import * as LucideIcons from 'lucide-react-native';
 
-export type IconName = keyof typeof icons;
+export type IconName = keyof typeof LucideIcons;
 
 export interface IconProps {
   name: IconName;
@@ -9,8 +10,8 @@ export interface IconProps {
   className?: string;
 }
 
-export function Icon({ name, color = '#0F0F0F', size = 24, className }: IconProps) {
-  const LucideComponent = icons[name] as LucideIcon;
+export function Icon({ name, color = 'currentColor', size = 24, className }: IconProps) {
+  const LucideComponent = LucideIcons[name] as React.ComponentType<{ color?: string; size?: number; className?: string }>;
 
   if (!LucideComponent) {
     return null;

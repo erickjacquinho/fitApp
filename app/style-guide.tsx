@@ -11,7 +11,7 @@ export default function StyleGuide() {
       <View className="p-6">
         {/* Seção de Tipografia */}
         <View className="mb-10">
-          <Typography variant="label" color="primary" className="mb-4">01. Tipografia (Helvetica Now)</Typography>
+          <Typography variant="label" className="mb-4">01. Tipografia (Helvetica Now)</Typography>
           
           <View className="gap-y-6 bg-background-card p-6 rounded-2xl border border-border-subtle">
             <View>
@@ -51,7 +51,7 @@ export default function StyleGuide() {
 
         {/* Seção de Cores */}
         <View className="mb-10">
-          <Typography variant="label" color="primary" className="mb-4">02. Paleta de Cores (Zinc + Lime)</Typography>
+          <Typography variant="label" color="default" className="mb-4">02. Paleta de Cores (Zinc + Lime)</Typography>
           
           <View className="flex-row flex-wrap gap-4">
             <ColorCard name="Main BG" hex="#18181b" className="bg-background-main border border-border-subtle" />
@@ -65,16 +65,16 @@ export default function StyleGuide() {
 
         {/* Seção de Botões */}
         <View className="mb-10">
-          <Typography variant="label" color="primary" className="mb-4">03. Componentes de Ação</Typography>
+          <Typography variant="label" color="default" className="mb-4">03. Componentes de Ação</Typography>
           
           <View className="gap-y-4">
             <Button title="PRIMARY NEON" variant="primary" />
             <Button title="OUTLINE BUTTON" variant="outline" />
             <Button title="GHOST ACTION" variant="ghost" />
-            <Button title="DESTRUCTIVE" variant="error" />
+            <Button title="DESTRUCTIVE" variant="danger" />
             <View className="flex-row gap-x-4">
               <Button title="SMALL" variant="primary" size="sm" className="flex-1" />
-              <Button title="LOADING" variant="primary" isLoading className="flex-1" />
+              <Button title="LOADING" variant="primary" disabled className="flex-1" />
             </View>
           </View>
         </View>
@@ -87,9 +87,9 @@ function ColorCard({ name, hex, className, darkText = false }: { name: string, h
   return (
     <View className="w-[47%] mb-2">
       <View className={`h-20 rounded-xl mb-2 items-center justify-center ${className}`}>
-        {darkText && <Typography variant="caption" weight="bold" className="text-zinc-900">PREVIEW</Typography>}
+        {darkText && <Typography variant="caption" className="text-zinc-900">PREVIEW</Typography>}
       </View>
-      <Typography variant="caption" weight="bold" color="heading">{name}</Typography>
+      <Typography variant="caption" color="default">{name}</Typography>
       <Typography variant="caption" className="uppercase opacity-60">{hex}</Typography>
     </View>
   );

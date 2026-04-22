@@ -25,7 +25,6 @@ export const useDashboardMetrics = (daysAgo: number = 7) => {
     setIsLoading(true);
     setError(null);
     try {
-      const now = new Date().getTime();
       const startDate = subDays(startOfDay(new Date()), daysAgo).getTime();
       const endDate = endOfDay(new Date()).getTime();
 

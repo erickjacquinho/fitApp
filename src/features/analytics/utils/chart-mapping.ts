@@ -16,7 +16,7 @@ export const ChartMappingUtils = {
    * Expects items with a numeric value and a label.
    */
   mapToBarChart: (
-    data: any[],
+    data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
     color?: string
@@ -24,7 +24,7 @@ export const ChartMappingUtils = {
     return data.map((item) => ({
       value: Number(item[valueKey]) || 0,
       label: String(item[labelKey] || ''),
-      frontColor: color || '#4F46E5', // Default Indigo
+      frontColor: color,
     }));
   },
 
@@ -32,7 +32,7 @@ export const ChartMappingUtils = {
    * Maps time-series data to LineChart format.
    */
   mapToLineChart: (
-    data: any[],
+    data: Record<string, unknown>[],
     valueKey: string,
     labelKey: string,
     color?: string

@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 
-interface CounterState {
-  count: number;
-  increment: () => void;
-  decrement: () => void;
+interface AppState {
+  selectedDate: number;
+  setSelectedDate: (date: number) => void;
 }
 
-const useCounterStore = create<CounterState>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  decrement: () => set((state) => ({ count: state.count - 1 })),
+const useAppStore = create<AppState>((set) => ({
+  selectedDate: Date.now(),
+  setSelectedDate: (date) => set({ selectedDate: date }),
 }));
 
-export default useCounterStore;
+export default useAppStore;
