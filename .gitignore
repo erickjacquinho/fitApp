@@ -1,41 +1,44 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# Dependências
+/node_modules
+/.npm
 
-# dependencies
-node_modules/
+# Builds
+/android # Ignorar builds Android nativas
+/ios     # Ignorar builds iOS nativas
+/web-build
+/build
+/dist
 
 # Expo
 .expo/
-dist/
-web-build/
-expo-env.d.ts
-
-# Native
-.kotlin/
-*.orig.*
+.expo-shared/ # Contém tokens de conta Expo, um risco de segurança
+.devtoolsserver/ # Arquivos temporários do Metro DevTools Server
 *.jks
-*.p8
 *.p12
-*.key
-*.mobileprovision
-
-# Metro
-.metro-health-check*
-
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
-.DS_Store
 *.pem
+*.key
+*.keystore
+*.json.attr
 
-# local env files
-.env*.local
+# Logs e Cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.prettiercache
 
-# typescript
-*.tsbuildinfo
+# Editor/IDE
+.vscode/
+.idea/
+*.iml
 
-# generated native folders
-/ios
-/android
+# Sistema Operacional
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# Diretório temporário usado na inicialização do projeto
+/temp_fit_app
+
+# WatermelonDB (se criar arquivos temporários ou de debug)
+/.temp_db

@@ -1,0 +1,26 @@
+# Screen Tree — fitApp
+
+- Splash
+- Onboarding
+  - Welcome
+  - Login
+  - Cadastro
+  - Esqueci a senha
+- App (Tab Bar)
+  - Home
+  - Treino
+    - Lista de treinos
+    - Detalhe do treino
+    - Criar treino
+    - Modo ativo
+      - Resumo do treino
+  - Nutrição
+    - Diário alimentar
+    - Buscar alimento
+  - Progresso
+    - Histórico
+    - Fotos
+  - Perfil
+    - Editar perfil
+    - Configurações
+      - Conta
