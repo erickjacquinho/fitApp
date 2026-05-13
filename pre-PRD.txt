@@ -1,0 +1,64 @@
+Esse app vai ter 2 frentes:
+- A dashboard, que vai ser basicamente o seu plano atual de dieta e treino
+- A frente de dieta, que é uma ramificação do app totalmente modular e totalmente desconectada
+- A ramificação de treino
+
+
+A dashboard basicamente vai ser uma criação, uma interface que vai unir sua dieta atual e o treino atual, pra ficar fácil de ver ali. Ela vai ter algumas estatísticas também e tudo mais pra ficar mensurável.
+
+Vamos agora para falar da dieta.
+
+O sistema de dieta vai ser básico, porém muito completo. Entrando ali na página inicial, a gente vai ter o nosso cardápio, que vamos adicionar nessas refeições, que vai mostrar os macronutrientes de cada uma das refeições. Lá no topo do dia inteiro, para saber quanto a gente gastou e consumiu no dia inteiro, também vai mostrar as calorias nas refeições. Vai mostrar também as calorias totais do dia.
+
+Pode ter uma área em que será contabilizado o gasto calórico de cardio e treino, mas isso aí é uma parte 2.
+
+Cada refeição vai ter o local onde você vai adicionar o alimento. Vai ter os macros embaixo dos alimentos adicionados e vai ser simples assim.
+
+Lá em cima, no topo da página, vamos ter um header. Em todas as páginas do aplicativo, vão ter um header dizendo onde estamos na navegação.
+
+Ou seja, o título. Após esse header, no conteúdo da página, teremos, neste e nessa página primária de dieta, o botão para o banco de alimentos e o botão para criar alimento. E também o terceiro botão para criar um combo de alimentos, que na verdade vai ser uma refeição, para você salvar uma refeição.
+
+Tudo isso vai ser salvo na Watermelon DB, que já está instalado. Quando a gente clicar nesse botão de criar alimento, vai abrir uma interface completa de criação de alimentos, com:
+- nome do alimento
+- peso do preparo
+- descrição opcional
+- os macros e nutrientes
+
+
+Alimento. Ao clicar em Criar Combo/Criar Refeição, vai ter apenas:
+- nome da refeição
+- quantidade da refeição
+- estado de preparo
+
+
+E vai ter em baixo uma área para você selecionar quais alimentos você quer fazer selecionar para colocar a refeição e a quantia de cada um. 
+
+Nesse painel de dieta, cada alimento adicionado ou refeição adicionada que será mostrado exatamente igual irá ter a opção de editar e excluir. Preferencialmente, o gesto lateral no card do alimento ou refeição: o card vai ter o nome do alimento, vai ter a quantidade embaixo, nome do alimento e quantidade. Na direita, vai ter macros e calorias deste alimento específico. E aí, vamos ter ali o botão de ir para banco de dados de alimentos, né?
+
+Que aí você vai ter uma lista completa de alimentos para você ver todos os alimentos que você cadastrou para você fazer alguma correção ali, procurar alguma coisa nessa página.
+
+Entrando nela, você vai ter:
+- adicionar alimentos
+- seleção em massa de alimentos
+- exclusão em massa
+
+
+Que, se você clicar nela, vai ter um pop-up de confirmação.
+
+Tudo isso na watermelon DB. 
+
+Falando da treino, é um pouco mais complexo.
+
+A gente vai ter que entrar no painel de treino. Vai ter todos os nossos treinos em ordem cronológica. Na verdade, vai ter todos os programas de treino em ordem cronológica.
+
+E aí vai ter um botão lá em cima pra criar novo plano de treino, botão pequeno. Esse botão, quando a gente criar, vai ter uma interface em blocos onde você vai criar os blocos de treinos. Na verdade, são dias da semana ou treinos mesmo. São blocos com o nome, e dentro você vai botar os exercícios que você quer. Visualmente, esses blocos de treino serão caixas com chevrons que abriram e mostraram os exercícios que estão dentro, que serão mais ou menos como cards. 
+
+Essa parte de treino vai ter outra database separada dos alimentos. Ela será uma database que terá:
+- todos os exercícios (exatamente o nome que a pessoa vai criar)
+- nome
+- séries
+- os exercícios
+- repetições mínimas e máximas (que são os ranges de repetição dos exercicios)
+
+
+Vai ter um seletor de técnica avançada e um seletor de repetições na reserva na série. 

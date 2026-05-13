@@ -1,6 +1,5 @@
 import { View, ScrollView } from 'react-native';
 import { Typography } from '../src/components/atoms/Typography';
-import { Button } from '../src/components/atoms/Button';
 
 export default function Page() {
   return (
