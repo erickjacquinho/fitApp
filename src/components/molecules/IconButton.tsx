@@ -16,7 +16,7 @@ export function IconButton({ icon, size = 24, iconColor, disabled, className, ..
       disabled={disabled}
       className={twMerge(
         clsx(
-          'p-2 rounded-full active:bg-gray-300',
+          'p-2 rounded-sm active:bg-gray-300',
           disabled && 'opacity-50',
           className
         )

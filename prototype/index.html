@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FitApp Color Palette Prototype</title>
+    <style>
+      :root {
+        --color-offwhite: #F8F4EC;
+        --color-cream: #EFE6D6;
+        --color-beige: #D8C3A5;
+        --color-sand: #BFA889;
+
+        --color-text-main: #1F1B16;
+        --color-text-muted: #6F6254;
+
+        --color-border-soft: #E3D6C4;
+        --color-border-strong: #C7B293;
+
+        --color-accent-main: #556B2F;
+        --color-accent-light: #718A44;
+        --color-accent-soft: #E5EAD8;
+        --color-accent-dark: #38481F;
+
+        --color-tomato-main: #C84A2F;
+        --color-tomato-light: #E06A4D;
+        --color-tomato-soft: #F6D8CF;
+        --color-tomato-dark: #8F2F1D;
+
+        --color-success-main: #4F7A3A;
+        --color-success-soft: #E1ECD8;
+        --color-success-dark: #315224;
+
+        --color-info-main: #4E6E81;
+        --color-info-soft: #DDE8ED;
+        --color-info-dark: #2F4A59;
+
+        --color-warning-main: #C58A1F;
+        --color-warning-soft: #F4E5C7;
+        --color-warning-dark: #7A5314;
+
+        --color-primary-main: var(--color-accent-main);
+        --color-primary-light: var(--color-accent-light);
+        --color-primary-soft: var(--color-accent-soft);
+        --color-primary-dark: var(--color-accent-dark);
+
+        --color-secondary-main: var(--color-beige);
+        --color-secondary-light: var(--color-cream);
+        --color-secondary-soft: var(--color-offwhite);
+        --color-secondary-dark: var(--color-sand);
+
+        --color-white-pure: #FFFFFF;
+        --color-white-base: var(--color-offwhite);
+        --color-white-soft: var(--color-cream);
+
+        --color-black-main: var(--color-text-main);
+        --color-black-soft: #16120F;
+        --color-black-light: var(--color-text-muted);
+
+        --color-gray-300: var(--color-border-soft);
+        --color-gray-400: var(--color-border-strong);
+        --color-gray-500: var(--color-text-muted);
+        --color-gray-700: #4B4035;
+
+        --radius-none: 0px;
+        --radius-sm: 3px;
+        --radius-md: 5px;
+        --radius-lg: 7px;
+        --radius-xl: 9px;
+        --radius-2xl: 10px;
+
+        --border-width-hairline: 0.5px;
+        --border-width-thin: 1px;
+
+        --shadow-none: none;
+        --shadow-floating: 0 2px 8px rgba(31, 27, 22, 0.08);
+
+        --font-family-sans: "Helvetica Now", Helvetica, Arial, sans-serif;
+
+        --font-size-display: 64px;
+        --font-size-title: 32px;
+        --font-size-subtitle: 20px;
+        --font-size-body: 16px;
+        --font-size-label: 14px;
+        --font-size-caption: 12px;
+
+        --line-height-display: 68px;
+        --line-height-title: 38px;
+        --line-height-subtitle: 28px;
+        --line-height-body: 24px;
+        --line-height-label: 18px;
+        --line-height-caption: 16px;
+
+        --font-weight-regular: 400;
+        --font-weight-semibold: 600;
+        --font-weight-bold: 700;
+        --font-weight-black: 900;
+
+        --letter-spacing-tight: -0.02em;
+        --letter-spacing-normal: 0em;
+        --letter-spacing-wide: 0.08em;
+        --letter-spacing-label: 0.12em;
+
+        --space-base: 4px;
+        --space-micro: calc(var(--space-base) * 1);
+        --space-compact: calc(var(--space-base) * 2);
+        --space-title-content: calc(var(--space-base) * 3);
+        --space-screen: calc(var(--space-base) * 4);
+        --space-card: calc(var(--space-base) * 5);
+        --space-related: calc(var(--space-base) * 6);
+        --space-category: calc(var(--space-base) * 8);
+        --space-page: calc(var(--space-base) * 10);
+        --space-empty-state: calc(var(--space-base) * 12);
+
+        --layout-screen-padding-x: var(--space-screen);
+        --layout-screen-padding-y: var(--space-screen);
+        --layout-screen-padding-y-comfortable: var(--space-related);
+        --layout-grid-columns-phone: 4;
+        --layout-grid-gutter: var(--space-title-content);
+        --layout-content-gap: var(--space-screen);
+        --layout-section-gap: var(--space-category);
+        --layout-page-gap: var(--space-page);
+
+        --size-icon-sm: 16px;
+        --size-icon-md: 20px;
+        --size-icon-lg: 24px;
+
+        --size-touch-target: 44px;
+        --size-control-sm: 36px;
+        --size-control-md: 44px;
+        --size-control-lg: 52px;
+        --size-input-md: 48px;
+
+        --size-avatar-sm: 32px;
+        --size-avatar-md: 40px;
+        --size-avatar-lg: 56px;
+
+        --size-tabbar-height: 64px;
+        --size-bottom-sheet-handle-width: 40px;
+        --size-bottom-sheet-handle-height: 4px;
+
+        --motion-duration-fast: 120ms;
+        --motion-duration-base: 180ms;
+        --motion-duration-slow: 240ms;
+        --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+        --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+
+        --component-button-primary-bg: var(--color-accent-main);
+        --component-button-primary-bg-pressed: var(--color-accent-dark);
+        --component-button-primary-text: var(--color-white-pure);
+        --component-button-danger-bg: var(--color-tomato-main);
+        --component-button-danger-bg-pressed: var(--color-tomato-dark);
+        --component-input-bg: var(--color-cream);
+        --component-input-border: var(--color-border-strong);
+        --component-input-border-focus: var(--color-accent-main);
+        --component-card-bg: var(--color-white-pure);
+        --component-card-border: var(--color-border-soft);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--color-text-main);
+        background: var(--color-offwhite);
+      }
+
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: var(--space-10) 0;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: var(--space-6);
+        align-items: end;
+        margin-bottom: var(--space-8);
+        padding-bottom: var(--space-6);
+        border-bottom: 1px solid var(--color-border-soft);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        font-size: clamp(40px, 6vw, 72px);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        margin-bottom: var(--space-4);
+        font-size: 22px;
+        line-height: 1.1;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.2;
+      }
+
+      .muted {
+        color: var(--color-text-muted);
+      }
+
+      .section {
+        margin-bottom: var(--space-6);
+      }
+
+      .intro {
+        display: grid;
+        gap: var(--space-3);
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      .token-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: var(--space-3);
+      }
+
+      .token {
+        overflow: hidden;
+        min-height: 104px;
+        border: 1px solid var(--color-border-soft);
+        border-radius: var(--radius-md);
+        background: #ffffff;
+      }
+
+      .swatch {
+        height: 52px;
+        border-bottom: 1px solid var(--color-border-soft);
+      }
+
+      .token-info {
+        display: grid;
+        gap: var(--space-1);
+        padding: var(--space-3);
+      }
+
+      .token-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .token-value {
+        color: var(--color-text-muted);
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+      }
+
+      .usage-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-4);
+      }
+
+      .panel {
+        border: 1px solid var(--color-border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--color-cream);
+      }
+
+      .panel-inner {
+        padding: var(--space-6);
+      }
+
+      .app-preview {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: var(--radius-sm);
+        color: var(--color-offwhite);
+        background: var(--color-accent-main);
+        font-weight: 900;
+      }
+
+      .card {
+        display: grid;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        border: 1px solid var(--color-border-soft);
+        border-radius: var(--radius-md);
+        background: var(--color-offwhite);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-3);
+      }
+
+      .stat {
+        padding: var(--space-4);
+        border: 1px solid var(--color-border-soft);
+        border-radius: var(--radius-sm);
+        background: #ffffff;
+      }
+
+      .stat strong {
+        display: block;
+        margin-bottom: var(--space-1);
+        font-size: 24px;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+      }
+
+      button {
+        min-height: 44px;
+        padding: 0 var(--space-5);
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .button-primary {
+        color: var(--color-offwhite);
+        background: var(--color-accent-main);
+      }
+
+      .button-primary:hover {
+        background: var(--color-accent-light);
+      }
+
+      .button-secondary {
+        color: var(--color-text-main);
+        border-color: var(--color-border-strong);
+        background: var(--color-accent-soft);
+      }
+
+      .button-ghost {
+        color: var(--color-text-main);
+        border-color: var(--color-border-soft);
+        background: transparent;
+      }
+
+      .meal-list {
+        display: grid;
+        gap: var(--space-3);
+      }
+
+      .meal-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-4);
+        padding: var(--space-4);
+        border: 1px solid var(--color-border-soft);
+        border-radius: var(--radius-sm);
+        background: #ffffff;
+      }
+
+      .badge {
+        padding: var(--space-1) var(--space-3);
+        border-radius: 999px;
+        color: var(--color-accent-dark);
+        background: var(--color-accent-soft);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .badge-alert {
+        color: var(--color-tomato-dark);
+        background: var(--color-tomato-soft);
+      }
+
+      .badge-warning {
+        color: var(--color-warning-dark);
+        background: var(--color-warning-soft);
+      }
+
+      .contrast-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-4);
+      }
+
+      .contrast-card {
+        display: grid;
+        min-height: 140px;
+        align-content: end;
+        gap: var(--space-2);
+        padding: var(--space-5);
+        border-radius: var(--radius-md);
+      }
+
+      .dark-sample {
+        color: var(--color-offwhite);
+        background: var(--color-text-main);
+      }
+
+      .accent-sample {
+        color: var(--color-offwhite);
+        background: var(--color-accent-main);
+      }
+
+      .soft-sample {
+        color: var(--color-text-main);
+        background: var(--color-cream);
+        border: 1px solid var(--color-border-soft);
+      }
+
+      .tomato-sample {
+        color: var(--color-offwhite);
+        background: var(--color-tomato-main);
+      }
+
+      .success-sample {
+        color: var(--color-offwhite);
+        background: var(--color-success-main);
+      }
+
+      .info-sample {
+        color: var(--color-offwhite);
+        background: var(--color-info-main);
+      }
+
+      .warning-sample {
+        color: var(--color-text-main);
+        background: var(--color-warning-soft);
+        border: 1px solid var(--color-warning-main);
+      }
+
+      @media (max-width: 860px) {
+        header,
+        .usage-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .token-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .contrast-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 520px) {
+        main {
+          width: min(100% - 24px, 1180px);
+          padding: var(--space-6) 0;
+        }
+
+        .token-grid,
+        .stats,
+        .contrast-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="muted">FitApp design system</p>
+          <h1>Warm neutral palette with olive accent</h1>
+        </div>
+        <div class="intro">
+          <p>
+            A calm base built on off-white, cream, beige, and sand. Olive is
+            reserved for action, progress, and focused highlights.
+          </p>
+        </div>
+      </header>
+
+      <section class="section">
+        <h2>Base Tokens</h2>
+        <div class="token-grid">
+          <article class="token">
+            <div class="swatch" style="background: var(--color-offwhite)"></div>
+            <div class="token-info">
+              <span class="token-name">offwhite</span>
+              <span class="token-value">#F8F4EC</span>
+            </div>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background: var(--color-cream)"></div>
+            <div class="token-info">
+              <span class="token-name">cream</span>
+              <span class="token-value">#EFE6D6</span>
+            </div>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background: var(--color-beige)"></div>
+            <div class="token-info">
+              <span class="token-name">beige</span>
+              <span class="token-value">#D8C3A5</span>
+            </div>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background: var(--color-sand)"></div>
+            <div class="token-info">
+              <span class="token-name">sand</span>
+              <span class="token-value">#BFA889</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Functional Tokens</h2>
+        <div class="token-grid">
+          <article class="token">
+            <div class="swatch" style="background: var(--color-text-main)"></div>
+            <div class="token-info">
+              <span class="token-name">text-main</span>
+              <span class="token-value">#1F1B16</span>
+            </div>
+          </article>
+          <article class="token">
+            <div class="swatch" style="background: var(--color-text-muted)"></div>
+            <div class="token-info">
+              <span class="token-name">text-muted</span>
+              <span class="token-value">#6F6254</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-border-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">border-soft</span>
+              <span class="token-value">#E3D6C4</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-border-strong)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">border-strong</span>
+              <span class="token-value">#C7B293</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Accent Tokens</h2>
+        <div class="token-grid">
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-accent-main)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">accent-main</span>
+              <span class="token-value">#556B2F</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-accent-light)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">accent-light</span>
+              <span class="token-value">#718A44</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-accent-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">accent-soft</span>
+              <span class="token-value">#E5EAD8</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-accent-dark)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">accent-dark</span>
+              <span class="token-value">#38481F</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Status Tokens</h2>
+        <div class="token-grid">
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-tomato-main)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">tomato-main</span>
+              <span class="token-value">#C84A2F</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-tomato-light)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">tomato-light</span>
+              <span class="token-value">#E06A4D</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-tomato-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">tomato-soft</span>
+              <span class="token-value">#F6D8CF</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-tomato-dark)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">tomato-dark</span>
+              <span class="token-value">#8F2F1D</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-success-main)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">success-main</span>
+              <span class="token-value">#4F7A3A</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-success-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">success-soft</span>
+              <span class="token-value">#E1ECD8</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-success-dark)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">success-dark</span>
+              <span class="token-value">#315224</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-info-main)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">info-main</span>
+              <span class="token-value">#4E6E81</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-info-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">info-soft</span>
+              <span class="token-value">#DDE8ED</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-info-dark)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">info-dark</span>
+              <span class="token-value">#2F4A59</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-warning-main)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">warning-main</span>
+              <span class="token-value">#C58A1F</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-warning-soft)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">warning-soft</span>
+              <span class="token-value">#F4E5C7</span>
+            </div>
+          </article>
+          <article class="token">
+            <div
+              class="swatch"
+              style="background: var(--color-warning-dark)"
+            ></div>
+            <div class="token-info">
+              <span class="token-name">warning-dark</span>
+              <span class="token-value">#7A5314</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Interface Preview</h2>
+        <div class="usage-grid">
+          <article class="panel">
+            <div class="panel-inner app-preview">
+              <div class="top-bar">
+                <div>
+                  <p class="muted">Today</p>
+                  <h3>Nutrition summary</h3>
+                </div>
+                <div class="brand-mark">F</div>
+              </div>
+
+              <div class="card">
+                <div>
+                  <p class="muted">Daily target</p>
+                  <h2>1,860 kcal remaining</h2>
+                </div>
+                <div class="stats">
+                  <div class="stat">
+                    <strong>92g</strong>
+                    <span class="muted">Protein</span>
+                  </div>
+                  <div class="stat">
+                    <strong>148g</strong>
+                    <span class="muted">Carbs</span>
+                  </div>
+                  <div class="stat">
+                    <strong>51g</strong>
+                    <span class="muted">Fats</span>
+                  </div>
+                </div>
+                <div class="button-row">
+                  <button class="button-primary">Log meal</button>
+                  <button class="button-secondary">Scan food</button>
+                  <button class="button-ghost">Details</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner app-preview">
+              <div>
+                <p class="muted">Meal plan</p>
+                <h3>Upcoming meals</h3>
+              </div>
+
+              <div class="meal-list">
+                <div class="meal-item">
+                  <div>
+                    <h3>Greek yogurt bowl</h3>
+                    <p class="muted">Breakfast - 320 kcal</p>
+                  </div>
+                  <span class="badge">Planned</span>
+                </div>
+                <div class="meal-item">
+                  <div>
+                    <h3>Chicken rice plate</h3>
+                    <p class="muted">Lunch - 610 kcal</p>
+                  </div>
+                  <span class="badge badge-warning">Review</span>
+                </div>
+                <div class="meal-item">
+                  <div>
+                    <h3>Avocado toast</h3>
+                    <p class="muted">Snack - 280 kcal</p>
+                  </div>
+                  <span class="badge badge-alert">Limit</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Contrast Samples</h2>
+        <div class="contrast-grid">
+          <article class="contrast-card dark-sample">
+            <h3>Dark text system</h3>
+            <p>Primary reading color against warm neutral surfaces.</p>
+          </article>
+          <article class="contrast-card accent-sample">
+            <h3>Primary action</h3>
+            <p>Olive accent reserved for core interactions.</p>
+          </article>
+          <article class="contrast-card soft-sample">
+            <h3>Soft surface</h3>
+            <p>Low-intensity sections, cards, and grouped content.</p>
+          </article>
+          <article class="contrast-card tomato-sample">
+            <h3>Alert state</h3>
+            <p>Tomato is reserved for errors, limits, and high attention.</p>
+          </article>
+          <article class="contrast-card success-sample">
+            <h3>Success state</h3>
+            <p>Completion, healthy streaks, and positive confirmations.</p>
+          </article>
+          <article class="contrast-card info-sample">
+            <h3>Info state</h3>
+            <p>Neutral guidance, tips, and contextual system messages.</p>
+          </article>
+          <article class="contrast-card warning-sample">
+            <h3>Warning state</h3>
+            <p>Attention without danger, review, or near-limit moments.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

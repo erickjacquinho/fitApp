@@ -1,46 +1,36 @@
 # Design System Guide - FitApp
 
-This guide defines the atomic components of FitApp. Adhering to these structural patterns ensures a consistent UI and prevents redundant component creation.
+This is the design system index for FitApp.
 
-## 1. Atomic Design Strategy
-Components MUST be categorized by complexity and reuse scope:
+FitApp is Android-first for MVP validation. iOS support comes after Android validation. Rules target phone screens only.
 
-### 1.1. Atoms (`src/components/atoms/`)
-Indivisible base units. They define global UI style.
-- **`Button`**: Variants (`primary`, `secondary`, `outline`, `ghost`, `danger`). Sizes (`sm`, `md`, `lg`).
-- **`Typography`**: Hierarchy (`h1`, `h2`, `h3`, `body`, `caption`, `label`). Colors (`default`, `muted`, `success`, `error`).
-- **`Input`**: Text/Number/Multiline. Focused/Error/Disabled states.
-- **`Icon`**: Wrapper for Lucide or Expo Icons.
-- **`Badge`**: For status or macro categories (Carbs, Protein, Fats).
+## Rule Files
 
-### 1.2. Molecules (`src/components/molecules/`)
-Functional units combining 2+ atoms.
-- **`LabeledInput`**: Typography (Label) + Input + Typography (Error).
-- **`IconButton`**: Button focused on an Icon without visible text.
-- **`ListItem`**: Base structure for lists (Title, Subtitle, optional right accessory).
-- **`SearchBar`**: Search Icon + Input + Clear button.
-- **`SegmentedControl`**: Tabs for switching contexts (e.g., Weekly/Monthly view).
+- `designsystem-foundations.md`: tokens, colors, typography, spacing, radius, borders, shadows, sizes, motion, component tokens.
+- `layout-guidelines.md`: safe area, phone grid, screen padding, section spacing, scroll, action placement.
+- `accessibility-guidelines.md`: touch targets, contrast, roles, labels, disabled states, errors.
+- `iconography-guidelines.md`: Lucide usage, sizes, stroke, semantic colors.
+- `content-guidelines.md`: Brazilian Portuguese UI copy, CTAs, labels, errors, empty states.
+- `component-guidelines.md`: shared component contracts for atoms, molecules, and organisms.
+- `form-guidelines.md`: field anatomy, validation, errors, submit behavior, keyboard behavior.
+- `feedback-guidelines.md`: loading, skeleton, toast, inline error, success, warning, offline, empty states.
+- `navigation-guidelines.md`: stack headers, bottom tabs, back actions, primary actions.
+- `data-display-guidelines.md`: lists, workout cards, meal cards, macros, progress, charts, history.
+- `designsystem-governance.md`: component creation, token changes, exceptions, PR checklist.
 
-### 1.3. Organisms (`src/components/organisms/`)
-Complex, feature-linked, or layout-defining sections.
-- **`WorkoutCard`**: Exercises list, duration, and status.
-- **`FoodCard`**: Macro summary, quantity, and meal registration.
-- **`ChartHub`**: Evolutionary charts with filters.
-- **`EmptyState`**: UI for empty lists with a mandatory Call-to-Action (CTA).
-- **`BottomSheet`**: Advanced modal for quick forms (e.g., logging food or reps).
+## Mandatory Principles
 
-## 2. Reusability Protocol (MANDATORY)
-Before creating any new UI component:
-1. **Search**: Look in `src/components/` for existing atoms/molecules.
-2. **Extend**: Add a prop to an existing component instead of duplicating it.
-3. **Refactor**: If a component is specific to a feature, keep it in `src/features/<name>/components/`. If it becomes needed elsewhere, move it to `src/components/`.
+- Use NativeWind classes with tokens from `tailwind.config.js`.
+- Do not use raw visual values in app components.
+- Prefer extending existing shared components over creating duplicates.
+- Keep feature-specific UI inside `src/features/<feature>/components/`.
+- Follow Android-first phone behavior; keep iOS compatible.
+- Do not add non-phone layout rules unless product scope changes.
 
-## 3. Interaction Patterns
-- **Feedback**: Every interactive element MUST have a visual state for `pressed` (Opacity or Scale down).
-- **Loading**: Use the `Skeleton` atom for initial data fetching states.
-- **Accessibility**: Use appropriate `accessibilityRole` and `accessibilityLabel` for all interactive elements.
+## Source of Truth
 
-## 4. Constraint Checklist
-- **No Inline Styles**: Use NativeWind classes.
-- **No Hardcoded Values**: Use Tailwind config tokens.
-- **Composition over Inheritance**: Use the `children` prop for flexible layout components.
+- Token values: `global.css`.
+- Token utilities: `tailwind.config.js`.
+- Shared UI: `src/components/`.
+- Feature UI: `src/features/`.
+- Routes: `app/`.

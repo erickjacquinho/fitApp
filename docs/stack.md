@@ -6,7 +6,7 @@ Este documento descreve a stack de tecnologia e a arquitetura inicial decididas 
 
 *   **Nome do Projeto:** FitApp
 *   **Tipo:** Aplicativo móvel de treino e dieta.
-*   **Plataformas Alvo:** Inicialmente Android, com planos de expansão para iOS.
+*   **Plataformas Alvo:** Android primeiro para validação do MVP, com lançamento iOS após validação no Android.
 *   **Foco do MVP:** Totalmente offline.
 *   **Funcionalidades Chave do MVP:**
     *   Registro de cargas de treino, contagem, histórico e notas.
@@ -22,7 +22,7 @@ Este documento descreve a stack de tecnologia e a arquitetura inicial decididas 
 *   **Linguagem de Programação:** **TypeScript**
     *   **Justificativa:** Oferece tipagem estática, aumentando a robustez, manutenibilidade e escalabilidade do código.
 *   **Navegação:** **Expo Router**
-    *   **Justificativa:** Abordagem moderna de roteamento baseada em arquivos, simplificando a configuração e organização da navegação para iOS, Android e Web (futuramente).
+    *   **Justificativa:** Abordagem moderna de roteamento baseada em arquivos, simplificando a configuração e organização da navegação mobile para Android e iOS.
 *   **Gerenciamento de Estado:** **Zustand**
     *   **Justificativa:** Leve, simples e performático, ideal para gerenciar o estado global da aplicação de forma eficiente no React Native.
 *   **Banco de Dados Local:** **WatermelonDB**

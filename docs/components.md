@@ -1,5 +1,7 @@
 # Componentes de Aplicação
 
+> Reference only. This file is a broad reminder list for possible components and is not an implementation rule. FitApp implementation rules live in `.agents/rules/`, especially `designsystem-guide.md` and the focused design system guideline files.
+
 ## Componentes Básicos (Todo App)
 
 ### Navegação
