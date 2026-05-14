@@ -25,24 +25,25 @@ To maintain readability, follow this order when declaring classes:
 1. **Layout**: `flex`, `grid`, `absolute`, `z-10`.
 2. **Box Model**: `w-full`, `h-32`, `m-4`, `p-2`.
 3. **Display & Interaction**: `hidden`, `opacity-50`, `overflow-hidden`.
-4. **Typography**: `text-lg`, `font-bold`, `text-center`, `tracking-tight`.
-5. **Visuals**: `bg-blue-500`, `border`, `rounded-xl`, `shadow-sm`.
-6. **States & Platform**: `active:scale-95`, `ios:mt-10`, `android:elevation-2`.
+4. **Typography**: `text-title`, `font-bold`, `text-center`, `tracking-tight`.
+5. **Visuals**: `bg-surface-muted`, `border border-soft`, `rounded-sm`.
+6. **States & Platform**: `active:scale-95`, `ios:pt-2`, `android:pt-2`.
 
 ### 3.2. Complex & Conditional Classes
 - Use `clsx` or `tailwind-merge` to organize dynamic strings.
-- **DO NOT**: `className={isError ? "bg-red-500 border-red-700 p-4 rounded" : "bg-blue-500 border-blue-700 p-4 rounded"}`.
+- **DO NOT**: `className={isError ? "bg-[raw-color] border-[raw-color] p-[13px] rounded-[18px]" : "bg-[raw-color] border-[raw-color] p-[13px] rounded-[18px]"}`.
 - **DO**: 
   ```tsx
   const containerClasses = clsx(
-    "p-4 rounded border-b-2",
-    isError ? "bg-red-500 border-red-700" : "bg-blue-500 border-blue-700"
+    "p-4 rounded-sm border",
+    isError ? "bg-tomato-soft border-tomato-main" : "bg-surface-muted border-soft"
   );
   ```
 
 ### 3.3. Abstraction Protocol
 - If a class set is repeated in 3+ places, create an **Atom** (e.g., `src/components/atoms/Card.tsx`) instead of copying classes.
 - **DO NOT** use `@apply` in global CSS; use direct utility classes in components.
+- **DO NOT** use shadows, large radii, or high-contrast borders unless a focused rule file allows it.
 
 ## 4. Dynamic Styles and Performance
 - **Static Strings**: The NativeWind compiler optimizes static class strings. Avoid generating classes via string interpolation (e.g., `className={`p-${paddingSize}`} `).

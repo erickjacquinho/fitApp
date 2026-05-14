@@ -12,7 +12,7 @@ export interface SegmentedControlProps {
 
 export function SegmentedControl({ tabs, selectedIndex, onChange, className }: SegmentedControlProps) {
   return (
-    <View className={twMerge(clsx('flex-row p-1 bg-gray-300 rounded-none', className))}>
+    <View className={twMerge(clsx('flex-row p-1 bg-gray-300 rounded-sm', className))}>
       {tabs.map((tab, index) => {
         const isSelected = index === selectedIndex;
         return (
@@ -21,7 +21,7 @@ export function SegmentedControl({ tabs, selectedIndex, onChange, className }: S
             onPress={() => onChange(index)}
             className={clsx(
               'flex-1 py-2 items-center justify-center',
-              isSelected ? 'bg-white-pure shadow-sm border border-gray-400' : 'bg-transparent'
+              isSelected ? 'bg-white-pure border border-gray-400' : 'bg-transparent'
             )}
           >
             <Typography

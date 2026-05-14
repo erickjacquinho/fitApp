@@ -1,680 +1,785 @@
-# fitApp - Aplicativo de Fitness e Nutrição
+# FitApp Technical PRD
 
-## 1. Resumo Executivo
+## 1. Objective
 
-Aplicativo mobile para gestão de fitness e nutrição com duas frentes principais: **Dashboard Unificada** e **Módulos Independentes** (Dieta e Treino). O app permite acompanhamento de plano alimentar, criação de alimentos/refeições, e gestão de programas de treino com exercícios personalizados.
+Build an offline-first mobile app for fitness and nutrition management using React Native, Expo, Expo Router, TypeScript, Zustand, WatermelonDB, and NativeWind.
 
----
+The product has three primary surfaces:
 
-## 2. Escopo do Feature
+- **Dashboard**: unified view of the user's current diet plan and current training plan.
+- **Diet**: modular area for daily meals, foods, meal combinations, macros, and calories.
+- **Training**: workout logbook for tracking training execution and progression over time.
 
-### Inclusões
-- Dashboard central com visão unificada de dieta e treino atual
-- Sistema de dieta com cardápio, refeições, macros e calorias
-- Banco de alimentos com CRUD completo
-- Criação de refeições combinadas (combos de alimentos)
-- Sistema de treino com programas, blocos de dias e exercícios
-- Sessão de treino com registro de execução (reps, quilagem, reps reserva)
-- Histórico de treinos executados
-- Persistência local via WatermelonDB
+The MVP must preserve the source idea from `pre-PRD.txt`: simple UX, complete local control, food and workout data stored offline, and a dashboard that makes the current plan measurable.
 
-### Exclusões
-- Contabilização de gasto calórico de cardio/treino (Fase 2)
-- Autenticação de usuários
-- Sincronização em nuvem
-- Histórico de evolução
+## 2. Scope
 
----
+### 2.1 In Scope
 
-## 3. Arquitetura de Informação
+- Unified dashboard with current diet and current training summaries.
+- App-wide page header showing current navigation context.
+- Daily diet menu with meals, foods, macros, and total calories.
+- Two diet menu modes: daily custom menu and fixed recurring menu.
+- Food database with create, read, update, delete, search, bulk selection, and bulk deletion.
+- Meal creation as a reusable combination of foods.
+- Food and meal cards with edit/delete actions, preferably via swipe gesture.
+- Workout logbook for recording performed workouts.
+- Training sheet list ordered by creation date or update date.
+- Training sheet builder with workouts inside the sheet.
+- Exercise creation inside each workout.
+- Exercise fields for name, sets, min/max reps, advanced technique, and target reps in reserve.
+- Workout session execution with performed sets, weight, reps, and performed RIR.
+- Workout history for progression tracking.
+- Local persistence through WatermelonDB.
+- Feature-first implementation under `src/features/`.
+- Expo Router route orchestration under `app/`.
 
-### Estrutura de Navegação
+### 2.2 Out of Scope - MVP
 
-```
-├── Header de Navegação (todas as páginas)
-│   └── Título da página atual + botão voltar (quando aplicável)
-│
-├── Dashboard (Tela Inicial)
-│   ├── Visão unificada do plano atual
-│   ├── Estatísticas resumidas
-│   ├── [Botão] → Módulo Dieta
-│   └── [Botão] → Módulo Treino
-│
-├── Módulo Dieta (Tab)
-│   ├── Cardápio do dia
-│   │   ├── Lista de refeições
-│   │   ├── Calorias/macros por refeição e total
-│   │   ├── [Botão +] → Criar Refeição
-│   │   └── Card de refeição → abre detalhes/edição
-│   │
-│   ├── Tela: Criar/Editar Refeição
-│   │   ├── Campos: nome, quantidade, estado preparo
-│   │   ├── Seletor de alimentos (slide-up/modal)
-│   │   └── Preview de macros/calorias
-│   │
-│   ├── [Botão] Banco de Alimentos
-│   │   ├── Lista completa de alimentos
-│   │   ├── Busca por nome
-│   │   ├── [Botão +] → Criar Alimento
-│   │   ├── Seleção em massa
-│   │   └── Exclusão em massa (com confirmação)
-│   │
-│   └── Tela: Criar/Editar Alimento
-│       ├── Campos: nome, peso preparo, descrição opcional
-│       ├── Campos: macros (proteína, carboidrato, gordura)
-│       └── Preview de calorias calculadas
-│
-└── Módulo Treino (Tab)
-    ├── Lista de Programas
-    │   ├── Programa cards (expandibles com chevron)
-    │   ├── [Botão +] → Criar Novo Programa
-    │   ├── [Botão iniciar] → Iniciar Sessão de Treino
-    │   └── [Botão histórico] → Ver Histórico
-    │
-    ├── Tela: Criar/Editar Programa
-    │   ├── Campo: nome do programa
-    │   ├── Lista de Blocos
-    │   │   ├── [Botão + Adicionar Bloco]
-    │   │   └── Bloco expandível (chevron)
-    │   │       ├── Campo: nome do bloco
-    │   │       ├── Lista de exercícios
-    │   │       ├── [Botão +] → Adicionar Exercício
-    │   │       └── Exercício card (swipe para editar/excluir)
-    │   │
-    │   └── Tela: Criar/Editar Exercício
-    │       ├── Campos: nome, séries, repetições mín/máx
-    │       ├── Campo: técnica avançada (opcional)
-    │       └── Campo: reps na reserva (opcional)
-    │
-    ├── Tela: Iniciar Sessão de Treino
-    │   ├── Header: nome do programa
-    │   ├── Progresso: bloco atual / total de blocos
-    │   ├── Lista de exercícios do bloco
-    │   │   └── [Botão] → Executar Exercício
-    │   │
-    │   └── Tela: Executar Exercício (Modal)
-    │       ├── Header: nome do exercício
-    │       ├── Info: séries programadas, reps range
-    │       ├── Lista de séries
-    │       │   ├── Input: quilagem executada
-    │       │   ├── Input: reps feitas
-    │       │   └── Input: reps reserva (opcional)
-    │       └── [Botão] Próximo exercício / Finalizar treino
-    │
-    └── Tela: Histórico de Treinos
-        ├── Lista de sessões (cronológica reversa)
-        ├── Card: data, programa, duração
-        └── [Tap] → Detalhes da sessão
-            ├── Blocos executados
-            ├── Exercícios com métricas
-            └── Resumo (total séries, reps, quilagem)
+- User authentication.
+- Cloud sync.
+- Import/export.
+- Push notifications.
+- Calorie expenditure from cardio or workouts.
+- Long-term evolution charts.
+- AI coaching.
+- Social/sharing features.
+
+### 2.3 Future Scope
+
+- Cardio/workout calorie expenditure.
+- Progress charts using `react-native-gifted-charts`.
+- Cross-feature analytics, such as calories vs. training volume.
+- Cloud sync and backup.
+
+## 3. Architecture Constraints
+
+### 3.1 Required Stack
+
+- **Framework**: React Native with Expo Managed Workflow.
+- **Routing**: Expo Router.
+- **Language**: TypeScript with strict typing.
+- **Persistence**: WatermelonDB as the local source of truth.
+- **State**: Zustand only for global UI state or derived cross-feature state.
+- **Styling**: NativeWind v4 with tokens from `tailwind.config.js` and `global.css`.
+- **UI architecture**: Atomic Design with shared components in `src/components/`.
+
+### 3.2 Code Organization
+
+```text
+app/
+  (tabs)/
+  diet/
+  training/
+
+src/
+  components/
+    atoms/
+    molecules/
+    organisms/
+  db/
+    diet/
+      schema.ts
+      models/
+    training/
+      schema.ts
+      models/
+  features/
+    dashboard/
+    diet/
+    training/
 ```
 
----
+Pages in `app/` must be slim orchestrators. Business logic, database writes, and reusable UI must live inside `src/features/` or `src/components/`.
 
-## 4. Fluxo de Navegação
+### 3.3 Persistence Rules
 
-### 4.1 Fluxo Dieta
+- Use separate WatermelonDB databases for diet and training.
+- The diet database owns foods, meals, and meal items.
+- The training database owns training sheets, workouts, exercises, workout sessions, exercise executions, and set executions.
+- Dashboard may read from both databases through feature hooks, but must not couple the databases directly.
+- Every table must include `created_at` and `updated_at`.
+- All writes must happen inside services or model writers.
+- UI components must not call `.create()`, `.update()`, or `.destroy()` directly.
+- Reactive reads must use WatermelonDB observables or approved reactive hooks.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     CARDÁPIO DO DIA                        │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │ [Header: Cardápio - Calorias: 1850/2200]                ││
-│  ├─────────────────────────────────────────────────────────┤│
-│  │ ┌─────────────┐  Café da Manhã                          ││
-│  │ │ 450 kcal    │  2 ovos, pão integral, café             ││
-│  │ │ P:20 C:40 G │  [Swipe → Editar | Excluir]            ││
-│  │ └─────────────┘                                         ││
-│  │                          ┌─────────────────────────────┤│
-│  │                          │ [+ Criar Refeição]           ││
-│  └──────────────────────────┴─────────────────────────────┘│
-│                                                             │
-│  [Banco de Alimentos] ←────────────────────────┐            │
-└─────────────────────────────────────────────────┘            │
-                              │                               │
-                              ▼                               │
-┌─────────────────────────────────────────────────────────────┐
-│                   BANCO DE ALIMENTOS                        │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │ [🔍 Buscar alimentos...]                                ││
-│  ├─────────────────────────────────────────────────────────┤│
-│  │ □ Frango grelhado (100g) - P:31 C:0 G:3               ││
-│  │ □ Arroz integral (100g) - P:4 C:26 G:1                 ││
-│  │ □ Ovos (50g) - P:6 C:0 G:5                             ││
-│  │                            [Swipe → Editar | Excluir]    ││
-│  └─────────────────────────────────────────────────────────┘│
-│                                                             │
-│  [+ Novo Alimento]  [☐ Selecionar múltiplos] [🗑️ Excluir] │
-└─────────────────────────────────────────────────────────────┘
+## 4. Feature Modules
+
+### 4.1 Dashboard
+
+Purpose: show the current diet and training state in one place.
+
+Responsibilities:
+
+- Show today's calorie and macro totals.
+- Show current or latest training sheet/session.
+- Show basic measurable stats.
+- Link to Diet and Training modules.
+
+Recommended files:
+
+```text
+src/features/dashboard/
+  components/
+  hooks/
+  types.ts
+  index.ts
 ```
 
-### 4.2 Fluxo Criar Alimento
+### 4.2 Diet
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  CRIAR NOVO ALIMENTO                        │
-│  ← Voltar                                                   │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │                                                         ││
-│  │ Nome do alimento *                                      ││
-│  │ [________________________]                              ││
-│  │                                                         ││
-│  │ Peso do preparo (g)                                     ││
-│  │ [_________]                                             ││
-│  │                                                         ││
-│  │ Descrição (opcional)                                    ││
-│  │ [________________________]                              ││
-│  │                                                         ││
-│  │ ───────────── MACROS ─────────────                      ││
-│  │ Proteína (g)      Carboidrato (g)    Gordura (g)       ││
-│  │ [_______]         [_______]          [_______]         ││
-│  │                                                         ││
-│  │ ──────────────────────────────────────────────────────││
-│  │ Calorias: 385 kcal (calculado)                         ││
-│  │                                                         ││
-│  │         [Cancelar]          [Salvar]                  ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────┘
+Purpose: manage foods, meals, and daily menu.
+
+Responsibilities:
+
+- Create and manage foods.
+- Create meals as combinations of foods.
+- Manage meals by date in daily menu mode.
+- Manage a fixed menu that appears every day until changed.
+- Mark fixed-menu meals as completed for the current day.
+- Show meal macros and calories.
+- Show total daily calories and macros.
+- Support search and bulk actions in the food database.
+
+Recommended files:
+
+```text
+src/features/diet/
+  components/
+  hooks/
+  services/
+  types.ts
+  index.ts
 ```
 
-### 4.3 Fluxo Criar Refeição (Combo)
+### 4.3 Training
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  CRIAR REFEIÇÃO                            │
-│  ← Voltar                                                   │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │                                                         ││
-│  │ Nome da refeição *                                      ││
-│  │ [________________________]                              ││
-│  │                                                         ││
-│  │ Quantidade                                              ││
-│  │ [_________] porção(es)                                   ││
-│  │                                                         ││
-│  │ Estado do preparo                                       ││
-│  │ [Pronto ✓] [Preparo] [Cru]                              ││
-│  │                                                         ││
-│  │ ───────────── ALIMENTOS ─────────────                   ││
-│  │ + Adicionar alimento                                    ││
-│  │                                                         ││
-│  │ ┌─────────────────────────────────────────────────────┐││
-│  │ │ □ Frango grelhado (100g)              [x]           │││
-│  │ │   Quantidade: [100] g                             │││
-│  │ └─────────────────────────────────────────────────────┘││
-│  │ ┌─────────────────────────────────────────────────────┐││
-│  │ │ □ Arroz integral (150g)               [x]           │││
-│  │ │   Quantidade: [150] g                             │││
-│  │ └─────────────────────────────────────────────────────┘││
-│  │                                                         ││
-│  │ ──────────────────────────────────────────────────────││
-│  │ Total: P:35g | C:40g | G:5g | Cal: 385kcal             ││
-│  │                                                         ││
-│  │         [Cancelar]          [Salvar]                  ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────┘
+Purpose: act as a workout logbook for tracking progression.
+
+Responsibilities:
+
+- Create training sheets.
+- Add workouts inside each training sheet.
+- Add exercises inside each workout.
+- Store sets, rep ranges, advanced technique, and reps in reserve.
+- Start a workout session by pressing play on a workout from a training sheet.
+- Record performed sets with weight, reps, and performed RIR.
+- Store workout history chronologically.
+- Expose progression data per exercise over time.
+
+Recommended files:
+
+```text
+src/features/training/
+  components/
+  hooks/
+  services/
+  types.ts
+  index.ts
 ```
 
-### 4.4 Fluxo Treino
+## 5. Routes
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   PROGRAMAS DE TREINO                      │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │                                                         ││
-│  │ ▶ Programa A - Hipertrofia          [Iniciar] [⚙️]     ││
-│  │   ▾ Peito (3 exercícios)                               ││
-│  │   ▾ Costas (4 exercícios)                              ││
-│  │   ▾ Pernas (5 exercícios)                              ││
-│  │                                                         ││
-│  │ ▶ Programa B - Full Body             [Iniciar] [⚙️]     ││
-│  │   ▾ Segunda (6 exercícios)                             ││
-│  │   ▾ Quarta (6 exercícios)                               ││
-│  │   ▾ Sexta (6 exercícios)                               ││
-│  │                                                         ││
-│  └─────────────────────────────────────────────────────────┘│
-│                                                             │
-│  [Novo Programa]                    [Ver Histórico]        │
-└─────────────────────────────────────────────────────────────┘
+Expo Router must own navigation.
 
-                  │
-                  ▼ (Iniciar)
-                  
-┌─────────────────────────────────────────────────────────────┐
-│              SESSÃO: PROGRAMA A - HIROFIA                  │
-│  Bloco 1/3 - Peito                           [Finalizar]   │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │                                                         ││
-│  │ Supino Reto                                     [→]    ││
-│  │ 4 séries | 8-12 reps | RIR: 2                          ││
-│  │                                                         ││
-│  │ Supino Inclinado                                     [→]││
-│  │ 4 séries | 10-12 reps                                 ││
-│  │                                                         ││
-│  │ Crossover                                            [→]│
-│  │ 3 séries | 12-15 reps                                ││
-│  │                                                         ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────┘
+Suggested MVP routes:
 
-                  │
-                  ▼ (Clicar em exercício)
-                  
-┌─────────────────────────────────────────────────────────────┐
-│              SUPINO RETO - SÉRIE 1/4                       │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │ Reps programadas: 8-12                                 ││
-│  │                                                         ││
-│  │ ┌─────────────────────────────────────────────────────┐││
-│  │ │ SÉRIE 1                    [✓ Feito]               │││
-│  │ │ Quilagem: [_____] kg                                │││
-│  │ │ Reps feitas: [_____]                               │││
-│  │ │ Reps reserva: [_____]                               │││
-│  │ └─────────────────────────────────────────────────────┘││
-│  │ ┌─────────────────────────────────────────────────────┐││
-│  │ │ SÉRIE 2                    [○ Fazer]               │││
-│  │ │ Quilagem: [_____] kg                                │││
-│  │ │ Reps feitas: [_____]                               │││
-│  │ │ Reps reserva: [_____]                               │││
-│  │ └─────────────────────────────────────────────────────┘││
-│  │ ... (mais séries)                                      ││
-│  │                                                         ││
-│  │         [Anterior]          [Próximo →]               ││
-│  └─────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────┘
+```text
+app/(tabs)/index.tsx                  # Dashboard
+app/(tabs)/diet/index.tsx             # Daily menu
+app/(tabs)/training/index.tsx         # Training logbook
+
+app/diet/foods/index.tsx              # Food database
+app/diet/foods/new.tsx                # Create food
+app/diet/foods/[id]/edit.tsx          # Edit food
+app/diet/meals/new.tsx                # Create meal
+app/diet/meals/[id]/edit.tsx          # Edit meal
+
+app/training/programs/new.tsx         # Create training sheet
+app/training/programs/[id]/edit.tsx   # Edit training sheet
+app/training/sessions/new.tsx         # Start workout session from sheet workout
+app/training/sessions/[id].tsx        # Active or completed workout session
+app/training/history/index.tsx        # Workout history
+app/training/history/[id].tsx         # Workout history details
 ```
 
----
+## 6. Data Model
 
-## 5. User Scenarios & Flows
+Product language:
 
-### 5.1 Dashboard → Dieta
-1. Usuário está na Dashboard
-2. Clica no card "Dieta" ou botão de acesso
-3. Navega para tela de Cardápio do dia
+- `training_programs` = training sheets.
+- `training_blocks` = workouts inside a training sheet.
+- `exercises` = exercises inside a workout.
+- `workout_sessions` = logbook entries created when the user presses play on a workout.
 
-### 5.2 Dashboard → Treino
-1. Usuário está na Dashboard
-2. Clica no card "Treino" ou botão de acesso
-3. Navega para tela de Lista de Programas
+### 6.1 Diet Tables
 
-### 5.3 Dieta - Cardápio → Criar Refeição
-1. Usuário está no Cardápio do dia
-2. Clica em "+" ou "Criar Refeição"
-3. Navega para tela Criar Refeição
-4. Preenche nome, quantidade, estado preparo
-5. Clica em "Adicionar Alimento"
-6. Abre seletor de alimentos (modal/slide-up)
-7. Seleciona alimentos e define quantidade
-8. Confirma seleção
-9. Vê preview de macros/calorias total
-10. Salva → retorna ao Cardápio
+#### `foods`
 
-### 5.4 Dieta - Cardápio → Banco de Alimentos
-1. Usuário está no Cardápio do dia
-2. Clica em "Banco de Alimentos"
-3. Navega para tela do Banco
-4. Vê lista de alimentos cadastrados
-5. Pode buscar por nome
-6. Pode selecionar múltiplos para exclusão
+Stores user-created foods.
 
-### 5.5 Dieta - Banco → Criar Alimento
-1. Usuário está no Banco de Alimentos
-2. Clica em "+ Novo Alimento"
-3. Navega para tela Criar Alimento
-4. Preenche: nome, peso preparo, descrição, macros
-5. Vê cálculo de calorias em tempo real
-6. Salva → retorna ao Banco
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `name` | string | yes | Indexed for search |
+| `preparation_weight_g` | number | yes | Must be greater than 0 |
+| `description` | string | no | Optional |
+| `protein_g` | number | yes | Must be >= 0 |
+| `carbs_g` | number | yes | Must be >= 0 |
+| `fat_g` | number | yes | Must be >= 0 |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### 5.6 Dieta - Swipe para Editar/Excluir
-1. Usuário está no Cardápio ou Banco
-2. Faz swipe lateral no card
-3. Revela botões "Editar" e "Excluir"
-4. Se Editar: navega para tela de edição com dados pré-preenchidos
-5. Se Excluir: pop-up de confirmação → exclusão
+Calories are derived:
 
-### 5.7 Treino - Cardápio de Programas
-1. Usuário está na Lista de Programas
-2. Vê programas em ordem cronológica
-3. Cada programa é expansível (chevron)
-4. Expandido mostra blocos e exercícios internos
+```text
+calories = protein_g * 4 + carbs_g * 4 + fat_g * 9
+```
 
-### 5.8 Treino - Criar Programa
-1. Usuário está na Lista de Programas
-2. Clica em "Novo Programa"
-3. Navega para tela Criar Programa
-4. Define nome do programa
-5. Adiciona blocos (dias/sections)
-6. Dentro de cada bloco, adiciona exercícios
-7. Para cada exercício: nome, séries, reps range, técnica, reps reserva
-8. Salva → retorna à Lista
+#### `meals`
 
-### 5.9 Treino - Iniciar Sessão
-1. Usuário está na Lista de Programas
-2. Clica em "Iniciar" em um programa existente
-3. Sistema cria nova SessaoTreino (status: em_progresso)
-4. Navega para tela de Sessão com primeiro bloco expandido
-5. Vê lista de exercícios do bloco atual
-6. Clica em exercício para executar
-7. Preenche execução: quilagem, reps feitas, reps reserva por série
-8. Completa série → próxima ou vai para próximo exercício
-9. Completa bloco → avança para próximo bloco
-10. Completa todos blocos → botão "Finalizar"
-11. Confirma → Sessão marcada como concluída, salva no histórico
+Stores reusable meals/food combinations.
 
-### 5.10 Treino - Histórico
-1. Usuário está na Lista de Programas
-2. Clica em "Ver Histórico"
-3. Navega para tela de Histórico
-4. Vê lista de sessões concluídas (cronológica reversa)
-5. Clica em sessão → vê detalhes completos
-   - Data e duração
-   - Programa executado
-   - Blocos e exercícios realizados
-   - Métricas: total séries, reps, quilagem
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `name` | string | yes | Indexed for search |
+| `quantity` | number | yes | Must be greater than 0 |
+| `preparation_state` | string | yes | `raw`, `prepared`, or `ready` |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
----
+#### `daily_meals`
 
-## 6. Implementation Blocks (para tasks.md)
+Stores meals assigned to a specific day.
 
-Os blocos abaixo representam a organização lógica para criação de tasks.
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `meal_id` | string | yes | Indexed relation to `meals` |
+| `date` | number | yes | Indexed day timestamp |
+| `is_completed` | boolean | yes | Defaults to false |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### BLOCO A: Fundamentos e Infraestrutura
-**Dependências:** Nenhuma
+#### `fixed_menu_meals`
 
-| ID | Descrição |
-|----|-----------|
-| A-1 | Setup e configuração do WatermelonDB (schemas de dieta e treino) |
-| A-2 | Componente Header de navegação reutilizável |
-| A-3 | Componentes base: Card, Button, Input, SwipeableCard |
-| A-4 | Sistema de navegação (Stack/Tab) |
+Stores reusable meals that appear every day until removed or changed.
 
-### BLOCO B: Módulo Dieta - Dados
-**Dependências:** A-1, A-4
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `meal_id` | string | yes | Indexed relation to `meals` |
+| `sort_order` | number | yes | Display order |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-| ID | Descrição |
-|----|-----------|
-| B-1 | Schema e modelo de Alimento |
-| B-2 | Schema e modelo de Refeicao |
-| B-3 | Schema e modelo de ItemRefeicao |
-| B-4 | Repositório de alimentos (CRUD) |
-| B-5 | Repositório de refeições (CRUD) |
+#### `fixed_menu_completions`
 
-### BLOCO C: Módulo Dieta - UI
-**Dependências:** B-1, B-2, B-3, B-4, B-5
+Stores daily completion state for fixed-menu meals.
 
-| ID | Descrição |
-|----|-----------|
-| C-1 | Tela Cardápio (lista de refeições com macros) |
-| C-2 | Tela Criar/Editar Alimento (formulário com cálculo de kcal) |
-| C-3 | Tela Criar/Editar Refeição (com seletor de alimentos) |
-| C-4 | Tela Banco de Alimentos (lista, busca, seleção em massa) |
-| C-5 | Componente SwipeableCard (editar/excluir) |
-| C-6 | Modal Seletor de Alimentos |
-| C-7 | Componente PreviewMacros (useMemo) |
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `fixed_menu_meal_id` | string | yes | Indexed relation to `fixed_menu_meals` |
+| `date` | number | yes | Indexed day timestamp |
+| `is_completed` | boolean | yes | Defaults to false |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### BLOCO D: Módulo Treino - Dados
-**Dependências:** A-1, A-4
+#### `meal_items`
 
-| ID | Descrição |
-|----|-----------|
-| D-1 | Schema e modelo de Programa |
-| D-2 | Schema e modelo de Bloco |
-| D-3 | Schema e modelo de Exercicio |
-| D-4 | Schema e modelo de SessaoTreino |
-| D-5 | Schema e modelo de ExecucaoExercicio |
-| D-6 | Repositório de programas (CRUD) |
-| D-7 | Repositório de sessões de treino |
+Stores foods inside a meal.
 
-### BLOCO E: Módulo Treino - UI
-**Dependências:** D-1, D-2, D-3, D-4, D-5, D-6, D-7
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `meal_id` | string | yes | Indexed relation to `meals` |
+| `food_id` | string | yes | Indexed relation to `foods` |
+| `quantity_g` | number | yes | Must be greater than 0 |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-| ID | Descrição |
-|----|-----------|
-| E-1 | Tela Lista de Programas (com cards expansíveis) |
-| E-2 | Tela Criar/Editar Programa (com builder de blocos) |
-| E-3 | Componente BlocoExpandivel (chevron toggle) |
-| E-4 | Tela Criar/Editar Exercício |
-| E-5 | Tela Iniciar Sessão (progressão de blocos) |
-| E-6 | Modal Executar Exercício (séries com inputs) |
-| E-7 | Tela Histórico de Treinos |
-| E-8 | Tela Detalhes da Sessão |
+### 6.2 Training Tables
 
-### BLOCO F: Dashboard
-**Dependências:** C-1, E-1
+#### `training_programs`
 
-| ID | Descrição |
-|----|-----------|
-| F-1 | Tela Dashboard unificada |
-| F-2 | Widget resumo de dieta (cardápio + macros) |
-| F-3 | Widget resumo de treino (programa ativo + stats) |
-| F-4 | Navegação integrada Dashboard ↔ Dieta/Treino |
+Stores user-created training sheets. A training sheet is the full planned routine.
 
----
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `name` | string | yes | Indexed for search |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-## 7. Functional Requirements
+#### `training_blocks`
 
-### FR-001: Dashboard Unificada
-- **Descrição**: Tela inicial exibindo dieta atual e treino atual lado a lado
-- **Critérios de Aceitação**:
-  - [ ] Exibe resumo do cardápio do dia
-  - [ ] Exibe nome do programa de treino ativo
-  - [ ] Mostra estatísticas básicas (calorias consumidas, total treino semana)
-  - [ ] Links de navegação para módulos Dieta e Treino
+Stores workouts inside a training sheet. A workout can represent a day, session type, or muscle group.
 
-### FR-002: Sistema de Cardápio
-- **Descrição**: Lista de refeições do dia com macros e calorias
-- **Critérios de Aceitação**:
-  - [ ] Exibe todas refeições do dia em ordem
-  - [ ] Mostra macros por refeição
-  - [ ] Mostra calorias por refeição
-  - [ ] Mostra total calórico do dia no topo
-  - [ ] Botão para criar nova refeição
-  - [ ] Botão para acessar banco de alimentos
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `program_id` | string | yes | Indexed relation to `training_programs` |
+| `name` | string | yes | User-defined |
+| `sort_order` | number | yes | Used for visual order |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### FR-003: CRUD de Alimentos
-- **Descrição**: Interface para criar/editar/excluir alimentos
-- **Critérios de Aceitação**:
-  - [ ] Campos: nome (obrigatório), peso preparo, descrição (opcional), macros (proteína, carboidrato, gordura)
-  - [ ] Validação de campos obrigatórios
-  - [ ] Cálculo de calorias automático via macros (4-4-9 kcal/g) em tempo real
-  - [ ] Feedback visual de sucesso/erro
+#### `exercises`
 
-### FR-004: CRUD de Refeições (Combos)
-- **Descrição**: Interface para criar refeições combinadas
-- **Critérios de Aceitação**:
-  - [ ] Campos: nome refeição, quantidade, estado preparo
-  - [ ] Modal/selector para adicionar alimentos
-  - [ ] Definição de quantidade por alimento selecionado
-  - [ ] Cálculo automático de macros totais da refeição
-  - [ ] Preview de macros/calorias antes de salvar
+Stores exercises inside workouts.
 
-### FR-005: Banco de Alimentos
-- **Descrição**: Lista completa de alimentos cadastrados
-- **Critérios de Aceitação**:
-  - [ ] Lista todos alimentos em scroll
-  - [ ] Busca por nome (filtro em tempo real)
-  - [ ] Botão para criar novo alimento
-  - [ ] Seleção em massa (checkbox por item)
-  - [ ] Exclusão em massa com pop-up de confirmação
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `block_id` | string | yes | Indexed relation to `training_blocks` |
+| `name` | string | yes | User-defined |
+| `sets` | number | yes | Must be >= 1 |
+| `min_reps` | number | yes | Must be >= 1 |
+| `max_reps` | number | yes | Must be >= `min_reps` |
+| `advanced_technique` | string | no | Optional |
+| `target_rir` | number | no | Reps in reserve |
+| `sort_order` | number | yes | Used for visual order |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### FR-006: Edição/Exclusão via Swipe
-- **Descrição**: Gesture lateral em cards para ações
-- **Critérios de Aceitação**:
-  - [ ] Swipe revela botões editar/excluir
-  - [ ] Exclusão requer confirmação via pop-up
-  - [ ] Editar navega para tela de edição com dados pré-preenchidos
+#### `advanced_techniques`
 
-### FR-007: Sistema de Treino - Programas
-- **Descrição**: Gestão de programas de treino com blocos
-- **Critérios de Aceitação**:
-  - [ ] Lista programas em ordem cronológica
-  - [ ] Botão para criar novo programa
-  - [ ] Cards de programa expansíveis (mostram blocos quando expandido)
-  - [ ] Blocos com nome customizável
-  - [ ] Botão iniciar sessão (cria nova SessaoTreino)
+Stores default and user-created advanced technique options.
 
-### FR-008: Sistema de Treino - Exercícios
-- **Descrição**: Cadastro de exercícios dentro de blocos
-- **Critérios de Aceitação**:
-  - [ ] Campos: nome exercício, séries, repetições mín, repetições máx
-  - [ ] Seletor de técnica avançada (opcional)
-  - [ ] Campo reps na reserva (opcional)
-  - [ ] Swipe para editar/excluir exercício
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `name` | string | yes | Indexed for dropdown search |
+| `is_default` | boolean | yes | Defaults to false for user-created options |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### FR-009: Interface de Blocos
-- **Descrição**: Visualização de blocos expandíveis com chevron
-- **Critérios de Aceitação**:
-  - [ ] Blocos colapsados mostram nome e chevron
-  - [ ] Clique no chevron expande/colapsa com animação
-  - [ ] Exercícios exibidos como cards dentro do bloco expandido
-  - [ ] Botão para adicionar exercício ao bloco
+#### `workout_sessions`
 
-### FR-010: Sessão de Treino
-- **Descrição**: Registro de execução de treino completo
-- **Critérios de Aceitação**:
-  - [ ] Inicia sessão a partir de programa existente
-  - [ ] Header mostra progresso (bloco atual / total)
-  - [ ] Lista exercícios do bloco atual
-  - [ ] Modal para executar exercício com inputs por série
-  - [ ] Inputs: quilagem, reps feitas, reps reserva
-  - [ ] Botão para avançar entre séries e exercícios
-  - [ ] Botão "Finalizar" ao completar todos blocos
-  - [ ] Confirmação antes de marcar como concluído
-  - [ ] Sessão salva no histórico com data e métricas
+Stores each performed workout session created when the user presses play on a workout from a training sheet.
 
-### FR-011: Histórico de Treinos
-- **Descrição**: Lista de treinos executados com detalhes
-- **Critérios de Aceitação**:
-  - [ ] Lista sessões concluídas em ordem cronológica reversa
-  - [ ] Card mostra: data, programa, duração
-  - [ ] Toque no card abre detalhes da sessão
-  - [ ] Detalhes mostram: blocos, exercícios, métricas (séries, reps, quilagem)
-  - [ ] Resumo consolidado da sessão
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `program_id` | string | yes | Indexed relation to `training_programs` |
+| `block_id` | string | yes | Indexed relation to the selected workout in `training_blocks` |
+| `started_at` | number | yes | Timestamp |
+| `finished_at` | number | no | Timestamp |
+| `status` | string | yes | `in_progress`, `completed`, or `cancelled` |
+| `notes` | string | no | Optional session notes |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### FR-012: Persistência Local
-- **Descrição**: Dados salvos localmente via WatermelonDB
-- **Critérios de Aceitação**:
-  - [ ] Alimentos persistem entre sessões
-  - [ ] Refeições persistem entre sessões
-  - [ ] Programas de treino persistem entre sessões
-  - [ ] Exercícios persistem entre sessões
-  - [ ] Sessões de treino persistem entre sessões
-  - [ ] Histórico de treinos persistem entre sessões
+#### `exercise_executions`
 
----
+Stores each exercise performed inside a workout session.
 
-## 8. Key Entities
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `session_id` | string | yes | Indexed relation to `workout_sessions` |
+| `exercise_id` | string | yes | Indexed relation to `exercises` |
+| `sort_order` | number | yes | Execution order |
+| `notes` | string | no | Optional exercise notes |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
 
-### Entidades de Dieta
-- **Alimento**: id, nome, pesoPreparo, descricao, proteina, carboidrato, gordura, createdAt, updatedAt
-- **Refeicao**: id, nome, quantidade, estadoPreparo, createdAt, updatedAt
-- **ItemRefeicao**: id, refeicaoId, alimentoId, quantidade
+#### `set_executions`
 
-### Entidades de Treino
-- **Programa**: id, nome, dataCriacao, createdAt, updatedAt
-- **Bloco**: id, programaId, nome, ordem
-- **Exercicio**: id, blocoId, nome, series, repeticoesMin, repeticoesMax, tecnicaAvancada, repsReserva
-- **SessaoTreino**: id, programaId, dataInicio, dataFim, status (em_progresso/concluido), createdAt
-- **ExecucaoExercicio**: id, sessaoTreinoId, exercicioId, serieNumero, repsFeitas, quilagem, repsReservaFeitas
+Stores performed set data used for progression tracking.
 
----
+| Column | Type | Required | Notes |
+|---|---:|---:|---|
+| `id` | string | yes | WatermelonDB ID |
+| `exercise_execution_id` | string | yes | Indexed relation to `exercise_executions` |
+| `set_number` | number | yes | Must be >= 1 |
+| `weight_kg` | number | yes | Must be >= 0 |
+| `reps` | number | yes | Must be >= 1 |
+| `rir` | number | no | Performed reps in reserve |
+| `is_completed` | boolean | yes | Defaults to false |
+| `created_at` | number | yes | Timestamp |
+| `updated_at` | number | yes | Timestamp |
+
+These tables are mandatory for the training module because the module is a logbook built from repeated sessions of workouts in a training sheet.
+
+## 7. Services and Hooks
+
+### 7.1 Diet Services
+
+```text
+src/features/diet/services/food.service.ts
+src/features/diet/services/meal.service.ts
+```
+
+Required service operations:
+
+- `createFood`
+- `updateFood`
+- `deleteFood`
+- `deleteFoods`
+- `createMeal`
+- `updateMeal`
+- `deleteMeal`
+- `assignMealToDate`
+- `addMealToFixedMenu`
+- `markFixedMenuMealCompleted`
+- `calculateFoodCalories`
+- `calculateMealMacros`
+
+### 7.2 Diet Hooks
+
+```text
+src/features/diet/hooks/use-foods.ts
+src/features/diet/hooks/use-meals.ts
+src/features/diet/hooks/use-daily-macros.ts
+```
+
+Hooks must expose reactive data and derived state without duplicating WatermelonDB records in Zustand.
+
+### 7.3 Training Services
+
+```text
+src/features/training/services/program.service.ts
+src/features/training/services/exercise.service.ts
+src/features/training/services/workout-log.service.ts
+```
+
+Required service operations:
+
+- `createTrainingProgram`
+- `updateTrainingProgram`
+- `deleteTrainingProgram`
+- `createTrainingBlock`
+- `updateTrainingBlock`
+- `deleteTrainingBlock`
+- `createExercise`
+- `updateExercise`
+- `deleteExercise`
+- `createAdvancedTechnique`
+- `listAdvancedTechniques`
+- `startWorkoutSession`
+- `recordSetExecution`
+- `updateSetExecution`
+- `completeWorkoutSession`
+- `cancelWorkoutSession`
+- `calculateExerciseProgression`
+
+### 7.4 Training Hooks
+
+```text
+src/features/training/hooks/use-training-programs.ts
+src/features/training/hooks/use-training-program.ts
+src/features/training/hooks/use-active-workout-session.ts
+src/features/training/hooks/use-workout-history.ts
+src/features/training/hooks/use-exercise-progression.ts
+```
+
+## 8. Functional Requirements
+
+### FR-001: Dashboard
+
+Priority: P0
+
+Acceptance criteria:
+
+- Shows current daily diet summary.
+- Shows today's total calories and macros.
+- Shows current or latest training sheet/session.
+- Provides navigation to Diet and Training.
+- Uses reactive data from feature hooks.
+- Shows loading and empty states.
+
+### FR-002: App Header
+
+Priority: P0
+
+Acceptance criteria:
+
+- Every screen shows a page title.
+- Screens deeper than a tab root expose a back action.
+- Header is reusable and implemented through shared UI or Expo Router options.
+
+### FR-003: Daily Diet Menu
+
+Priority: P0
+
+Acceptance criteria:
+
+- Lists meals for the current day or current menu context.
+- Supports daily custom menu mode, where meals are assigned to a specific date.
+- Supports fixed menu mode, where configured meals appear every day.
+- In fixed menu mode, user can mark each meal as completed for the current day.
+- Shows calories and macros per meal.
+- Shows total calories and macros at the top.
+- Provides actions to create food, create meal, and open food database.
+- Handles empty, loading, and error states.
+
+### FR-004: Food CRUD
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can create, edit, and delete foods.
+- Required fields: name, preparation weight, protein, carbs, fat.
+- Optional field: description.
+- Calories are calculated from macros using 4/4/9.
+- Invalid numeric fields block save.
+- Save operations use WatermelonDB service writes.
+
+### FR-005: Food Database
+
+Priority: P0
+
+Acceptance criteria:
+
+- Lists all foods ordered by name or creation date.
+- Search filters by food name.
+- User can select multiple foods.
+- User can bulk delete selected foods after confirmation.
+- Food rows/cards expose edit and delete actions.
+
+### FR-006: Meal CRUD
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can create, edit, and delete meals.
+- Required fields: name, quantity, preparation state.
+- User can add one or more foods to a meal.
+- User can define quantity in grams for each selected food.
+- Meal macros and calories are derived from selected foods.
+- Preview updates before save.
+- User can assign a meal to a specific day or add it to the fixed menu.
+
+### FR-007: Swipe Actions
+
+Priority: P1
+
+Acceptance criteria:
+
+- Food, meal, and exercise cards can expose edit/delete actions via swipe where practical.
+- Delete always requires confirmation.
+- Edit opens a form with existing values.
+- Swipe implementation must not block accessibility alternatives.
+
+### FR-008: Workout Logbook Home
+
+Priority: P0
+
+Acceptance criteria:
+
+- Shows active workout session when one exists.
+- Shows recent completed workouts.
+- Lists training sheets in chronological order.
+- User can create a new training sheet.
+- User can add workouts inside a training sheet.
+- User can start a workout session by pressing play on a workout.
+- Training sheet cards can expand to show workouts.
+- Empty state includes a create-training-sheet CTA.
+
+### FR-009: Training Sheet Builder
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can create and edit a training sheet name.
+- User can add, edit, delete, and reorder workouts inside the sheet.
+- Workouts are expandable with chevron interaction.
+- User can add exercises inside each workout.
+
+### FR-010: Exercise CRUD
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can create, edit, and delete exercises.
+- Required fields: name, sets, min reps, max reps.
+- Optional fields: advanced technique, target reps in reserve.
+- Advanced technique is selected from a dropdown.
+- User can add custom advanced technique options to the dropdown.
+- `max_reps` must be greater than or equal to `min_reps`.
+- Exercises are shown as cards inside expanded workouts.
+
+### FR-011: Workout Execution Log
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can start a workout session by pressing play on a workout from a training sheet.
+- The session is generated from the selected workout's exercises.
+- The session stores start time and status.
+- User can record performed sets for each exercise.
+- Each set stores weight, reps, performed RIR, set number, and completion state.
+- User can complete or cancel a session.
+- Completed sessions appear in workout history.
+
+### FR-012: Progression Tracking
+
+Priority: P0
+
+Acceptance criteria:
+
+- User can review previous executions of the same exercise.
+- Progression data includes weight, reps, RIR, and date.
+- History is ordered from newest to oldest.
+- The system can calculate best set and latest set per exercise.
+
+### FR-013: Local Persistence
+
+Priority: P0
+
+Acceptance criteria:
+
+- Foods persist after app restart.
+- Meals and meal items persist after app restart.
+- Daily meal assignments, fixed menu meals, and fixed menu completions persist after app restart.
+- Training sheets, workouts, exercises, sessions, exercise executions, and set executions persist after app restart.
+- Relations remain valid after update and delete operations.
 
 ## 9. Non-Functional Requirements
 
 ### NFR-001: Performance
-- Carregamento de lista de alimentos < 500ms
-- Expansão/colapso de blocos < 100ms
-- Cálculo de macros em tempo real < 50ms
 
-### NFR-002: Usabilidade
-- Feedback visual em todas ações
-- Estados de loading durante operações
-- Confirmação para ações destrutivas
-- Animação suave em transições
+- Initial food list render should complete in less than 500ms for 500 local foods.
+- Search feedback should feel instant for 500 local foods.
+- Macro calculation should complete in less than 50ms for a meal with up to 30 items.
+- Block expand/collapse should respond in less than 100ms.
 
-### NFR-003: Mobile First
-- Layout responsivo para phones
-- Touch targets mínimo 44x44px
-- Swipe gestures funcionais
+### NFR-002: Offline-First
 
----
+- All MVP data must be usable without network access.
+- No MVP flow may depend on remote APIs.
+- WatermelonDB is the source of truth for persistent domain data.
 
-## 10. Success Criteria
+### NFR-003: Usability
 
-1. **SC-001**: Usuário consegue acessar Dashboard e navegar para Dieta ou Treino em menos de 2 segundos
-2. **SC-002**: Usuário consegue criar um alimento completo em menos de 30 segundos
-3. **SC-003**: Usuário consegue criar uma refeição combinada selecionando alimentos existentes
-4. **SC-004**: Banco de alimentos permite busca instantânea e gestão em massa
-5. **SC-005**: Usuário consegue criar programa de treino com blocos e exercícios
-6. **SC-006**: Blocos expandem/colapsam com animação suave
-7. **SC-007**: Usuário consegue registrar execução completa de treino (reps, quilagem, reps reserva) por série
-8. **SC-008**: Usuário consegue visualizar histórico de treinos concluídos com detalhes
-9. **SC-009**: Todos dados persistem corretamente após fechar e reabrir app
-10. **SC-010**: Exclusão de itens requer confirmação explícita
+- Destructive actions require confirmation.
+- Interactive elements must have pressed/disabled states.
+- Touch targets must be at least 44x44px.
+- List screens must include loading, empty, and error states.
 
----
+### NFR-004: Accessibility
 
-## 11. Assumptions
+- Interactive elements must include `accessibilityRole` and `accessibilityLabel`.
+- Swipe-only actions must have a non-swipe alternative.
+- Text contrast must follow the project color token rules.
 
-1. WatermelonDB já instalado e configurado no projeto
-2. UI components básicos disponíveis (cards, buttons, inputs)
-3. Sistema de navegação funcional (React Navigation ou similar)
-4. Não há autenticação - todos dados são locais ao dispositivo
-5. Banco de exercícios e banco de alimentos são separados (WatermelonDB databases diferentes)
-6. Calorias calculadas via macros: proteína 4kcal/g, carboidrato 4kcal/g, gordura 9kcal/g
+### NFR-005: Maintainability
 
----
+- No `any`.
+- No direct database writes inside UI components.
+- No inline styles unless technically unavoidable.
+- Components above 250 lines must be split.
+- Shared UI must reuse existing atoms/molecules before creating new components.
 
-## 12. Out of Scope (Fase 1)
+## 10. Validation Rules
 
-- Autenticação de usuários
-- Sincronização em nuvem
-- Histórico de evolução
-- Contabilização de gasto calórico de cardio/treino
-- Importação/exportação de dados
-- Gráficos de progresso
-- Notificações e lembretes
+### Food
 
----
+- `name`: required, trimmed, non-empty.
+- `preparation_weight_g`: required, number, greater than 0.
+- `protein_g`: required, number, greater than or equal to 0.
+- `carbs_g`: required, number, greater than or equal to 0.
+- `fat_g`: required, number, greater than or equal to 0.
 
-## Clarifications
+### Meal
 
-### 2026-05-13
+- `name`: required, trimmed, non-empty.
+- `quantity`: required, number, greater than 0.
+- `preparation_state`: required enum.
+- At least one food item is required before save.
+- Each `meal_items.quantity_g` must be greater than 0.
 
-- Q: Como as calorias devem ser calculadas para alimentos e refeições? → A: Cálculo automático via macros (4/4/9 kcal/g) - implementado com useMemo
-- Q: Quais nutrientes adicionais devem ser trackeados além de proteína, carbo e gordura? → A: Apenas macros (proteína, carboidrato, gordura)
-- Q: O usuário precisa registrar execução de treino? Como? → A: Sessão de treino com registro completo: iniciar programa → entrar em exercício → preencher execução (reps feitas, quilagem, reps reserva) para cada série → marcar concluído → salvar em histórico
+### Daily Meal
 
----
+- `meal_id`: required.
+- `date`: required day timestamp.
+- `is_completed`: boolean.
 
-## Resumo de Blocos para Tasks
+### Fixed Menu Meal
 
-| Bloco | Tasks | Dependências |
-|-------|-------|---------------|
-| **A - Fundamentos** | A-1 a A-4 | Nenhuma |
-| **B - Dieta Dados** | B-1 a B-5 | A-1, A-4 |
-| **C - Dieta UI** | C-1 a C-7 | B-1 a B-5 |
-| **D - Treino Dados** | D-1 a D-7 | A-1, A-4 |
-| **E - Treino UI** | E-1 a E-8 | D-1 a D-7 |
-| **F - Dashboard** | F-1 a F-4 | C-1, E-1 |
+- `meal_id`: required.
+- `sort_order`: required.
 
-**Total de Tasks:** ~31 tasks organizados em 6 blocos com dependências claras
+### Advanced Technique
 
----
+- `name`: required, trimmed, non-empty.
+- Custom option names must be unique case-insensitively.
 
-## Mapeamento Fluxo → Tasks
+### Training Sheet
 
-### Fluxo Dieta Completo
-```
-Cardápio (C-1) → Criar Refeição (C-3) → Seletor Alimentos (C-6)
-Cardápio (C-1) → Banco Alimentos (C-4)
-Banco Alimentos (C-4) → Criar Alimento (C-2)
-```
+- `name`: required, trimmed, non-empty.
 
-### Fluxo Treino Completo
-```
-Lista Programas (E-1) → Criar Programa (E-2) → Blocos (E-3) → Exercícios (E-4)
-Lista Programas (E-1) → Iniciar Sessão (E-5) → Executar Exercício (E-6)
-Lista Programas (E-1) → Histórico (E-7) → Detalhes (E-8)
-```
+### Workout
+
+- `name`: required, trimmed, non-empty.
+- `sort_order`: required.
+
+### Exercise
+
+- `name`: required, trimmed, non-empty.
+- `sets`: integer, greater than or equal to 1.
+- `min_reps`: integer, greater than or equal to 1.
+- `max_reps`: integer, greater than or equal to `min_reps`.
+- `advanced_technique`: optional dropdown value from `advanced_techniques`.
+- `target_rir`: optional integer, greater than or equal to 0.
+
+### Workout Session
+
+- `program_id`: required.
+- `block_id`: required.
+- `started_at`: required timestamp.
+- `status`: required enum.
+- `finished_at`: required only when status is `completed` or `cancelled`.
+
+### Set Execution
+
+- `set_number`: integer, greater than or equal to 1.
+- `weight_kg`: number, greater than or equal to 0.
+- `reps`: integer, greater than or equal to 1.
+- `rir`: optional integer, greater than or equal to 0.
+
+## 11. Offline and Data Integrity Rules
+
+- Deleting a meal must delete related `meal_items`.
+- Deleting a food removes it from meal definitions and from the current day's diet after explicit confirmation.
+- Deleting a food must not mutate past registered days.
+- If the food exists in the current day's diet, deletion must show a confirmation popup before removing it from current-day meals.
+- Deleting a training sheet must delete its workouts, exercises, and unstarted template data after explicit confirmation.
+- Completed workout log records must preserve historical performed values even if the source exercise template changes later.
+- Deleting a workout from a training sheet must delete its exercises after explicit confirmation.
+- Cancelling an in-progress workout session must require confirmation.
+- Bulk delete must run in a WatermelonDB batch.
+- Frequently filtered columns must be indexed.
+
+## 12. Acceptance Criteria
+
+- User can open the dashboard and navigate to Diet or Training.
+- User can create a food and see calculated calories.
+- User can edit and delete a food.
+- User can search foods.
+- User can bulk delete foods after confirmation.
+- User can create a meal from existing foods.
+- User can build a diet by day.
+- User can configure a fixed menu that appears every day.
+- User can mark fixed-menu meals as completed for the current day.
+- User can see meal macro and calorie preview before saving.
+- User can create a training sheet.
+- User can add expandable workouts to a training sheet.
+- User can add exercises with sets, rep ranges, advanced technique, and target RIR.
+- User can press play on a workout and start a workout session.
+- User can log performed sets with weight, reps, and RIR.
+- User can view workout history for progression tracking.
+- All MVP domain data persists after app restart.
+- No screen writes directly to WatermelonDB.
+
+## 13. Open Questions
+
+- Should current training sheet be manually selected or inferred from latest updated sheet?
