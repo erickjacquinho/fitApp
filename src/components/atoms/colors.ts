@@ -1,5 +1,5 @@
-// gray-700 token — used where Tailwind className cannot be applied (TextInput placeholderTextColor, Icon color prop)
+// Semantic color values for React Native props that cannot use NativeWind classes.
 export const COLORS = {
-  placeholder: '#6B6B6B',
-  iconMuted: '#6B6B6B',
+  placeholder: '#6F6254',
+  iconMuted: '#6F6254',
 } as const;

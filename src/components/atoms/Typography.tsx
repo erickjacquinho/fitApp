@@ -25,8 +25,8 @@ export function Typography({ variant = 'text', color = 'default', className, chi
   const colorClasses = {
     default: 'text-black-main',
     muted: 'text-gray-500',
-    success: 'text-secondary-main',
-    error: 'text-red-500',
+    success: 'text-success-main',
+    error: 'text-tomato-main',
     inverse: 'text-white-pure',
   };
 

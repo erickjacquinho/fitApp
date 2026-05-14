@@ -1,78 +1,110 @@
 # Page Conventions - Expo Router
 
-This document defines how files in `app/` (routes) MUST be structured. Pages in FitApp are **"Slim Orchestrators"**, delegating business logic and UI details to `src/features/`.
+Routes in `app/` are slim orchestrators. They compose screens, configure navigation, and delegate business logic and detailed UI to `src/features/` and `src/components/`.
 
-## 1. Page Responsibility
-A page's primary goal is to compose the interface and manage navigation context.
+## Page Responsibility
 
-### 1.1. MANDATORY Page Tasks:
-- Configure navigation options (`Stack.Screen`, `Tabs.Screen`).
-- Inject data via business hooks (from features) or observables (WatermelonDB).
-- Compose **Organisms** and **Molecules** from features.
-- Define UI states: `Loading` (Skeletons) and `EmptyState`.
+Pages MUST:
+- Configure navigation options with Expo Router.
+- Inject data through feature hooks, Zustand stores, or WatermelonDB observables.
+- Compose shared and feature components.
+- Handle loading, empty, error, and partial data states.
+- Use layout tokens for screen containers.
 
-### 1.2. Page Constraints (DO NOT):
-- **DO NOT** contain complex styles (use only basic containers with NativeWind).
-- **DO NOT** implement business logic or direct DB manipulation.
-- **DO NOT** define large internal components (extract them to features).
+Pages MUST NOT:
+- Implement business logic.
+- Write directly to WatermelonDB.
+- Contain large internal components.
+- Contain complex styling beyond screen-level layout.
+- Use raw visual values.
 
-## 2. UI State Management
+## Screen Layout
 
-### 2.1. Loading (Skeletons)
-Every page dependent on asynchronous data MUST show a **Skeleton Screen** during initial load to prevent layout shifts (CLS).
-- Use the `Skeleton` atom from the design system.
-- The Skeleton layout MUST mirror the final page structure.
+Default phone screen structure:
 
-### 2.2. Empty States
-List pages (Workouts, Meals, History) MUST handle the "no data" case using the `EmptyState` organism.
-- Include a clear Call-to-Action (CTA), such as "Add First Workout".
+```tsx
+<View className="flex-1 bg-surface-app">
+  <ScrollView
+    className="flex-1"
+    contentContainerClassName="px-screen-x py-screen-y gap-content-gap"
+  >
+    {/* composed sections */}
+  </ScrollView>
+</View>
+```
 
-## 3. Canonical File Structure
-Maintain consistency by following this declaration order:
+Use safe-area handling from the app or navigation layer. Do not create non-phone page layouts.
 
-1. **Imports**: 
-   - External libraries (React, Expo Router).
-   - UI Components/Organisms (using `@/components` or `@/features`).
-   - Business hooks and types.
-2. **Navigation Options**: `Stack.Screen` or `Tabs.Screen` configuration (Title, Header buttons).
-3. **Data Hooks**: Calls to Zustand stores or feature-specific hooks.
-4. **Navigation Handlers**: Simple redirection functions (e.g., `handleEdit`).
-5. **Main Rendering**: UI return focused on high-level composition.
+## UI States
 
-## 4. Implementation Example
+Loading:
+- Use skeletons for content-heavy initial loading.
+- Skeleton layout should mirror the final screen.
+
+Empty:
+- Use `EmptyState` for list or history screens with no data.
+- Include one clear CTA when the user can fix the empty state.
+
+Error:
+- Prefer inline recoverable errors when the user can act.
+- Use tomato tokens for error state.
+
+Partial data:
+- Show available data.
+- Clearly explain what is missing.
+
+## Canonical File Order
+
+1. Imports.
+2. Navigation options.
+3. Data hooks.
+4. Derived values.
+5. Navigation handlers.
+6. Render state selection.
+7. Main render.
+
+## Example
 
 ```tsx
 import { Stack, useRouter } from 'expo-router';
-import { View, ScrollView } from 'react-native';
-import { WorkoutList } from '@/features/training/components/WorkoutList';
-import { useWorkouts } from '@/features/training/hooks/useWorkouts';
+import { ScrollView, View } from 'react-native';
 import { Button } from '@/components/atoms/Button';
 import { EmptyState } from '@/components/organisms/EmptyState';
+import { WorkoutList } from '@/features/training/components/WorkoutList';
+import { useWorkouts } from '@/features/training/hooks/useWorkouts';
 
 export default function WorkoutsPage() {
   const router = useRouter();
   const { workouts, isLoading } = useWorkouts();
 
   return (
-    <View className="flex-1 bg-slate-50">
-      <Stack.Screen 
-        options={{ 
-          title: 'My Workouts',
+    <View className="flex-1 bg-surface-app">
+      <Stack.Screen
+        options={{
+          title: 'Treinos',
           headerRight: () => (
-            <Button variant="ghost" onPress={() => router.push('/workouts/new')} title="Add New" />
-          )
-        }} 
+            <Button
+              variant="ghost"
+              title="Adicionar"
+              onPress={() => router.push('/workouts/new')}
+            />
+          ),
+        }}
       />
 
-      <ScrollView className="flex-1 p-4">
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="px-screen-x py-screen-y gap-content-gap"
+      >
         {isLoading ? (
           <WorkoutList.Skeleton />
         ) : workouts.length > 0 ? (
           <WorkoutList data={workouts} />
         ) : (
-          <EmptyState 
-            title="No workouts found" 
-            description="Start your journey by creating your first workout plan."
+          <EmptyState
+            title="Nenhum treino"
+            description="Crie seu primeiro treino para acompanhar sua evolução."
+            actionLabel="Adicionar treino"
             onAction={() => router.push('/workouts/new')}
           />
         )}
@@ -82,6 +114,8 @@ export default function WorkoutsPage() {
 }
 ```
 
-## 5. Performance Note
-- Prevent unnecessary re-renders: Memoize functions passed to Organisms using `useCallback` if the child component is heavy.
-- Use `useMemo` for derived data or heavy list filtering.
+## Performance
+
+- Memoize expensive derived data with `useMemo`.
+- Memoize handlers passed to heavy child components with `useCallback`.
+- Keep DB writes in services/actions, not route files.
