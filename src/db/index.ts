@@ -2,12 +2,14 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
-import User from './models/User';
-import Workout from './models/Workout';
-import Exercise from './models/Exercise';
-import Food from './models/Food';
-import Meal from './models/Meal';
-import MealFood from './models/MealFood';
+import Alimento from './models/Alimento';
+import Refeicao from './models/Refeicao';
+import ItemRefeicao from './models/ItemRefeicao';
+import Programa from './models/Programa';
+import Bloco from './models/Bloco';
+import Exercicio from './models/Exercicio';
+import SessaoTreino from './models/SessaoTreino';
+import ExecucaoExercicio from './models/ExecucaoExercicio';
 
 const adapter = new SQLiteAdapter({
   schema,
@@ -19,14 +21,25 @@ const adapter = new SQLiteAdapter({
 
 export const database = new Database({
   adapter,
-  modelClasses: [User, Workout, Exercise, Food, Meal, MealFood],
+  modelClasses: [
+    Alimento,
+    Refeicao,
+    ItemRefeicao,
+    Programa,
+    Bloco,
+    Exercicio,
+    SessaoTreino,
+    ExecucaoExercicio,
+  ],
 });
 
 export {
-  User,
-  Workout,
-  Exercise,
-  Food,
-  Meal,
-  MealFood
+  Alimento,
+  Refeicao,
+  ItemRefeicao,
+  Programa,
+  Bloco,
+  Exercicio,
+  SessaoTreino,
+  ExecucaoExercicio,
 };

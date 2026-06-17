@@ -21,13 +21,13 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.tabActive,
-        tabBarInactiveTintColor: COLORS.iconMuted,
+        tabBarActiveTintColor: COLORS.tabActive || '#000',
+        tabBarInactiveTintColor: COLORS.iconMuted || '#ccc',
         tabBarShowLabel: true,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          backgroundColor: COLORS.surfaceRaised,
-          borderTopColor: COLORS.borderSoft,
+          backgroundColor: COLORS.surfaceRaised || '#fff',
+          borderTopColor: COLORS.borderSoft || '#eee',
           borderTopWidth: 1,
           height: tabBarHeight,
           paddingTop: 8,
@@ -47,24 +47,6 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="statistics"
-        options={{
-          title: 'Estatisticas',
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="ChartLine" color={color} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="training"
-        options={{
-          title: 'Treino',
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="Dumbbell" color={color} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="index"
         options={{
           title: 'Dashboard',
@@ -79,6 +61,24 @@ export default function TabsLayout() {
           title: 'Dieta',
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Utensils" color={color} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="training"
+        options={{
+          title: 'Treino',
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name="Dumbbell" color={color} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="statistics"
+        options={{
+          title: 'Estatísticas',
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name="ChartLine" color={color} focused={focused} />
           ),
         }}
       />

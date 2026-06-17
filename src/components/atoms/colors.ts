@@ -5,4 +5,8 @@ export const COLORS = {
   tabActive: '#556B2F',
   borderSoft: '#E3D6C4',
   surfaceRaised: '#EFE6D6',
+  primary: '#556B2F',
+  secondary: '#8FBC8F',
+  error: '#FF6347',
+  success: '#228B22',
 } as const;
