@@ -1,18 +1,18 @@
-import { Model, Query } from '@nozbe/watermelondb';
-import { field, date, text, children, readonly } from '@nozbe/watermelondb/decorators';
-import MealFood from './MealFood';
+import { Model } from '@nozbe/watermelondb';
+import { field, children, readonly, date } from '@nozbe/watermelondb/decorators';
 
 export default class Meal extends Model {
   static table = 'meals';
   static associations = {
-    meal_foods: { type: 'has_many', foreignKey: 'meal_id' },
+    meal_items: { type: 'has_many', foreignKey: 'meal_id' },
   } as const;
 
-  @date('date') date!: Date;
   @field('name') name!: string;
-  @text('notes') notes?: string;
+  @field('quantity') quantity!: number;
+  @field('preparation_state') preparationState!: string;
+
+  @children('meal_items') items!: any;
+
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
-
-  @children('meal_foods') mealFoods!: Query<MealFood>;
 }

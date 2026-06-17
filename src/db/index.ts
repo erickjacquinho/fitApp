@@ -2,14 +2,14 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
-import Alimento from './models/Alimento';
-import Refeicao from './models/Refeicao';
-import ItemRefeicao from './models/ItemRefeicao';
-import Programa from './models/Programa';
-import Bloco from './models/Bloco';
-import Exercicio from './models/Exercicio';
-import SessaoTreino from './models/SessaoTreino';
-import ExecucaoExercicio from './models/ExecucaoExercicio';
+import Food from './models/Food';
+import Meal from './models/Meal';
+import MealItem from './models/MealItem';
+import Program from './models/Program';
+import TrainingBlock from './models/TrainingBlock';
+import Exercise from './models/Exercise';
+import WorkoutSession from './models/WorkoutSession';
+import ExerciseExecution from './models/ExerciseExecution';
 
 const adapter = new SQLiteAdapter({
   schema,
@@ -22,24 +22,24 @@ const adapter = new SQLiteAdapter({
 export const database = new Database({
   adapter,
   modelClasses: [
-    Alimento,
-    Refeicao,
-    ItemRefeicao,
-    Programa,
-    Bloco,
-    Exercicio,
-    SessaoTreino,
-    ExecucaoExercicio,
+    Food,
+    Meal,
+    MealItem,
+    Program,
+    TrainingBlock,
+    Exercise,
+    WorkoutSession,
+    ExerciseExecution,
   ],
 });
 
 export {
-  Alimento,
-  Refeicao,
-  ItemRefeicao,
-  Programa,
-  Bloco,
-  Exercicio,
-  SessaoTreino,
-  ExecucaoExercicio,
+  Food,
+  Meal,
+  MealItem,
+  Program,
+  TrainingBlock,
+  Exercise,
+  WorkoutSession,
+  ExerciseExecution,
 };

@@ -1,15 +1,15 @@
 import { Model } from '@nozbe/watermelondb';
 import { field, children, readonly, date } from '@nozbe/watermelondb/decorators';
 
-export default class Programa extends Model {
-  static table = 'programas';
+export default class Program extends Model {
+  static table = 'programs';
   static associations = {
-    blocos: { type: 'has_many', foreignKey: 'programa_id' },
+    training_blocks: { type: 'has_many', foreignKey: 'program_id' },
   } as const;
 
-  @field('nome') nome!: string;
+  @field('name') name!: string;
 
-  @children('blocos') blocos!: any;
+  @children('training_blocks') trainingBlocks!: any;
 
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
