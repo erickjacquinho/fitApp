@@ -16,7 +16,7 @@ module.exports = {
       colors: {
         surface: {
           app: 'var(--color-offwhite)',
-          raised: 'var(--color-white-pure)',
+          raised: 'var(--color-cream)',
           muted: 'var(--color-cream)',
           subtle: 'var(--color-beige)',
           strong: 'var(--color-sand)',

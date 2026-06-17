@@ -151,7 +151,7 @@
     --component-input-bg: var(--color-cream);
     --component-input-border: var(--color-border-strong);
     --component-input-border-focus: var(--color-accent-main);
-    --component-card-bg: var(--color-white-pure);
+    --component-card-bg: var(--color-cream);
     --component-card-border: var(--color-border-soft);
   }
 }

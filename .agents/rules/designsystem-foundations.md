@@ -60,6 +60,7 @@ Borders must be thin and low contrast.
 - Selected or focused structure: `border-thin border-strong`.
 
 Avoid dark borders and `border-2` in normal UI.
+Avoid pairing a very bright surface with a much darker border in standard app UI. High-luminance border contrast should be treated as an exception, not the default.
 
 ## Radius
 Use small radii only.
@@ -105,3 +106,4 @@ Current component token groups:
 - Card.
 
 Prefer semantic tokens for feature UI and component tokens for shared atoms/molecules.
+In standard app flows, `surface-raised` and `component-card-bg` should stay close to the main warm neutral surfaces instead of using stark white by default.

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FitApp Color Palette Prototype</title>
+    <title>FitApp Design System Showcase</title>
     <style>
       :root {
         --color-offwhite: #F8F4EC;
@@ -163,27 +163,29 @@
 
       body {
         margin: 0;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        font-family: var(--font-family-sans);
+        font-size: var(--font-size-body);
+        line-height: var(--line-height-body);
+        font-weight: var(--font-weight-regular);
+        letter-spacing: var(--letter-spacing-normal);
         color: var(--color-text-main);
         background: var(--color-offwhite);
       }
 
       main {
-        width: min(1180px, calc(100% - 32px));
+        width: min(1180px, calc(100% - (var(--layout-screen-padding-x) * 2)));
         margin: 0 auto;
-        padding: var(--space-10) 0;
+        padding: var(--layout-page-gap) 0;
       }
 
       header {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
-        gap: var(--space-6);
+        gap: var(--layout-content-gap);
         align-items: end;
-        margin-bottom: var(--space-8);
-        padding-bottom: var(--space-6);
-        border-bottom: 1px solid var(--color-border-soft);
+        margin-bottom: var(--layout-section-gap);
+        padding-bottom: var(--layout-content-gap);
+        border-bottom: var(--border-width-thin) solid var(--color-border-soft);
       }
 
       h1,
@@ -195,20 +197,25 @@
 
       h1 {
         max-width: 760px;
-        font-size: clamp(40px, 6vw, 72px);
-        line-height: 0.95;
-        letter-spacing: -0.04em;
+        font-size: var(--font-size-display);
+        line-height: var(--line-height-display);
+        font-weight: var(--font-weight-black);
+        letter-spacing: var(--letter-spacing-tight);
       }
 
       h2 {
-        margin-bottom: var(--space-4);
-        font-size: 22px;
-        line-height: 1.1;
+        margin-bottom: var(--space-screen);
+        font-size: var(--font-size-title);
+        line-height: var(--line-height-title);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: var(--letter-spacing-tight);
       }
 
       h3 {
-        font-size: 16px;
-        line-height: 1.2;
+        font-size: var(--font-size-subtitle);
+        line-height: var(--line-height-subtitle);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--letter-spacing-normal);
       }
 
       .muted {
@@ -216,146 +223,205 @@
       }
 
       .section {
-        margin-bottom: var(--space-6);
+        margin-bottom: var(--space-related);
       }
 
       .intro {
         display: grid;
-        gap: var(--space-3);
-        font-size: 17px;
-        line-height: 1.5;
+        gap: var(--space-title-content);
       }
 
       .token-grid {
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: var(--space-3);
+        gap: var(--layout-grid-gutter);
       }
 
       .token {
         overflow: hidden;
         min-height: 104px;
-        border: 1px solid var(--color-border-soft);
+        border: var(--border-width-thin) solid var(--color-border-soft);
         border-radius: var(--radius-md);
-        background: #ffffff;
+        background: var(--color-white-pure);
       }
 
       .swatch {
         height: 52px;
-        border-bottom: 1px solid var(--color-border-soft);
+        border-bottom: var(--border-width-thin) solid var(--color-border-soft);
       }
 
       .token-info {
         display: grid;
-        gap: var(--space-1);
-        padding: var(--space-3);
+        gap: var(--space-micro);
+        padding: var(--space-title-content);
       }
 
       .token-name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-weight: 700;
-        font-size: 13px;
+        font-size: var(--font-size-label);
+        line-height: var(--line-height-label);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: var(--letter-spacing-normal);
       }
 
       .token-value {
         color: var(--color-text-muted);
         font-family:
           "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        font-size: 13px;
+        font-size: var(--font-size-caption);
+        line-height: var(--line-height-caption);
+      }
+
+      .token-table {
+        display: grid;
+        gap: var(--space-compact);
+      }
+
+      .token-row {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.8fr) minmax(160px, 0.7fr) 1fr;
+        gap: var(--layout-grid-gutter);
+        align-items: center;
+        padding: var(--space-title-content) var(--space-screen);
+        border: var(--border-width-thin) solid var(--color-border-soft);
+        border-radius: var(--radius-md);
+        background: var(--color-white-pure);
+      }
+
+      .token-preview {
+        min-height: var(--size-control-sm);
+        border-radius: var(--radius-sm);
+        color: var(--color-text-main);
+        background: var(--color-cream);
+      }
+
+      .sample-radius-sm {
+        border-radius: var(--radius-sm);
+      }
+
+      .sample-radius-md {
+        border-radius: var(--radius-md);
+      }
+
+      .sample-radius-lg {
+        border-radius: var(--radius-lg);
+      }
+
+      .sample-shadow {
+        box-shadow: var(--shadow-floating);
+      }
+
+      .sample-button {
+        display: inline-grid;
+        width: max-content;
+        min-height: var(--size-control-md);
+        place-items: center;
+        padding: 0 var(--space-card);
+        color: var(--component-button-primary-text);
+        background: var(--component-button-primary-bg);
+      }
+
+      .sample-input {
+        border: var(--border-width-thin) solid var(--component-input-border);
+        background: var(--component-input-bg);
       }
 
       .usage-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: var(--space-4);
+        gap: var(--layout-content-gap);
       }
 
       .panel {
-        border: 1px solid var(--color-border-soft);
+        border: var(--border-width-thin) solid var(--color-border-soft);
         border-radius: var(--radius-lg);
         background: var(--color-cream);
       }
 
       .panel-inner {
-        padding: var(--space-6);
+        padding: var(--space-related);
       }
 
       .app-preview {
         display: grid;
-        gap: var(--space-4);
+        gap: var(--layout-content-gap);
       }
 
       .top-bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: var(--space-4);
+        gap: var(--space-screen);
       }
 
       .brand-mark {
         display: grid;
-        width: 44px;
-        height: 44px;
+        width: var(--size-touch-target);
+        height: var(--size-touch-target);
         place-items: center;
         border-radius: var(--radius-sm);
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-accent-main);
-        font-weight: 900;
+        font-weight: var(--font-weight-black);
       }
 
       .card {
         display: grid;
-        gap: var(--space-4);
-        padding: var(--space-5);
-        border: 1px solid var(--color-border-soft);
+        gap: var(--layout-content-gap);
+        padding: var(--space-card);
+        border: var(--border-width-thin) solid var(--component-card-border);
         border-radius: var(--radius-md);
-        background: var(--color-offwhite);
+        background: var(--component-card-bg);
       }
 
       .stats {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-3);
+        gap: var(--layout-grid-gutter);
       }
 
       .stat {
-        padding: var(--space-4);
-        border: 1px solid var(--color-border-soft);
+        padding: var(--space-screen);
+        border: var(--border-width-thin) solid var(--color-border-soft);
         border-radius: var(--radius-sm);
-        background: #ffffff;
+        background: var(--color-white-pure);
       }
 
       .stat strong {
         display: block;
-        margin-bottom: var(--space-1);
-        font-size: 24px;
+        margin-bottom: var(--space-micro);
+        font-size: var(--font-size-title);
+        line-height: var(--line-height-title);
       }
 
       .button-row {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--space-3);
+        gap: var(--space-title-content);
       }
 
       button {
-        min-height: 44px;
-        padding: 0 var(--space-5);
-        border: 1px solid transparent;
+        min-height: var(--size-touch-target);
+        padding: 0 var(--space-card);
+        border: var(--border-width-thin) solid transparent;
         border-radius: var(--radius-sm);
         font: inherit;
-        font-weight: 700;
+        font-weight: var(--font-weight-bold);
         cursor: pointer;
+        transition:
+          background-color var(--motion-duration-fast) var(--motion-easing-standard),
+          border-color var(--motion-duration-fast) var(--motion-easing-standard);
       }
 
       .button-primary {
-        color: var(--color-offwhite);
-        background: var(--color-accent-main);
+        color: var(--component-button-primary-text);
+        background: var(--component-button-primary-bg);
       }
 
       .button-primary:hover {
-        background: var(--color-accent-light);
+        background: var(--component-button-primary-bg-pressed);
       }
 
       .button-secondary {
@@ -372,27 +438,28 @@
 
       .meal-list {
         display: grid;
-        gap: var(--space-3);
+        gap: var(--space-title-content);
       }
 
       .meal-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: var(--space-4);
-        padding: var(--space-4);
-        border: 1px solid var(--color-border-soft);
+        gap: var(--space-screen);
+        padding: var(--space-screen);
+        border: var(--border-width-thin) solid var(--color-border-soft);
         border-radius: var(--radius-sm);
-        background: #ffffff;
+        background: var(--color-white-pure);
       }
 
       .badge {
-        padding: var(--space-1) var(--space-3);
-        border-radius: 999px;
+        padding: var(--space-micro) var(--space-title-content);
+        border-radius: var(--radius-2xl);
         color: var(--color-accent-dark);
         background: var(--color-accent-soft);
-        font-size: 13px;
-        font-weight: 800;
+        font-size: var(--font-size-caption);
+        line-height: var(--line-height-caption);
+        font-weight: var(--font-weight-bold);
       }
 
       .badge-alert {
@@ -408,63 +475,602 @@
       .contrast-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-4);
+        gap: var(--layout-content-gap);
       }
 
       .contrast-card {
         display: grid;
         min-height: 140px;
         align-content: end;
-        gap: var(--space-2);
-        padding: var(--space-5);
+        gap: var(--space-compact);
+        padding: var(--space-card);
         border-radius: var(--radius-md);
       }
 
       .dark-sample {
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-text-main);
       }
 
       .accent-sample {
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-accent-main);
       }
 
       .soft-sample {
         color: var(--color-text-main);
         background: var(--color-cream);
-        border: 1px solid var(--color-border-soft);
+        border: var(--border-width-thin) solid var(--color-border-soft);
       }
 
       .tomato-sample {
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-tomato-main);
       }
 
       .success-sample {
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-success-main);
       }
 
       .info-sample {
-        color: var(--color-offwhite);
+        color: var(--color-white-pure);
         background: var(--color-info-main);
       }
 
       .warning-sample {
         color: var(--color-text-main);
         background: var(--color-warning-soft);
-        border: 1px solid var(--color-warning-main);
+        border: var(--border-width-thin) solid var(--color-warning-main);
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 18% 8%, rgba(85, 107, 47, 0.16), transparent 28rem),
+          radial-gradient(circle at 88% 18%, rgba(200, 74, 47, 0.12), transparent 24rem),
+          linear-gradient(135deg, var(--color-offwhite), var(--color-cream));
+      }
+
+      main {
+        width: min(1280px, calc(100% - 40px));
+      }
+
+      .guide-nav {
+        position: sticky;
+        top: var(--space-screen);
+        z-index: 10;
+        display: flex;
+        width: min(1280px, calc(100% - 40px));
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-screen);
+        margin: var(--space-screen) auto 0;
+        padding: var(--space-compact);
+        border: var(--border-width-thin) solid rgba(31, 27, 22, 0.12);
+        border-radius: var(--radius-2xl);
+        background: rgba(248, 244, 236, 0.84);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow-floating);
+      }
+
+      .guide-nav strong {
+        padding-left: var(--space-compact);
+        font-size: var(--font-size-label);
+        line-height: var(--line-height-label);
+        letter-spacing: var(--letter-spacing-label);
+        text-transform: uppercase;
+      }
+
+      .guide-nav div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-micro);
+        justify-content: flex-end;
+      }
+
+      .guide-nav a {
+        padding: var(--space-compact) var(--space-title-content);
+        border-radius: var(--radius-lg);
+        color: var(--color-text-main);
+        text-decoration: none;
+        font-size: var(--font-size-caption);
+        line-height: var(--line-height-caption);
+        font-weight: var(--font-weight-bold);
+      }
+
+      .guide-nav a:hover {
+        color: var(--color-white-pure);
+        background: var(--color-accent-main);
+      }
+
+      header {
+        position: relative;
+        overflow: hidden;
+        min-height: min(760px, calc(100vh - 80px));
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+        align-items: stretch;
+        margin-bottom: var(--space-page);
+        padding: var(--space-page);
+        border: var(--border-width-thin) solid rgba(31, 27, 22, 0.12);
+        border-radius: var(--radius-2xl);
+        background:
+          linear-gradient(120deg, rgba(255, 255, 255, 0.72), rgba(239, 230, 214, 0.88)),
+          repeating-linear-gradient(90deg, rgba(31, 27, 22, 0.035) 0 1px, transparent 1px 84px);
+        box-shadow: var(--shadow-floating);
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        inset: var(--space-page) auto auto 52%;
+        width: 34vw;
+        max-width: 520px;
+        aspect-ratio: 1;
+        border: var(--border-width-hairline) solid rgba(85, 107, 47, 0.24);
+        border-radius: 50%;
+        background:
+          linear-gradient(45deg, transparent 49%, rgba(85, 107, 47, 0.18) 50%, transparent 51%),
+          radial-gradient(circle, rgba(229, 234, 216, 0.86), rgba(239, 230, 214, 0.18) 62%, transparent 63%);
+        transform: rotate(-10deg);
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        right: var(--space-page);
+        bottom: var(--space-page);
+        width: 190px;
+        height: 24px;
+        border-radius: var(--radius-2xl);
+        background: linear-gradient(90deg, var(--color-accent-main), var(--color-tomato-main), var(--color-warning-main));
+      }
+
+      .hero-copy,
+      .hero-panel {
+        position: relative;
+        z-index: 1;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: max-content;
+        align-items: center;
+        gap: var(--space-compact);
+        margin-bottom: var(--space-related);
+        padding: var(--space-micro) var(--space-title-content);
+        border: var(--border-width-thin) solid var(--color-border-strong);
+        border-radius: var(--radius-2xl);
+        color: var(--color-accent-dark);
+        background: rgba(229, 234, 216, 0.82);
+        font-size: var(--font-size-label);
+        line-height: var(--line-height-label);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: var(--letter-spacing-label);
+        text-transform: uppercase;
+      }
+
+      .hero-copy {
+        display: grid;
+        align-content: space-between;
+        min-height: 100%;
+      }
+
+      .hero-copy h1 {
+        max-width: 820px;
+        font-size: clamp(48px, 8vw, 112px);
+        line-height: 0.9;
+        letter-spacing: -0.055em;
+      }
+
+      .hero-copy p {
+        max-width: 620px;
+        margin-top: var(--space-related);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-subtitle);
+        line-height: var(--line-height-subtitle);
+      }
+
+      .hero-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-title-content);
+        margin-top: var(--space-page);
+      }
+
+      .metric {
+        min-width: 132px;
+        padding: var(--space-screen);
+        border: var(--border-width-thin) solid var(--color-border-soft);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.58);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: var(--font-size-title);
+        line-height: var(--line-height-title);
+        font-weight: var(--font-weight-black);
+      }
+
+      .metric span {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-caption);
+        line-height: var(--line-height-caption);
+      }
+
+      .hero-panel {
+        display: grid;
+        align-content: end;
+      }
+
+      .phone-shell {
+        width: min(100%, 390px);
+        margin-left: auto;
+        padding: var(--space-compact);
+        border: var(--border-width-thin) solid var(--color-text-main);
+        border-radius: 32px;
+        background: var(--color-text-main);
+        box-shadow: 0 28px 80px rgba(31, 27, 22, 0.24);
+      }
+
+      .phone-screen {
+        overflow: hidden;
+        min-height: 640px;
+        border-radius: 26px;
+        background: var(--color-offwhite);
+      }
+
+      .phone-top {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-card);
+        color: var(--color-white-pure);
+        background: var(--color-accent-main);
+      }
+
+      .phone-content {
+        display: grid;
+        gap: var(--space-screen);
+        padding: var(--space-card);
+      }
+
+      .macro-ring {
+        display: grid;
+        width: 210px;
+        height: 210px;
+        place-items: center;
+        margin: var(--space-screen) auto;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, var(--color-offwhite) 0 50%, transparent 51%),
+          conic-gradient(var(--color-accent-main) 0 64%, var(--color-warning-main) 64% 78%, var(--color-tomato-main) 78% 86%, var(--color-border-soft) 86%);
+      }
+
+      .macro-ring strong {
+        display: block;
+        font-size: 42px;
+        line-height: 44px;
+      }
+
+      .system-strip {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: var(--space-related);
+        margin-bottom: var(--space-page);
+      }
+
+      .system-card {
+        min-height: 280px;
+        padding: var(--space-page);
+        border: var(--border-width-thin) solid var(--color-border-soft);
+        border-radius: var(--radius-2xl);
+        background: rgba(255, 255, 255, 0.58);
+      }
+
+      .system-card.dark {
+        color: var(--color-white-pure);
+        background: var(--color-text-main);
+      }
+
+      .system-card.dark .muted {
+        color: var(--color-beige);
+      }
+
+      .scale-stack {
+        display: grid;
+        gap: var(--space-compact);
+        margin-top: var(--space-related);
+      }
+
+      .scale-bar {
+        height: var(--size-control-sm);
+        border-radius: var(--radius-sm);
+        background: var(--color-accent-soft);
+      }
+
+      .scale-bar:nth-child(2) {
+        width: 72%;
+        background: var(--color-beige);
+      }
+
+      .scale-bar:nth-child(3) {
+        width: 54%;
+        background: var(--color-sand);
+      }
+
+      .scale-bar:nth-child(4) {
+        width: 38%;
+        background: var(--color-accent-main);
+      }
+
+      .palette-note {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: var(--space-related);
+        margin-bottom: var(--space-related);
+        padding: var(--space-page);
+        border: var(--border-width-thin) solid var(--color-border-soft);
+        border-radius: var(--radius-2xl);
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .palette-note h3 {
+        font-size: var(--font-size-title);
+        line-height: var(--line-height-title);
+        letter-spacing: var(--letter-spacing-tight);
+      }
+
+      .palette-note p {
+        color: var(--color-text-muted);
+      }
+
+      .palette-label {
+        margin: var(--space-page) 0 var(--space-screen);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-label);
+        line-height: var(--line-height-label);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: var(--letter-spacing-label);
+        text-transform: uppercase;
+      }
+
+      .palette-primary .token {
+        min-height: 166px;
+      }
+
+      .palette-compat {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .palette-compat .token {
+        min-height: 118px;
+        opacity: 0.68;
+      }
+
+      .palette-compat .swatch {
+        height: 54px;
+      }
+
+      .color-family-grid {
+        display: grid;
+        gap: var(--space-related);
+      }
+
+      .color-family {
+        overflow: hidden;
+        border: var(--border-width-thin) solid var(--color-border-soft);
+        border-radius: var(--radius-2xl);
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .family-header {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: var(--space-related);
+        align-items: end;
+        padding: var(--space-page);
+        border-bottom: var(--border-width-thin) solid var(--color-border-soft);
+      }
+
+      .family-header h3 {
+        font-size: var(--font-size-title);
+        line-height: var(--line-height-title);
+        letter-spacing: var(--letter-spacing-tight);
+      }
+
+      .family-header p {
+        color: var(--color-text-muted);
+      }
+
+      .family-ramp {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+
+      .family-ramp .token {
+        min-height: 156px;
+        border-width: 0 var(--border-width-thin) var(--border-width-thin) 0;
+        border-radius: 0;
+        background: var(--color-white-pure);
+      }
+
+      .family-ramp .swatch {
+        height: 92px;
+      }
+
+      .support-palette {
+        margin-top: var(--space-page);
+      }
+
+      .section {
+        margin-bottom: var(--space-page);
+      }
+
+      .section > h2 {
+        display: flex;
+        align-items: center;
+        gap: var(--space-title-content);
+        margin-bottom: var(--space-related);
+      }
+
+      .section > h2::before {
+        content: "";
+        width: var(--size-icon-lg);
+        height: var(--size-icon-lg);
+        border-radius: 50%;
+        background: var(--color-accent-main);
+      }
+
+      .token-grid {
+        grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+      }
+
+      .token,
+      .token-row,
+      .panel,
+      .contrast-card {
+        transition:
+          transform var(--motion-duration-base) var(--motion-easing-standard),
+          border-color var(--motion-duration-base) var(--motion-easing-standard),
+          box-shadow var(--motion-duration-base) var(--motion-easing-standard);
+      }
+
+      .token:hover,
+      .token-row:hover,
+      .panel:hover,
+      .contrast-card:hover {
+        border-color: var(--color-border-strong);
+        box-shadow: var(--shadow-floating);
+        transform: translateY(-2px);
+      }
+
+      .token {
+        min-height: 148px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .swatch {
+        height: 84px;
+      }
+
+      .token-table {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--layout-grid-gutter);
+      }
+
+      .token-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-compact);
+        min-height: 132px;
+        padding: var(--space-card);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .token-row strong,
+      .token-name {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: var(--font-size-caption);
+        line-height: var(--line-height-caption);
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      .token-preview {
+        display: grid;
+        min-width: var(--size-control-lg);
+        max-width: 100%;
+        place-items: center;
+        padding: 0 var(--space-compact);
+        overflow: hidden;
+      }
+
+      .usage-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      }
+
+      .panel {
+        overflow: hidden;
+        border-radius: var(--radius-2xl);
+        background: rgba(255, 255, 255, 0.64);
+      }
+
+      .panel-inner {
+        padding: var(--space-page);
+      }
+
+      .card,
+      .stat,
+      .meal-item {
+        background: var(--color-white-pure);
+      }
+
+      .contrast-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .contrast-card {
+        min-height: 220px;
+        border: var(--border-width-thin) solid transparent;
       }
 
       @media (max-width: 860px) {
-        header,
-        .usage-grid {
+        .guide-nav {
+          position: static;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .guide-nav div {
+          justify-content: flex-start;
+        }
+
+        .palette-note {
           grid-template-columns: 1fr;
+          padding: var(--space-card);
+        }
+
+        .family-header {
+          grid-template-columns: 1fr;
+          padding: var(--space-card);
+        }
+
+        header,
+        .usage-grid,
+        .system-strip {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          min-height: auto;
+          padding: var(--space-related);
+        }
+
+        header::before,
+        header::after {
+          opacity: 0.5;
+        }
+
+        .hero-panel {
+          margin-top: var(--space-page);
+        }
+
+        .phone-shell {
+          margin: 0;
         }
 
         .token-grid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .token-table {
+          grid-template-columns: 1fr;
+        }
+
+        .token-row {
+          grid-template-columns: 1fr;
         }
 
         .contrast-grid {
@@ -474,8 +1080,28 @@
 
       @media (max-width: 520px) {
         main {
-          width: min(100% - 24px, 1180px);
-          padding: var(--space-6) 0;
+          width: min(100% - (var(--layout-grid-gutter) * 2), 1180px);
+          padding: var(--space-related) 0;
+        }
+
+        h1 {
+          font-size: var(--font-size-title);
+          line-height: var(--line-height-title);
+        }
+
+        .hero-copy h1 {
+          font-size: 44px;
+          line-height: 46px;
+        }
+
+        .hero-copy p {
+          font-size: var(--font-size-body);
+          line-height: var(--line-height-body);
+        }
+
+        .system-card,
+        .panel-inner {
+          padding: var(--space-card);
         }
 
         .token-grid,
@@ -487,277 +1113,914 @@
     </style>
   </head>
   <body>
+    <nav class="guide-nav" aria-label="Design system sections">
+      <strong>FitApp DS</strong>
+      <div>
+        <a href="#overview">Overview</a>
+        <a href="#tokens">Tokens</a>
+        <a href="#preview">Preview</a>
+        <a href="#contrast">Contrast</a>
+      </div>
+    </nav>
     <main>
-      <header>
-        <div>
-          <p class="muted">FitApp design system</p>
-          <h1>Warm neutral palette with olive accent</h1>
+      <header id="overview">
+        <div class="hero-copy">
+          <div>
+            <span class="eyebrow">FitApp Design System</span>
+            <h1>Warm nutrition UI with disciplined tokens.</h1>
+            <p>
+              A production-ready visual language for Android-first meal tracking:
+              calm surfaces, olive actions, sharp semantic states, and every
+              token documented one by one.
+            </p>
+          </div>
+          <div class="hero-metrics" aria-label="Design system summary">
+            <div class="metric">
+              <strong>121</strong>
+              <span>explicit tokens</span>
+            </div>
+            <div class="metric">
+              <strong>12</strong>
+              <span>token families</span>
+            </div>
+            <div class="metric">
+              <strong>4px</strong>
+              <span>spacing base</span>
+            </div>
+          </div>
         </div>
-        <div class="intro">
-          <p>
-            A calm base built on off-white, cream, beige, and sand. Olive is
-            reserved for action, progress, and focused highlights.
-          </p>
+        <div class="hero-panel">
+          <div class="phone-shell" aria-label="FitApp mobile preview">
+            <div class="phone-screen">
+              <div class="phone-top">
+                <strong>Today</strong>
+                <span>18:40</span>
+              </div>
+              <div class="phone-content">
+                <div>
+                  <p class="muted">Nutrition target</p>
+                  <h2>1,860 kcal</h2>
+                </div>
+                <div class="macro-ring">
+                  <div>
+                    <strong>64%</strong>
+                    <span class="muted">complete</span>
+                  </div>
+                </div>
+                <div class="stats">
+                  <div class="stat">
+                    <strong>92g</strong>
+                    <span class="muted">Protein</span>
+                  </div>
+                  <div class="stat">
+                    <strong>148g</strong>
+                    <span class="muted">Carbs</span>
+                  </div>
+                  <div class="stat">
+                    <strong>51g</strong>
+                    <span class="muted">Fats</span>
+                  </div>
+                </div>
+                <button class="button-primary">Log meal</button>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
+      <section class="system-strip">
+        <article class="system-card dark">
+          <p class="muted">Visual tone</p>
+          <h2>Warm, practical, and food-native.</h2>
+          <p>
+            The system avoids clinical fitness UI. It uses natural neutrals,
+            compact radius, thin borders, and restrained shadows.
+          </p>
+        </article>
+        <article class="system-card">
+          <p class="muted">Foundation logic</p>
+          <h2>Small primitives, clear semantics.</h2>
+          <p>
+            Primitive colors feed semantic groups, semantic groups feed
+            components, and every value remains traceable to a CSS variable.
+          </p>
+          <div class="scale-stack" aria-label="Token scale preview">
+            <div class="scale-bar"></div>
+            <div class="scale-bar"></div>
+            <div class="scale-bar"></div>
+            <div class="scale-bar"></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section" id="tokens">
+        <h2>Color Tokens</h2>
+        <div class="palette-note">
+          <h3>4 main colors, ordered by family.</h3>
+          <p>
+            The showcase treats the palette as four product families: Neutral,
+            Olive, Tomato, and Amber. Each family lists its variables in order,
+            from softer values to stronger values. Support aliases stay explicit
+            below, but no longer read as primary colors.
+          </p>
+        </div>
+        <div class="color-family-grid">
+          <article class="color-family">
+            <div class="family-header">
+              <h3>1. Neutral / Sand</h3>
+              <p>Base surfaces, text, and border structure for the full product UI.</p>
+            </div>
+            <div class="family-ramp">
+            <article class="token">
+              <div class="swatch" style="background: var(--color-offwhite)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-offwhite</span>
+                <span class="token-value">#F8F4EC</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-cream)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-cream</span>
+                <span class="token-value">#EFE6D6</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-beige)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-beige</span>
+                <span class="token-value">#D8C3A5</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-sand)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-sand</span>
+                <span class="token-value">#BFA889</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-text-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-text-main</span>
+                <span class="token-value">#1F1B16</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-text-muted)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-text-muted</span>
+                <span class="token-value">#6F6254</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-border-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-border-soft</span>
+                <span class="token-value">#E3D6C4</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-border-strong)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-border-strong</span>
+                <span class="token-value">#C7B293</span>
+              </div>
+            </article>
+            </div>
+          </article>
+          <article class="color-family">
+            <div class="family-header">
+              <h3>2. Olive</h3>
+              <p>Primary action, progress, and positive confirmation variants.</p>
+            </div>
+            <div class="family-ramp">
+            <article class="token">
+              <div class="swatch" style="background: var(--color-accent-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-accent-soft</span>
+                <span class="token-value">#E5EAD8</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-accent-light)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-accent-light</span>
+                <span class="token-value">#718A44</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-accent-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-accent-main</span>
+                <span class="token-value">#556B2F</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-accent-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-accent-dark</span>
+                <span class="token-value">#38481F</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-success-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-success-soft</span>
+                <span class="token-value">#E1ECD8</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-success-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-success-main</span>
+                <span class="token-value">#4F7A3A</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-success-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-success-dark</span>
+                <span class="token-value">#315224</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-primary-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-primary-soft</span>
+                <span class="token-value">var(--color-accent-soft)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-primary-light)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-primary-light</span>
+                <span class="token-value">var(--color-accent-light)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-primary-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-primary-main</span>
+                <span class="token-value">var(--color-accent-main)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-primary-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-primary-dark</span>
+                <span class="token-value">var(--color-accent-dark)</span>
+              </div>
+            </article>
+            </div>
+          </article>
+          <article class="color-family">
+            <div class="family-header">
+              <h3>3. Tomato</h3>
+              <p>Error, danger, destructive action, and hard-limit variants.</p>
+            </div>
+            <div class="family-ramp">
+            <article class="token">
+              <div class="swatch" style="background: var(--color-tomato-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-tomato-soft</span>
+                <span class="token-value">#F6D8CF</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-tomato-light)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-tomato-light</span>
+                <span class="token-value">#E06A4D</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-tomato-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-tomato-main</span>
+                <span class="token-value">#C84A2F</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-tomato-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-tomato-dark</span>
+                <span class="token-value">#8F2F1D</span>
+              </div>
+            </article>
+            </div>
+          </article>
+          <article class="color-family">
+            <div class="family-header">
+              <h3>4. Amber</h3>
+              <p>Warning, attention, and near-limit variants.</p>
+            </div>
+            <div class="family-ramp">
+            <article class="token">
+              <div class="swatch" style="background: var(--color-warning-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-warning-soft</span>
+                <span class="token-value">#F4E5C7</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-warning-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-warning-main</span>
+                <span class="token-value">#C58A1F</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-warning-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-warning-dark</span>
+                <span class="token-value">#7A5314</span>
+              </div>
+            </article>
+            </div>
+          </article>
+        </div>
+        <div class="support-palette">
+          <p class="palette-label">Support vars / aliases</p>
+          <div class="token-grid palette-compat">
+            <article class="token">
+              <div class="swatch" style="background: var(--color-info-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-info-soft</span>
+                <span class="token-value">#DDE8ED</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-info-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-info-main</span>
+                <span class="token-value">#4E6E81</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-info-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-info-dark</span>
+                <span class="token-value">#2F4A59</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-secondary-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-secondary-soft</span>
+                <span class="token-value">var(--color-offwhite)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-secondary-light)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-secondary-light</span>
+                <span class="token-value">var(--color-cream)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-secondary-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-secondary-main</span>
+                <span class="token-value">var(--color-beige)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-secondary-dark)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-secondary-dark</span>
+                <span class="token-value">var(--color-sand)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-white-pure)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-white-pure</span>
+                <span class="token-value">#FFFFFF</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-white-base)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-white-base</span>
+                <span class="token-value">var(--color-offwhite)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-white-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-white-soft</span>
+                <span class="token-value">var(--color-cream)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-black-main)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-black-main</span>
+                <span class="token-value">var(--color-text-main)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-black-soft)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-black-soft</span>
+                <span class="token-value">#16120F</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-black-light)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-black-light</span>
+                <span class="token-value">var(--color-text-muted)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-gray-300)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-gray-300</span>
+                <span class="token-value">var(--color-border-soft)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-gray-400)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-gray-400</span>
+                <span class="token-value">var(--color-border-strong)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-gray-500)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-gray-500</span>
+                <span class="token-value">var(--color-text-muted)</span>
+              </div>
+            </article>
+            <article class="token">
+              <div class="swatch" style="background: var(--color-gray-700)"></div>
+              <div class="token-info">
+                <span class="token-name">--color-gray-700</span>
+                <span class="token-value">#4B4035</span>
+              </div>
+            </article>          </div>
+        </div>
+      </section>
       <section class="section">
-        <h2>Base Tokens</h2>
-        <div class="token-grid">
-          <article class="token">
-            <div class="swatch" style="background: var(--color-offwhite)"></div>
-            <div class="token-info">
-              <span class="token-name">offwhite</span>
-              <span class="token-value">#F8F4EC</span>
-            </div>
+        <h2>Radius Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--radius-none</strong>
+            <span class="token-value">0px</span>
+            <span class="token-preview" style="border-radius: var(--radius-none); background: var(--color-cream);">Aa</span>
           </article>
-          <article class="token">
-            <div class="swatch" style="background: var(--color-cream)"></div>
-            <div class="token-info">
-              <span class="token-name">cream</span>
-              <span class="token-value">#EFE6D6</span>
-            </div>
+          <article class="token-row">
+            <strong>--radius-sm</strong>
+            <span class="token-value">3px</span>
+            <span class="token-preview" style="border-radius: var(--radius-sm); background: var(--color-cream);">Aa</span>
           </article>
-          <article class="token">
-            <div class="swatch" style="background: var(--color-beige)"></div>
-            <div class="token-info">
-              <span class="token-name">beige</span>
-              <span class="token-value">#D8C3A5</span>
-            </div>
+          <article class="token-row">
+            <strong>--radius-md</strong>
+            <span class="token-value">5px</span>
+            <span class="token-preview" style="border-radius: var(--radius-md); background: var(--color-cream);">Aa</span>
           </article>
-          <article class="token">
-            <div class="swatch" style="background: var(--color-sand)"></div>
-            <div class="token-info">
-              <span class="token-name">sand</span>
-              <span class="token-value">#BFA889</span>
-            </div>
+          <article class="token-row">
+            <strong>--radius-lg</strong>
+            <span class="token-value">7px</span>
+            <span class="token-preview" style="border-radius: var(--radius-lg); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--radius-xl</strong>
+            <span class="token-value">9px</span>
+            <span class="token-preview" style="border-radius: var(--radius-xl); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--radius-2xl</strong>
+            <span class="token-value">10px</span>
+            <span class="token-preview" style="border-radius: var(--radius-2xl); background: var(--color-cream);">Aa</span>
           </article>
         </div>
       </section>
 
       <section class="section">
-        <h2>Functional Tokens</h2>
-        <div class="token-grid">
-          <article class="token">
-            <div class="swatch" style="background: var(--color-text-main)"></div>
-            <div class="token-info">
-              <span class="token-name">text-main</span>
-              <span class="token-value">#1F1B16</span>
-            </div>
+        <h2>Border Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--border-width-hairline</strong>
+            <span class="token-value">0.5px</span>
+            <span class="token-preview" style="border: var(--border-width-hairline) solid var(--color-accent-main); background: var(--color-white-pure);">Aa</span>
           </article>
-          <article class="token">
-            <div class="swatch" style="background: var(--color-text-muted)"></div>
-            <div class="token-info">
-              <span class="token-name">text-muted</span>
-              <span class="token-value">#6F6254</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-border-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">border-soft</span>
-              <span class="token-value">#E3D6C4</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-border-strong)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">border-strong</span>
-              <span class="token-value">#C7B293</span>
-            </div>
+          <article class="token-row">
+            <strong>--border-width-thin</strong>
+            <span class="token-value">1px</span>
+            <span class="token-preview" style="border: var(--border-width-thin) solid var(--color-accent-main); background: var(--color-white-pure);">Aa</span>
           </article>
         </div>
       </section>
 
       <section class="section">
-        <h2>Accent Tokens</h2>
-        <div class="token-grid">
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-accent-main)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">accent-main</span>
-              <span class="token-value">#556B2F</span>
-            </div>
+        <h2>Shadow Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--shadow-none</strong>
+            <span class="token-value">none</span>
+            <span class="token-preview" style="box-shadow: var(--shadow-none); background: var(--color-white-pure);">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-accent-light)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">accent-light</span>
-              <span class="token-value">#718A44</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-accent-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">accent-soft</span>
-              <span class="token-value">#E5EAD8</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-accent-dark)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">accent-dark</span>
-              <span class="token-value">#38481F</span>
-            </div>
+          <article class="token-row">
+            <strong>--shadow-floating</strong>
+            <span class="token-value">0 2px 8px rgba(31, 27, 22, 0.08)</span>
+            <span class="token-preview" style="box-shadow: var(--shadow-floating); background: var(--color-white-pure);">Aa</span>
           </article>
         </div>
       </section>
 
       <section class="section">
-        <h2>Status Tokens</h2>
-        <div class="token-grid">
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-tomato-main)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">tomato-main</span>
-              <span class="token-value">#C84A2F</span>
-            </div>
+        <h2>Font Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--font-family-sans</strong>
+            <span class="token-value">&quot;Helvetica Now&quot;, Helvetica, Arial, sans-serif</span>
+            <span class="token-preview" style="font-family: var(--font-family-sans); background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-tomato-light)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">tomato-light</span>
-              <span class="token-value">#E06A4D</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-display</strong>
+            <span class="token-value">64px</span>
+            <span class="token-preview" style="font-size: var(--font-size-display); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-tomato-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">tomato-soft</span>
-              <span class="token-value">#F6D8CF</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-title</strong>
+            <span class="token-value">32px</span>
+            <span class="token-preview" style="font-size: var(--font-size-title); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-tomato-dark)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">tomato-dark</span>
-              <span class="token-value">#8F2F1D</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-subtitle</strong>
+            <span class="token-value">20px</span>
+            <span class="token-preview" style="font-size: var(--font-size-subtitle); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-success-main)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">success-main</span>
-              <span class="token-value">#4F7A3A</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-body</strong>
+            <span class="token-value">16px</span>
+            <span class="token-preview" style="font-size: var(--font-size-body); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-success-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">success-soft</span>
-              <span class="token-value">#E1ECD8</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-label</strong>
+            <span class="token-value">14px</span>
+            <span class="token-preview" style="font-size: var(--font-size-label); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-success-dark)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">success-dark</span>
-              <span class="token-value">#315224</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-size-caption</strong>
+            <span class="token-value">12px</span>
+            <span class="token-preview" style="font-size: var(--font-size-caption); line-height: 1; background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-info-main)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">info-main</span>
-              <span class="token-value">#4E6E81</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-weight-regular</strong>
+            <span class="token-value">400</span>
+            <span class="token-preview" style="font-weight: var(--font-weight-regular); background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-info-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">info-soft</span>
-              <span class="token-value">#DDE8ED</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-weight-semibold</strong>
+            <span class="token-value">600</span>
+            <span class="token-preview" style="font-weight: var(--font-weight-semibold); background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-info-dark)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">info-dark</span>
-              <span class="token-value">#2F4A59</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-weight-bold</strong>
+            <span class="token-value">700</span>
+            <span class="token-preview" style="font-weight: var(--font-weight-bold); background: transparent;">Aa</span>
           </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-warning-main)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">warning-main</span>
-              <span class="token-value">#C58A1F</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-warning-soft)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">warning-soft</span>
-              <span class="token-value">#F4E5C7</span>
-            </div>
-          </article>
-          <article class="token">
-            <div
-              class="swatch"
-              style="background: var(--color-warning-dark)"
-            ></div>
-            <div class="token-info">
-              <span class="token-name">warning-dark</span>
-              <span class="token-value">#7A5314</span>
-            </div>
+          <article class="token-row">
+            <strong>--font-weight-black</strong>
+            <span class="token-value">900</span>
+            <span class="token-preview" style="font-weight: var(--font-weight-black); background: transparent;">Aa</span>
           </article>
         </div>
       </section>
 
       <section class="section">
+        <h2>Line Height Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--line-height-display</strong>
+            <span class="token-value">68px</span>
+            <span class="token-preview" style="line-height: var(--line-height-display); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--line-height-title</strong>
+            <span class="token-value">38px</span>
+            <span class="token-preview" style="line-height: var(--line-height-title); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--line-height-subtitle</strong>
+            <span class="token-value">28px</span>
+            <span class="token-preview" style="line-height: var(--line-height-subtitle); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--line-height-body</strong>
+            <span class="token-value">24px</span>
+            <span class="token-preview" style="line-height: var(--line-height-body); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--line-height-label</strong>
+            <span class="token-value">18px</span>
+            <span class="token-preview" style="line-height: var(--line-height-label); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--line-height-caption</strong>
+            <span class="token-value">16px</span>
+            <span class="token-preview" style="line-height: var(--line-height-caption); background: transparent;">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Letter Spacing Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--letter-spacing-tight</strong>
+            <span class="token-value">-0.02em</span>
+            <span class="token-preview" style="letter-spacing: var(--letter-spacing-tight); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--letter-spacing-normal</strong>
+            <span class="token-value">0em</span>
+            <span class="token-preview" style="letter-spacing: var(--letter-spacing-normal); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--letter-spacing-wide</strong>
+            <span class="token-value">0.08em</span>
+            <span class="token-preview" style="letter-spacing: var(--letter-spacing-wide); background: transparent;">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--letter-spacing-label</strong>
+            <span class="token-value">0.12em</span>
+            <span class="token-preview" style="letter-spacing: var(--letter-spacing-label); background: transparent;">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Spacing Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--space-base</strong>
+            <span class="token-value">4px</span>
+            <span class="token-preview" style="width: var(--space-base); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-micro</strong>
+            <span class="token-value">calc(var(--space-base) * 1)</span>
+            <span class="token-preview" style="width: var(--space-micro); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-compact</strong>
+            <span class="token-value">calc(var(--space-base) * 2)</span>
+            <span class="token-preview" style="width: var(--space-compact); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-title-content</strong>
+            <span class="token-value">calc(var(--space-base) * 3)</span>
+            <span class="token-preview" style="width: var(--space-title-content); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-screen</strong>
+            <span class="token-value">calc(var(--space-base) * 4)</span>
+            <span class="token-preview" style="width: var(--space-screen); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-card</strong>
+            <span class="token-value">calc(var(--space-base) * 5)</span>
+            <span class="token-preview" style="width: var(--space-card); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-related</strong>
+            <span class="token-value">calc(var(--space-base) * 6)</span>
+            <span class="token-preview" style="width: var(--space-related); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-category</strong>
+            <span class="token-value">calc(var(--space-base) * 8)</span>
+            <span class="token-preview" style="width: var(--space-category); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-page</strong>
+            <span class="token-value">calc(var(--space-base) * 10)</span>
+            <span class="token-preview" style="width: var(--space-page); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--space-empty-state</strong>
+            <span class="token-value">calc(var(--space-base) * 12)</span>
+            <span class="token-preview" style="width: var(--space-empty-state); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Layout Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--layout-screen-padding-x</strong>
+            <span class="token-value">var(--space-screen)</span>
+            <span class="token-preview" style="width: var(--layout-screen-padding-x); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-screen-padding-y</strong>
+            <span class="token-value">var(--space-screen)</span>
+            <span class="token-preview" style="width: var(--layout-screen-padding-y); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-screen-padding-y-comfortable</strong>
+            <span class="token-value">var(--space-related)</span>
+            <span class="token-preview" style="width: var(--layout-screen-padding-y-comfortable); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-grid-columns-phone</strong>
+            <span class="token-value">4</span>
+            <span class="token-preview" style="background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-grid-gutter</strong>
+            <span class="token-value">var(--space-title-content)</span>
+            <span class="token-preview" style="width: var(--layout-grid-gutter); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-content-gap</strong>
+            <span class="token-value">var(--space-screen)</span>
+            <span class="token-preview" style="width: var(--layout-content-gap); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-section-gap</strong>
+            <span class="token-value">var(--space-category)</span>
+            <span class="token-preview" style="width: var(--layout-section-gap); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--layout-page-gap</strong>
+            <span class="token-value">var(--space-page)</span>
+            <span class="token-preview" style="width: var(--layout-page-gap); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Size Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--size-icon-sm</strong>
+            <span class="token-value">16px</span>
+            <span class="token-preview" style="width: var(--size-icon-sm); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-icon-md</strong>
+            <span class="token-value">20px</span>
+            <span class="token-preview" style="width: var(--size-icon-md); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-icon-lg</strong>
+            <span class="token-value">24px</span>
+            <span class="token-preview" style="width: var(--size-icon-lg); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-touch-target</strong>
+            <span class="token-value">44px</span>
+            <span class="token-preview" style="width: var(--size-touch-target); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-control-sm</strong>
+            <span class="token-value">36px</span>
+            <span class="token-preview" style="width: var(--size-control-sm); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-control-md</strong>
+            <span class="token-value">44px</span>
+            <span class="token-preview" style="width: var(--size-control-md); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-control-lg</strong>
+            <span class="token-value">52px</span>
+            <span class="token-preview" style="width: var(--size-control-lg); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-input-md</strong>
+            <span class="token-value">48px</span>
+            <span class="token-preview" style="width: var(--size-input-md); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-avatar-sm</strong>
+            <span class="token-value">32px</span>
+            <span class="token-preview" style="width: var(--size-avatar-sm); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-avatar-md</strong>
+            <span class="token-value">40px</span>
+            <span class="token-preview" style="width: var(--size-avatar-md); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-avatar-lg</strong>
+            <span class="token-value">56px</span>
+            <span class="token-preview" style="width: var(--size-avatar-lg); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-tabbar-height</strong>
+            <span class="token-value">64px</span>
+            <span class="token-preview" style="width: var(--size-tabbar-height); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-bottom-sheet-handle-width</strong>
+            <span class="token-value">40px</span>
+            <span class="token-preview" style="width: var(--size-bottom-sheet-handle-width); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--size-bottom-sheet-handle-height</strong>
+            <span class="token-value">4px</span>
+            <span class="token-preview" style="width: var(--size-bottom-sheet-handle-height); min-height: var(--size-control-sm); background: var(--color-cream);">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Motion Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--motion-duration-fast</strong>
+            <span class="token-value">120ms</span>
+            <span class="token-preview" style="transition-duration: var(--motion-duration-fast); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--motion-duration-base</strong>
+            <span class="token-value">180ms</span>
+            <span class="token-preview" style="transition-duration: var(--motion-duration-base); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--motion-duration-slow</strong>
+            <span class="token-value">240ms</span>
+            <span class="token-preview" style="transition-duration: var(--motion-duration-slow); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--motion-easing-standard</strong>
+            <span class="token-value">cubic-bezier(0.2, 0, 0, 1)</span>
+            <span class="token-preview" style="transition-timing-function: var(--motion-easing-standard); background: var(--color-cream);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--motion-easing-emphasized</strong>
+            <span class="token-value">cubic-bezier(0.2, 0, 0, 1.2)</span>
+            <span class="token-preview" style="transition-timing-function: var(--motion-easing-emphasized); background: var(--color-cream);">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Component Tokens</h2>
+        <div class="token-table">
+          <article class="token-row">
+            <strong>--component-button-primary-bg</strong>
+            <span class="token-value">var(--color-accent-main)</span>
+            <span class="token-preview" style="background: var(--component-button-primary-bg);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-button-primary-bg-pressed</strong>
+            <span class="token-value">var(--color-accent-dark)</span>
+            <span class="token-preview" style="background: var(--component-button-primary-bg-pressed);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-button-primary-text</strong>
+            <span class="token-value">var(--color-white-pure)</span>
+            <span class="token-preview" style="color: var(--component-button-primary-text); background: var(--color-accent-main);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-button-danger-bg</strong>
+            <span class="token-value">var(--color-tomato-main)</span>
+            <span class="token-preview" style="background: var(--component-button-danger-bg);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-button-danger-bg-pressed</strong>
+            <span class="token-value">var(--color-tomato-dark)</span>
+            <span class="token-preview" style="background: var(--component-button-danger-bg-pressed);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-input-bg</strong>
+            <span class="token-value">var(--color-cream)</span>
+            <span class="token-preview" style="background: var(--component-input-bg);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-input-border</strong>
+            <span class="token-value">var(--color-border-strong)</span>
+            <span class="token-preview" style="border: var(--border-width-thin) solid var(--component-input-border); background: var(--color-white-pure);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-input-border-focus</strong>
+            <span class="token-value">var(--color-accent-main)</span>
+            <span class="token-preview" style="border: var(--border-width-thin) solid var(--component-input-border-focus); background: var(--color-white-pure);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-card-bg</strong>
+            <span class="token-value">var(--color-white-pure)</span>
+            <span class="token-preview" style="background: var(--component-card-bg);">Aa</span>
+          </article>
+          <article class="token-row">
+            <strong>--component-card-border</strong>
+            <span class="token-value">var(--color-border-soft)</span>
+            <span class="token-preview" style="border: var(--border-width-thin) solid var(--component-card-border); background: var(--color-white-pure);">Aa</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="preview">
         <h2>Interface Preview</h2>
         <div class="usage-grid">
           <article class="panel">
@@ -833,7 +2096,7 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section" id="contrast">
         <h2>Contrast Samples</h2>
         <div class="contrast-grid">
           <article class="contrast-card dark-sample">
