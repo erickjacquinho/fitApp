@@ -14,6 +14,9 @@ export default function RootLayout() {
           <StatusBar style="auto" />
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="diet/create-food" options={{ headerShown: false }} />
+            <Stack.Screen name="diet/create-meal" options={{ headerShown: false }} />
+            <Stack.Screen name="diet/food-bank" options={{ headerShown: false }} />
             <Stack.Screen name="style-guide" options={{ title: 'Design System' }} />
           </Stack>
         </SafeAreaProvider>
