@@ -13,7 +13,7 @@ import ExerciseExecution from './models/ExerciseExecution';
 
 const adapter = new SQLiteAdapter({
   schema,
-  jsi: true,
+  jsi: false, // JSI is not supported in standard Expo Go
   onSetUpError: (error) => {
     console.error('WatermelonDB setup error', error);
   },
