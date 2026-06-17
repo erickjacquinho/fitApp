@@ -3,6 +3,7 @@
 ## Language
 - Reply to the user in Brazilian Portuguese.
 - Write code comments, documentation, commit messages, branch names, and technical artifacts in English.
+- 100% of the files written (code, docs, specs, etc.) must be in English.
 
 ## Project Stack
 - React Native with Expo Managed Workflow.

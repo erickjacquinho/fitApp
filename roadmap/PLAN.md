@@ -1,403 +1,403 @@
-# fitApp - Plano de Implementação
+# fitApp - Implementation Plan
 
-## 1. Visão Geral do Plano
+## 1. Plan Overview
 
-Este plano organiza a implementação do fitApp em **6 fases** seguindo as dependências dos blocos:
+This plan organizes the implementation of fitApp into **6 phases** following block dependencies:
 
-| Fase | Blocos | Tasks | Dependências |
+| Phase | Blocks | Tasks | Dependencies |
 |------|--------|-------|--------------|
-| 1 | A - Fundamentos | A-1 a A-4 | Nenhuma |
-| 2 | B - Dieta Dados | B-1 a B-5 | A-1, A-4 |
-| 3 | C - Dieta UI | C-1 a C-7 | B-1 a B-5 |
-| 4 | D - Treino Dados | D-1 a D-7 | A-1, A-4 |
-| 5 | E - Treino UI | E-1 a E-8 | D-1 a D-7 |
-| 6 | F - Dashboard | F-1 a F-4 | C-1, E-1 |
+| 1 | A - Foundations | A-1 to A-4 | None |
+| 2 | B - Diet Data | B-1 to B-5 | A-1, A-4 |
+| 3 | C - Diet UI | C-1 to C-7 | B-1 to B-5 |
+| 4 | D - Training Data | D-1 to D-7 | A-1, A-4 |
+| 5 | E - Training UI | E-1 to E-8 | D-1 to D-7 |
+| 6 | F - Dashboard | F-1 to F-4 | C-1, E-1 |
 
 **Total: 31 tasks**
 
 ---
 
-## 2. Fase 1: Fundamentos e Infraestrutura
+## 2. Phase 1: Foundations and Infrastructure
 
-### A-1: Setup WatermelonDB
-**Descrição**: Configurar schemas de dieta e treino
-**Arquivo**: `src/database/`
-**Entregáveis**:
-- [ ] Schema de dieta (Alimento, Refeicao, ItemRefeicao)
-- [ ] Schema de treino (Programa, Bloco, Exercicio, SessaoTreino, ExecucaoExercicio)
-- [ ] Setup de database provider
+### A-1: WatermelonDB Setup
+**Description**: Configure diet and training schemas
+**File**: `src/database/`
+**Deliverables**:
+- [ ] Diet schema (Food, Meal, MealItem)
+- [ ] Training schema (Program, Block, Exercise, WorkoutSession, ExerciseExecution)
+- [ ] Database provider setup
 
-### A-2: Header de Navegação
-**Descrição**: Componente Header reutilizável
-**Arquivo**: `src/components/Header.tsx`
-**Entregáveis**:
-- [ ] Props: título, showBackButton, onBackPress
-- [ ] Estilo consistente com design system
+### A-2: Navigation Header
+**Description**: Reusable Header component
+**File**: `src/components/Header.tsx`
+**Deliverables**:
+- [ ] Props: title, showBackButton, onBackPress
+- [ ] Style consistent with design system
 - [ ] Safe area handling
 
-### A-3: Componentes Base
-**Descrição**: Componentes UI fundamentais
-**Arquivos**: `src/components/ui/`
-**Entregáveis**:
-- [ ] Card.tsx - container básico com sombra
-- [ ] Button.tsx - primário, secundário, destructive
-- [ ] Input.tsx - texto, número com validação
-- [ ] SwipeableCard.tsx - gesture de swipe
-- [ ] ConfirmModal.tsx - pop-up de confirmação
+### A-3: Base Components
+**Description**: Fundamental UI components
+**Files**: `src/components/ui/`
+**Deliverables**:
+- [ ] Card.tsx - basic container with shadow
+- [ ] Button.tsx - primary, secondary, destructive
+- [ ] Input.tsx - text, number with validation
+- [ ] SwipeableCard.tsx - swipe gesture
+- [ ] ConfirmModal.tsx - confirmation pop-up
 
-### A-4: Sistema de Navegação
-**Descrição**: Stack e Tab navigation
-**Arquivo**: `src/navigation/`
-**Entregáveis**:
-- [ ] TabNavigator - Dieta, Treino, Dashboard
-- [ ] StackNavigator por módulo
-- [ ] Tipos de navegação tipados
+### A-4: Navigation System
+**Description**: Stack and Tab navigation
+**File**: `src/navigation/`
+**Deliverables**:
+- [ ] TabNavigator - Diet, Training, Dashboard
+- [ ] StackNavigator per module
+- [ ] Typed navigation types
 
 ---
 
-## 3. Fase 2: Módulo Dieta - Dados
+## 3. Phase 2: Diet Module - Data
 
-### B-1: Schema Alimento
-**Descrição**: Modelo Alimento no WatermelonDB
-**Arquivo**: `src/database/models/Alimento.ts`
-**Entregáveis**:
-- [ ] Fields: id, nome, pesoPreparo, descricao, proteina, carboidrato, gordura
+### B-1: Food Schema
+**Description**: Food model in WatermelonDB
+**File**: `src/database/models/Food.ts`
+**Deliverables**:
+- [ ] Fields: id, name, preparationWeight, description, protein, carbohydrate, fat
 - [ ] Timestamps: createdAt, updatedAt
-- [ ] Relações: none (leaf entity)
+- [ ] Relations: none (leaf entity)
 
-### B-2: Schema Refeicao
-**Descrição**: Modelo Refeicao
-**Arquivo**: `src/database/models/Refeicao.ts`
-**Entregáveis**:
-- [ ] Fields: id, nome, quantidade, estadoPreparo
-- [ ] Relations: hasMany ItemRefeicao
+### B-2: Meal Schema
+**Description**: Meal model
+**File**: `src/database/models/Meal.ts`
+**Deliverables**:
+- [ ] Fields: id, name, quantity, preparationState
+- [ ] Relations: hasMany MealItem
 - [ ] Timestamps
 
-### B-3: Schema ItemRefeicao
-**Descrição**: Modelo ItemRefeicao (junction)
-**Arquivo**: `src/database/models/ItemRefeicao.ts`
-**Entregáveis**:
-- [ ] Fields: id, quantidade
-- [ ] Relations: belongsTo Refeicao, belongsTo Alimento
+### B-3: MealItem Schema
+**Description**: MealItem model (junction)
+**File**: `src/database/models/MealItem.ts`
+**Deliverables**:
+- [ ] Fields: id, quantity
+- [ ] Relations: belongsTo Meal, belongsTo Food
 
-### B-4: Repositório de Alimentos
-**Descrição**: CRUD operations para alimentos
-**Arquivo**: `src/database/repositories/alimentos.ts`
-**Entregáveis**:
-- [ ] create(data): Alimento
-- [ ] update(id, data): Alimento
+### B-4: Food Repository
+**Description**: CRUD operations for foods
+**File**: `src/database/repositories/foods.ts`
+**Deliverables**:
+- [ ] create(data): Food
+- [ ] update(id, data): Food
 - [ ] delete(id): void
-- [ ] getAll(): Alimento[]
-- [ ] getById(id): Alimento
-- [ ] search(query): Alimento[]
+- [ ] getAll(): Food[]
+- [ ] getById(id): Food
+- [ ] search(query): Food[]
 
-### B-5: Repositório de Refeições
-**Descrição**: CRUD operations para refeições
-**Arquivo**: `src/database/repositories/refeicoes.ts`
-**Entregáveis**:
-- [ ] create(data, items): Refeicao
-- [ ] update(id, data, items): Refeicao
+### B-5: Meal Repository
+**Description**: CRUD operations for meals
+**File**: `src/database/repositories/meals.ts`
+**Deliverables**:
+- [ ] create(data, items): Meal
+- [ ] update(id, data, items): Meal
 - [ ] delete(id): void
-- [ ] getAll(): Refeicao[]
-- [ ] getById(id): Refeicao (com items carregados)
-- [ ] getWithAlimentos(refeicaoId): RefeicaoComItems
+- [ ] getAll(): Meal[]
+- [ ] getById(id): Meal (with loaded items)
+- [ ] getWithFoods(mealId): MealWithItems
 
 ---
 
-## 4. Fase 3: Módulo Dieta - UI
+## 4. Phase 3: Diet Module - UI
 
-### C-1: Tela Cardápio
-**Descrição**: Lista de refeições do dia
-**Arquivo**: `src/screens/dieta/CardapioScreen.tsx`
-**Entregáveis**:
-- [ ] Header: "Cardápio" + total calórico
-- [ ] Lista de refeição cards com macros
-- [ ] Botão "+ Nova Refeição"
-- [ ] Botão "Banco de Alimentos"
+### C-1: Menu Screen
+**Description**: List of day's meals
+**File**: `src/screens/diet/MenuScreen.tsx`
+**Deliverables**:
+- [ ] Header: "Menu" + total calories
+- [ ] Meal cards list with macros
+- [ ] "+ New Meal" button
+- [ ] "Food Bank" button
 - [ ] Pull-to-refresh
 
-### C-2: Tela Criar/Editar Alimento
-**Descrição**: Formulário de alimento completo
-**Arquivo**: `src/screens/dieta/CriarAlimentoScreen.tsx`
-**Entregáveis**:
-- [ ] Inputs: nome, peso preparo, descrição
-- [ ] Inputs macros: proteína, carboidrato, gordura
-- [ ] Preview calories (useMemo) - cálculo em tempo real
-- [ ] Validação de campos obrigatórios
-- [ ] Botões: Salvar, Cancelar
+### C-2: Create/Edit Food Screen
+**Description**: Complete food form
+**File**: `src/screens/diet/CreateFoodScreen.tsx`
+**Deliverables**:
+- [ ] Inputs: name, preparation weight, description
+- [ ] Macro inputs: protein, carbohydrate, fat
+- [ ] Preview calories (useMemo) - real-time calculation
+- [ ] Required fields validation
+- [ ] Buttons: Save, Cancel
 
-### C-3: Tela Criar/Editar Refeição
-**Descrição**: Formulário de refeição com seletor
-**Arquivo**: `src/screens/dieta/CriarRefeicaoScreen.tsx`
-**Entregáveis**:
-- [ ] Inputs: nome, quantidade, estado preparo
-- [ ] Botão "Adicionar Alimento" → abre modal
-- [ ] Lista de alimentos selecionados com quantidade
-- [ ] Preview macros totais (useMemo)
-- [ ] Botões: Salvar, Cancelar
+### C-3: Create/Edit Meal Screen
+**Description**: Meal form with selector
+**File**: `src/screens/diet/CreateMealScreen.tsx`
+**Deliverables**:
+- [ ] Inputs: name, quantity, preparation state
+- [ ] "Add Food" button → opens modal
+- [ ] List of selected foods with quantity
+- [ ] Total macros preview (useMemo)
+- [ ] Buttons: Save, Cancel
 
-### C-4: Tela Banco de Alimentos
-**Descrição**: Lista completa com gestão
-**Arquivo**: `src/screens/dieta/BancoAlimentosScreen.tsx`
-**Entregáveis**:
-- [ ] Search bar com filtro
-- [ ] Lista de alimentos em cards
-- [ ] Swipeable para edit/delete
-- [ ] Mode seleção em massa (checkbox)
-- [ ] Botões: + Novo, ☑ Selecionar, 🗑️ Excluir
+### C-4: Food Bank Screen
+**Description**: Full list with management
+**File**: `src/screens/diet/FoodBankScreen.tsx`
+**Deliverables**:
+- [ ] Search bar with filter
+- [ ] Food list in cards
+- [ ] Swipeable for edit/delete
+- [ ] Bulk selection mode (checkbox)
+- [ ] Buttons: + New, ☑ Select, 🗑️ Delete
 
-### C-5: Componente SwipeableCard
-**Descrição**: Gesture de swipe reutilizável
-**Arquivo**: `src/components/ui/SwipeableCard.tsx`
-**Entregáveis**:
-- [ ] Swipe left revela ações
-- [ ] Configurable: Editar, Excluir
+### C-5: SwipeableCard Component
+**Description**: Reusable swipe gesture
+**File**: `src/components/ui/SwipeableCard.tsx`
+**Deliverables**:
+- [ ] Swipe left reveals actions
+- [ ] Configurable: Edit, Delete
 - [ ] Confirmation on delete
 - [ ] Haptic feedback
 
-### C-6: Modal Seletor de Alimentos
-**Descrição**: Modal para selecionar alimentos
-**Arquivo**: `src/components/dieta/SeletorAlimentosModal.tsx`
-**Entregáveis**:
-- [ ] Lista de alimentos com busca
-- [ ] Input quantidade por item
-- [ ] Checkbox seleção
-- [ ] Botão "Confirmar" adiciona à refeição
+### C-6: Food Selector Modal
+**Description**: Modal to select foods
+**File**: `src/components/diet/FoodSelectorModal.tsx`
+**Deliverables**:
+- [ ] Food list with search
+- [ ] Quantity input per item
+- [ ] Selection checkbox
+- [ ] "Confirm" button adds to meal
 
-### C-7: Componente PreviewMacros
-**Descrição**: Display de macros calculado
-**Arquivo**: `src/components/dieta/PreviewMacros.tsx`
-**Entregáveis**:
-- [ ] Props: alimentos[], quantities[]
-- [ ] Cálculo useMemo: proteína, carbo, gordura, calorias
-- [ ] Display formatado
+### C-7: PreviewMacros Component
+**Description**: Display of calculated macros
+**File**: `src/components/diet/PreviewMacros.tsx`
+**Deliverables**:
+- [ ] Props: foods[], quantities[]
+- [ ] useMemo calculation: protein, carb, fat, calories
+- [ ] Formatted display
 
 ---
 
-## 5. Fase 4: Módulo Treino - Dados
+## 5. Phase 4: Training Module - Data
 
-### D-1: Schema Programa
-**Descrição**: Modelo Programa
-**Arquivo**: `src/database/models/Programa.ts`
-**Entregáveis**:
-- [ ] Fields: id, nome, dataCriacao
-- [ ] Relations: hasMany Bloco
+### D-1: Program Schema
+**Description**: Program model
+**File**: `src/database/models/Program.ts`
+**Deliverables**:
+- [ ] Fields: id, name, createdAt
+- [ ] Relations: hasMany Block
 - [ ] Timestamps
 
-### D-2: Schema Bloco
-**Descrição**: Modelo Bloco (dia de treino)
-**Arquivo**: `src/database/models/Bloco.ts`
-**Entregáveis**:
-- [ ] Fields: id, programaId, nome, ordem
-- [ ] Relations: belongsTo Programa, hasMany Exercicio
+### D-2: Block Schema
+**Description**: Block model (training day)
+**File**: `src/database/models/Block.ts`
+**Deliverables**:
+- [ ] Fields: id, programId, name, order
+- [ ] Relations: belongsTo Program, hasMany Exercise
 
-### D-3: Schema Exercicio
-**Descrição**: Modelo Exercicio
-**Arquivo**: `src/database/models/Exercicio.ts`
-**Entregáveis**:
-- [ ] Fields: id, blocoId, nome, series, repeticoesMin, repeticoesMax, tecnicaAvancada, repsReserva
-- [ ] Relations: belongsTo Bloco
+### D-3: Exercise Schema
+**Description**: Exercise model
+**File**: `src/database/models/Exercise.ts`
+**Deliverables**:
+- [ ] Fields: id, blockId, name, sets, repetitionsMin, repetitionsMax, advancedTechnique, repsInReserve
+- [ ] Relations: belongsTo Block
 
-### D-4: Schema SessaoTreino
-**Descrição**: Modelo SessaoTreino
-**Arquivo**: `src/database/models/SessaoTreino.ts`
-**Entregáveis**:
-- [ ] Fields: id, programaId, dataInicio, dataFim, status
-- [ ] Relations: belongsTo Programa, hasMany ExecucaoExercicio
+### D-4: WorkoutSession Schema
+**Description**: WorkoutSession model
+**File**: `src/database/models/WorkoutSession.ts`
+**Deliverables**:
+- [ ] Fields: id, programId, startTime, endTime, status
+- [ ] Relations: belongsTo Program, hasMany ExerciseExecution
 
-### D-5: Schema ExecucaoExercicio
-**Descrição**: Modelo ExecucaoExercicio
-**Arquivo**: `src/database/models/ExecucaoExercicio.ts`
-**Entregáveis**:
-- [ ] Fields: id, sessaoTreinoId, exercicioId, serieNumero, repsFeitas, quilagem, repsReservaFeitas
-- [ ] Relations: belongsTo SessaoTreino, belongsTo Exercicio
+### D-5: ExerciseExecution Schema
+**Description**: ExerciseExecution model
+**File**: `src/database/models/ExerciseExecution.ts`
+**Deliverables**:
+- [ ] Fields: id, workoutSessionId, exerciseId, setNumber, repsDone, weight, repsInReserveDone
+- [ ] Relations: belongsTo WorkoutSession, belongsTo Exercise
 
-### D-6: Repositório de Programas
-**Descrição**: CRUD para programas
-**Arquivo**: `src/database/repositories/programas.ts`
-**Entregáveis**:
-- [ ] create(data, blocos): Programa
-- [ ] update(id, data, blocos): Programa
+### D-6: Program Repository
+**Description**: CRUD for programs
+**File**: `src/database/repositories/programs.ts`
+**Deliverables**:
+- [ ] create(data, blocks): Program
+- [ ] update(id, data, blocks): Program
 - [ ] delete(id): void
-- [ ] getAll(): Programa[]
-- [ ] getById(id): Programa (com blocos e exercícios)
+- [ ] getAll(): Program[]
+- [ ] getById(id): Program (with blocks and exercises)
 
-### D-7: Repositório de Sessões
-**Descrição**: CRUD para sessões de treino
-**Arquivo**: `src/database/repositories/sessoes.ts`
-**Entregáveis**:
-- [ ] create(programaId): SessaoTreino
-- [ ] update(id, data): SessaoTreino
-- [ ] finalize(id): SessaoTreino (status: concluido)
-- [ ] getAll(): SessaoTreino[] (histórico)
-- [ ] getById(id): SessaoTreino (com execuções)
-- [ ] addExecucao(sessaoId, exercicioId, serie, data): ExecucaoExercicio
+### D-7: Session Repository
+**Description**: CRUD for training sessions
+**File**: `src/database/repositories/sessions.ts`
+**Deliverables**:
+- [ ] create(programId): WorkoutSession
+- [ ] update(id, data): WorkoutSession
+- [ ] finalize(id): WorkoutSession (status: completed)
+- [ ] getAll(): WorkoutSession[] (history)
+- [ ] getById(id): WorkoutSession (with executions)
+- [ ] addExecution(sessionId, exerciseId, set, data): ExerciseExecution
 
 ---
 
-## 6. Fase 5: Módulo Treino - UI
+## 6. Phase 5: Training Module - UI
 
-### E-1: Tela Lista de Programas
-**Descrição**: Home do módulo treino
-**Arquivo**: `src/screens/treino/ListaProgramasScreen.tsx`
-**Entregáveis**:
-- [ ] Lista de programas em ordem cronológica
-- [ ] Cards expansíveis (expandir/blocos)
-- [ ] Botão "Novo Programa"
-- [ ] Botão "Iniciar" em cada programa
-- [ ] Botão "Histórico"
+### E-1: Program List Screen
+**Description**: Training module home
+**File**: `src/screens/training/ProgramListScreen.tsx`
+**Deliverables**:
+- [ ] List of programs in chronological order
+- [ ] Expandable cards (expand/blocks)
+- [ ] "New Program" button
+- [ ] "Start" button on each program
+- [ ] "History" button
 
-### E-2: Tela Criar/Editar Programa
-**Descrição**: Builder de programa com blocos
-**Arquivo**: `src/screens/treino/CriarProgramaScreen.tsx`
-**Entregáveis**:
-- [ ] Input nome do programa
-- [ ] Lista de blocos (adicionar/remover)
-- [ ] Bloco expandível (mostra exercícios)
-- [ ] Botão "Adicionar Exercício" por bloco
-- [ ] Botões: Salvar, Cancelar
+### E-2: Create/Edit Program Screen
+**Description**: Program builder with blocks
+**File**: `src/screens/training/CreateProgramScreen.tsx`
+**Deliverables**:
+- [ ] Program name input
+- [ ] List of blocks (add/remove)
+- [ ] Expandable block (shows exercises)
+- [ ] "Add Exercise" button per block
+- [ ] Buttons: Save, Cancel
 
-### E-3: Componente BlocoExpandivel
-**Descrição**: Bloco com toggle
-**Arquivo**: `src/components/treino/BlocoExpandivel.tsx`
-**Entregáveis**:
-- [ ] Header: nome do bloco + chevron
+### E-3: ExpandableBlock Component
+**Description**: Block with toggle
+**File**: `src/components/training/ExpandableBlock.tsx`
+**Deliverables**:
+- [ ] Header: block name + chevron
 - [ ] Chevron toggle (expand/collapse)
 - [ ] Animated height transition
-- [ ] Lista de exercícios dentro
-- [ ] Botão adicionar exercício
+- [ ] Exercises list inside
+- [ ] Add exercise button
 
-### E-4: Tela Criar/Editar Exercício
-**Descrição**: Formulário de exercício
-**Arquivo**: `src/screens/treino/CriarExercicioScreen.tsx`
-**Entregáveis**:
-- [ ] Inputs: nome, séries, repetições mín/máx
-- [ ] Select técnica avançada (opcional)
-- [ ] Input reps na reserva (opcional)
-- [ ] Botões: Salvar, Cancelar
+### E-4: Create/Edit Exercise Screen
+**Description**: Exercise form
+**File**: `src/screens/training/CreateExerciseScreen.tsx`
+**Deliverables**:
+- [ ] Inputs: name, sets, min/max repetitions
+- [ ] Advanced technique select (optional)
+- [ ] Reps in reserve input (optional)
+- [ ] Buttons: Save, Cancel
 
-### E-5: Tela Iniciar Sessão
-**Descrição**: Progressão de blocos durante treino
-**Arquivo**: `src/screens/treino/SessaoTreinoScreen.tsx`
-**Entregáveis**:
-- [ ] Header: nome programa + progresso (bloco X/Y)
-- [ ] Lista de exercícios do bloco atual
-- [ ] Botão "Executar" em cada exercício
-- [ ] Botão "Finalizar" (aparece ao completar bloco)
-- [ ] Confirmação ao finalizar
+### E-5: Start Session Screen
+**Description**: Block progression during workout
+**File**: `src/screens/training/WorkoutSessionScreen.tsx`
+**Deliverables**:
+- [ ] Header: program name + progress (block X/Y)
+- [ ] List of exercises for current block
+- [ ] "Execute" button on each exercise
+- [ ] "Finish" button (appears when completing block)
+- [ ] Confirmation on finish
 
-### E-6: Modal Executar Exercício
-**Descrição**: Preenchimento de execução por série
-**Arquivo**: `src/components/treino/ExecutarExercicioModal.tsx`
-**Entregáveis**:
-- [ ] Header: nome exercício, série atual/total
-- [ ] Info: reps programadas, range
-- [ ] Lista de inputs por série:
-  - [ ] Quilagem (kg)
-  - [ ] Reps feitas
-  - [ ] Reps reserva
-- [ ] Botão "Feito" por série
-- [ ] Botões: Anterior, Próximo
+### E-6: Execute Exercise Modal
+**Description**: Execution logging per set
+**File**: `src/components/training/ExecuteExerciseModal.tsx`
+**Deliverables**:
+- [ ] Header: exercise name, current/total set
+- [ ] Info: programmed reps, range
+- [ ] List of inputs per set:
+  - [ ] Weight (kg)
+  - [ ] Reps done
+  - [ ] Reps in reserve
+- [ ] "Done" button per set
+- [ ] Buttons: Previous, Next
 
-### E-7: Tela Histórico de Treinos
-**Descrição**: Lista de sessões concluídas
-**Arquivo**: `src/screens/treino/HistoricoScreen.tsx`
-**Entregáveis**:
-- [ ] Lista de sessões (cronológica reversa)
-- [ ] Card: data, programa, duração
-- [ ] Tap → navegação para detalhes
+### E-7: Training History Screen
+**Description**: List of completed sessions
+**File**: `src/screens/training/HistoryScreen.tsx`
+**Deliverables**:
+- [ ] List of sessions (reverse chronological)
+- [ ] Card: date, program, duration
+- [ ] Tap → navigation to details
 
-### E-8: Tela Detalhes da Sessão
-**Descrição**: Resumo completo da sessão
-**Arquivo**: `src/screens/treino/DetalhesSessaoScreen.tsx`
-**Entregáveis**:
-- [ ] Header: data, programa
-- [ ] Lista de blocos executados
-- [ ] Exercícios com métricas (quilagem, reps)
-- [ ] Resumo consolidado:
-  - Total séries
+### E-8: Session Details Screen
+**Description**: Full session summary
+**File**: `src/screens/training/SessionDetailsScreen.tsx`
+**Deliverables**:
+- [ ] Header: date, program
+- [ ] List of executed blocks
+- [ ] Exercises with metrics (weight, reps)
+- [ ] Consolidated summary:
+  - Total sets
   - Total reps
-  - Total quilagem
+  - Total weight
 
 ---
 
-## 7. Fase 6: Dashboard
+## 7. Phase 6: Dashboard
 
-### F-1: Tela Dashboard
-**Descrição**: Visão unificada
-**Arquivo**: `src/screens/DashboardScreen.tsx`
-**Entregáveis**:
-- [ ] Layout: cards de dieta e treino
-- [ ] Widget resumo dieta (C-2)
-- [ ] Widget resumo treino (F-3)
-- [ ] Estatísticas básicas (F-4)
-- [ ] Links de navegação para módulos
+### F-1: Dashboard Screen
+**Description**: Unified view
+**File**: `src/screens/DashboardScreen.tsx`
+**Deliverables**:
+- [ ] Layout: diet and training cards
+- [ ] Diet summary widget (C-2)
+- [ ] Training summary widget (F-3)
+- [ ] Basic statistics (F-4)
+- [ ] Navigation links to modules
 
-### F-2: Widget Resumo Dieta
-**Descrição**: Card de resumo alimentar
-**Arquivo**: `src/components/dashboard/WidgetDieta.tsx`
-**Entregáveis**:
-- [ ] Calorias consumidas / meta
-- [ ] Progress bar calórico
-- [ ] Resumo de macros do dia
+### F-2: Diet Summary Widget
+**Description**: Food summary card
+**File**: `src/components/dashboard/DietWidget.tsx`
+**Deliverables**:
+- [ ] Calories consumed / goal
+- [ ] Caloric progress bar
+- [ ] Day's macros summary
 
-### F-3: Widget Resumo Treino
-**Descrição**: Card de resumo de treino
-**Arquivo**: `src/components/dashboard/WidgetTreino.tsx`
-**Entregáveis**:
-- [ ] Nome do programa ativo
-- [ ] Treinos da semana
-- [ ] Último treino realizado
+### F-3: Training Summary Widget
+**Description**: Training summary card
+**File**: `src/components/dashboard/TrainingWidget.tsx`
+**Deliverables**:
+- [ ] Active program name
+- [ ] Workouts of the week
+- [ ] Last workout performed
 
-### F-4: Navegação Integrada
-**Descrição**: Links Dashboard ↔ Dieta/Treino
-**Entregáveis**:
-- [ ] Botão "Ver mais" em widgets
-- [ ] Navegação para módulos específicos
+### F-4: Integrated Navigation
+**Description**: Dashboard ↔ Diet/Training links
+**Deliverables**:
+- [ ] "See more" button in widgets
+- [ ] Navigation to specific modules
 
 ---
 
-## 8. Ordem de Implementação Recomendada
+## 8. Recommended Implementation Order
 
 ```
-SEMANA 1: Fundamentos
+WEEK 1: Foundations
 ├── A-1: WatermelonDB Setup
 ├── A-2: Header
-├── A-3: Componentes Base
-└── A-4: Navegação
+├── A-3: Base Components
+└── A-4: Navigation
 
-SEMANA 2-3: Dieta (Dados + UI)
-├── B-1 a B-3: Schemas dieta
-├── B-4 a B-5: Repositórios dieta
-├── C-1: Cardápio
-├── C-2: Criar Alimento
-├── C-3: Criar Refeição
+WEEK 2-3: Diet (Data + UI)
+├── B-1 to B-3: Diet schemas
+├── B-4 to B-5: Diet repositories
+├── C-1: Menu
+├── C-2: Create Food
+├── C-3: Create Meal
 ├── C-5: SwipeableCard
-├── C-6: Modal Seletor
+├── C-6: Selector Modal
 └── C-7: PreviewMacros
 
-SEMANA 4-5: Treino (Dados + UI)
-├── D-1 a D-5: Schemas treino
-├── D-6 a D-7: Repositórios treino
-├── E-1: Lista Programas
-├── E-2: Criar Programa
-├── E-3: Bloco Expandível
-├── E-4: Criar Exercício
-├── E-5: Iniciar Sessão
-├── E-6: Executar Exercício
-├── E-7: Histórico
-└── E-8: Detalhes Sessão
+WEEK 4-5: Training (Data + UI)
+├── D-1 to D-5: Training schemas
+├── D-6 to D-7: Training repositories
+├── E-1: Program List
+├── E-2: Create Program
+├── E-3: Expandable Block
+├── E-4: Create Exercise
+├── E-5: Start Session
+├── E-6: Execute Exercise
+├── E-7: History
+└── E-8: Session Details
 
-SEMANA 6: Dashboard
+WEEK 6: Dashboard
 ├── F-1: Dashboard
-├── F-2: Widget Dieta
-├── F-3: Widget Treino
-└── F-4: Navegação
+├── F-2: Diet Widget
+├── F-3: Training Widget
+└── F-4: Navigation
 ```
 
 ---
 
-## 9. Dependências Entre Tasks
+## 9. Task Dependencies
 
 ```
 A-1 → (B-1, B-2, B-3, D-1, D-2, D-3, D-4, D-5)
@@ -411,13 +411,13 @@ C-1, E-1 → (F-1)
 
 ---
 
-## 10. Critérios de Conclusão
+## 10. Completion Criteria
 
-- [ ] Fase 1 completa: App compila e navega
-- [ ] Fase 2 completa: CRUD alimentos/refeições funciona
-- [ ] Fase 3 completa: UI dieta completa e funcional
-- [ ] Fase 4 completa: CRUD programas/exercícios funciona
-- [ ] Fase 5 completa: UI treino completa e funcional
-- [ ] Fase 6 completa: Dashboard integrado
-- [ ] Todos os fluxos de usuário testados
-- [ ] Dados persistem entre sessões
+- [ ] Phase 1 complete: App compiles and navigates
+- [ ] Phase 2 complete: Food/meal CRUD works
+- [ ] Phase 3 complete: Diet UI complete and functional
+- [ ] Phase 4 complete: Program/exercise CRUD works
+- [ ] Phase 5 complete: Training UI complete and functional
+- [ ] Phase 6 complete: Integrated Dashboard
+- [ ] All user flows tested
+- [ ] Data persists between sessions
