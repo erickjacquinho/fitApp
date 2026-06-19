@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { Typography } from '../atoms/Typography';
 import { Icon } from '../atoms/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { COLORS } from '../atoms/colors';
 
 export interface HeaderProps {
   title: string;
@@ -23,9 +24,9 @@ export function Header({ title, showBackButton }: HeaderProps) {
           {showBackButton && (
             <Pressable 
               onPress={() => router.back()}
-              className="w-touch-target h-touch-target items-center justify-center -ml-micro"
+              className="w-11 h-11 items-center justify-center -ml-1"
             >
-              <Icon name="ArrowLeft" size={24} color="var(--color-black-main)" />
+              <Icon name="ArrowLeft" size={24} color={COLORS.textMain} />
             </Pressable>
           )}
         </View>

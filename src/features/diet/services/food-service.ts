@@ -1,15 +1,22 @@
 import { Q } from '@nozbe/watermelondb';
 import { database } from '../../../db';
 import Food from '../../../db/models/Food';
+import MealItem from '../../../db/models/MealItem';
 import { FoodDTO } from '../types';
 
 export class FoodService {
   private static collection = database.get<Food>('foods');
 
   static async create(data: FoodDTO): Promise<Food> {
+    if (!data.name || data.name.trim() === '') {
+      throw new Error('ValidationError: Food name is required');
+    }
+    if (data.protein < 0 || data.carbohydrates < 0 || data.fat < 0 || data.calories < 0) {
+      throw new Error('ValidationError: Nutritional values cannot be negative');
+    }
     return await database.write(async () => {
       return await this.collection.create((food) => {
-        food.name = data.name;
+        food.name = data.name.trim();
         food.preparationWeight = data.preparationWeight;
         food.description = data.description;
         food.protein = data.protein;
@@ -37,9 +44,19 @@ export class FoodService {
 
   static async delete(id: string): Promise<void> {
     const food = await this.collection.find(id);
+    const mealItemsCollection = database.get<MealItem>('meal_items');
+    const associatedItems = await mealItemsCollection.query(Q.where('food_id', id)).fetch();
+
     await database.write(async () => {
-      await food.markAsDeleted(); // or destroyPermanently()
+      await database.batch(
+        food.prepareMarkAsDeleted(),
+        ...associatedItems.map(item => item.prepareMarkAsDeleted())
+      );
     });
+  }
+
+  static async getById(id: string): Promise<Food> {
+    return await this.collection.find(id);
   }
 
   static async getAll(): Promise<Food[]> {

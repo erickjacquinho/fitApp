@@ -1,0 +1,101 @@
+import { schemaMigrations, createTable } from '@nozbe/watermelondb/Schema/migrations';
+
+export default schemaMigrations({
+  migrations: [
+    {
+      toVersion: 2,
+      steps: [
+        createTable({
+          name: 'foods',
+          columns: [
+            { name: 'name', type: 'string' },
+            { name: 'preparation_weight', type: 'number' },
+            { name: 'description', type: 'string', isOptional: true },
+            { name: 'protein', type: 'number' },
+            { name: 'carbohydrates', type: 'number' },
+            { name: 'fat', type: 'number' },
+            { name: 'calories', type: 'number' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'meals',
+          columns: [
+            { name: 'name', type: 'string' },
+            { name: 'quantity', type: 'number' },
+            { name: 'preparation_state', type: 'string' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'meal_items',
+          columns: [
+            { name: 'meal_id', type: 'string', isIndexed: true },
+            { name: 'food_id', type: 'string', isIndexed: true },
+            { name: 'quantity', type: 'number' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'programs',
+          columns: [
+            { name: 'name', type: 'string' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'training_blocks',
+          columns: [
+            { name: 'program_id', type: 'string', isIndexed: true },
+            { name: 'name', type: 'string' },
+            { name: 'order', type: 'number' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'exercises',
+          columns: [
+            { name: 'block_id', type: 'string', isIndexed: true },
+            { name: 'name', type: 'string' },
+            { name: 'sets', type: 'number' },
+            { name: 'reps_min', type: 'number' },
+            { name: 'reps_max', type: 'number' },
+            { name: 'advanced_technique', type: 'string', isOptional: true },
+            { name: 'reps_reserve', type: 'number', isOptional: true },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'workout_sessions',
+          columns: [
+            { name: 'program_id', type: 'string', isIndexed: true },
+            { name: 'start_date', type: 'number' },
+            { name: 'end_date', type: 'number', isOptional: true },
+            { name: 'status', type: 'string' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+        createTable({
+          name: 'exercise_executions',
+          columns: [
+            { name: 'workout_session_id', type: 'string', isIndexed: true },
+            { name: 'exercise_id', type: 'string', isIndexed: true },
+            { name: 'set_number', type: 'number' },
+            { name: 'reps_done', type: 'number' },
+            { name: 'weight', type: 'number' },
+            { name: 'reps_reserve_done', type: 'number', isOptional: true },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+      ],
+    },
+  ],
+});

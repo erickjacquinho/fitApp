@@ -5,13 +5,13 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)', fontWeight: 'var(--font-weight-black)', letterSpacing: 'var(--letter-spacing-tight)' }],
-        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)', fontWeight: 'var(--font-weight-bold)', letterSpacing: 'var(--letter-spacing-tight)' }],
-        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)', fontWeight: 'var(--font-weight-semibold)', letterSpacing: 'var(--letter-spacing-normal)' }],
-        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 'var(--letter-spacing-normal)' }],
-        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: 'var(--font-weight-semibold)', letterSpacing: 'var(--letter-spacing-normal)' }],
-        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', fontWeight: 'var(--font-weight-bold)', textTransform: 'uppercase', letterSpacing: 'var(--letter-spacing-label)' }],
-        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 'var(--letter-spacing-normal)' }],
+        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)', fontWeight: 'var(--font-weight-black)' }],
+        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)', fontWeight: 'var(--font-weight-bold)' }],
+        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)', fontWeight: 'var(--font-weight-semibold)' }],
+        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: 'var(--font-weight-regular)' }],
+        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: 'var(--font-weight-semibold)' }],
+        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', fontWeight: 'var(--font-weight-bold)', textTransform: 'uppercase' }],
+        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)', fontWeight: 'var(--font-weight-regular)' }],
       },
       colors: {
         surface: {
@@ -109,7 +109,7 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: "var(--font-family-sans)",
+        sans: ["Helvetica", "Arial", "sans-serif"],
       },
       fontWeight: {
         regular: "var(--font-weight-regular)",
@@ -152,7 +152,6 @@ module.exports = {
         lg: "var(--shadow-none)",
         xl: "var(--shadow-none)",
         "2xl": "var(--shadow-none)",
-        floating: "var(--shadow-floating)",
       },
       spacing: {
         base: "var(--space-base)",

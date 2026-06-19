@@ -47,15 +47,6 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Dashboard',
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="House" color={color} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="diet"
         options={{
           title: 'Dieta',
@@ -70,6 +61,15 @@ export default function TabsLayout() {
           title: 'Treino',
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="Dumbbell" color={color} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Dashboard',
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon name="House" color={color} focused={focused} />
           ),
         }}
       />

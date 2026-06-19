@@ -103,7 +103,7 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-const MealCard = enhanceMeal(({ meal, items }: { meal: Meal; items: any[] }) => {
+const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: any[]; onDelete: () => void }) => {
   // Map items to the format PreviewMacros expects
   const formattedItems = items.map(item => ({
     food: item.food.fetch(), // This is still a bit tricky in withObservables
@@ -112,7 +112,7 @@ const MealCard = enhanceMeal(({ meal, items }: { meal: Meal; items: any[] }) => 
   }));
 
   // Better approach for withObservables:
-  return <MealCardContent meal={meal} items={items} />;
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} />;
 });
 
 // Since I can't easily chain observations here without more complexity, 
@@ -120,7 +120,7 @@ const MealCard = enhanceMeal(({ meal, items }: { meal: Meal; items: any[] }) => 
 // For now, I'll implement a simpler version that fetches on render for the demo, 
 // but the goal is reactivity.
 
-function MealCardContent({ meal, items }: { meal: Meal; items: any[] }) {
+function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: any[]; onDelete: () => void }) {
   const [foodItems, setFoodItems] = useState<any[]>([]);
 
   React.useEffect(() => {
@@ -135,7 +135,7 @@ function MealCardContent({ meal, items }: { meal: Meal; items: any[] }) {
   }, [items]);
 
   return (
-    <SwipeableCard className="mb-4 gap-3">
+    <SwipeableCard className="mb-4 gap-3" onDelete={onDelete}>
       <View className="flex-row justify-between items-center">
         <Typography variant="subtitle">{meal.name}</Typography>
         <Typography variant="caption" color="muted">{meal.preparationState}</Typography>

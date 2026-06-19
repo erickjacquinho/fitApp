@@ -4,6 +4,7 @@ import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
 import { Card } from '../../../components/atoms/Card';
 import { SearchBar } from '../../../components/molecules/SearchBar';
+import { IconButton } from '../../../components/molecules/IconButton';
 import { Input } from '../../../components/atoms/Input';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
@@ -58,14 +59,19 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
     onClose();
   };
 
+  const selectedCount = Object.keys(selections).length;
+
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={onClose}
+    >
       <View className="flex-1 bg-surface-app" style={{ paddingTop: insets.top }}>
-        <View className="px-screen-x py-compact border-b border-soft flex-row items-center justify-between">
-          <Typography variant="title">Select Foods</Typography>
-          <Pressable onPress={onClose}>
-            <Typography color="muted">Cancel</Typography>
-          </Pressable>
+        <View className="flex-row items-center justify-between px-screen-x py-compact border-b border-soft">
+          <Typography variant="title">Select Food</Typography>
+          <IconButton icon="X" onPress={onClose} />
         </View>
 
         <View className="px-screen-x py-compact">
@@ -75,41 +81,42 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
         <FlatList
           data={foods}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="px-screen-x pb-40"
-          renderItem={({ item }) => {
-            const isSelected = selections[item.id] !== undefined;
-            return (
-              <Card 
-                className={`mb-3 flex-row items-center justify-between ${isSelected ? 'border-primary-main' : ''}`}
-                onTouchEnd={() => toggleSelection(item.id)}
-              >
-                <View className="flex-1 mr-3">
-                  <Typography variant="subtitle">{item.name}</Typography>
-                  <Typography variant="caption" color="muted">
-                    {item.calories} kcal / 100g
-                  </Typography>
-                </View>
-                
-                {isSelected && (
-                  <Pressable className="w-24" onPress={(e) => e.stopPropagation()}>
-                    <Input 
-                      placeholder="Qty (g)" 
-                      keyboardType="numeric" 
-                      value={selections[item.id].toString()}
-                      onChangeText={(val) => updateQuantity(item.id, val)}
-                    />
-                  </Pressable>
-                )}
-              </Card>
-            );
-          }}
+          contentContainerClassName="px-screen-x pb-32"
+          renderItem={({ item }) => (
+            <View className="flex-row items-center py-3 border-b border-soft">
+              <View className="flex-1 mr-3">
+                <Typography variant="subtitle">{item.name}</Typography>
+                <Typography variant="caption" color="muted">
+                  {item.calories} kcal / 100g
+                </Typography>
+              </View>
+
+              {selections[item.id] !== undefined ? (
+                <Pressable className="w-24" onPress={(e) => e.stopPropagation()}>
+                  <Input 
+                    placeholder="Qty (g)" 
+                    keyboardType="numeric" 
+                    value={selections[item.id].toString()}
+                    onChangeText={(val) => updateQuantity(item.id, val)}
+                  />
+                </Pressable>
+              ) : (
+                <Button 
+                  title="Add" 
+                  variant="secondary" 
+                  size="sm" 
+                  onPress={() => toggleSelection(item.id)} 
+                />
+              )}
+            </View>
+          )}
         />
 
-        <View className="absolute bottom-0 left-0 right-0 p-screen-x bg-surface-raised border-t border-soft shadow-floating" style={{ paddingBottom: Math.max(insets.bottom, 16) }}>
+        <View className="absolute bottom-0 left-0 right-0 p-screen-x bg-surface-raised border-t border-soft" style={{ paddingBottom: Math.max(insets.bottom, 16) }}>
           <Button 
-            title={`Confirm (${Object.keys(selections).length})`} 
-            onPress={handleConfirm} 
-            disabled={Object.keys(selections).length === 0}
+            title={`Confirm ${selectedCount > 0 ? `(${selectedCount})` : ''}`}
+            disabled={selectedCount === 0}
+            onPress={handleConfirm}
           />
         </View>
       </View>

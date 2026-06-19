@@ -8,9 +8,12 @@ export class MealService {
   private static mealItemsCollection = database.get<MealItem>('meal_items');
 
   static async createWithItems(mealData: MealDTO, items: ItemDTO[]): Promise<Meal> {
+    if (!mealData.name || mealData.name.trim() === '') {
+      throw new Error('ValidationError: Meal name is required');
+    }
     return await database.write(async () => {
       const newMeal = await this.mealsCollection.create((meal) => {
-        meal.name = mealData.name;
+        meal.name = mealData.name.trim();
         meal.quantity = mealData.quantity;
         meal.preparationState = mealData.preparationState;
       });
@@ -35,13 +38,9 @@ export class MealService {
 
   static async delete(id: string): Promise<void> {
     const meal = await this.mealsCollection.find(id);
+    const mealItems = await meal.items.fetch();
+    
     await database.write(async () => {
-      // MealItems should be handled (cascading or manual)
-      // Since we don't have automatic cascade in WatermelonDB for preparing delete, we should find items first
-      const items = await this.mealItemsCollection.query().fetch(); // Filtered by meal_id would be better
-      // Better to use Query or associations
-      const mealItems = await meal.items.fetch();
-      
       await database.batch(
         meal.prepareMarkAsDeleted(),
         ...mealItems.map((item: any) => item.prepareMarkAsDeleted())

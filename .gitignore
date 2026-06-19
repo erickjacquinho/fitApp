@@ -59,3 +59,4 @@ Thumbs.db
 # Project temporary files
 temp_fit_app/
 .temp_db/
+*.apk

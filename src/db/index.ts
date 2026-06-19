@@ -2,6 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
+import migrations from './migrations';
 import Food from './models/Food';
 import Meal from './models/Meal';
 import MealItem from './models/MealItem';
@@ -12,7 +13,9 @@ import WorkoutSession from './models/WorkoutSession';
 import ExerciseExecution from './models/ExerciseExecution';
 
 const adapter = new SQLiteAdapter({
+  dbName: 'fitapp_db_v2',
   schema,
+  migrations,
   jsi: false, // JSI is not supported in standard Expo Go
   onSetUpError: (error) => {
     console.error('WatermelonDB setup error', error);

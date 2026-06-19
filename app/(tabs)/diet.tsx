@@ -7,6 +7,7 @@ export default function DietTab() {
       eyebrow="My Diet"
       title="Daily Menu"
       description="Track your caloric intake and macronutrients for today."
+      scrollable={false}
     >
       <MenuScreen />
     </MainTabScreen>

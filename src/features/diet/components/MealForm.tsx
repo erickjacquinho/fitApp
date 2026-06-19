@@ -10,6 +10,7 @@ import { PreviewMacros } from './PreviewMacros';
 import { useRouter } from 'expo-router';
 import { Food } from '../../../db';
 import { Icon } from '../../../components/atoms/Icon';
+import { COLORS } from '../../../components/atoms/colors';
 
 export function MealForm() {
   const router = useRouter();
@@ -79,7 +80,7 @@ export function MealForm() {
                   <Typography variant="caption" color="muted">{item.quantity}g</Typography>
                 </View>
                 <Pressable onPress={() => removeFood(item.food.id)}>
-                  <Icon name="X" size={20} color="var(--color-tomato-main)" />
+                  <Icon name="X" size={20} color={COLORS.error} />
                 </Pressable>
               </Card>
             ))}

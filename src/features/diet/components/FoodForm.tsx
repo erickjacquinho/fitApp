@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Input } from '../../../components/atoms/Input';
@@ -22,6 +22,28 @@ export function FoodForm() {
     fat: '0',
     calories: '0',
   });
+
+  useEffect(() => {
+    if (id) {
+      const loadFood = async () => {
+        try {
+          const food = await FoodService.getById(id);
+          setForm({
+            name: food.name,
+            preparationWeight: food.preparationWeight.toString(),
+            description: food.description || '',
+            protein: food.protein.toString(),
+            carbohydrates: food.carbohydrates.toString(),
+            fat: food.fat.toString(),
+            calories: food.calories.toString(),
+          });
+        } catch (error) {
+          console.error('Error loading food:', error);
+        }
+      };
+      loadFood();
+    }
+  }, [id]);
 
   const handleSave = async () => {
     const data = {

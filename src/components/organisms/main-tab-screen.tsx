@@ -8,6 +8,7 @@ interface MainTabScreenProps {
   title: string;
   description: string;
   children?: ReactNode;
+  scrollable?: boolean;
 }
 
 export function MainTabScreen({
@@ -15,14 +16,22 @@ export function MainTabScreen({
   title,
   description,
   children,
+  scrollable = true,
 }: MainTabScreenProps) {
+  const Container = scrollable ? ScrollView : View;
+  const containerProps = scrollable
+    ? {
+        className: "flex-1",
+        contentContainerClassName: "px-screen-x py-compact gap-section-gap",
+      }
+    : {
+        className: "flex-1 px-screen-x py-compact gap-section-gap",
+      };
+
   return (
     <View className="flex-1 bg-surface-app">
       <Header title={title} />
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="px-screen-x py-compact gap-section-gap"
-      >
+      <Container {...containerProps}>
         <View className="gap-3">
           <Typography variant="label" color="muted">
             {eyebrow}
@@ -36,7 +45,7 @@ export function MainTabScreen({
         </View>
 
         {children}
-      </ScrollView>
+      </Container>
     </View>
   );
 }
