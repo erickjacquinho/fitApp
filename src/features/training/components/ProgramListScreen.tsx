@@ -186,7 +186,7 @@ export function ProgramListScreen() {
               className="mt-4 flex-row items-center justify-center gap-2 rounded bg-surface-app py-2.5 active:bg-soft/20 border border-soft"
             >
               <Play size={14} color="#005B94" fill="#005B94" />
-              <Typography variant="label" color="highlight" className="text-sm">
+              <Typography variant="label" className="text-sm text-primary-main">
                 Start Training Routine
               </Typography>
             </TouchableOpacity>

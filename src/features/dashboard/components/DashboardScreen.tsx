@@ -35,7 +35,7 @@ export function DashboardScreen() {
     <ScrollView
       className="flex-1 bg-surface-app p-4"
       refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={refetch} color="#005B94" />
+        <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={['#005B94']} />
       }
     >
       {/* Welcome Banner */}

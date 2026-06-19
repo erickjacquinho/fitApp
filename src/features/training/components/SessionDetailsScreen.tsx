@@ -179,7 +179,7 @@ export function SessionDetailsScreen() {
             <Typography variant="subtitle" className="font-bold text-base">
               {ex.name}
             </Typography>
-            <Typography variant="caption" color="highlight" className="font-bold">
+            <Typography variant="caption" className="font-bold text-primary-main">
               Volume: {ex.volume.toLocaleString()} kg
             </Typography>
           </View>

@@ -231,7 +231,7 @@ export function ExecuteExerciseModal({
             className="my-3 flex-row items-center justify-center gap-2 rounded border border-dashed border-primary-main py-2 active:bg-primary-main/5"
           >
             <Plus size={16} color="#005B94" />
-            <Typography variant="label" color="highlight">
+            <Typography variant="label" className="text-primary-main">
               Add Extra Set
             </Typography>
           </TouchableOpacity>

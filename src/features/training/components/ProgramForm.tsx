@@ -182,7 +182,7 @@ export function ProgramForm() {
           className="flex-row items-center gap-1 rounded bg-primary-main/10 px-3 py-1.5 active:bg-primary-main/20"
         >
           <Plus size={16} color="#005B94" />
-          <Typography variant="label" color="highlight">
+          <Typography variant="label" className="text-primary-main">
             Add Block
           </Typography>
         </TouchableOpacity>

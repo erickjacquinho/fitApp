@@ -217,7 +217,7 @@ export function WorkoutSessionScreen() {
                   Target: {exercise.sets} sets x {exercise.repsMin}-{exercise.repsMax} reps
                   {exercise.advancedTechnique && ` • ${exercise.advancedTechnique}`}
                 </Typography>
-                <Typography variant="caption" color="highlight" className="mt-0.5">
+                <Typography variant="caption" className="mt-0.5 text-primary-main">
                   Logged: {exExecs.length}/{exercise.sets} sets
                 </Typography>
               </View>

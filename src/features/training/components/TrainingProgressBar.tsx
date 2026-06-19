@@ -14,7 +14,7 @@ export function TrainingProgressBar({ completed, total }: TrainingProgressBarPro
     <View className="mb-4 rounded-md border border-soft bg-component-card-bg p-4">
       <View className="flex-row items-center justify-between mb-2">
         <Typography variant="label">Session Progress</Typography>
-        <Typography variant="label" color="highlight">
+        <Typography variant="label" className="text-primary-main">
           {completed}/{total} Exercises ({percentage}%)
         </Typography>
       </View>

@@ -34,7 +34,7 @@ export function TrainingWidget({
             className="flex-row items-center gap-1 rounded bg-primary-main/10 px-2.5 py-1 active:bg-primary-main/20"
           >
             <Play size={12} color="#005B94" fill="#005B94" />
-            <Typography variant="caption" color="highlight" className="font-bold">
+            <Typography variant="caption" className="font-bold text-primary-main">
               Start
             </Typography>
           </TouchableOpacity>
@@ -108,7 +108,7 @@ export function TrainingWidget({
         onPress={() => router.push('/training')}
         className="mt-4 py-2 border-t border-soft items-center active:bg-soft/10"
       >
-        <Typography variant="caption" color="highlight" className="font-bold">
+        <Typography variant="caption" className="font-bold text-primary-main">
           View All Programs
         </Typography>
       </TouchableOpacity>
