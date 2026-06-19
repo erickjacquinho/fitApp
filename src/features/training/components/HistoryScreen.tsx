@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';

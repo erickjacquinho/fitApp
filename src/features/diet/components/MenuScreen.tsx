@@ -9,6 +9,7 @@ import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
 import MealItem from '../../../db/models/MealItem';
+import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { PreviewMacros } from './PreviewMacros';
@@ -106,7 +107,7 @@ const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: Me
 // but the goal is reactivity.
 
 function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
-  const [foodItems, setFoodItems] = useState<{ food: Food | null; quantity: number }[]>([]);
+  const [foodItems, setFoodItems] = useState<{ food: Food; quantity: number }[]>([]);
 
   React.useEffect(() => {
     const loadFoods = async () => {
@@ -114,7 +115,8 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
         food: await item.food.fetch(),
         quantity: item.quantity
       })));
-      setFoodItems(data);
+      const validData = data.filter((d): d is { food: Food; quantity: number } => d.food !== null);
+      setFoodItems(validData);
     };
     loadFoods();
   }, [items]);
