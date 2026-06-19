@@ -4,6 +4,8 @@ import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
+import { ProgressCircle } from '../../../components/atoms/ProgressCircle';
+import { MacroTrackerCard } from './MacroTrackerCard';
 
 interface DietWidgetProps {
   calories: number;
@@ -66,11 +68,7 @@ export function DietWidget({
           </Typography>
         </View>
 
-        <View className="w-16 h-16 items-center justify-center rounded-full bg-surface-app border border-soft relative">
-          <Typography variant="label" className="font-bold text-primary-main text-xs">
-            {calPercentage}%
-          </Typography>
-        </View>
+        <ProgressCircle percentage={calPercentage} size={64} />
       </View>
 
       {/* Main progress bar */}
@@ -83,53 +81,30 @@ export function DietWidget({
 
       {/* Macro Breakdown */}
       <View className="flex-row gap-3">
-        {/* Protein */}
-        <View className="flex-1 rounded bg-surface-app p-2 border border-soft">
-          <Typography variant="caption" className="font-bold text-sky-600 mb-1 text-center">
-            Protein
-          </Typography>
-          <Typography variant="label" className="text-center font-bold">
-            {protein}g
-          </Typography>
-          <Typography variant="caption" color="muted" className="text-center text-[10px]">
-            of {proteinGoal}g
-          </Typography>
-          <View className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden mt-1">
-            <View className="h-full bg-sky-500" style={{ width: `${protPercentage}%` }} />
-          </View>
-        </View>
-
-        {/* Carbs */}
-        <View className="flex-1 rounded bg-surface-app p-2 border border-soft">
-          <Typography variant="caption" className="font-bold text-amber-600 mb-1 text-center">
-            Carbs
-          </Typography>
-          <Typography variant="label" className="text-center font-bold">
-            {carbs}g
-          </Typography>
-          <Typography variant="caption" color="muted" className="text-center text-[10px]">
-            of {carbsGoal}g
-          </Typography>
-          <View className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden mt-1">
-            <View className="h-full bg-amber-500" style={{ width: `${carbPercentage}%` }} />
-          </View>
-        </View>
-
-        {/* Fat */}
-        <View className="flex-1 rounded bg-surface-app p-2 border border-soft">
-          <Typography variant="caption" className="font-bold text-rose-600 mb-1 text-center">
-            Fat
-          </Typography>
-          <Typography variant="label" className="text-center font-bold">
-            {fat}g
-          </Typography>
-          <Typography variant="caption" color="muted" className="text-center text-[10px]">
-            of {fatGoal}g
-          </Typography>
-          <View className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden mt-1">
-            <View className="h-full bg-rose-500" style={{ width: `${fatPercentage}%` }} />
-          </View>
-        </View>
+        <MacroTrackerCard
+          name="Protein"
+          current={protein}
+          target={proteinGoal}
+          colorClass="text-sky-600"
+          progressColorClass="bg-sky-500"
+          progress={protPercentage}
+        />
+        <MacroTrackerCard
+          name="Carbs"
+          current={carbs}
+          target={carbsGoal}
+          colorClass="text-amber-600"
+          progressColorClass="bg-amber-500"
+          progress={carbPercentage}
+        />
+        <MacroTrackerCard
+          name="Fat"
+          current={fat}
+          target={fatGoal}
+          colorClass="text-rose-600"
+          progressColorClass="bg-rose-500"
+          progress={fatPercentage}
+        />
       </View>
 
       <TouchableOpacity

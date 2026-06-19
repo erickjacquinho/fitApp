@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
-import { CheckCircle2, Circle } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { Button } from '../../../components/atoms/Button';
 import { TrainingProgressBar } from './TrainingProgressBar';
 import { ExecuteExerciseModal } from './ExecuteExerciseModal';
+import { ExerciseListItem } from './ExerciseListItem';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import Exercise from '../../../db/models/Exercise';
 
@@ -74,43 +73,17 @@ export function WorkoutSessionScreen() {
           const completed = isExerciseCompleted(exercise.id, exercise.sets);
           
           return (
-            <Card
+            <ExerciseListItem
               key={exercise.id}
-              className={`mb-3 p-4 flex-row items-center border ${
-                completed ? 'border-success-main/30 bg-success-main/5' : 'border-soft'
-              }`}
-            >
-              <View className="mr-3">
-                {completed ? (
-                  <CheckCircle2 size={24} color="#2e7d32" />
-                ) : (
-                  <Circle size={24} color="#ccc" />
-                )}
-              </View>
-
-              <View className="flex-1">
-                <Typography
-                  variant="subtitle"
-                  className={`text-base font-bold ${completed ? 'line-through text-gray-500' : ''}`}
-                >
-                  {exercise.name}
-                </Typography>
-                <Typography variant="caption" color="muted" className="mt-1">
-                  Target: {exercise.sets} sets x {exercise.repsMin}-{exercise.repsMax} reps
-                  {exercise.advancedTechnique && ` • ${exercise.advancedTechnique}`}
-                </Typography>
-                <Typography variant="caption" className="mt-0.5 text-primary-main">
-                  Logged: {exExecs.length}/{exercise.sets} sets
-                </Typography>
-              </View>
-
-              <Button
-                title={exExecs.length > 0 ? 'Edit' : 'Start'}
-                variant={completed ? 'outline' : 'primary'}
-                size="sm"
-                onPress={() => handleOpenExerciseModal(exercise)}
-              />
-            </Card>
+              name={exercise.name}
+              setsCount={exExecs.length}
+              targetSets={exercise.sets}
+              repsMin={exercise.repsMin}
+              repsMax={exercise.repsMax}
+              advancedTechnique={exercise.advancedTechnique || undefined}
+              isCompleted={completed}
+              onPress={() => handleOpenExerciseModal(exercise)}
+            />
           );
         })}
 

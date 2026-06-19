@@ -4,14 +4,14 @@ import {
   View,
   ScrollView,
   Pressable,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Plus, Trash2, Check } from 'lucide-react-native';
+import { X, Plus } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
+import { SetInputRow } from './SetInputRow';
 
 interface SetState {
   setNumber: number;
@@ -159,69 +159,16 @@ export function ExecuteExerciseModal({
           {/* Sets List */}
           <ScrollView className="mt-4 flex-grow-0" style={{ maxHeight: 350 }}>
             {sets.map((item, index) => (
-              <View
+              <SetInputRow
                 key={item.setNumber}
-                className={`mb-3 flex-row items-center gap-2 rounded border p-2 ${
-                  item.isSaved ? 'border-success-main/30 bg-success-main/5' : 'border-soft bg-white-pure'
-                }`}
-              >
-                <View className="w-12 items-center justify-center">
-                  <Typography variant="label" color="muted">
-                    Set {item.setNumber}
-                  </Typography>
-                </View>
-
-                {/* Weight Input */}
-                <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-                  <TextInput
-                    keyboardType="numeric"
-                    placeholder="0"
-                    value={item.weight}
-                    onChangeText={(val) => handleInputChange(index, 'weight', val)}
-                    className="flex-1 p-0 text-center font-bold text-black-main"
-                  />
-                  <Typography variant="caption" color="muted" className="ml-1">
-                    kg
-                  </Typography>
-                </View>
-
-                {/* Reps Input */}
-                <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-                  <TextInput
-                    keyboardType="numeric"
-                    placeholder="0"
-                    value={item.reps}
-                    onChangeText={(val) => handleInputChange(index, 'reps', val)}
-                    className="flex-1 p-0 text-center font-bold text-black-main"
-                  />
-                  <Typography variant="caption" color="muted" className="ml-1">
-                    reps
-                  </Typography>
-                </View>
-
-                {/* Actions */}
-                <View className="flex-row items-center gap-1">
-                  {/* Save Check */}
-                  <TouchableOpacity
-                    onPress={() => handleSaveSet(index)}
-                    className={`h-9 w-9 items-center justify-center rounded ${
-                      item.isSaved ? 'bg-success-main' : 'bg-primary-main'
-                    }`}
-                  >
-                    <Check size={16} color="#fff" />
-                  </TouchableOpacity>
-
-                  {/* Delete */}
-                  {sets.length > 1 && (
-                    <TouchableOpacity
-                      onPress={() => handleRemoveSet(index)}
-                      className="h-9 w-9 items-center justify-center rounded bg-tomato-main/10"
-                    >
-                      <Trash2 size={16} color="#ef4444" />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
+                setNumber={item.setNumber}
+                weight={item.weight}
+                reps={item.reps}
+                isSaved={item.isSaved}
+                onInputChange={(field, val) => handleInputChange(index, field, val)}
+                onSave={() => handleSaveSet(index)}
+                onRemove={sets.length > 1 ? () => handleRemoveSet(index) : undefined}
+              />
             ))}
           </ScrollView>
 
