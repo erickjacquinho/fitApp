@@ -1,46 +1,22 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Plus, Trash2, Dumbbell, History, Play } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
 import { Button } from '../../../components/atoms/Button';
-import { WorkoutService } from '../services/workout-service';
-import { SessionService } from '../services/session-service';
-import Program from '../../../db/models/Program';
+import { useProgramList } from '../hooks/useProgramList';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 
-interface ProgramWithBlocks {
-  program: Program;
-  blocks: TrainingBlock[];
-}
-
 export function ProgramListScreen() {
-  const [programsData, setProgramsData] = useState<ProgramWithBlocks[]>([]);
-  const [activeSession, setActiveSession] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const loadData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const active = await SessionService.getActiveSession();
-      setActiveSession(active);
-
-      const allPrograms = await WorkoutService.getAllPrograms();
-      const loaded: ProgramWithBlocks[] = [];
-
-      for (const p of allPrograms) {
-        const blocks = await p.trainingBlocks.fetch();
-        loaded.push({ program: p, blocks });
-      }
-
-      setProgramsData(loaded);
-    } catch (error) {
-      console.error('Error loading programs:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const {
+    programsData,
+    activeSession,
+    isLoading,
+    loadData,
+    handleDeleteProgram,
+    startSession,
+  } = useProgramList();
 
   useFocusEffect(
     useCallback(() => {
@@ -48,30 +24,7 @@ export function ProgramListScreen() {
     }, [loadData])
   );
 
-  const handleDeleteProgram = (id: string, name: string) => {
-    Alert.alert(
-      'Delete Program',
-      `Are you sure you want to delete the program "${name}"? All associated workouts and plans will be lost.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await WorkoutService.deleteProgram(id);
-              loadData();
-            } catch (err) {
-              console.error('Error deleting program:', err);
-              Alert.alert('Error', 'Failed to delete program');
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  const handleStartSession = async (programId: string, programName: string, blocks: TrainingBlock[]) => {
+  const handleStartSession = (programId: string, programName: string, blocks: TrainingBlock[]) => {
     if (blocks.length === 0) {
       Alert.alert('No Workouts', 'This program does not have any workout blocks. Add blocks first.');
       return;
@@ -89,24 +42,13 @@ export function ProgramListScreen() {
       return;
     }
 
-    // Direct the user to choose which workout block they want to execute from this program
     Alert.alert(
       'Start Workout',
       `Choose a workout block to begin from "${programName}":`,
       [
         ...blocks.map((block) => ({
           text: block.name,
-          onPress: async () => {
-            try {
-              const session = await SessionService.startSession(programId);
-              router.push({
-                pathname: '/training/active',
-                params: { sessionId: session.id, blockId: block.id },
-              });
-            } catch (err) {
-              console.error('Error starting session:', err);
-            }
-          },
+          onPress: () => startSession(programId, block.id),
         })),
         { text: 'Cancel', style: 'cancel' },
       ]

@@ -1,87 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, Trophy } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
 import { Button } from '../../../components/atoms/Button';
-import { SessionService } from '../services/session-service';
-import WorkoutSession from '../../../db/models/WorkoutSession';
-import ExerciseExecution from '../../../db/models/ExerciseExecution';
-
-interface ExerciseSummary {
-  exerciseId: string;
-  name: string;
-  sets: { setNumber: number; weight: number; reps: number }[];
-  volume: number;
-}
+import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
 
 export function SessionDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [session, setSession] = useState<WorkoutSession | null>(null);
-  const [programName, setProgramName] = useState('');
-  const [exercisesSummary, setExercisesSummary] = useState<ExerciseSummary[]>([]);
-  const [totalVolume, setTotalVolume] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadDetails() {
-      if (!id) return;
-      try {
-        setIsLoading(true);
-        const { session: currentSession, executions } = await SessionService.getSessionDetails(id);
-        setSession(currentSession);
-
-        const program = await currentSession.program.fetch();
-        if (program) {
-          setProgramName(program.name);
-        }
-
-        // Group executions by exercise
-        const summariesMap: { [key: string]: ExerciseSummary } = {};
-        let totalVol = 0;
-
-        for (const exec of executions) {
-          const exercise = await exec.exercise.fetch();
-          if (!exercise) continue;
-
-          const vol = exec.weight * exec.repsDone;
-          totalVol += vol;
-
-          if (!summariesMap[exercise.id]) {
-            summariesMap[exercise.id] = {
-              exerciseId: exercise.id,
-              name: exercise.name,
-              sets: [],
-              volume: 0,
-            };
-          }
-
-          summariesMap[exercise.id].sets.push({
-            setNumber: exec.setNumber,
-            weight: exec.weight,
-            reps: exec.repsDone,
-          });
-          summariesMap[exercise.id].volume += vol;
-        }
-
-        // Sort sets by set number for each exercise
-        const summaries = Object.values(summariesMap).map((summary) => ({
-          ...summary,
-          sets: summary.sets.sort((a, b) => a.setNumber - b.setNumber),
-        }));
-
-        setExercisesSummary(summaries);
-        setTotalVolume(totalVol);
-      } catch (err) {
-        console.error('Error loading session details:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadDetails();
-  }, [id]);
+  const {
+    session,
+    programName,
+    exercisesSummary,
+    totalVolume,
+    isLoading,
+  } = useWorkoutDetails(id);
 
   const formatDate = (timestamp: number) => {
     const d = new Date(timestamp);

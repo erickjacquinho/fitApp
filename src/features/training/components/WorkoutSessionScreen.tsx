@@ -1,164 +1,46 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
-import { CheckCircle2, Circle, Play, Award } from 'lucide-react-native';
+import { CheckCircle2, Circle } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
 import { Button } from '../../../components/atoms/Button';
 import { TrainingProgressBar } from './TrainingProgressBar';
 import { ExecuteExerciseModal } from './ExecuteExerciseModal';
-import { SessionService } from '../services/session-service';
-import { WorkoutService } from '../services/workout-service';
-import WorkoutSession from '../../../db/models/WorkoutSession';
-import TrainingBlock from '../../../db/models/TrainingBlock';
+import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import Exercise from '../../../db/models/Exercise';
-import ExerciseExecution from '../../../db/models/ExerciseExecution';
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
-  const [session, setSession] = useState<WorkoutSession | null>(null);
-  const [block, setBlock] = useState<TrainingBlock | null>(null);
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [executions, setExecutions] = useState<ExerciseExecution[]>([]);
   const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const loadWorkoutData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      
-      let currentSession: WorkoutSession | null = null;
-      
-      if (params.sessionId) {
-        const details = await SessionService.getSessionDetails(params.sessionId);
-        currentSession = details.session;
-      } else {
-        currentSession = await SessionService.getActiveSession();
-      }
-
-      if (!currentSession) {
-        router.replace('/training');
-        return;
-      }
-
-      setSession(currentSession);
-
-      // Load program and its blocks
-      const program = await currentSession.program.fetch();
-      const blocks = await program.trainingBlocks.fetch();
-
-      // Determine which block to load
-      let currentBlock: TrainingBlock | null = null;
-      if (params.blockId) {
-        currentBlock = blocks.find((b) => b.id === params.blockId) || null;
-      }
-
-      // If no block selected (e.g. direct resume), find from executions or default to first
-      const sessionExecs = await currentSession.executions.fetch();
-      setExecutions(sessionExecs);
-
-      if (!currentBlock) {
-        if (sessionExecs.length > 0) {
-          // Find which block the executed exercise belongs to
-          const firstExec = sessionExecs[0];
-          const exercise = await firstExec.exercise.fetch();
-          if (exercise) {
-            currentBlock = blocks.find((b) => b.id === exercise.blockId) || null;
-          }
-        }
-        
-        if (!currentBlock && blocks.length > 0) {
-          currentBlock = blocks[0]; // fallback to first block
-        }
-      }
-
-      if (currentBlock) {
-        setBlock(currentBlock);
-        const blockExs = await currentBlock.exercises.fetch();
-        // Sort by order or just display
-        setExercises(blockExs);
-      }
-    } catch (error) {
-      console.error('Error loading session data:', error);
-      Alert.alert('Error', 'Failed to load workout details');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [params.sessionId, params.blockId]);
-
-  useEffect(() => {
-    loadWorkoutData();
-  }, [loadWorkoutData]);
+  const {
+    session,
+    block,
+    exercises,
+    isLoading,
+    handleSaveSet,
+    handleDeleteSet,
+    handleFinishWorkout,
+    getExerciseExecutions,
+    isExerciseCompleted,
+    getCompletedExercisesCount,
+  } = useWorkoutSession(params.sessionId, params.blockId);
 
   const handleOpenExerciseModal = (exercise: Exercise) => {
     setActiveExercise(exercise);
     setIsModalVisible(true);
   };
 
-  const handleSaveSet = async (setNumber: number, reps: number, weight: number) => {
-    if (!session || !activeExercise) return;
-    
-    await SessionService.logSet(session.id, activeExercise.id, {
-      setNumber,
-      repsDone: reps,
-      weight,
-    });
-    
-    // Refresh executions
-    const updatedExecs = await session.executions.fetch();
-    setExecutions(updatedExecs);
+  const handleSaveSetCallback = async (setNumber: number, reps: number, weight: number) => {
+    if (!activeExercise) return;
+    await handleSaveSet(activeExercise.id, setNumber, reps, weight);
   };
 
-  const handleDeleteSet = async (setNumber: number) => {
-    if (!session || !activeExercise) return;
-
-    await SessionService.deleteSet(session.id, activeExercise.id, setNumber);
-
-    // Refresh executions
-    const updatedExecs = await session.executions.fetch();
-    setExecutions(updatedExecs);
-  };
-
-  const handleFinishWorkout = () => {
-    if (!session) return;
-
-    Alert.alert(
-      'Finish Session',
-      'Are you sure you want to finish your workout session?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes, Finish',
-          onPress: async () => {
-            try {
-              const completedSession = await SessionService.finishSession(session.id);
-              router.replace({
-                pathname: `/training/details/[id]`,
-                params: { id: completedSession.id },
-              });
-            } catch (err) {
-              console.error('Error finishing session:', err);
-              Alert.alert('Error', 'Failed to finish session');
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  // Helper selectors
-  const getExerciseExecutions = (exerciseId: string) => {
-    return executions.filter((e) => e.exerciseId === exerciseId);
-  };
-
-  const isExerciseCompleted = (exerciseId: string, targetSets: number) => {
-    const execs = getExerciseExecutions(exerciseId);
-    return execs.length >= targetSets && execs.every((e) => e.repsDone > 0 && e.weight > 0);
-  };
-
-  const getCompletedExercisesCount = () => {
-    return exercises.filter((ex) => isExerciseCompleted(ex.id, ex.sets)).length;
+  const handleDeleteSetCallback = async (setNumber: number) => {
+    if (!activeExercise) return;
+    await handleDeleteSet(activeExercise.id, setNumber);
   };
 
   if (isLoading) {
@@ -266,8 +148,8 @@ export function WorkoutSessionScreen() {
             repsDone: e.repsDone,
             weight: e.weight,
           }))}
-          onSaveSet={handleSaveSet}
-          onDeleteSet={handleDeleteSet}
+          onSaveSet={handleSaveSetCallback}
+          onDeleteSet={handleDeleteSetCallback}
         />
       )}
     </View>

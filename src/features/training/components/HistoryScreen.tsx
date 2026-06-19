@@ -1,29 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
-import { SessionService } from '../services/session-service';
-import WorkoutSession from '../../../db/models/WorkoutSession';
+import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
 
 export function HistoryScreen() {
-  const [history, setHistory] = useState<WorkoutSession[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const loadHistory = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const allHistory = await SessionService.getHistory();
-      // Filter out only completed ones
-      const completed = allHistory.filter((s) => s.status === 'completed');
-      setHistory(completed);
-    } catch (err) {
-      console.error('Error loading training history:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const { history, isLoading, loadHistory } = useWorkoutHistory();
 
   useFocusEffect(
     useCallback(() => {
