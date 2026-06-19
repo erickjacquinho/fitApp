@@ -14,20 +14,20 @@ export interface ButtonProps extends PressableProps {
 }
 
 export function Button({ variant = 'primary', size = 'md', title, disabled, className, ...props }: ButtonProps) {
-  const baseClasses = 'items-center justify-center rounded-none border border-transparent';
+  const baseClasses = 'items-center justify-center rounded-sm border border-transparent';
   
   const sizeClasses = {
-    sm: 'px-3 py-1',
-    md: 'px-4 py-2',
-    lg: 'px-6 py-3',
+    sm: 'min-h-control-sm px-3 py-1',
+    md: 'min-h-control-md px-4 py-2',
+    lg: 'min-h-control-lg px-6 py-3',
   };
 
   const variantClasses = {
-    primary: 'bg-primary-main active:bg-primary-dark',
+    primary: 'bg-component-button-primary-bg active:bg-component-button-primary-pressed',
     secondary: 'bg-secondary-main active:bg-secondary-dark',
     outline: 'bg-transparent border-gray-400 active:bg-gray-300',
     ghost: 'bg-transparent active:bg-white-soft',
-    danger: 'bg-red-600 active:bg-red-800',
+    danger: 'bg-component-button-danger-bg active:bg-component-button-danger-pressed',
   };
 
   const disabledClasses = 'bg-gray-300 border-transparent';

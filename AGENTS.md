@@ -1,37 +1,66 @@
-# 🤖 FitApp Engineer Persona & Guidelines
+# FitApp Agent Instructions
 
-**Role:** Senior Software Engineer specializing in React Native, Expo, and Offline-First architectures.
-**Goal:** Build FitApp with technical excellence and high performance.
+## Language
+- Reply to the user in Brazilian Portuguese.
+- Write code comments, documentation, commit messages, branch names, and technical artifacts in English.
+- 100% of the files written (code, docs, specs, etc.) must be in English.
 
-## 1. 🌍 Communication & Language
-- **User Interaction:** MUST respond in **Brazilian Portuguese (pt-br)**.
-- **Code & Docs:** Comments, commit messages, and documentation MUST be in **English**.
+## Project Stack
+- React Native with Expo Managed Workflow.
+- Expo Router for navigation.
+- NativeWind v4 with Tailwind CSS v3.
+- Zustand for global state.
+- WatermelonDB for offline-first persistence.
+- Atomic Design for shared UI components.
 
-## 2. 🛠️ Tech Stack & Architecture
-- **Core:** React Native, Expo (Managed), Expo Router.
-- **State/DB:** Zustand (global state), WatermelonDB (offline persistence).
-- **UI/UX:** NativeWind v4 (Tailwind), Atomic Design. Tokens SSOT in `tailwind.config.js` and `global.css`.
-- **Structure:** Feature-based modular organization (`src/features/`).
+## Project Structure
+- App routes live in `app/`.
+- Shared UI lives in `src/components/`.
+- Feature code lives in `src/features/`.
+- Database code lives in `src/db/`.
+- Product and architecture docs live in `docs/`.
+- Implementation artifacts live in `implementation/<feature-name>/`.
+- Long-term project knowledge lives in `knowledge/`.
 
-## 3. 📋 Workflow & Artifacts (Speckit)
-- **Protocol:** MANDATORY sequence: `/speckit.specify` -> `/speckit.plan` -> `/speckit.tasks`.
-- **Strategy First:** Analyze requirements and present an execution strategy for approval BEFORE invoking any skill.
-- **Execution:** Use `/speckit.implement` as orchestrator, but leverage specialized skills (e.g., `ui-ux-pro-max`, `zustand-store-ts`) when applicable.
-- **Artifacts:** Save each phase's markdown artifact in its feature folder (`/implementation/<feature-name>/`).
-- **Autonomy:** Proceed autonomously after plan approval. Stop only for critical blockers or ambiguity.
+## Working Rules
+- Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
+- Before creating a new UI component, check existing components in `src/components/` and feature folders.
+- Prefer extending existing atoms/molecules over creating duplicates.
+- Keep changes focused. Do not refactor unrelated code.
+- Use strict TypeScript. Do not use `any`.
+- Use `PascalCase` for components, types, and interfaces.
+- Use `camelCase` for functions and variables.
+- Use `kebab-case` for files and directories.
+- Use design tokens from `tailwind.config.js` and `global.css`; avoid hardcoded visual values when a token exists.
 
-## 4. 🚀 Initialization & Validation
-- **Pre-flight:** Read all files in `docs/`, `knowledge/`, `.agents/rules/`, and `.agents/workflows/` at session start.
-- **Verification:** Empirically validate changes (tests/manual) before completion.
-- **Knowledge Base:** Document new architectural decisions or verified best practices as new `.md` files in `/knowledge/`.
+## Rule Lookup
+- Use `.agents/rules/designsystem-guide.md` as the design system index.
+- When a task touches UI, styling, layout, accessibility, icons, content, components, forms, feedback, navigation, or data display, open only the focused rule file that matches the task.
+- Prefer focused rule files over broad docs when there is overlap.
+- Do not load every rule file by default; read only what is needed for the current change.
+- If rules conflict, follow the most specific `.agents/rules/*.md` file first, then `designsystem-guide.md`, then broader docs in `docs/`.
 
-## 5. ⚖️ Engineering Standards
-- **Git Workflow:** Use feature branches. Merge to `main` only after complete, verified, and tested implementation.
-- **Conventions:** 
-  - `PascalCase`: Components, Types, Interfaces.
-  - `camelCase`: Functions, Variables.
-  - `kebab-case`: Files, Directories.
-- **Reusability:** MANDATORY check for existing UI components in `src/components/` or feature folders before creating new ones. Extend/refactor existing atoms/molecules first.
-- **TypeScript:** Strict typing required. Zero tolerance for `any`.
-- **Code Quality:** Prioritize readability and surgical updates. No unrelated refactoring.
-- **Atomic Design:** Build reusable atoms, molecules, and organisms in `src/components/`.
+## Speckit Workflow
+- For new features, use this order:
+  1. `/speckit.specify`
+  2. `/speckit.plan`
+  3. `/speckit.tasks`
+  4. `/speckit.implement`
+- Present the execution strategy before implementation when the feature is non-trivial.
+- Save generated Speckit artifacts under `implementation/<feature-name>/`.
+- After plan approval, continue autonomously unless there is a blocker or real ambiguity.
+
+## Validation
+- Validate changes before finishing.
+- Prefer these checks when relevant:
+  - `npx tsc --noEmit`
+  - `npx expo install --check`
+  - `npx expo-doctor`
+  - `npm audit --audit-level=moderate`
+  - `npx expo export --platform web --output-dir dist-check`
+- Remove temporary validation output such as `dist-check/` after use.
+
+## Git
+- Use feature branches for new work.
+- Do not merge to `main` until the implementation is complete and validated.
+- Do not revert user changes unless explicitly requested.

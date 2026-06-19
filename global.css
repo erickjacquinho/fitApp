@@ -4,27 +4,167 @@
 
 @layer base {
   :root {
-    --color-primary-main: #0800FF;
-    --color-primary-light: #4D47FF;
-    --color-primary-soft: #C7C5FF;
-    --color-primary-dark: #0500B3;
-
-    --color-secondary-main: #C9E227;
-    --color-secondary-light: #E4F57A;
-    --color-secondary-soft: #F4FBD2;
-    --color-secondary-dark: #9DB312;
-
+    --color-offwhite: #F8F6F0;
+    --color-cream: #EFE6D6;
+    --color-beige: #E3D6C4;
+    --color-sand: #C7B293;
+    
+    --color-black-main: #1F1B16;
+    --color-black-soft: #38312B;
+    --color-black-light: #5A5148;
+    
     --color-white-pure: #FFFFFF;
-    --color-white-base: #F5F4F0;
-    --color-white-soft: #EFEDE7;
+    --color-white-base: #FDFDFD;
+    --color-white-soft: #FAF9F6;
+    
+    --color-olive-main: #556B2F;
+    --color-olive-light: #8FBC8F;
+    --color-olive-soft: #DDE5C9;
+    --color-olive-dark: #3A4A20;
+    
+    --color-rust-main: #FF6347;
+    --color-rust-light: #FF9E8B;
+    --color-rust-soft: #F6D8CF;
+    --color-rust-dark: #B34632;
+    
+    --color-success-main: #228B22;
+    --color-success-soft: #D3F3D3;
+    --color-success-dark: #165C16;
+    
+    --color-info-main: #4682B4;
+    --color-info-soft: #D6E8F5;
+    --color-info-dark: #2F597A;
+    
+    --color-warning-main: #DAA520;
+    --color-warning-soft: #FDF0D0;
+    --color-warning-dark: #916E15;
+    
+    --color-gray-300: #E0E0E0;
+    --color-gray-400: #BDBDBD;
+    --color-gray-500: #9E9E9E;
+    --color-gray-700: #616161;
 
-    --color-black-main: #0F0F0F;
-    --color-black-soft: #181710;
-    --color-black-light: #2A2A2A;
+    --color-text-main: var(--color-black-main);
+    --color-text-muted: var(--color-black-light);
+    
+    --color-border-soft: var(--color-beige);
+    --color-border-strong: var(--color-sand);
+    
+    --color-accent-main: var(--color-olive-main);
+    --color-accent-light: var(--color-olive-light);
+    --color-accent-soft: var(--color-olive-soft);
+    --color-accent-dark: var(--color-olive-dark);
 
-    --color-gray-300: #EAEAEA;
-    --color-gray-400: #D6D6D6;
-    --color-gray-500: #A0A0A0;
-    --color-gray-700: #6B6B6B;
+    --color-tomato-main: var(--color-rust-main);
+    --color-tomato-light: var(--color-rust-light);
+    --color-tomato-soft: var(--color-rust-soft);
+    --color-tomato-dark: var(--color-rust-dark);
+
+    --color-primary-main: var(--color-accent-main);
+    --color-primary-light: var(--color-accent-light);
+    --color-primary-soft: var(--color-accent-soft);
+    --color-primary-dark: var(--color-accent-dark);
+
+    --color-secondary-main: var(--color-olive-light);
+    --color-secondary-light: var(--color-olive-soft);
+    --color-secondary-soft: var(--color-beige);
+    --color-secondary-dark: var(--color-olive-main);
+
+    --component-button-primary-bg: var(--color-accent-main);
+    --component-button-primary-bg-pressed: var(--color-accent-dark);
+    --component-button-primary-text: var(--color-white-pure);
+    --component-button-danger-bg: var(--color-rust-main);
+    --component-button-danger-bg-pressed: var(--color-rust-dark);
+    
+    --component-input-bg: var(--color-white-pure);
+    --component-input-border: var(--color-border-strong);
+    --component-input-border-focus: var(--color-accent-main);
+    
+    --component-card-bg: var(--color-white-pure);
+    --component-card-border: var(--color-border-soft);
+
+    --font-family-sans: "Helvetica Now", Helvetica, Arial, sans-serif;
+
+    --font-size-display: 32px;
+    --font-size-title: 24px;
+    --font-size-subtitle: 18px;
+    --font-size-body: 16px;
+    --font-size-label: 14px;
+    --font-size-caption: 12px;
+
+    --line-height-display: 40px;
+    --line-height-title: 32px;
+    --line-height-subtitle: 24px;
+    --line-height-body: 24px;
+    --line-height-label: 18px;
+    --line-height-caption: 16px;
+
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+
+    --letter-spacing-tight: -0.02;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.08;
+    --letter-spacing-label: 0.12;
+
+    --space-base: 4px;
+    --space-micro: 4px;
+    --space-compact: 8px;
+    --space-title-content: 12px;
+    --space-screen: 16px;
+    --space-card: 20px;
+    --space-related: 24px;
+    --space-category: 32px;
+    --space-page: 40px;
+    --space-empty-state: 48px;
+
+    --layout-screen-padding-x: var(--space-screen);
+    --layout-screen-padding-y: var(--space-screen);
+    --layout-screen-padding-y-comfortable: var(--space-related);
+    --layout-grid-columns-phone: 4;
+    --layout-grid-gutter: var(--space-title-content);
+    --layout-content-gap: var(--space-screen);
+    --layout-section-gap: var(--space-category);
+    --layout-page-gap: var(--space-page);
+
+    --size-icon-sm: 16px;
+    --size-icon-md: 20px;
+    --size-icon-lg: 24px;
+
+    --size-touch-target: 44px;
+    --size-control-sm: 36px;
+    --size-control-md: 44px;
+    --size-control-lg: 52px;
+    --size-input-md: 48px;
+
+    --size-avatar-sm: 32px;
+    --size-avatar-md: 40px;
+    --size-avatar-lg: 56px;
+
+    --size-tabbar-height: 64px;
+    --size-bottom-sheet-handle-width: 40px;
+    --size-bottom-sheet-handle-height: 4px;
+
+    --motion-duration-fast: 120ms;
+    --motion-duration-base: 180ms;
+    --motion-duration-slow: 300ms;
+
+    --motion-easing-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
+    --motion-easing-emphasized: cubic-bezier(0.2, 0.0, 0, 1.0);
+
+    --radius-none: 0px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+
+    --border-width-hairline: 0.5px;
+    --border-width-thin: 1px;
+
+    --shadow-none: none;
+    --shadow-floating: 0 2px 8px rgba(31, 27, 22, 0.08);
   }
 }

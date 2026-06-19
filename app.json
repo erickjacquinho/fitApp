@@ -1,19 +1,21 @@
 {
   "expo": {
-    "name": "temp_fit_app",
-    "slug": "temp_fit_app",
+    "name": "fitApp",
+    "slug": "fit-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": false,
+    "newArchEnabled": true,
+    "scheme": "fitapp",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.fitapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,14 +23,14 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "package": "com.anonymous.fitapp"
     },
-    "scheme": "fitapp",
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-dev-client"
     ]
   }
 }

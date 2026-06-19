@@ -1,18 +1,16 @@
 # Componentes de Aplicação
 
+> Reference only. This file is a broad reminder list for possible components and is not an implementation rule. FitApp implementation rules live in `.agents/rules/`, especially `designsystem-guide.md` and the focused design system guideline files.
+
 ## Componentes Básicos (Todo App)
 
 ### Navegação
 - **Navbar** — Barra de navegação principal com logo, links e ações
 - **Sidebar** — Menu lateral colapsável para navegação entre páginas
 - **BottomNav** — Navegação inferior para apps mobile
-- **Breadcrumbs** — Trilha de navegação mostrando localização atual
-- **Tabs** — Abas para alternar entre conteúdos relacionados
 
 ### Layout
 - **Container** — Wrapper centralizado com largura máxima
-- **Grid** — Sistema de grids para organizar conteúdo
-- **Stack** — Componente de espaçamento vertical/horizontal
 - **Card** — Container com bordas, sombra e padding para conteúdo
 - **Divider** — Linha separadora visual
 - **Header** — Cabeçalho de página/sessão
@@ -33,7 +31,6 @@
 - **Badge** — Indicador numérico ou texto em destaque
 - **Spinner/Loader** — Indicador de carregamento
 - **ProgressBar** — Barra de progresso
-- **Skeleton** — Placeholder de carregamento visual
 
 ### Mídia
 - **Avatar** — Foto de perfil do usuário

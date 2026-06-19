@@ -1,46 +1,18 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 1,
+  version: 2,
   tables: [
-    tableSchema({
-      name: 'users',
-      columns: [
-        { name: 'name', type: 'string' },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
-      ],
-    }),
-    tableSchema({
-      name: 'workouts',
-      columns: [
-        { name: 'date', type: 'number', isIndexed: true },
-        { name: 'notes', type: 'string', isOptional: true },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
-      ],
-    }),
-    tableSchema({
-      name: 'exercises',
-      columns: [
-        { name: 'workout_id', type: 'string', isIndexed: true },
-        { name: 'name', type: 'string' },
-        { name: 'sets', type: 'number' },
-        { name: 'reps', type: 'string' }, // e.g. '8-12' or 'to failure'
-        { name: 'weight', type: 'number' },
-        { name: 'notes', type: 'string', isOptional: true },
-        { name: 'created_at', type: 'number' },
-        { name: 'updated_at', type: 'number' },
-      ],
-    }),
     tableSchema({
       name: 'foods',
       columns: [
-        { name: 'name', type: 'string', isIndexed: true },
-        { name: 'calories_per_100g', type: 'number' },
-        { name: 'protein_per_100g', type: 'number' },
-        { name: 'carbs_per_100g', type: 'number' },
-        { name: 'fat_per_100g', type: 'number' },
+        { name: 'name', type: 'string' },
+        { name: 'preparation_weight', type: 'number' },
+        { name: 'description', type: 'string', isOptional: true },
+        { name: 'protein', type: 'number' },
+        { name: 'carbohydrates', type: 'number' },
+        { name: 'fat', type: 'number' },
+        { name: 'calories', type: 'number' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],
@@ -48,19 +20,75 @@ export default appSchema({
     tableSchema({
       name: 'meals',
       columns: [
-        { name: 'date', type: 'number', isIndexed: true },
         { name: 'name', type: 'string' },
-        { name: 'notes', type: 'string', isOptional: true },
+        { name: 'quantity', type: 'number' },
+        { name: 'preparation_state', type: 'string' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],
     }),
     tableSchema({
-      name: 'meal_foods',
+      name: 'meal_items',
       columns: [
         { name: 'meal_id', type: 'string', isIndexed: true },
         { name: 'food_id', type: 'string', isIndexed: true },
-        { name: 'quantity_grams', type: 'number' },
+        { name: 'quantity', type: 'number' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'programs',
+      columns: [
+        { name: 'name', type: 'string' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'training_blocks',
+      columns: [
+        { name: 'program_id', type: 'string', isIndexed: true },
+        { name: 'name', type: 'string' },
+        { name: 'order', type: 'number' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'exercises',
+      columns: [
+        { name: 'block_id', type: 'string', isIndexed: true },
+        { name: 'name', type: 'string' },
+        { name: 'sets', type: 'number' },
+        { name: 'reps_min', type: 'number' },
+        { name: 'reps_max', type: 'number' },
+        { name: 'advanced_technique', type: 'string', isOptional: true },
+        { name: 'reps_reserve', type: 'number', isOptional: true },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'workout_sessions',
+      columns: [
+        { name: 'program_id', type: 'string', isIndexed: true },
+        { name: 'start_date', type: 'number' },
+        { name: 'end_date', type: 'number', isOptional: true },
+        { name: 'status', type: 'string' },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'exercise_executions',
+      columns: [
+        { name: 'workout_session_id', type: 'string', isIndexed: true },
+        { name: 'exercise_id', type: 'string', isIndexed: true },
+        { name: 'set_number', type: 'number' },
+        { name: 'reps_done', type: 'number' },
+        { name: 'weight', type: 'number' },
+        { name: 'reps_reserve_done', type: 'number', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

@@ -13,9 +13,9 @@ export interface BadgeProps extends ViewProps {
 
 export function Badge({ variant = 'neutral', label, className, ...props }: BadgeProps) {
   const variantClasses = {
-    success: 'bg-secondary-main',
-    warning: 'bg-orange-500',
-    info: 'bg-primary-soft',
+    success: 'bg-success-soft',
+    warning: 'bg-warning-soft',
+    info: 'bg-info-soft',
     neutral: 'bg-gray-300',
   };
 
