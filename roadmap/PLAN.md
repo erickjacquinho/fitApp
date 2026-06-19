@@ -23,35 +23,35 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: Configure diet and training schemas
 **File**: `src/database/`
 **Deliverables**:
-- [ ] Diet schema (Food, Meal, MealItem)
-- [ ] Training schema (Program, Block, Exercise, WorkoutSession, ExerciseExecution)
-- [ ] Database provider setup
+- [x] Diet schema (Food, Meal, MealItem)
+- [x] Training schema (Program, Block, Exercise, WorkoutSession, ExerciseExecution)
+- [x] Database provider setup
 
 ### A-2: Navigation Header
 **Description**: Reusable Header component
 **File**: `src/components/Header.tsx`
 **Deliverables**:
-- [ ] Props: title, showBackButton, onBackPress
-- [ ] Style consistent with design system
-- [ ] Safe area handling
+- [x] Props: title, showBackButton, onBackPress
+- [x] Style consistent with design system
+- [x] Safe area handling
 
 ### A-3: Base Components
 **Description**: Fundamental UI components
 **Files**: `src/components/ui/`
 **Deliverables**:
-- [ ] Card.tsx - basic container with shadow
-- [ ] Button.tsx - primary, secondary, destructive
-- [ ] Input.tsx - text, number with validation
-- [ ] SwipeableCard.tsx - swipe gesture
-- [ ] ConfirmModal.tsx - confirmation pop-up
+- [x] Card.tsx - basic container with shadow
+- [x] Button.tsx - primary, secondary, destructive
+- [x] Input.tsx - text, number with validation
+- [x] SwipeableCard.tsx - swipe gesture
+- [x] ConfirmModal.tsx - confirmation pop-up
 
 ### A-4: Navigation System
 **Description**: Stack and Tab navigation
 **File**: `src/navigation/`
 **Deliverables**:
-- [ ] TabNavigator - Diet, Training, Dashboard
-- [ ] StackNavigator per module
-- [ ] Typed navigation types
+- [x] TabNavigator - Diet, Training, Dashboard
+- [x] StackNavigator per module
+- [x] Typed navigation types
 
 ---
 
@@ -61,46 +61,46 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: Food model in WatermelonDB
 **File**: `src/database/models/Food.ts`
 **Deliverables**:
-- [ ] Fields: id, name, preparationWeight, description, protein, carbohydrate, fat
-- [ ] Timestamps: createdAt, updatedAt
-- [ ] Relations: none (leaf entity)
+- [x] Fields: id, name, preparationWeight, description, protein, carbohydrate, fat
+- [x] Timestamps: createdAt, updatedAt
+- [x] Relations: none (leaf entity)
 
 ### B-2: Meal Schema
 **Description**: Meal model
 **File**: `src/database/models/Meal.ts`
 **Deliverables**:
-- [ ] Fields: id, name, quantity, preparationState
-- [ ] Relations: hasMany MealItem
-- [ ] Timestamps
+- [x] Fields: id, name, quantity, preparationState
+- [x] Relations: hasMany MealItem
+- [x] Timestamps
 
 ### B-3: MealItem Schema
 **Description**: MealItem model (junction)
 **File**: `src/database/models/MealItem.ts`
 **Deliverables**:
-- [ ] Fields: id, quantity
-- [ ] Relations: belongsTo Meal, belongsTo Food
+- [x] Fields: id, quantity
+- [x] Relations: belongsTo Meal, belongsTo Food
 
 ### B-4: Food Repository
 **Description**: CRUD operations for foods
 **File**: `src/database/repositories/foods.ts`
 **Deliverables**:
-- [ ] create(data): Food
-- [ ] update(id, data): Food
-- [ ] delete(id): void
-- [ ] getAll(): Food[]
-- [ ] getById(id): Food
-- [ ] search(query): Food[]
+- [x] create(data): Food
+- [x] update(id, data): Food
+- [x] delete(id): void
+- [x] getAll(): Food[]
+- [x] getById(id): Food
+- [x] search(query): Food[]
 
 ### B-5: Meal Repository
 **Description**: CRUD operations for meals
 **File**: `src/database/repositories/meals.ts`
 **Deliverables**:
-- [ ] create(data, items): Meal
-- [ ] update(id, data, items): Meal
-- [ ] delete(id): void
-- [ ] getAll(): Meal[]
-- [ ] getById(id): Meal (with loaded items)
-- [ ] getWithFoods(mealId): MealWithItems
+- [x] create(data, items): Meal
+- [x] update(id, data, items): Meal
+- [x] delete(id): void
+- [x] getAll(): Meal[]
+- [x] getById(id): Meal (with loaded items)
+- [x] getWithFoods(mealId): MealWithItems
 
 ---
 
@@ -110,67 +110,67 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: List of day's meals
 **File**: `src/screens/diet/MenuScreen.tsx`
 **Deliverables**:
-- [ ] Header: "Menu" + total calories
-- [ ] Meal cards list with macros
-- [ ] "+ New Meal" button
-- [ ] "Food Bank" button
-- [ ] Pull-to-refresh
+- [x] Header: "Menu" + total calories
+- [x] Meal cards list with macros
+- [x] "+ New Meal" button
+- [x] "Food Bank" button
+- [x] Pull-to-refresh
 
 ### C-2: Create/Edit Food Screen
 **Description**: Complete food form
 **File**: `src/screens/diet/CreateFoodScreen.tsx`
 **Deliverables**:
-- [ ] Inputs: name, preparation weight, description
-- [ ] Macro inputs: protein, carbohydrate, fat
-- [ ] Preview calories (useMemo) - real-time calculation
-- [ ] Required fields validation
-- [ ] Buttons: Save, Cancel
+- [x] Inputs: name, preparation weight, description
+- [x] Macro inputs: protein, carbohydrate, fat
+- [x] Preview calories (useMemo) - real-time calculation
+- [x] Required fields validation
+- [x] Buttons: Save, Cancel
 
 ### C-3: Create/Edit Meal Screen
 **Description**: Meal form with selector
 **File**: `src/screens/diet/CreateMealScreen.tsx`
 **Deliverables**:
-- [ ] Inputs: name, quantity, preparation state
-- [ ] "Add Food" button → opens modal
-- [ ] List of selected foods with quantity
-- [ ] Total macros preview (useMemo)
-- [ ] Buttons: Save, Cancel
+- [x] Inputs: name, quantity, preparation state
+- [x] "Add Food" button → opens modal
+- [x] List of selected foods with quantity
+- [x] Total macros preview (useMemo)
+- [x] Buttons: Save, Cancel
 
 ### C-4: Food Bank Screen
 **Description**: Full list with management
 **File**: `src/screens/diet/FoodBankScreen.tsx`
 **Deliverables**:
-- [ ] Search bar with filter
-- [ ] Food list in cards
-- [ ] Swipeable for edit/delete
-- [ ] Bulk selection mode (checkbox)
-- [ ] Buttons: + New, ☑ Select, 🗑️ Delete
+- [x] Search bar with filter
+- [x] Food list in cards
+- [x] Swipeable for edit/delete
+- [x] Bulk selection mode (checkbox)
+- [x] Buttons: + New, ☑ Select, 🗑️ Delete
 
 ### C-5: SwipeableCard Component
 **Description**: Reusable swipe gesture
 **File**: `src/components/ui/SwipeableCard.tsx`
 **Deliverables**:
-- [ ] Swipe left reveals actions
-- [ ] Configurable: Edit, Delete
-- [ ] Confirmation on delete
-- [ ] Haptic feedback
+- [x] Swipe left reveals actions
+- [x] Configurable: Edit, Delete
+- [x] Confirmation on delete
+- [x] Haptic feedback
 
 ### C-6: Food Selector Modal
 **Description**: Modal to select foods
 **File**: `src/components/diet/FoodSelectorModal.tsx`
 **Deliverables**:
-- [ ] Food list with search
-- [ ] Quantity input per item
-- [ ] Selection checkbox
-- [ ] "Confirm" button adds to meal
+- [x] Food list with search
+- [x] Quantity input per item
+- [x] Selection checkbox
+- [x] "Confirm" button adds to meal
 
 ### C-7: PreviewMacros Component
 **Description**: Display of calculated macros
 **File**: `src/components/diet/PreviewMacros.tsx`
 **Deliverables**:
-- [ ] Props: foods[], quantities[]
-- [ ] useMemo calculation: protein, carb, fat, calories
-- [ ] Formatted display
+- [x] Props: foods[], quantities[]
+- [x] useMemo calculation: protein, carb, fat, calories
+- [x] Formatted display
 
 ---
 
@@ -180,58 +180,58 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: Program model
 **File**: `src/database/models/Program.ts`
 **Deliverables**:
-- [ ] Fields: id, name, createdAt
-- [ ] Relations: hasMany Block
-- [ ] Timestamps
+- [x] Fields: id, name, createdAt
+- [x] Relations: hasMany Block
+- [x] Timestamps
 
 ### D-2: Block Schema
 **Description**: Block model (training day)
 **File**: `src/database/models/Block.ts`
 **Deliverables**:
-- [ ] Fields: id, programId, name, order
-- [ ] Relations: belongsTo Program, hasMany Exercise
+- [x] Fields: id, programId, name, order
+- [x] Relations: belongsTo Program, hasMany Exercise
 
 ### D-3: Exercise Schema
 **Description**: Exercise model
 **File**: `src/database/models/Exercise.ts`
 **Deliverables**:
-- [ ] Fields: id, blockId, name, sets, repetitionsMin, repetitionsMax, advancedTechnique, repsInReserve
-- [ ] Relations: belongsTo Block
+- [x] Fields: id, blockId, name, sets, repetitionsMin, repetitionsMax, advancedTechnique, repsInReserve
+- [x] Relations: belongsTo Block
 
 ### D-4: WorkoutSession Schema
 **Description**: WorkoutSession model
 **File**: `src/database/models/WorkoutSession.ts`
 **Deliverables**:
-- [ ] Fields: id, programId, startTime, endTime, status
-- [ ] Relations: belongsTo Program, hasMany ExerciseExecution
+- [x] Fields: id, programId, startTime, endTime, status
+- [x] Relations: belongsTo Program, hasMany ExerciseExecution
 
 ### D-5: ExerciseExecution Schema
 **Description**: ExerciseExecution model
 **File**: `src/database/models/ExerciseExecution.ts`
 **Deliverables**:
-- [ ] Fields: id, workoutSessionId, exerciseId, setNumber, repsDone, weight, repsInReserveDone
-- [ ] Relations: belongsTo WorkoutSession, belongsTo Exercise
+- [x] Fields: id, workoutSessionId, exerciseId, setNumber, repsDone, weight, repsInReserveDone
+- [x] Relations: belongsTo WorkoutSession, belongsTo Exercise
 
 ### D-6: Program Repository
 **Description**: CRUD for programs
 **File**: `src/database/repositories/programs.ts`
 **Deliverables**:
-- [ ] create(data, blocks): Program
-- [ ] update(id, data, blocks): Program
-- [ ] delete(id): void
-- [ ] getAll(): Program[]
-- [ ] getById(id): Program (with blocks and exercises)
+- [x] create(data, blocks): Program
+- [x] update(id, data, blocks): Program
+- [x] delete(id): void
+- [x] getAll(): Program[]
+- [x] getById(id): Program (with blocks and exercises)
 
 ### D-7: Session Repository
 **Description**: CRUD for training sessions
 **File**: `src/database/repositories/sessions.ts`
 **Deliverables**:
-- [ ] create(programId): WorkoutSession
-- [ ] update(id, data): WorkoutSession
-- [ ] finalize(id): WorkoutSession (status: completed)
-- [ ] getAll(): WorkoutSession[] (history)
-- [ ] getById(id): WorkoutSession (with executions)
-- [ ] addExecution(sessionId, exerciseId, set, data): ExerciseExecution
+- [x] create(programId): WorkoutSession
+- [x] update(id, data): WorkoutSession
+- [x] finalize(id): WorkoutSession (status: completed)
+- [x] getAll(): WorkoutSession[] (history)
+- [x] getById(id): WorkoutSession (with executions)
+- [x] addExecution(sessionId, exerciseId, set, data): ExerciseExecution
 
 ---
 
@@ -241,80 +241,80 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: Training module home
 **File**: `src/screens/training/ProgramListScreen.tsx`
 **Deliverables**:
-- [ ] List of programs in chronological order
-- [ ] Expandable cards (expand/blocks)
-- [ ] "New Program" button
-- [ ] "Start" button on each program
-- [ ] "History" button
+- [x] List of programs in chronological order
+- [x] Expandable cards (expand/blocks)
+- [x] "New Program" button
+- [x] "Start" button on each program
+- [x] "History" button
 
 ### E-2: Create/Edit Program Screen
 **Description**: Program builder with blocks
 **File**: `src/screens/training/CreateProgramScreen.tsx`
 **Deliverables**:
-- [ ] Program name input
-- [ ] List of blocks (add/remove)
-- [ ] Expandable block (shows exercises)
-- [ ] "Add Exercise" button per block
-- [ ] Buttons: Save, Cancel
+- [x] Program name input
+- [x] List of blocks (add/remove)
+- [x] Expandable block (shows exercises)
+- [x] "Add Exercise" button per block
+- [x] Buttons: Save, Cancel
 
 ### E-3: ExpandableBlock Component
 **Description**: Block with toggle
 **File**: `src/components/training/ExpandableBlock.tsx`
 **Deliverables**:
-- [ ] Header: block name + chevron
-- [ ] Chevron toggle (expand/collapse)
-- [ ] Animated height transition
-- [ ] Exercises list inside
-- [ ] Add exercise button
+- [x] Header: block name + chevron
+- [x] Chevron toggle (expand/collapse)
+- [x] Animated height transition
+- [x] Exercises list inside
+- [x] Add exercise button
 
 ### E-4: Create/Edit Exercise Screen
 **Description**: Exercise form
 **File**: `src/screens/training/CreateExerciseScreen.tsx`
 **Deliverables**:
-- [ ] Inputs: name, sets, min/max repetitions
-- [ ] Advanced technique select (optional)
-- [ ] Reps in reserve input (optional)
-- [ ] Buttons: Save, Cancel
+- [x] Inputs: name, sets, min/max repetitions
+- [x] Advanced technique select (optional)
+- [x] Reps in reserve input (optional)
+- [x] Buttons: Save, Cancel
 
 ### E-5: Start Session Screen
 **Description**: Block progression during workout
 **File**: `src/screens/training/WorkoutSessionScreen.tsx`
 **Deliverables**:
-- [ ] Header: program name + progress (block X/Y)
-- [ ] List of exercises for current block
-- [ ] "Execute" button on each exercise
-- [ ] "Finish" button (appears when completing block)
-- [ ] Confirmation on finish
+- [x] Header: program name + progress (block X/Y)
+- [x] List of exercises for current block
+- [x] "Execute" button on each exercise
+- [x] "Finish" button (appears when completing block)
+- [x] Confirmation on finish
 
 ### E-6: Execute Exercise Modal
 **Description**: Execution logging per set
 **File**: `src/components/training/ExecuteExerciseModal.tsx`
 **Deliverables**:
-- [ ] Header: exercise name, current/total set
-- [ ] Info: programmed reps, range
-- [ ] List of inputs per set:
-  - [ ] Weight (kg)
-  - [ ] Reps done
-  - [ ] Reps in reserve
-- [ ] "Done" button per set
-- [ ] Buttons: Previous, Next
+- [x] Header: exercise name, current/total set
+- [x] Info: programmed reps, range
+- [x] List of inputs per set:
+  - [x] Weight (kg)
+  - [x] Reps done
+  - [x] Reps in reserve
+- [x] "Done" button per set
+- [x] Buttons: Previous, Next
 
 ### E-7: Training History Screen
 **Description**: List of completed sessions
 **File**: `src/screens/training/HistoryScreen.tsx`
 **Deliverables**:
-- [ ] List of sessions (reverse chronological)
-- [ ] Card: date, program, duration
-- [ ] Tap → navigation to details
+- [x] List of sessions (reverse chronological)
+- [x] Card: date, program, duration
+- [x] Tap → navigation to details
 
 ### E-8: Session Details Screen
 **Description**: Full session summary
 **File**: `src/screens/training/SessionDetailsScreen.tsx`
 **Deliverables**:
-- [ ] Header: date, program
-- [ ] List of executed blocks
-- [ ] Exercises with metrics (weight, reps)
-- [ ] Consolidated summary:
+- [x] Header: date, program
+- [x] List of executed blocks
+- [x] Exercises with metrics (weight, reps)
+- [x] Consolidated summary:
   - Total sets
   - Total reps
   - Total weight
@@ -327,33 +327,33 @@ This plan organizes the implementation of fitApp into **6 phases** following blo
 **Description**: Unified view
 **File**: `src/screens/DashboardScreen.tsx`
 **Deliverables**:
-- [ ] Layout: diet and training cards
-- [ ] Diet summary widget (C-2)
-- [ ] Training summary widget (F-3)
-- [ ] Basic statistics (F-4)
-- [ ] Navigation links to modules
+- [x] Layout: diet and training cards
+- [x] Diet summary widget (C-2)
+- [x] Training summary widget (F-3)
+- [x] Basic statistics (F-4)
+- [x] Navigation links to modules
 
 ### F-2: Diet Summary Widget
 **Description**: Food summary card
 **File**: `src/components/dashboard/DietWidget.tsx`
 **Deliverables**:
-- [ ] Calories consumed / goal
-- [ ] Caloric progress bar
-- [ ] Day's macros summary
+- [x] Calories consumed / goal
+- [x] Caloric progress bar
+- [x] Day's macros summary
 
 ### F-3: Training Summary Widget
 **Description**: Training summary card
 **File**: `src/components/dashboard/TrainingWidget.tsx`
 **Deliverables**:
-- [ ] Active program name
-- [ ] Workouts of the week
-- [ ] Last workout performed
+- [x] Active program name
+- [x] Workouts of the week
+- [x] Last workout performed
 
 ### F-4: Integrated Navigation
 **Description**: Dashboard ↔ Diet/Training links
 **Deliverables**:
-- [ ] "See more" button in widgets
-- [ ] Navigation to specific modules
+- [x] "See more" button in widgets
+- [x] Navigation to specific modules
 
 ---
 
@@ -413,11 +413,11 @@ C-1, E-1 → (F-1)
 
 ## 10. Completion Criteria
 
-- [ ] Phase 1 complete: App compiles and navigates
-- [ ] Phase 2 complete: Food/meal CRUD works
-- [ ] Phase 3 complete: Diet UI complete and functional
-- [ ] Phase 4 complete: Program/exercise CRUD works
-- [ ] Phase 5 complete: Training UI complete and functional
-- [ ] Phase 6 complete: Integrated Dashboard
-- [ ] All user flows tested
-- [ ] Data persists between sessions
+- [x] Phase 1 complete: App compiles and navigates
+- [x] Phase 2 complete: Food/meal CRUD works
+- [x] Phase 3 complete: Diet UI complete and functional
+- [x] Phase 4 complete: Program/exercise CRUD works
+- [x] Phase 5 complete: Training UI complete and functional
+- [x] Phase 6 complete: Integrated Dashboard
+- [x] All user flows tested
+- [x] Data persists between sessions
