@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, ScrollView, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { Plus, Trash2 } from 'lucide-react-native';
+import { View, TouchableOpacity, Alert, Platform } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Input } from '../../../components/atoms/Input';
+import { Plus, Trash2, Layers } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
+import { EmptyState } from '../../../components/molecules/EmptyState';
 import { useProgramForm } from '../hooks/useProgramForm';
 import { BlockDTO, ExerciseDTO } from '../types';
 
@@ -22,20 +25,18 @@ export function ProgramForm() {
   } = useProgramForm();
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
+    <KeyboardAwareScrollView
+      className="flex-1 bg-surface-app"
+      contentContainerClassName="p-4 pb-48"
+      keyboardShouldPersistTaps="always"
+      keyboardDismissMode="on-drag"
+      enableOnAndroid={true}
+      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
     >
-      <ScrollView 
-        className="flex-1 bg-surface-app"
-        contentContainerClassName="p-4 pb-48"
-        keyboardShouldPersistTaps="handled"
-      >
         <Typography variant="label" className="mb-1 text-gray-500">
           Program Name
         </Typography>
-        <TextInput
+        <Input variant="unstyled"
           placeholder="e.g., Hypertrophy Push/Pull/Legs"
           value={programName}
           onChangeText={setProgramName}
@@ -61,7 +62,7 @@ export function ProgramForm() {
             className="mb-4 rounded border border-soft bg-component-card-bg p-4"
           >
             <View className="flex-row items-center justify-between mb-3 gap-2">
-              <TextInput
+              <Input variant="unstyled"
                 placeholder="e.g., Workout A"
                 value={block.name}
                 onChangeText={(val) => handleBlockNameChange(block.id, val)}
@@ -86,7 +87,7 @@ export function ProgramForm() {
                 className="mb-3 rounded border border-soft bg-surface-app p-3"
               >
                 <View className="flex-row justify-between items-center mb-2 gap-2">
-                  <TextInput
+                  <Input variant="unstyled"
                     placeholder="Exercise Name"
                     value={exercise.name}
                     onChangeText={(val) =>
@@ -108,7 +109,7 @@ export function ProgramForm() {
                     <Typography variant="caption" color="muted" className="mb-1 text-center">
                       Sets
                     </Typography>
-                    <TextInput
+                    <Input variant="unstyled"
                       keyboardType="numeric"
                       placeholder="3"
                       value={exercise.sets.toString()}
@@ -129,7 +130,7 @@ export function ProgramForm() {
                     <Typography variant="caption" color="muted" className="mb-1 text-center">
                       Min Reps
                     </Typography>
-                    <TextInput
+                    <Input variant="unstyled"
                       keyboardType="numeric"
                       placeholder="8"
                       value={exercise.repsMin.toString()}
@@ -150,7 +151,7 @@ export function ProgramForm() {
                     <Typography variant="caption" color="muted" className="mb-1 text-center">
                       Max Reps
                     </Typography>
-                    <TextInput
+                    <Input variant="unstyled"
                       keyboardType="numeric"
                       placeholder="12"
                       value={exercise.repsMax.toString()}
@@ -173,7 +174,7 @@ export function ProgramForm() {
                     <Typography variant="caption" color="muted" className="mb-1">
                       Advanced Tech (optional)
                     </Typography>
-                    <TextInput
+                    <Input variant="unstyled"
                       placeholder="e.g., Dropset"
                       value={exercise.advancedTechnique || ''}
                       onChangeText={(val) =>
@@ -193,7 +194,7 @@ export function ProgramForm() {
                     <Typography variant="caption" color="muted" className="mb-1 text-center">
                       RIR
                     </Typography>
-                    <TextInput
+                    <Input variant="unstyled"
                       keyboardType="numeric"
                       placeholder="Reps in reserve"
                       value={exercise.repsReserve !== undefined ? exercise.repsReserve.toString() : ''}
@@ -225,13 +226,12 @@ export function ProgramForm() {
         ))}
 
         {blocks.length === 0 && (
-          <View className="my-8 items-center justify-center py-6">
-            <Typography variant="text" color="muted" className="text-center mb-2">
-              No blocks added yet.
-            </Typography>
-            <Typography variant="caption" color="muted" className="text-center">
-              Click "Add Block" above to start building your workout routines.
-            </Typography>
+          <View className="my-2">
+            <EmptyState 
+              icon={Layers} 
+              title="No blocks added yet" 
+              subtitle="Click 'Add Block' above to start building your workout routines." 
+            />
           </View>
         )}
 
@@ -240,7 +240,6 @@ export function ProgramForm() {
           onPress={handleSave}
           className="my-6 min-h-control-lg"
         />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }

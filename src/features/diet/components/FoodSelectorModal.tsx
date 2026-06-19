@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, FlatList, Pressable } from 'react-native';
+import { View, Platform } from 'react-native';
+import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
-import { Card } from '../../../components/atoms/Card';
+import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { IconButton } from '../../../components/molecules/IconButton';
 import { Input } from '../../../components/atoms/Input';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
-import { COLORS } from '../../../components/atoms/colors';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface FoodSelectorModalProps {
@@ -62,26 +61,24 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
   const selectedCount = Object.keys(selections).length;
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
-      onRequestClose={onClose}
+    <BottomSheetModal 
+      visible={visible} 
+      onClose={onClose} 
+      title="Select Food"
     >
-      <View className="flex-1 bg-surface-app" style={{ paddingTop: insets.top }}>
-        <View className="flex-row items-center justify-between px-screen-x py-compact border-b border-soft">
-          <Typography variant="title">Select Food</Typography>
-          <IconButton icon="X" onPress={onClose} />
-        </View>
-
-        <View className="px-screen-x py-compact">
+      <View className="flex-1 bg-surface-app">
+        <View className="py-compact">
           <SearchBar value={search} onChangeText={setSearch} placeholder="Search foods..." />
         </View>
 
-        <FlatList
+        <KeyboardAwareFlatList
           data={foods}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="px-screen-x pb-32"
+          contentContainerClassName="pb-32"
+          keyboardShouldPersistTaps="always"
+          keyboardDismissMode="on-drag"
+          enableOnAndroid={true}
+          extraScrollHeight={Platform.OS === 'ios' ? 100 : 40}
           renderItem={({ item }) => (
             <View className="flex-row items-center py-3 border-b border-soft">
               <View className="flex-1 mr-3">
@@ -92,14 +89,14 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
               </View>
 
               {selections[item.id] !== undefined ? (
-                <Pressable className="w-24" onPress={(e) => e.stopPropagation()}>
+                <View className="w-24">
                   <Input 
                     placeholder="Qty (g)" 
                     keyboardType="numeric" 
                     value={selections[item.id].toString()}
                     onChangeText={(val) => updateQuantity(item.id, val)}
                   />
-                </Pressable>
+                </View>
               ) : (
                 <Button 
                   title="Add" 
@@ -112,7 +109,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           )}
         />
 
-        <View className="absolute bottom-0 left-0 right-0 p-screen-x bg-surface-raised border-t border-soft" style={{ paddingBottom: Math.max(insets.bottom, 16) }}>
+        <View className="absolute bottom-0 left-0 right-0 bg-surface-app border-t border-soft pt-4 mt-auto">
           <Button 
             title={`Confirm ${selectedCount > 0 ? `(${selectedCount})` : ''}`}
             disabled={selectedCount === 0}
@@ -120,6 +117,6 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           />
         </View>
       </View>
-    </Modal>
+    </BottomSheetModal>
   );
 }

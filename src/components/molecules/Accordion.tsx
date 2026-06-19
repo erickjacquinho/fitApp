@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { View, Pressable, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { Typography } from '../atoms/Typography';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-interface ExpandableBlockProps {
+interface AccordionProps {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
   initialExpanded?: boolean;
 }
 
-export function ExpandableBlock({
+export function Accordion({
   title,
   subtitle,
   children,
   initialExpanded = true,
-}: ExpandableBlockProps) {
+}: AccordionProps) {
   const [expanded, setExpanded] = useState(initialExpanded);
 
   const toggleExpand = () => {

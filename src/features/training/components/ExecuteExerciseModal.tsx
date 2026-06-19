@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Modal,
   View,
   ScrollView,
-  Pressable,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
-import { X, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
+import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SetInputRow } from './SetInputRow';
 
 interface SetState {
@@ -134,66 +131,48 @@ export function ExecuteExerciseModal({
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1 justify-end bg-black-main/50"
+    <BottomSheetModal 
+      visible={visible} 
+      onClose={onClose} 
+      title={exerciseName}
+      subtitle={`Target: ${targetSets} sets x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
+    >
+      {/* Sets List */}
+      <ScrollView className="mt-2 flex-grow-0" style={{ maxHeight: 350 }}>
+        {sets.map((item, index) => (
+          <SetInputRow
+            key={item.setNumber}
+            setNumber={item.setNumber}
+            weight={item.weight}
+            reps={item.reps}
+            isSaved={item.isSaved}
+            onInputChange={(field, val) => handleInputChange(index, field, val)}
+            onSave={() => handleSaveSet(index)}
+            onRemove={sets.length > 1 ? () => handleRemoveSet(index) : undefined}
+          />
+        ))}
+      </ScrollView>
+
+      {/* Add set button */}
+      <TouchableOpacity
+        onPress={handleAddSet}
+        className="my-3 flex-row items-center justify-center gap-2 rounded border border-dashed border-primary-main py-2 active:bg-primary-main/5"
       >
-        <View className="max-h-[85%] rounded-t-lg bg-surface-app p-4 shadow-xl">
-          {/* Header */}
-          <View className="flex-row items-center justify-between border-b border-soft pb-3">
-            <View className="flex-1 pr-4">
-              <Typography variant="title" className="text-xl">
-                {exerciseName}
-              </Typography>
-              <Typography variant="caption" color="muted" className="mt-1">
-                Target: {targetSets} sets x {repsMin}-{repsMax} reps{' '}
-                {repsReserve !== undefined && `(RIR: @${repsReserve})`}
-              </Typography>
-            </View>
-            <TouchableOpacity onPress={onClose} className="p-2">
-              <X size={20} color="#666" />
-            </TouchableOpacity>
-          </View>
+        <Plus size={16} color="#005B94" />
+        <Typography variant="label" className="text-primary-main">
+          Add Extra Set
+        </Typography>
+      </TouchableOpacity>
 
-          {/* Sets List */}
-          <ScrollView className="mt-4 flex-grow-0" style={{ maxHeight: 350 }}>
-            {sets.map((item, index) => (
-              <SetInputRow
-                key={item.setNumber}
-                setNumber={item.setNumber}
-                weight={item.weight}
-                reps={item.reps}
-                isSaved={item.isSaved}
-                onInputChange={(field, val) => handleInputChange(index, field, val)}
-                onSave={() => handleSaveSet(index)}
-                onRemove={sets.length > 1 ? () => handleRemoveSet(index) : undefined}
-              />
-            ))}
-          </ScrollView>
-
-          {/* Add set button */}
-          <TouchableOpacity
-            onPress={handleAddSet}
-            className="my-3 flex-row items-center justify-center gap-2 rounded border border-dashed border-primary-main py-2 active:bg-primary-main/5"
-          >
-            <Plus size={16} color="#005B94" />
-            <Typography variant="label" className="text-primary-main">
-              Add Extra Set
-            </Typography>
-          </TouchableOpacity>
-
-          {/* Actions */}
-          <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
-            <Button
-              title="Close"
-              variant="outline"
-              className="flex-1"
-              onPress={onClose}
-            />
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    </Modal>
+      {/* Actions */}
+      <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
+        <Button
+          title="Close"
+          variant="outline"
+          className="flex-1"
+          onPress={onClose}
+        />
+      </View>
+    </BottomSheetModal>
   );
 }

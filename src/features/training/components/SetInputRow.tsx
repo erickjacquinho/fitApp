@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import { Input } from '../../../components/atoms/Input';
 import { Trash2, Check } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 
@@ -36,7 +37,7 @@ export function SetInputRow({
 
       {/* Weight Input */}
       <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-        <TextInput
+        <Input variant="unstyled"
           keyboardType="numeric"
           placeholder="0"
           value={weight}
@@ -50,7 +51,7 @@ export function SetInputRow({
 
       {/* Reps Input */}
       <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-        <TextInput
+        <Input variant="unstyled"
           keyboardType="numeric"
           placeholder="0"
           value={reps}

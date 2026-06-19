@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Pressable, Platform } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
 import { Input } from '../../../components/atoms/Input';
 import { Button } from '../../../components/atoms/Button';
@@ -25,16 +26,14 @@ export function MealForm() {
   } = useMealForm();
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
+    <KeyboardAwareScrollView
+      className="flex-1 bg-surface-app"
+      contentContainerClassName="p-screen-x gap-6 pb-40"
+      keyboardShouldPersistTaps="always"
+      keyboardDismissMode="on-drag"
+      enableOnAndroid={true}
+      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
     >
-      <ScrollView 
-        className="flex-1 bg-surface-app" 
-        contentContainerClassName="p-screen-x gap-6 pb-40"
-        keyboardShouldPersistTaps="handled"
-      >
         <Card className="gap-4">
           <Typography variant="subtitle">Meal Details</Typography>
           <View className="gap-3">
@@ -96,7 +95,6 @@ export function MealForm() {
           onClose={() => setModalVisible(false)} 
           onConfirm={(selections) => setSelectedItems(selections)} 
         />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }
