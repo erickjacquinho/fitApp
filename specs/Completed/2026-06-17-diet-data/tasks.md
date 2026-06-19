@@ -13,5 +13,5 @@
 
 ## Phase 3: Validation
 - [X] T008 Validate models in WatermelonDB (verify if tables are created correctly)
-- [ ] T009 [P] Create a simple test script or use the console to validate `create` and `getAll` for foods
+- [x] T009 [P] Create a simple test script or use the console to validate `create` and `getAll` for foods
 - [X] T010 Run `npx tsc` to validate diet module types
