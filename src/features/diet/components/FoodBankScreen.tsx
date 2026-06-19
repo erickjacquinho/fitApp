@@ -4,7 +4,7 @@ import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
-import { FoodService } from '../services/food-service';
+import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
@@ -18,42 +18,36 @@ interface FoodBankScreenProps {
 
 function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
   const router = useRouter();
-  const [search, setSearch] = useState('');
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
-  const [isSelectionMode, setIsSelectionMode] = useState(false);
-  const [bulkSelections, setBulkSelections] = useState<Set<string>>(new Set());
 
-  const filteredFoods = foods.filter(f => 
-    f.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const {
+    search,
+    setSearch,
+    isSelectionMode,
+    setIsSelectionMode,
+    bulkSelections,
+    toggleBulkSelection,
+    filteredFoods,
+    deleteFood,
+    deleteSelectedFoods,
+  } = useFoodBank(foods);
 
   const handleDelete = async () => {
     if (selectedFoodId) {
-      await FoodService.delete(selectedFoodId);
+      await deleteFood(selectedFoodId);
       setDeleteModalVisible(false);
       setSelectedFoodId(null);
     }
   };
 
   const handleBulkDelete = async () => {
-    await Promise.all(Array.from(bulkSelections).map(id => FoodService.delete(id)));
-    setBulkSelections(new Set());
-    setIsSelectionMode(false);
+    await deleteSelectedFoods();
   };
 
   const confirmDelete = (id: string) => {
     setSelectedFoodId(id);
     setDeleteModalVisible(true);
-  };
-
-  const toggleBulkSelection = (id: string) => {
-    setBulkSelections(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
   };
 
   return (

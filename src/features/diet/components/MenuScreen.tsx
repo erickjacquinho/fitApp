@@ -3,11 +3,12 @@ import { View, FlatList, ScrollView } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
 import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
-import { MealService } from '../services/meal-service';
+import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
+import MealItem from '../../../db/models/MealItem';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { PreviewMacros } from './PreviewMacros';
@@ -20,28 +21,12 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
-  const [dailyTotalKcal, setDailyTotalKcal] = useState(0);
 
-  React.useEffect(() => {
-    const calcDailyTotal = async () => {
-      let total = 0;
-      for (const meal of meals) {
-        const items = await meal.items.fetch();
-        for (const item of items) {
-          const food = await item.food.fetch();
-          if (food) {
-            total += food.calories * (item.quantity / 100);
-          }
-        }
-      }
-      setDailyTotalKcal(total);
-    };
-    calcDailyTotal();
-  }, [meals]);
+  const { dailyTotalKcal, deleteMeal } = useMenu(meals);
 
   const handleDelete = async () => {
     if (selectedMealId) {
-      await MealService.delete(selectedMealId);
+      await deleteMeal(selectedMealId);
       setDeleteModalVisible(false);
       setSelectedMealId(null);
     }
@@ -103,7 +88,7 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: any[]; onDelete: () => void }) => {
+const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) => {
   // Map items to the format PreviewMacros expects
   const formattedItems = items.map(item => ({
     food: item.food.fetch(), // This is still a bit tricky in withObservables
@@ -120,8 +105,8 @@ const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: an
 // For now, I'll implement a simpler version that fetches on render for the demo, 
 // but the goal is reactivity.
 
-function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: any[]; onDelete: () => void }) {
-  const [foodItems, setFoodItems] = useState<any[]>([]);
+function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
+  const [foodItems, setFoodItems] = useState<{ food: Food | null; quantity: number }[]>([]);
 
   React.useEffect(() => {
     const loadFoods = async () => {

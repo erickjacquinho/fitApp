@@ -1,48 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, ScrollView, Pressable } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Input } from '../../../components/atoms/Input';
 import { Button } from '../../../components/atoms/Button';
 import { Card } from '../../../components/atoms/Card';
-import { MealService } from '../services/meal-service';
+import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';
-import { useRouter } from 'expo-router';
 import { Food } from '../../../db';
 import { Icon } from '../../../components/atoms/Icon';
 import { COLORS } from '../../../components/atoms/colors';
 
 export function MealForm() {
-  const router = useRouter();
-  const [modalVisible, setModalVisible] = useState(false);
-  
-  const [form, setForm] = useState({
-    name: '',
-    quantity: '1',
-    preparationState: 'Raw',
-  });
-
-  const [selectedItems, setSelectedItems] = useState<Array<{ food: Food; quantity: number }>>([]);
-
-  const handleSave = async () => {
-    const mealData = {
-      name: form.name,
-      quantity: parseFloat(form.quantity) || 1,
-      preparationState: form.preparationState,
-    };
-
-    const items = selectedItems.map(item => ({
-      foodId: item.food.id,
-      quantity: item.quantity,
-    }));
-
-    await MealService.createWithItems(mealData, items);
-    router.back();
-  };
-
-  const removeFood = (foodId: string) => {
-    setSelectedItems(prev => prev.filter(item => item.food.id !== foodId));
-  };
+  const {
+    form,
+    setFormValue,
+    selectedItems,
+    setSelectedItems,
+    modalVisible,
+    setModalVisible,
+    handleSave,
+    removeFood,
+    goBack,
+  } = useMealForm();
 
   return (
     <ScrollView className="flex-1 bg-surface-app" contentContainerClassName="p-screen-x gap-6">
@@ -52,14 +32,14 @@ export function MealForm() {
           <Typography variant="caption">Meal Name (e.g. Breakfast)</Typography>
           <Input 
             value={form.name} 
-            onChangeText={(name) => setForm(p => ({ ...p, name }))} 
+            onChangeText={(val) => setFormValue('name', val)} 
             placeholder="Name your meal" 
           />
           
           <Typography variant="caption">Preparation State</Typography>
           <Input 
             value={form.preparationState} 
-            onChangeText={(preparationState) => setForm(p => ({ ...p, preparationState }))} 
+            onChangeText={(val) => setFormValue('preparationState', val)} 
             placeholder="e.g. Raw, Cooked"
           />
         </View>
@@ -99,7 +79,7 @@ export function MealForm() {
 
       <View className="gap-3 pb-10">
         <Button title="Save Meal" onPress={handleSave} disabled={selectedItems.length === 0} />
-        <Button title="Cancel" variant="outline" onPress={() => router.back()} />
+        <Button title="Cancel" variant="outline" onPress={goBack} />
       </View>
 
       <FoodSelectorModal 
