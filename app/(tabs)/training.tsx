@@ -1,24 +1,15 @@
-import { View } from 'react-native';
-import { Button } from '../../src/components/atoms/Button';
-import { Typography } from '../../src/components/atoms/Typography';
+import { ProgramListScreen } from '../../src/features/training/components/ProgramListScreen';
 import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
 
-export default function TrainingPage() {
+export default function TrainingTab() {
   return (
     <MainTabScreen
-      eyebrow="Carga e volume"
-      title="Treino"
-      description="Treinos, exercícios, cargas e histórico de execução em um fluxo direto."
+      eyebrow="Weight and Volume"
+      title="Training Plan"
+      description="Create training routines, log exercise execution and track workload."
+      scrollable={false}
     >
-      <View className="gap-3">
-        <View className="rounded-md border border-soft bg-component-card-bg p-4">
-          <Typography variant="subtitle">Sessão atual</Typography>
-          <Typography variant="text" color="muted">
-            Estrutura pronta para lista de treinos e início de sessão.
-          </Typography>
-        </View>
-        <Button title="Novo treino" />
-      </View>
+      <ProgramListScreen />
     </MainTabScreen>
   );
 }
