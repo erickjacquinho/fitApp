@@ -1,5 +1,7 @@
-import { Model } from '@nozbe/watermelondb';
+import { Model, Relation } from '@nozbe/watermelondb';
 import { field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
+import WorkoutSession from './WorkoutSession';
+import Exercise from './Exercise';
 
 export default class ExerciseExecution extends Model {
   static table = 'exercise_executions';
@@ -15,8 +17,8 @@ export default class ExerciseExecution extends Model {
   @field('weight') weight!: number;
   @field('reps_reserve_done') repsReserveDone?: number;
 
-  @relation('workout_sessions', 'workout_session_id') workoutSession!: any;
-  @relation('exercises', 'exercise_id') exercise!: any;
+  @relation('workout_sessions', 'workout_session_id') workoutSession!: Relation<WorkoutSession>;
+  @relation('exercises', 'exercise_id') exercise!: Relation<Exercise>;
 
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;

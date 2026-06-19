@@ -1,5 +1,7 @@
-import { Model } from '@nozbe/watermelondb';
+import { Model, Query, Relation } from '@nozbe/watermelondb';
 import { field, relation, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import Program from './Program';
+import Exercise from './Exercise';
 
 export default class TrainingBlock extends Model {
   static table = 'training_blocks';
@@ -12,8 +14,8 @@ export default class TrainingBlock extends Model {
   @field('name') name!: string;
   @field('order') order!: number;
 
-  @relation('programs', 'program_id') program!: any;
-  @children('exercises') exercises!: any;
+  @relation('programs', 'program_id') program!: Relation<Program>;
+  @children('exercises') exercises!: Query<Exercise>;
 
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;
