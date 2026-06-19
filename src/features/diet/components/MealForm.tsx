@@ -26,13 +26,13 @@ export function MealForm() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
     >
       <ScrollView 
         className="flex-1 bg-surface-app" 
-        contentContainerClassName="p-screen-x gap-6"
+        contentContainerClassName="p-screen-x gap-6 pb-40"
         keyboardShouldPersistTaps="handled"
       >
         <Card className="gap-4">

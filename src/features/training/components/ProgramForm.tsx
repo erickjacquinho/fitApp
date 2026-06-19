@@ -23,12 +23,13 @@ export function ProgramForm() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1"
       keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
     >
       <ScrollView 
-        className="flex-1 bg-surface-app p-4"
+        className="flex-1 bg-surface-app"
+        contentContainerClassName="p-4 pb-48"
         keyboardShouldPersistTaps="handled"
       >
         <Typography variant="label" className="mb-1 text-gray-500">
