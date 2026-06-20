@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Alert } from 'react-native';
 import { WorkoutService } from '../services/workout-service';
 import { SessionService } from '../services/session-service';
@@ -15,6 +15,7 @@ export interface ProgramWithBlocks {
 export function useProgramList() {
   const [programsData, setProgramsData] = useState<ProgramWithBlocks[]>([]);
   const [activeSession, setActiveSession] = useState<WorkoutSession | null>(null);
+  const { date } = useLocalSearchParams<{ date?: string }>();
   const [isLoading, setIsLoading] = useState(true);
 
   const loadData = useCallback(async () => {
@@ -64,7 +65,8 @@ export function useProgramList() {
 
   const startSession = async (programId: string, blockId: string) => {
     try {
-      const session = await SessionService.startSession(programId);
+      const targetDate = date || new Date().toISOString().split('T')[0];
+      const session = await SessionService.startSession(programId, targetDate);
       router.push({
         pathname: '/training/active',
         params: { sessionId: session.id, blockId },

@@ -119,5 +119,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 5,
+      steps: [
+        addColumns({
+          table: 'workout_sessions',
+          columns: [
+            { name: 'target_date', type: 'string', isIndexed: true, isOptional: true },
+          ],
+        }),
+      ],
+    },
   ],
 });

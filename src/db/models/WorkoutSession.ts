@@ -14,6 +14,7 @@ export default class WorkoutSession extends Model {
   @field('start_date') startDate!: number;
   @field('end_date') endDate?: number;
   @field('status') status!: string;
+  @field('target_date') targetDate!: string;
 
   @relation('programs', 'program_id') program!: Relation<Program>;
   @children('exercise_executions') executions!: Query<ExerciseExecution>;
