@@ -18,7 +18,8 @@ import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
 import { ReorderMealsModal } from './ReorderMealsModal';
 
-import { CalendarStrip } from '../../../components/molecules/CalendarStrip';
+import { DateSelector } from '../../../components/molecules/DateSelector';
+import { CalendarDays } from 'lucide-react-native';
 
 interface MenuScreenProps {
   meals: Meal[];
@@ -87,13 +88,18 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         ) : undefined
       }
       headerRight={
-        <Pressable onPress={() => router.push('/diet/food-bank')} className="p-2 -mr-2">
-          <Icon name="Apple" size={24} color={COLORS.textMain} />
-        </Pressable>
+        <View className="flex-row items-center gap-4 p-2 -mr-2">
+          <Pressable onPress={() => router.push('/diet/calendar-summary')}>
+            <CalendarDays size={24} color={COLORS.textMain} />
+          </Pressable>
+          <Pressable onPress={() => router.push('/diet/food-bank')}>
+            <Icon name="Apple" size={24} color={COLORS.textMain} />
+          </Pressable>
+        </View>
       }
     >
       <View className="flex-1">
-        <CalendarStrip selectedDate={selectedDate} onSelectDate={onSelectDate} />
+        <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
         <DailyBalance 
           protein={dailyMacros.protein}
           carbs={dailyMacros.carbs}

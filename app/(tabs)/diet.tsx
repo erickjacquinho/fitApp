@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 import { MenuScreen } from "../../src/features/diet/components/MenuScreen";
 
 const formatDate = (date: Date) => {
@@ -9,6 +10,14 @@ const formatDate = (date: Date) => {
 };
 
 export default function DietTab() {
+  const { date } = useLocalSearchParams<{ date?: string }>();
   const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
+
+  useEffect(() => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  }, [date]);
+
   return <MenuScreen selectedDate={selectedDate} onSelectDate={setSelectedDate} />;
 }
