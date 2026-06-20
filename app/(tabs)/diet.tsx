@@ -1,5 +1,14 @@
+import { useState } from 'react';
 import { MenuScreen } from "../../src/features/diet/components/MenuScreen";
 
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
 export default function DietTab() {
-    return <MenuScreen />;
+  const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
+  return <MenuScreen selectedDate={selectedDate} onSelectDate={setSelectedDate} />;
 }

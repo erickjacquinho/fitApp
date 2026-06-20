@@ -7,7 +7,7 @@ export class MealService {
   private static mealsCollection = database.get<Meal>('meals');
   private static mealItemsCollection = database.get<MealItem>('meal_items');
 
-  static async createWithItems(mealData: MealDTO, items: ItemDTO[]): Promise<Meal> {
+  static async createWithItems(mealData: MealDTO, items: ItemDTO[], targetDate: string = new Date().toISOString().split('T')[0]): Promise<Meal> {
     if (!mealData.name || mealData.name.trim() === '') {
       throw new Error('ValidationError: Meal name is required');
     }
@@ -17,6 +17,7 @@ export class MealService {
         meal.quantity = mealData.quantity;
         meal.preparationState = mealData.preparationState;
         meal.orderIndex = Date.now(); // default ordering
+        meal.targetDate = targetDate;
       });
 
       const mealItemRecords = items.map((item) => 

@@ -108,5 +108,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 4,
+      steps: [
+        addColumns({
+          table: 'meals',
+          columns: [
+            { name: 'target_date', type: 'string', isOptional: true },
+          ],
+        }),
+      ],
+    },
   ],
 });

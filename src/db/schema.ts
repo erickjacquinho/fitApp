@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 3,
+  version: 4,
   tables: [
     tableSchema({
       name: 'foods',
@@ -24,6 +24,7 @@ export default appSchema({
         { name: 'quantity', type: 'number' },
         { name: 'preparation_state', type: 'string' },
         { name: 'order_index', type: 'number', isOptional: true },
+        { name: 'target_date', type: 'string', isIndexed: true, isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

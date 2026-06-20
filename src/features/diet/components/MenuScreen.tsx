@@ -18,11 +18,15 @@ import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
 import { ReorderMealsModal } from './ReorderMealsModal';
 
+import { CalendarStrip } from '../../../components/molecules/CalendarStrip';
+
 interface MenuScreenProps {
   meals: Meal[];
+  selectedDate: string;
+  onSelectDate: (date: string) => void;
 }
 
-function MenuScreenComponent({ meals }: MenuScreenProps) {
+function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
@@ -45,18 +49,18 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
 
   const handleAddMeal = async () => {
     const nextNumber = meals.length + 1;
-    await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, []);
+    await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, [], selectedDate);
   };
 
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
       if (meals.length === 0) {
         // Automatically create a default meal so there's always at least 1
-        await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, []);
+        await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, [], selectedDate);
       }
     };
     ensureDefaultMeal();
-  }, [meals.length]);
+  }, [meals.length, selectedDate]);
 
   return (
     <MainTabScreen
@@ -76,6 +80,7 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
       }
     >
       <View className="flex-1">
+        <CalendarStrip selectedDate={selectedDate} onSelectDate={onSelectDate} />
         <DailyBalance 
           protein={dailyMacros.protein}
           carbs={dailyMacros.carbs}
@@ -120,8 +125,12 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
   );
 }
 
-const enhance = withObservables([], () => ({
+const enhance = withObservables(['selectedDate'], ({ selectedDate }: { selectedDate: string }) => ({
   meals: database.get<Meal>('meals').query(
+    Q.or(
+      Q.where('target_date', selectedDate),
+      Q.where('target_date', null)
+    ),
     Q.sortBy('order_index', Q.asc),
     Q.sortBy('created_at', Q.asc) // Fallback for old records
   )

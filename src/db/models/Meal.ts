@@ -11,6 +11,7 @@ export default class Meal extends Model {
   @field('quantity') quantity!: number;
   @field('preparation_state') preparationState!: string;
   @field('order_index') orderIndex!: number;
+  @field('target_date') targetDate!: string;
 
   @children('meal_items') items!: any;
 
