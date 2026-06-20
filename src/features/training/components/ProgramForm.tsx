@@ -8,6 +8,7 @@ import { Button } from '../../../components/atoms/Button';
 import { EmptyState } from '../../../components/molecules/EmptyState';
 import { useProgramForm } from '../hooks/useProgramForm';
 import { BlockDTO, ExerciseDTO } from '../types';
+import { ExerciseSelect } from './ExerciseSelect';
 
 export function ProgramForm() {
   const {
@@ -87,13 +88,11 @@ export function ProgramForm() {
                 className="mb-3 rounded border border-soft bg-surface-app p-3"
               >
                 <View className="flex-row justify-between items-center mb-2 gap-2">
-                  <Input variant="unstyled"
-                    placeholder="Exercise Name"
+                  <ExerciseSelect
                     value={exercise.name}
-                    onChangeText={(val) =>
+                    onChange={(val) =>
                       handleExerciseChange(block.id, exercise.id, 'name', val)
                     }
-                    className="flex-1 rounded border border-soft bg-white-pure px-3 py-1.5 font-bold text-black-main text-sm"
                   />
                   <TouchableOpacity
                     onPress={() => handleRemoveExercise(block.id, exercise.id)}

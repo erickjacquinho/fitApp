@@ -130,5 +130,18 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 6,
+      steps: [
+        createTable({
+          name: 'exercise_definitions',
+          columns: [
+            { name: 'name', type: 'string' },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+      ],
+    },
   ],
 });
