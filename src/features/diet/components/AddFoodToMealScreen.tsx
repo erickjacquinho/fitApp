@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
+import { NutritionalInfoDisplay } from '../../../components/molecules/NutritionalInfoDisplay';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
@@ -52,25 +53,7 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
           />
         </View>
 
-        <View className="gap-2">
-          <Typography variant="subtitle" className="mb-1">Valores Nutricionais</Typography>
-          <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Proteínas</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.protein)}g</Typography>
-          </View>
-          <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Carboidratos</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.carbs)}g</Typography>
-          </View>
-          <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Gorduras</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.fat)}g</Typography>
-          </View>
-          <View className="flex-row justify-between pt-2 mt-2 border-t border-soft">
-            <Typography variant="text" className="font-bold text-text-primary">Calorias</Typography>
-            <Typography variant="text" className="font-bold text-primary-main">{Math.round(calculatedMacros.calories)} kcal</Typography>
-          </View>
-        </View>
+        <NutritionalInfoDisplay macros={calculatedMacros} />
       </View>
 
       <Button 
