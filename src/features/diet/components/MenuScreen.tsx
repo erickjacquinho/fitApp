@@ -59,7 +59,20 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, [], selectedDate);
       }
     };
-    ensureDefaultMeal();
+
+    const migrateOldMeals = async () => {
+      const oldMeals = await database.get<Meal>('meals').query(Q.where('target_date', null)).fetch();
+      if (oldMeals.length > 0) {
+        await database.write(async () => {
+          const updates = oldMeals.map(m => m.prepareUpdate(meal => {
+            meal.targetDate = selectedDate;
+          }));
+          await database.batch(...updates);
+        });
+      }
+    };
+
+    migrateOldMeals().then(() => ensureDefaultMeal());
   }, [meals.length, selectedDate]);
 
   return (
@@ -127,12 +140,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
 const enhance = withObservables(['selectedDate'], ({ selectedDate }: { selectedDate: string }) => ({
   meals: database.get<Meal>('meals').query(
-    Q.or(
-      Q.where('target_date', selectedDate),
-      Q.where('target_date', null)
-    ),
+    Q.where('target_date', selectedDate),
     Q.sortBy('order_index', Q.asc),
-    Q.sortBy('created_at', Q.asc) // Fallback for old records
+    Q.sortBy('created_at', Q.asc)
   )
 }));
 
