@@ -56,7 +56,7 @@ export function SessionDetailsScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       {/* Trophy / Congrats Header */}
       <View className="mb-4 items-center justify-center rounded-md bg-success-main/10 p-5 border border-success-main/20">
         <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-success-main">

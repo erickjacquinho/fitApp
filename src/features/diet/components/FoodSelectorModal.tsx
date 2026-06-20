@@ -75,7 +75,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           data={foods}
           keyExtractor={(item) => item.id}
           contentContainerClassName="pb-32"
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           enableOnAndroid={true}
           extraScrollHeight={Platform.OS === 'ios' ? 100 : 40}

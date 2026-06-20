@@ -138,7 +138,7 @@ export function ExecuteExerciseModal({
       subtitle={`Target: ${targetSets} sets x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
     >
       {/* Sets List */}
-      <ScrollView className="mt-2 flex-grow-0" style={{ maxHeight: 350 }}>
+      <ScrollView keyboardShouldPersistTaps="handled" className="mt-2 flex-grow-0" style={{ maxHeight: 350 }}>
         {sets.map((item, index) => (
           <SetInputRow
             key={item.setNumber}

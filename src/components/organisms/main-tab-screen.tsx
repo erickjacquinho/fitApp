@@ -31,7 +31,7 @@ export function MainTabScreen({
   return (
     <View className="flex-1 bg-surface-app">
       <Header title={title} headerLeft={headerLeft} headerRight={headerRight} />
-      <Container {...containerProps}>
+      <Container keyboardShouldPersistTaps="handled" {...containerProps}>
         {children}
       </Container>
     </View>

@@ -19,7 +19,7 @@ export const CalendarSummaryScreen = () => {
 
   return (
     <View className="flex-1 bg-surface-app">
-      <FlatList
+      <FlatList keyboardShouldPersistTaps="handled"
         data={summaries}
         keyExtractor={(item) => item.date}
         contentContainerClassName="px-screen-x py-compact gap-3"

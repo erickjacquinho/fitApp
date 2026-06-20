@@ -56,7 +56,7 @@ export function ProgramListScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       {/* Quick Action Banner */}
       {activeSession ? (
         <Card className="mb-4 border-primary-main/30 bg-primary-main/5 p-4 flex-row items-center justify-between">
