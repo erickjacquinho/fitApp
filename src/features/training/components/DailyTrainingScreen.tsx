@@ -38,7 +38,7 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
     <View className="flex-1 bg-surface-app">
       <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
       
-      <ScrollView className="flex-1 p-4">
+      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
         {sessions.length > 0 ? (
           <View className="gap-4">
             <Typography variant="title" className="mb-2">Treinos do Dia</Typography>

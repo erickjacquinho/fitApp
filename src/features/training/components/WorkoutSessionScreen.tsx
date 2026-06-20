@@ -52,7 +52,7 @@ export function WorkoutSessionScreen() {
 
   return (
     <View className="flex-1 bg-surface-app">
-      <ScrollView className="flex-1 p-4">
+      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
         {block && (
           <Typography variant="title" className="mb-2 text-2xl font-bold">
             {block.name} Routine

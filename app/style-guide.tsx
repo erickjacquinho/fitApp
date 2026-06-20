@@ -5,7 +5,7 @@ import { Button } from '../src/components/atoms/Button';
 
 export default function StyleGuide() {
   return (
-    <ScrollView className="flex-1 bg-surface-app">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app">
       <Stack.Screen options={{ title: 'Design System' }} />
       
       <View className="p-screen-y-comfortable gap-page-gap">

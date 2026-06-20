@@ -32,7 +32,7 @@ export function DashboardScreen() {
   });
 
   return (
-    <ScrollView
+    <ScrollView keyboardShouldPersistTaps="handled"
       className="flex-1 bg-surface-app p-4"
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={['#005B94']} />

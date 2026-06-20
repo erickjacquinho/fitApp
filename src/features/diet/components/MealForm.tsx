@@ -29,7 +29,7 @@ export function MealForm() {
     <KeyboardAwareScrollView
       className="flex-1 bg-surface-app"
       contentContainerClassName="p-screen-x gap-6 pb-40"
-      keyboardShouldPersistTaps="always"
+      keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       enableOnAndroid={true}
       extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}

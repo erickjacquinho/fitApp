@@ -87,7 +87,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         </View>
       </View>
 
-      <FlatList
+      <FlatList keyboardShouldPersistTaps="handled"
         data={filteredFoods}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-screen-x pb-20"

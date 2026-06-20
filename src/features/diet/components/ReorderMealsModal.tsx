@@ -65,7 +65,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
             Segure e arraste para alterar a ordem.
           </Typography>
 
-          <DraggableFlatList
+          <DraggableFlatList keyboardShouldPersistTaps="handled"
             data={data}
             onDragEnd={({ data }) => setData(data)}
             keyExtractor={(item) => item.id}

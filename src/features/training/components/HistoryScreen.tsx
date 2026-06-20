@@ -42,7 +42,7 @@ export function HistoryScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       <Typography variant="title" className="mb-4 text-2xl font-bold">
         Workout History
       </Typography>

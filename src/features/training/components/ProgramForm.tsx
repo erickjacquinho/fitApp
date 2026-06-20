@@ -28,7 +28,7 @@ export function ProgramForm() {
     <KeyboardAwareScrollView
       className="flex-1 bg-surface-app"
       contentContainerClassName="p-4 pb-48"
-      keyboardShouldPersistTaps="always"
+      keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       enableOnAndroid={true}
       extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}

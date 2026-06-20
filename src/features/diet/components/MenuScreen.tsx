@@ -107,7 +107,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           calories={dailyMacros.calories}
         />
 
-        <FlatList
+        <FlatList keyboardShouldPersistTaps="handled"
           data={meals}
           keyExtractor={(item) => item.id}
           contentContainerClassName="px-screen-x pb-20 pt-4"

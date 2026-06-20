@@ -71,11 +71,11 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           <SearchBar value={search} onChangeText={setSearch} placeholder="Search foods..." />
         </View>
 
-        <KeyboardAwareFlatList
+        <KeyboardAwareFlatList keyboardShouldPersistTaps="handled"
           data={foods}
           keyExtractor={(item) => item.id}
           contentContainerClassName="pb-32"
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           enableOnAndroid={true}
           extraScrollHeight={Platform.OS === 'ios' ? 100 : 40}
