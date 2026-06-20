@@ -5,9 +5,7 @@ import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
 export default function StatisticsPage() {
   return (
     <MainTabScreen
-      eyebrow="Evolução"
       title="Estatísticas"
-      description="Gráficos, comparações e histórico para acompanhar progresso de treino e dieta."
     >
       <View className="gap-3">
         <View className="rounded-md border border-soft bg-component-card-bg p-4">

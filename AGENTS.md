@@ -40,15 +40,8 @@
 - Do not load every rule file by default; read only what is needed for the current change.
 - If rules conflict, follow the most specific `.agents/rules/*.md` file first, then `designsystem-guide.md`, then broader docs in `docs/`.
 
-## Speckit Workflow
-- For new features, use this order:
-  1. `/speckit.specify`
-  2. `/speckit.plan`
-  3. `/speckit.tasks`
-  4. `/speckit.implement`
-- Present the execution strategy before implementation when the feature is non-trivial.
-- Save generated Speckit artifacts under `implementation/<feature-name>/`.
-- After plan approval, continue autonomously unless there is a blocker or real ambiguity.
+## SDD SKILL
+- Execute tudo exatamente como a skill `sdd` descreve. 
 
 ## Validation
 - Validate changes before finishing.

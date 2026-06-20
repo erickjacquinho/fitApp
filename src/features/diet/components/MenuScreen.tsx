@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import { View, FlatList, ScrollView } from 'react-native';
+import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
+import { Pressable } from 'react-native';
+import { Icon } from '../../../components/atoms/Icon';
+import { COLORS } from '../../../components/atoms/colors';
+import { View, FlatList } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';
-import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
-import MealItem from '../../../db/models/MealItem';
-import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { PreviewMacros } from './PreviewMacros';
+import { DailyBalance } from './DailyBalance';
+import { MealCard } from './MealCard';
+import { MealService } from '../services/meal-service';
+import { ReorderMealsModal } from './ReorderMealsModal';
 
 interface MenuScreenProps {
   meals: Meal[];
@@ -23,7 +27,8 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
-  const { dailyTotalKcal, deleteMeal } = useMenu(meals);
+  const [reorderModalVisible, setReorderModalVisible] = useState(false);
+  const { dailyMacros, deleteMeal } = useMenu(meals);
 
   const handleDelete = async () => {
     if (selectedMealId) {
@@ -38,103 +43,88 @@ function MenuScreenComponent({ meals }: MenuScreenProps) {
     setDeleteModalVisible(true);
   };
 
+  const handleAddMeal = async () => {
+    const nextNumber = meals.length + 1;
+    await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, []);
+  };
+
+  React.useEffect(() => {
+    const ensureDefaultMeal = async () => {
+      if (meals.length === 0) {
+        // Automatically create a default meal so there's always at least 1
+        await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, []);
+      }
+    };
+    ensureDefaultMeal();
+  }, [meals.length]);
+
   return (
-    <View className="flex-1 bg-surface-app">
-      <View className="px-screen-x py-compact border-b border-soft bg-surface-raised gap-2">
-        <Typography variant="caption" color="muted" className="uppercase font-bold">Today's Balance</Typography>
-        <View className="flex-row items-baseline gap-2">
-          <Typography variant="display" className="text-primary-main">{Math.round(dailyTotalKcal)}</Typography>
-          <Typography color="muted">/ 2200 kcal</Typography>
-        </View>
-      </View>
+    <MainTabScreen
+      title="Minha Dieta"
+      scrollable={false}
+      headerLeft={
+        meals.length > 1 ? (
+          <Pressable onPress={() => setReorderModalVisible(true)} className="p-2 -ml-2">
+            <Icon name="ArrowUpDown" size={24} color={COLORS.textMain} />
+          </Pressable>
+        ) : undefined
+      }
+      headerRight={
+        <Pressable onPress={() => router.push('/diet/food-bank')} className="p-2 -mr-2">
+          <Icon name="Apple" size={24} color={COLORS.textMain} />
+        </Pressable>
+      }
+    >
+      <View className="flex-1">
+        <DailyBalance 
+          protein={dailyMacros.protein}
+          carbs={dailyMacros.carbs}
+          fat={dailyMacros.fat}
+          calories={dailyMacros.calories}
+        />
 
-      <View className="px-screen-x py-compact flex-row gap-3">
-        <View className="flex-1">
-          <Button title="+ New Meal" onPress={() => router.push('/diet/create-meal')} />
-        </View>
-        <View className="flex-1">
-          <Button title="Food Bank" variant="secondary" onPress={() => router.push('/diet/food-bank')} />
-        </View>
-      </View>
-
-      <FlatList
-        data={meals}
-        keyExtractor={(item) => item.id}
-        contentContainerClassName="px-screen-x pb-20"
-        renderItem={({ item }) => (
-          <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
-        )}
-        ListEmptyComponent={
-          <View className="items-center py-20">
-            <Typography color="muted">No meals registered for today</Typography>
+        <FlatList
+          data={meals}
+          keyExtractor={(item) => item.id}
+          contentContainerClassName="px-screen-x pb-20 pt-4"
+          renderItem={({ item }) => (
+            <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
+          )}
+        ListFooterComponent={
+          <View className="mt-4">
+            <Button 
+              title="+ Adicionar Refeição" 
+              variant="outline" 
+              onPress={handleAddMeal} 
+            />
           </View>
         }
       />
 
       <ConfirmModal 
         visible={deleteModalVisible}
-        title="Remove Meal?"
-        description="This action will remove the meal from your daily menu."
+        title="Remover Refeição?"
+        description="Esta ação removerá a refeição do seu menu diário."
         onConfirm={handleDelete}
         onCancel={() => setDeleteModalVisible(false)}
         isDestructive
       />
-    </View>
-  );
-}
 
-// Sub-component for Meal Card to handle its own item observation
-const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
-  meal,
-  items: meal.items.observeWithColumns(['quantity']),
-}));
-
-const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) => {
-  // Map items to the format PreviewMacros expects
-  const formattedItems = items.map(item => ({
-    food: item.food.fetch(), // This is still a bit tricky in withObservables
-    // Actually, withObservables should ideally observe the food too
-    quantity: item.quantity
-  }));
-
-  // Better approach for withObservables:
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} />;
-});
-
-// Since I can't easily chain observations here without more complexity, 
-// I'll simplify or use a more robust pattern.
-// For now, I'll implement a simpler version that fetches on render for the demo, 
-// but the goal is reactivity.
-
-function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
-  const [foodItems, setFoodItems] = useState<{ food: Food; quantity: number }[]>([]);
-
-  React.useEffect(() => {
-    const loadFoods = async () => {
-      const data = await Promise.all(items.map(async (item) => ({
-        food: await item.food.fetch(),
-        quantity: item.quantity
-      })));
-      const validData = data.filter((d): d is { food: Food; quantity: number } => d.food !== null);
-      setFoodItems(validData);
-    };
-    loadFoods();
-  }, [items]);
-
-  return (
-    <SwipeableCard className="mb-4 gap-3" onDelete={onDelete}>
-      <View className="flex-row justify-between items-center">
-        <Typography variant="subtitle">{meal.name}</Typography>
-        <Typography variant="caption" color="muted">{meal.preparationState}</Typography>
+      <ReorderMealsModal 
+        visible={reorderModalVisible}
+        meals={meals}
+        onClose={() => setReorderModalVisible(false)}
+      />
       </View>
-      
-      {foodItems.length > 0 && <PreviewMacros items={foodItems} />}
-    </SwipeableCard>
+    </MainTabScreen>
   );
 }
 
 const enhance = withObservables([], () => ({
-  meals: database.get<Meal>('meals').query(Q.sortBy('created_at', Q.desc))
+  meals: database.get<Meal>('meals').query(
+    Q.sortBy('order_index', Q.asc),
+    Q.sortBy('created_at', Q.asc) // Fallback for old records
+  )
 }));
 
 export const MenuScreen = enhance(MenuScreenComponent);

@@ -10,6 +10,7 @@ export default class Meal extends Model {
   @field('name') name!: string;
   @field('quantity') quantity!: number;
   @field('preparation_state') preparationState!: string;
+  @field('order_index') orderIndex!: number;
 
   @children('meal_items') items!: any;
 

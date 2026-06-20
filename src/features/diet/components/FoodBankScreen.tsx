@@ -11,12 +11,14 @@ import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
+import { MealService } from '../services/meal-service';
 
 interface FoodBankScreenProps {
   foods: Food[];
+  mealId?: string;
 }
 
-function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
+function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
@@ -32,6 +34,11 @@ function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
     deleteFood,
     deleteSelectedFoods,
   } = useFoodBank(foods);
+
+  const handleAddFoodToMeal = (foodId: string) => {
+    if (!mealId) return;
+    router.push({ pathname: '/diet/add-food-to-meal', params: { mealId, foodId } });
+  };
 
   const handleDelete = async () => {
     if (selectedFoodId) {
@@ -87,7 +94,12 @@ function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
-            <Pressable onPress={() => isSelectionMode ? toggleBulkSelection(item.id) : null}>
+            <Pressable 
+              onPress={() => {
+                if (isSelectionMode) toggleBulkSelection(item.id);
+                else if (mealId) handleAddFoodToMeal(item.id);
+              }}
+            >
               <SwipeableCard 
                 className={`mb-3 ${isSelected ? 'border-primary-main bg-primary-soft/10' : ''}`}
                 onEdit={isSelectionMode ? undefined : () => router.push({ pathname: '/diet/create-food', params: { id: item.id } })}

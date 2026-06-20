@@ -1,4 +1,4 @@
-import { schemaMigrations, createTable } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, createTable, addColumns } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
   migrations: [
@@ -93,6 +93,17 @@ export default schemaMigrations({
             { name: 'reps_reserve_done', type: 'number', isOptional: true },
             { name: 'created_at', type: 'number' },
             { name: 'updated_at', type: 'number' },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 3,
+      steps: [
+        addColumns({
+          table: 'meals',
+          columns: [
+            { name: 'order_index', type: 'number', isOptional: true },
           ],
         }),
       ],
