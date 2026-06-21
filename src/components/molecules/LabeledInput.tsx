@@ -1,18 +1,19 @@
 import React, { forwardRef } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, TextInputProps } from 'react-native';
 import { Typography } from '../atoms/Typography';
-import { Input, InputProps } from '../atoms/Input';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Input } from "@/components/ui/input";
 
-export interface LabeledInputProps extends InputProps {
+export interface LabeledInputProps extends TextInputProps {
   label: string;
   errorText?: string;
+  isError?: boolean;
   containerClassName?: string;
 }
 
 export const LabeledInput = forwardRef<TextInput, LabeledInputProps>(
-  ({ label, errorText, isError, containerClassName, ...props }, ref) => {
+  ({ label, errorText, isError, containerClassName, className, ...props }, ref) => {
     const hasError = isError || !!errorText;
 
     return (
@@ -20,7 +21,11 @@ export const LabeledInput = forwardRef<TextInput, LabeledInputProps>(
         <Typography variant="label" color={hasError ? 'error' : 'default'}>
           {label}
         </Typography>
-        <Input ref={ref} isError={hasError} {...props} />
+        <Input 
+          ref={ref} 
+          {...props} 
+          className={twMerge(className, hasError && "border-destructive ring-destructive")} 
+        />
         {errorText ? (
           <Typography variant="caption" color="error">
             {errorText}

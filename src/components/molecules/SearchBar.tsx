@@ -1,10 +1,10 @@
 import { View, TextInputProps } from 'react-native';
-import { Input } from '../atoms/Input';
 import { Icon } from '../atoms/Icon';
 import { IconButton } from './IconButton';
 import { COLORS } from '../../tokens/colors';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Input } from "@/components/ui/input";
 
 export interface SearchBarProps extends TextInputProps {
   onClear?: () => void;

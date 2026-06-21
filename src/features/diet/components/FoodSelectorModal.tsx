@@ -4,12 +4,12 @@ import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { Input } from '../../../components/atoms/Input';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Input } from "@/components/ui/input";
 
 interface FoodSelectorModalProps {
   visible: boolean;

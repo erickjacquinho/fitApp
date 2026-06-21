@@ -26,6 +26,7 @@
 
 ## Working Rules
 - Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
+- **Component Source Rule:** `@react-native-reusables` (Shadcn UI for React Native) is the primary source for components. Before creating any custom component, ALWAYS analyze if there is an existing component in this library that fulfills the requirement. Use `npx @react-native-reusables/cli@latest add <component>` to add it.
 - Before creating a new UI component, check existing components in `src/components/` and feature folders.
 - Prefer extending existing atoms/molecules over creating duplicates.
 - Keep changes focused. Do not refactor unrelated code.
