@@ -13,8 +13,8 @@ export default class Exercise extends Model {
   @field('sets') sets!: number;
   @field('reps_min') repsMin!: number;
   @field('reps_max') repsMax!: number;
-  @field('advanced_technique') advancedTechnique?: string;
-  @field('reps_reserve') repsReserve?: number;
+  @field('advanced_technique') advancedTechnique!: string;
+  @field('reps_reserve') repsReserve!: number;
 
   @relation('training_blocks', 'block_id') trainingBlock!: Relation<TrainingBlock>;
 

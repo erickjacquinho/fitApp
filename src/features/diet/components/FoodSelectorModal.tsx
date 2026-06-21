@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Platform } from 'react-native';
-import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAvoidingView, FlatList } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
@@ -72,14 +72,17 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           <SearchBar value={search} onChangeText={setSearch} placeholder="Search foods..." />
         </View>
 
-        <KeyboardAwareFlatList
-          data={foods}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="pb-32"
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="on-drag"
-          enableOnAndroid={true}
-          extraScrollHeight={Platform.OS === 'ios' ? 100 : 40}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 40}
+        >
+          <FlatList
+            data={foods}
+            keyExtractor={(item) => item.id}
+            contentContainerClassName="pb-32"
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
           renderItem={({ item }) => (
             <View className="flex-row items-center py-3 border-b border-soft">
               <View className="flex-1 mr-3">
@@ -103,7 +106,8 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
               )}
             </View>
           )}
-        />
+          />
+        </KeyboardAvoidingView>
 
         <View className="absolute bottom-0 left-0 right-0 bg-surface-app border-t border-soft pt-4 mt-auto">
           <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirm ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>

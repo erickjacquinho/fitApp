@@ -12,7 +12,7 @@ export default class WorkoutSession extends Model {
 
   @field('program_id') programId!: string;
   @field('start_date') startDate!: number;
-  @field('end_date') endDate?: number;
+  @field('end_date') endDate!: number;
   @field('status') status!: string;
   @field('target_date') targetDate!: string;
 

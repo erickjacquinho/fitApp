@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Alert, Platform } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Plus, Trash2, Layers } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { EmptyState } from '../../../components/molecules/EmptyState';
@@ -27,14 +27,17 @@ export function ProgramForm() {
   } = useProgramForm();
 
   return (
-    <KeyboardAwareScrollView
-      className="flex-1 bg-surface-app"
-      contentContainerClassName="p-4 pb-48"
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      enableOnAndroid={true}
-      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 20}
     >
+      <ScrollView
+        className="flex-1 bg-surface-app"
+        contentContainerClassName="p-4 pb-48"
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      >
         <Typography variant="label" className="mb-1 text-gray-500">
           Program Name
         </Typography>
@@ -236,6 +239,7 @@ export function ProgramForm() {
         )}
 
         <Button onPress={handleSave} className="my-6 min-h-control-lg"><Text>Create Program</Text></Button>
-    </KeyboardAwareScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Platform } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { useFoodForm } from '../hooks/useFoodForm';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -24,14 +24,17 @@ export function FoodForm() {
   } = useFoodForm(id);
 
   return (
-    <KeyboardAwareScrollView
-      className="flex-1 bg-surface-app"
-      contentContainerClassName="p-screen-x gap-6 pb-40"
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      enableOnAndroid={true}
-      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 20}
     >
+      <ScrollView
+        className="flex-1 bg-surface-app"
+        contentContainerClassName="p-screen-x gap-6 pb-40"
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      >
         <Card className="gap-4">
           <Typography variant="subtitle">Basic Info</Typography>
           <View className="gap-3">
@@ -103,6 +106,7 @@ export function FoodForm() {
           <Button onPress={handleSave}><Text>Save Food</Text></Button>
           <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
         </View>
-    </KeyboardAwareScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
