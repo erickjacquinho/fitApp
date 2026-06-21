@@ -5,7 +5,8 @@ function Input({ className, ...props }: React.ComponentProps<typeof TextInput> &
   return (
     <TextInput
       className={cn(
-        'bg-surface-app border-border-strong text-text-main flex h-input-md w-full min-w-0 flex-row items-center rounded-md border px-4 py-2 font-sans text-text leading-body shadow-none',
+        'bg-surface-app border-border-strong text-text-main flex h-input-md w-full min-w-0 flex-row items-center rounded-md border px-4 py-2 font-sans text-text leading-body shadow-none transition-all duration-200',
+        'focus:border-[2px] focus:border-primary-main',
         props.editable === false &&
         cn(
           'opacity-50',
@@ -13,7 +14,7 @@ function Input({ className, ...props }: React.ComponentProps<typeof TextInput> &
         ),
         Platform.select({
           web: cn(
-            'placeholder:text-text-muted selection:bg-primary-main selection:text-white-pure outline-none transition-all',
+            'placeholder:text-text-muted selection:bg-primary-main selection:text-white-pure outline-none',
             'focus-visible:border-primary-main focus-visible:ring-primary-main/50 focus-visible:ring-[3px]',
             'aria-invalid:ring-tomato-main/20 dark:aria-invalid:ring-tomato-main/40 aria-invalid:border-tomato-main'
           ),
