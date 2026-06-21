@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, TextInput } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { NutritionalInfoDisplay } from '../../../components/molecules/NutritionalInfoDisplay';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import { MealService } from '../services/meal-service';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface AddFoodToMealScreenProps {
   food: Food;
@@ -56,11 +57,7 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
         <NutritionalInfoDisplay macros={calculatedMacros} />
       </View>
 
-      <Button 
-        title="Adicionar à Refeição" 
-        onPress={handleAdd} 
-        disabled={quantity <= 0} 
-      />
+      <Button onPress={handleAdd} disabled={quantity <= 0}><Text>Adicionar à Refeição</Text></Button>
     </View>
   );
 }

@@ -3,10 +3,11 @@ import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { Icon } from '../../../components/atoms/Icon';
 import Meal from '../../../db/models/Meal';
 import { MealService } from '../services/meal-service';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface ReorderMealsModalProps {
   visible: boolean;
@@ -74,7 +75,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
           />
 
           <View className="pt-4">
-            <Button title="Salvar Nova Ordem" onPress={handleSave} />
+            <Button onPress={handleSave}><Text>Salvar Nova Ordem</Text></Button>
           </View>
         </View>
       </GestureHandlerRootView>

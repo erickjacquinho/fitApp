@@ -4,8 +4,9 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, Trophy } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
-import { Button } from '../../../components/atoms/Button';
 import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function SessionDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,7 +51,7 @@ export function SessionDetailsScreen() {
         <Typography variant="subtitle" className="mb-4">
           Session Details Not Found
         </Typography>
-        <Button title="Back to Training" onPress={() => router.replace('/training')} />
+        <Button onPress={() => router.replace('/training')}><Text>Back to Training</Text></Button>
       </View>
     );
   }
@@ -132,11 +133,7 @@ export function SessionDetailsScreen() {
         </Card>
       ))}
 
-      <Button
-        title="Back to Programs"
-        onPress={() => router.replace('/training')}
-        className="my-6 min-h-control-lg"
-      />
+      <Button onPress={() => router.replace('/training')} className="my-6 min-h-control-lg"><Text>Back to Programs</Text></Button>
     </ScrollView>
   );
 }

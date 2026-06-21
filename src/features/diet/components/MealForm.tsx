@@ -3,7 +3,6 @@ import { View, Pressable, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
 import { Input } from '../../../components/atoms/Input';
-import { Button } from '../../../components/atoms/Button';
 import { Card } from '../../../components/atoms/Card';
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
@@ -11,6 +10,8 @@ import { PreviewMacros } from './PreviewMacros';
 import { Food } from '../../../db';
 import { Icon } from '../../../components/atoms/Icon';
 import { COLORS } from '../../../tokens/colors';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function MealForm() {
   const {
@@ -56,7 +57,7 @@ export function MealForm() {
         <View className="gap-4">
           <View className="flex-row items-center justify-between">
             <Typography variant="subtitle">Foods</Typography>
-            <Button title="Add Food" size="sm" variant="secondary" onPress={() => setModalVisible(true)} />
+            <Button size="sm" variant="secondary" onPress={() => setModalVisible(true)}><Text>Add Food</Text></Button>
           </View>
 
           {selectedItems.length > 0 ? (
@@ -86,8 +87,8 @@ export function MealForm() {
         </View>
 
         <View className="gap-3 pb-10">
-          <Button title="Save Meal" onPress={handleSave} disabled={selectedItems.length === 0} />
-          <Button title="Cancel" variant="outline" onPress={goBack} />
+          <Button onPress={handleSave} disabled={selectedItems.length === 0}><Text>Save Meal</Text></Button>
+          <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
         </View>
 
         <FoodSelectorModal 

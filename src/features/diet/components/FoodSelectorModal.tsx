@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { Input } from '../../../components/atoms/Input';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface FoodSelectorModalProps {
   visible: boolean;
@@ -98,23 +99,14 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
                   />
                 </View>
               ) : (
-                <Button 
-                  title="Add" 
-                  variant="secondary" 
-                  size="sm" 
-                  onPress={() => toggleSelection(item.id)} 
-                />
+                <Button variant="secondary" size="sm" onPress={() => toggleSelection(item.id)}><Text>Add</Text></Button>
               )}
             </View>
           )}
         />
 
         <View className="absolute bottom-0 left-0 right-0 bg-surface-app border-t border-soft pt-4 mt-auto">
-          <Button 
-            title={`Confirm ${selectedCount > 0 ? `(${selectedCount})` : ''}`}
-            disabled={selectedCount === 0}
-            onPress={handleConfirm}
-          />
+          <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirm ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
         </View>
       </View>
     </BottomSheetModal>

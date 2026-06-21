@@ -4,11 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Input } from '../../../components/atoms/Input';
 import { Plus, Trash2, Layers } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { EmptyState } from '../../../components/molecules/EmptyState';
 import { useProgramForm } from '../hooks/useProgramForm';
 import { BlockDTO, ExerciseDTO } from '../types';
 import { ExerciseSelect } from './ExerciseSelect';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function ProgramForm() {
   const {
@@ -234,11 +235,7 @@ export function ProgramForm() {
           </View>
         )}
 
-        <Button
-          title="Create Program"
-          onPress={handleSave}
-          className="my-6 min-h-control-lg"
-        />
+        <Button onPress={handleSave} className="my-6 min-h-control-lg"><Text>Create Program</Text></Button>
     </KeyboardAwareScrollView>
   );
 }

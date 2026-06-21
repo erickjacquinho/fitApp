@@ -3,11 +3,12 @@ import { View, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
 import { Input } from '../../../components/atoms/Input';
-import { Button } from '../../../components/atoms/Button';
 import { Card } from '../../../components/atoms/Card';
 import { useFoodForm } from '../hooks/useFoodForm';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function FoodForm() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -99,8 +100,8 @@ export function FoodForm() {
         </Card>
 
         <View className="gap-3 pb-10">
-          <Button title="Save Food" onPress={handleSave} />
-          <Button title="Cancel" variant="outline" onPress={goBack} />
+          <Button onPress={handleSave}><Text>Save Food</Text></Button>
+          <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
         </View>
     </KeyboardAwareScrollView>
   );

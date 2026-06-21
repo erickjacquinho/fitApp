@@ -6,9 +6,10 @@ import {
 } from 'react-native';
 import { Plus } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SetInputRow } from './SetInputRow';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface SetState {
   setNumber: number;
@@ -166,12 +167,7 @@ export function ExecuteExerciseModal({
 
       {/* Actions */}
       <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
-        <Button
-          title="Close"
-          variant="outline"
-          className="flex-1"
-          onPress={onClose}
-        />
+        <Button variant="outline" className="flex-1" onPress={onClose}><Text>Close</Text></Button>
       </View>
     </BottomSheetModal>
   );

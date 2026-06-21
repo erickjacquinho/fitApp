@@ -1,7 +1,8 @@
 import { View, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { Typography } from '../src/components/atoms/Typography';
-import { Button } from '../src/components/atoms/Button';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 
 export default function StyleGuide() {
   return (
@@ -68,13 +69,13 @@ export default function StyleGuide() {
           <Typography variant="label" color="default" className="mb-4">03. Componentes de Ação</Typography>
           
           <View className="gap-4">
-            <Button title="PRIMARY" variant="primary" />
-            <Button title="OUTLINE BUTTON" variant="outline" />
-            <Button title="GHOST ACTION" variant="ghost" />
-            <Button title="DESTRUCTIVE" variant="danger" />
+            <Button variant="default"><Text>PRIMARY</Text></Button>
+            <Button variant="outline"><Text>OUTLINE BUTTON</Text></Button>
+            <Button variant="ghost"><Text>GHOST ACTION</Text></Button>
+            <Button variant="destructive"><Text>DESTRUCTIVE</Text></Button>
             <View className="flex-row gap-4">
-              <Button title="SMALL" variant="primary" size="sm" className="flex-1" />
-              <Button title="DISABLED" variant="primary" disabled className="flex-1" />
+              <Button variant="default" size="sm" className="flex-1"><Text>SMALL</Text></Button>
+              <Button variant="default" disabled className="flex-1"><Text>DISABLED</Text></Button>
             </View>
           </View>
         </View>

@@ -3,12 +3,13 @@ import { View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { Card } from '../../../components/atoms/Card';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import WorkoutSession from '../../../db/models/WorkoutSession';
 import { Q } from '@nozbe/watermelondb';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface DailyTrainingScreenProps {
   selectedDate: string;
@@ -48,19 +49,13 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
                 <Typography variant="caption" color="muted">
                   Início: {new Date(session.startDate).toLocaleTimeString()}
                 </Typography>
-                <Button 
-                  title="Detalhes" 
-                  size="sm" 
-                  variant="outline" 
-                  className="mt-4"
-                  onPress={() => {
-                    if (session.status === 'active') {
-                      router.push('/training/active');
-                    } else {
-                      router.push(`/training/details/${session.id}`);
-                    }
-                  }} 
-                />
+                <Button size="sm" variant="outline" className="mt-4" onPress={() => {
+                                        if (session.status === 'active') {
+                                          router.push('/training/active');
+                                        } else {
+                                          router.push(`/training/details/${session.id}`);
+                                        }
+                                      }}><Text>Detalhes</Text></Button>
               </Card>
             ))}
           </View>
@@ -72,10 +67,7 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
             <Typography variant="text" color="muted" className="text-center mb-6">
               Inicie um treino para registrá-lo neste dia.
             </Typography>
-            <Button
-              title="Iniciar Treino"
-              onPress={() => router.push({ pathname: '/training/programs', params: { date: selectedDate } })}
-            />
+            <Button onPress={() => router.push({ pathname: '/training/programs', params: { date: selectedDate } })}><Text>Iniciar Treino</Text></Button>
           </View>
         )}
       </ScrollView>

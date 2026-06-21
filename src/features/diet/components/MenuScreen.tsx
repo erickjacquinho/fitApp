@@ -5,7 +5,6 @@ import { Icon } from '../../../components/atoms/Icon';
 import { COLORS } from '../../../tokens/colors';
 import { View, FlatList } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -20,6 +19,8 @@ import { ReorderMealsModal } from './ReorderMealsModal';
 
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { CalendarDays } from 'lucide-react-native';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface MenuScreenProps {
   meals: Meal[];
@@ -116,11 +117,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           )}
         ListFooterComponent={
           <View className="mt-4">
-            <Button 
-              title="+ Adicionar Refeição" 
-              variant="outline" 
-              onPress={handleAddMeal} 
-            />
+            <Button variant="outline" onPress={handleAddMeal}><Text>+ Adicionar Refeição</Text></Button>
           </View>
         }
       />

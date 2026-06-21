@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, Pressable } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
 import { useFoodBank } from '../hooks/useFoodBank';
@@ -12,6 +11,8 @@ import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { MealService } from '../services/meal-service';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface FoodBankScreenProps {
   foods: Food[];
@@ -64,24 +65,15 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Button 
-              title={isSelectionMode ? "Cancel" : "+ Create New Food"} 
-              variant={isSelectionMode ? "outline" : "primary"}
-              onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')} 
-            />
+            <Button variant={isSelectionMode ? "outline" : "default"} onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')}><Text>{isSelectionMode ? "Cancel" : "+ Create New Food"}</Text></Button>
           </View>
           {isSelectionMode ? (
             <View className="flex-1">
-              <Button 
-                title={`Delete (${bulkSelections.size})`} 
-                variant="danger" 
-                disabled={bulkSelections.size === 0}
-                onPress={handleBulkDelete}
-              />
+              <Button variant="destructive" disabled={bulkSelections.size === 0} onPress={handleBulkDelete}><Text>{`Delete (${bulkSelections.size})`}</Text></Button>
             </View>
           ) : (
             <View className="flex-1">
-              <Button title="Select" variant="secondary" onPress={() => setIsSelectionMode(true)} />
+              <Button variant="secondary" onPress={() => setIsSelectionMode(true)}><Text>Select</Text></Button>
             </View>
           )}
         </View>

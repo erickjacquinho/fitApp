@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import Meal from '../../../db/models/Meal';
@@ -12,6 +11,8 @@ import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
 import { Trash2 } from 'lucide-react-native';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
   const router = useRouter();
@@ -64,11 +65,7 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
           />
         ))}
         
-        <Button 
-          title="+ Adicionar Alimento" 
-          variant="secondary" 
-          onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })} 
-        />
+        <Button variant="secondary" onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}><Text>+ Adicionar Alimento</Text></Button>
         
         {foodItems.length > 0 && <MealMacrosSummary macros={macros} />}
       </View>

@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { CheckCircle2, Circle } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Card } from '../../../components/atoms/Card';
-import { Button } from '../../../components/atoms/Button';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface ExerciseListItemProps {
   name: string;
@@ -56,12 +57,7 @@ export function ExerciseListItem({
         </Typography>
       </View>
 
-      <Button
-        title={setsCount > 0 ? 'Edit' : 'Start'}
-        variant={isCompleted ? 'outline' : 'primary'}
-        size="sm"
-        onPress={onPress}
-      />
+      <Button variant={isCompleted ? 'outline' : 'default'} size="sm" onPress={onPress}><Text>{setsCount > 0 ? 'Edit' : 'Start'}</Text></Button>
     </Card>
   );
 }

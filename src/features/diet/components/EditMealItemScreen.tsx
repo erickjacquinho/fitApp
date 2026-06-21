@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, TextInput } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import MealItem from '../../../db/models/MealItem';
 import { MealService } from '../services/meal-service';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface EditMealItemScreenProps {
   food: Food;
@@ -73,11 +74,7 @@ function EditMealItemScreenComponent({ food, mealItem }: EditMealItemScreenProps
         </View>
       </View>
 
-      <Button 
-        title="Salvar Alterações" 
-        onPress={handleUpdate} 
-        disabled={quantity <= 0} 
-      />
+      <Button onPress={handleUpdate} disabled={quantity <= 0}><Text>Salvar Alterações</Text></Button>
     </View>
   );
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Typography } from '../atoms/Typography';
-import { Button } from '../atoms/Button';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import { LucideIcon } from 'lucide-react-native';
 
 export interface EmptyStateProps {
@@ -34,7 +35,7 @@ export function EmptyState({
       )}
       {buttonText && onButtonPress && (
         <View className="mt-6 w-full max-w-[200px]">
-          <Button variant="outline" title={buttonText} onPress={onButtonPress} />
+          <Button variant="outline" onPress={onButtonPress}><Text>{buttonText}</Text></Button>
         </View>
       )}
     </View>

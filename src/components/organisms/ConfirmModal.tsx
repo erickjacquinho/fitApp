@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Modal, Pressable } from 'react-native';
 import { Typography } from '../atoms/Typography';
-import { Button } from '../atoms/Button';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 import { Card } from '../atoms/Card';
 
 export interface ConfirmModalProps {
@@ -46,17 +47,19 @@ export function ConfirmModal({
             <View className="flex-row gap-3">
               <View className="flex-1">
                 <Button 
-                  title={cancelLabel} 
                   variant="outline" 
                   onPress={onCancel} 
-                />
+                >
+                  <Text>{cancelLabel}</Text>
+                </Button>
               </View>
               <View className="flex-1">
                 <Button 
-                  title={confirmLabel} 
-                  variant={isDestructive ? 'danger' : 'primary'} 
+                  variant={isDestructive ? 'destructive' : 'default'} 
                   onPress={onConfirm} 
-                />
+                >
+                  <Text>{confirmLabel}</Text>
+                </Button>
               </View>
             </View>
           </Card>
