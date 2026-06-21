@@ -3,10 +3,11 @@ import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Plus, Trash2, Dumbbell, History, Play } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
-import { Button } from '../../../components/atoms/Button';
 import { useProgramList } from '../hooks/useProgramList';
 import TrainingBlock from '../../../db/models/TrainingBlock';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 export function ProgramListScreen() {
   const {
@@ -56,7 +57,7 @@ export function ProgramListScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       {/* Quick Action Banner */}
       {activeSession ? (
         <Card className="mb-4 border-primary-main/30 bg-primary-main/5 p-4 flex-row items-center justify-between">
@@ -68,11 +69,7 @@ export function ProgramListScreen() {
               You have an unfinished workout session active in the background.
             </Typography>
           </View>
-          <Button
-            title="Resume"
-            size="sm"
-            onPress={() => router.push('/training/active')}
-          />
+          <Button size="sm" onPress={() => router.push('/training/active')}><Text>Resume</Text></Button>
         </Card>
       ) : null}
 
@@ -147,10 +144,7 @@ export function ProgramListScreen() {
           <Typography variant="text" color="muted" className="text-center mb-6">
             Build your routines, exercises, and log your execution volume.
           </Typography>
-          <Button
-            title="Create Your First Program"
-            onPress={() => router.push('/training/create-program')}
-          />
+          <Button onPress={() => router.push('/training/create-program')}><Text>Create Your First Program</Text></Button>
         </View>
       )}
     </ScrollView>

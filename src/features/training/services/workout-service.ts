@@ -15,7 +15,7 @@ export class WorkoutService {
     }
     
     return await database.write(async () => {
-      const newProgram = await this.programsCollection.create((program) => {
+      const newProgram = this.programsCollection.prepareCreate((program) => {
         program.name = programData.name.trim();
       });
 

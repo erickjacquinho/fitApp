@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Trash2, Check } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
+import { Input } from "@/components/ui/input";
 
 interface SetInputRowProps {
   setNumber: number;
@@ -36,12 +37,12 @@ export function SetInputRow({
 
       {/* Weight Input */}
       <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-        <TextInput
+        <Input
           keyboardType="numeric"
           placeholder="0"
           value={weight}
           onChangeText={(val) => onInputChange('weight', val)}
-          className="flex-1 p-0 text-center font-bold text-black-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-black-main"
         />
         <Typography variant="caption" color="muted" className="ml-1">
           kg
@@ -50,12 +51,12 @@ export function SetInputRow({
 
       {/* Reps Input */}
       <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
-        <TextInput
+        <Input
           keyboardType="numeric"
           placeholder="0"
           value={reps}
           onChangeText={(val) => onInputChange('reps', val)}
-          className="flex-1 p-0 text-center font-bold text-black-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-black-main"
         />
         <Typography variant="caption" color="muted" className="ml-1">
           reps

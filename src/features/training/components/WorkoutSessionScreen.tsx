@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { TrainingProgressBar } from './TrainingProgressBar';
 import { ExecuteExerciseModal } from './ExecuteExerciseModal';
 import { ExerciseListItem } from './ExerciseListItem';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import Exercise from '../../../db/models/Exercise';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
@@ -52,7 +53,7 @@ export function WorkoutSessionScreen() {
 
   return (
     <View className="flex-1 bg-surface-app">
-      <ScrollView className="flex-1 p-4">
+      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
         {block && (
           <Typography variant="title" className="mb-2 text-2xl font-bold">
             {block.name} Routine
@@ -95,11 +96,7 @@ export function WorkoutSessionScreen() {
           </View>
         )}
 
-        <Button
-          title="Finish Workout Session"
-          onPress={handleFinishWorkout}
-          className="my-6 min-h-control-lg bg-success-main active:bg-success-dark"
-        />
+        <Button onPress={handleFinishWorkout} className="my-6 min-h-control-lg bg-success-main active:bg-success-dark"><Text>Finish Workout Session</Text></Button>
       </ScrollView>
 
       {activeExercise && (

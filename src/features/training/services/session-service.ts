@@ -8,7 +8,7 @@ export class SessionService {
   private static sessionsCollection = database.get<WorkoutSession>('workout_sessions');
   private static executionsCollection = database.get<ExerciseExecution>('exercise_executions');
 
-  static async startSession(programId: string): Promise<WorkoutSession> {
+  static async startSession(programId: string, targetDate: string): Promise<WorkoutSession> {
     return await database.write(async () => {
       // Check if there is an active session
       const activeSessions = await this.sessionsCollection
@@ -24,6 +24,7 @@ export class SessionService {
         session.programId = programId;
         session.startDate = Date.now();
         session.status = 'active';
+        session.targetDate = targetDate;
       });
     });
   }

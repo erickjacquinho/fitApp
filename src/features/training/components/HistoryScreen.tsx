@@ -3,8 +3,8 @@ import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-nat
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
+import { Card } from "@/components/ui/card";
 
 export function HistoryScreen() {
   const { history, isLoading, loadHistory } = useWorkoutHistory();
@@ -42,7 +42,7 @@ export function HistoryScreen() {
   }
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       <Typography variant="title" className="mb-4 text-2xl font-bold">
         Workout History
       </Typography>

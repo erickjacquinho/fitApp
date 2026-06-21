@@ -11,6 +11,7 @@ import TrainingBlock from './models/TrainingBlock';
 import Exercise from './models/Exercise';
 import WorkoutSession from './models/WorkoutSession';
 import ExerciseExecution from './models/ExerciseExecution';
+import ExerciseDefinition from './models/ExerciseDefinition';
 
 const adapter = new SQLiteAdapter({
   dbName: 'fitapp_db_v2',
@@ -33,6 +34,7 @@ export const database = new Database({
     Exercise,
     WorkoutSession,
     ExerciseExecution,
+    ExerciseDefinition,
   ],
 });
 
@@ -45,4 +47,5 @@ export {
   Exercise,
   WorkoutSession,
   ExerciseExecution,
+  ExerciseDefinition,
 };

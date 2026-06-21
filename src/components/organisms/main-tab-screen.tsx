@@ -4,19 +4,19 @@ import { Typography } from '../atoms/Typography';
 import { Header } from '../molecules/Header';
 
 interface MainTabScreenProps {
-  eyebrow: string;
   title: string;
-  description: string;
   children?: ReactNode;
   scrollable?: boolean;
+  headerLeft?: ReactNode;
+  headerRight?: ReactNode;
 }
 
 export function MainTabScreen({
-  eyebrow,
   title,
-  description,
   children,
   scrollable = true,
+  headerLeft,
+  headerRight,
 }: MainTabScreenProps) {
   const Container = scrollable ? ScrollView : View;
   const containerProps = scrollable
@@ -30,20 +30,8 @@ export function MainTabScreen({
 
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title={title} />
-      <Container {...containerProps}>
-        <View className="gap-3">
-          <Typography variant="label" color="muted">
-            {eyebrow}
-          </Typography>
-          <Typography variant="title">
-            {title}
-          </Typography>
-          <Typography variant="text" color="muted">
-            {description}
-          </Typography>
-        </View>
-
+      <Header title={title} headerLeft={headerLeft} headerRight={headerRight} />
+      <Container keyboardShouldPersistTaps="handled" {...containerProps}>
         {children}
       </Container>
     </View>

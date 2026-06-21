@@ -12,6 +12,8 @@
 - Zustand for global state.
 - WatermelonDB for offline-first persistence.
 - Atomic Design for shared UI components.
+- IMPORTANT: Use exact versions for dependencies. No `^` or `~` in `package.json`.
+- IMPORTANT: Never change or update stack versions unless explicitly requested.
 
 ## Project Structure
 - App routes live in `app/`.
@@ -24,6 +26,8 @@
 
 ## Working Rules
 - Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
+- **Component Source Rule:** `@react-native-reusables` (Shadcn UI for React Native) is the primary source for components. Before creating any custom component, ALWAYS analyze if there is an existing component in this library that fulfills the requirement. Use `npx @react-native-reusables/cli@latest add <component>` to add it.
+- **Component Styling Rule:** Whenever a new component is added (especially via `@react-native-reusables` CLI) or modified, you MUST review its Tailwind classes. Ensure all generic colors and sizes (`bg-primary`, `bg-destructive`, `bg-background`, etc.) are explicitly replaced with our exact semantic tokens from `tailwind.config.js` (e.g., `bg-primary-main`, `bg-tomato-main`, `bg-surface-app`, `h-control-md`).
 - Before creating a new UI component, check existing components in `src/components/` and feature folders.
 - Prefer extending existing atoms/molecules over creating duplicates.
 - Keep changes focused. Do not refactor unrelated code.
@@ -40,15 +44,8 @@
 - Do not load every rule file by default; read only what is needed for the current change.
 - If rules conflict, follow the most specific `.agents/rules/*.md` file first, then `designsystem-guide.md`, then broader docs in `docs/`.
 
-## Speckit Workflow
-- For new features, use this order:
-  1. `/speckit.specify`
-  2. `/speckit.plan`
-  3. `/speckit.tasks`
-  4. `/speckit.implement`
-- Present the execution strategy before implementation when the feature is non-trivial.
-- Save generated Speckit artifacts under `implementation/<feature-name>/`.
-- After plan approval, continue autonomously unless there is a blocker or real ambiguity.
+## SDD SKILL
+- Execute tudo exatamente como a skill `sdd` descreve. 
 
 ## Validation
 - Validate changes before finishing.

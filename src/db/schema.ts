@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 2,
+  version: 6,
   tables: [
     tableSchema({
       name: 'foods',
@@ -23,6 +23,8 @@ export default appSchema({
         { name: 'name', type: 'string' },
         { name: 'quantity', type: 'number' },
         { name: 'preparation_state', type: 'string' },
+        { name: 'order_index', type: 'number', isOptional: true },
+        { name: 'target_date', type: 'string', isIndexed: true, isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],
@@ -76,6 +78,7 @@ export default appSchema({
         { name: 'start_date', type: 'number' },
         { name: 'end_date', type: 'number', isOptional: true },
         { name: 'status', type: 'string' },
+        { name: 'target_date', type: 'string', isIndexed: true, isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],
@@ -89,6 +92,14 @@ export default appSchema({
         { name: 'reps_done', type: 'number' },
         { name: 'weight', type: 'number' },
         { name: 'reps_reserve_done', type: 'number', isOptional: true },
+        { name: 'created_at', type: 'number' },
+        { name: 'updated_at', type: 'number' },
+      ],
+    }),
+    tableSchema({
+      name: 'exercise_definitions',
+      columns: [
+        { name: 'name', type: 'string' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

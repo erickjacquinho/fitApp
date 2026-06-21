@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, Pressable } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
 import { useFoodBank } from '../hooks/useFoodBank';
@@ -11,12 +10,16 @@ import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
+import { MealService } from '../services/meal-service';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 interface FoodBankScreenProps {
   foods: Food[];
+  mealId?: string;
 }
 
-function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
+function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
@@ -32,6 +35,11 @@ function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
     deleteFood,
     deleteSelectedFoods,
   } = useFoodBank(foods);
+
+  const handleAddFoodToMeal = (foodId: string) => {
+    if (!mealId) return;
+    router.push({ pathname: '/diet/add-food-to-meal', params: { mealId, foodId } });
+  };
 
   const handleDelete = async () => {
     if (selectedFoodId) {
@@ -57,37 +65,33 @@ function FoodBankScreenComponent({ foods }: FoodBankScreenProps) {
         
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Button 
-              title={isSelectionMode ? "Cancel" : "+ Create New Food"} 
-              variant={isSelectionMode ? "outline" : "primary"}
-              onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')} 
-            />
+            <Button variant={isSelectionMode ? "outline" : "default"} onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')}><Text>{isSelectionMode ? "Cancel" : "+ Create New Food"}</Text></Button>
           </View>
           {isSelectionMode ? (
             <View className="flex-1">
-              <Button 
-                title={`Delete (${bulkSelections.size})`} 
-                variant="danger" 
-                disabled={bulkSelections.size === 0}
-                onPress={handleBulkDelete}
-              />
+              <Button variant="destructive" disabled={bulkSelections.size === 0} onPress={handleBulkDelete}><Text>{`Delete (${bulkSelections.size})`}</Text></Button>
             </View>
           ) : (
             <View className="flex-1">
-              <Button title="Select" variant="secondary" onPress={() => setIsSelectionMode(true)} />
+              <Button variant="secondary" onPress={() => setIsSelectionMode(true)}><Text>Select</Text></Button>
             </View>
           )}
         </View>
       </View>
 
-      <FlatList
+      <FlatList keyboardShouldPersistTaps="handled"
         data={filteredFoods}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-screen-x pb-20"
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
-            <Pressable onPress={() => isSelectionMode ? toggleBulkSelection(item.id) : null}>
+            <Pressable 
+              onPress={() => {
+                if (isSelectionMode) toggleBulkSelection(item.id);
+                else if (mealId) handleAddFoodToMeal(item.id);
+              }}
+            >
               <SwipeableCard 
                 className={`mb-3 ${isSelected ? 'border-primary-main bg-primary-soft/10' : ''}`}
                 onEdit={isSelectionMode ? undefined : () => router.push({ pathname: '/diet/create-food', params: { id: item.id } })}

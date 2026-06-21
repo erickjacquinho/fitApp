@@ -3,9 +3,9 @@ import { View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { ProgressCircle } from '../../../components/atoms/ProgressCircle';
 import { MacroTrackerCard } from './MacroTrackerCard';
+import { Card } from "@/components/ui/card";
 
 interface DietWidgetProps {
   calories: number;

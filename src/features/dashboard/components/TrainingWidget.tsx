@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Play, CheckCircle2, Dumbbell, Calendar } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
+import { Card } from "@/components/ui/card";
 
 interface TrainingWidgetProps {
   programName: string | null;

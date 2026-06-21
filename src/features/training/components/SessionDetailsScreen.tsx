@@ -3,9 +3,10 @@ import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, Trophy } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
-import { Button } from '../../../components/atoms/Button';
 import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 export function SessionDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,13 +51,13 @@ export function SessionDetailsScreen() {
         <Typography variant="subtitle" className="mb-4">
           Session Details Not Found
         </Typography>
-        <Button title="Back to Training" onPress={() => router.replace('/training')} />
+        <Button onPress={() => router.replace('/training')}><Text>Back to Training</Text></Button>
       </View>
     );
   }
 
   return (
-    <ScrollView className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       {/* Trophy / Congrats Header */}
       <View className="mb-4 items-center justify-center rounded-md bg-success-main/10 p-5 border border-success-main/20">
         <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-success-main">
@@ -132,11 +133,7 @@ export function SessionDetailsScreen() {
         </Card>
       ))}
 
-      <Button
-        title="Back to Programs"
-        onPress={() => router.replace('/training')}
-        className="my-6 min-h-control-lg"
-      />
+      <Button onPress={() => router.replace('/training')} className="my-6 min-h-control-lg"><Text>Back to Programs</Text></Button>
     </ScrollView>
   );
 }

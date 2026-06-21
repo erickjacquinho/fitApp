@@ -1,15 +1,17 @@
 import React from 'react';
-import { View, ScrollView, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Pressable, Platform } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
-import { Input } from '../../../components/atoms/Input';
-import { Button } from '../../../components/atoms/Button';
-import { Card } from '../../../components/atoms/Card';
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';
 import { Food } from '../../../db';
 import { Icon } from '../../../components/atoms/Icon';
-import { COLORS } from '../../../components/atoms/colors';
+import { COLORS } from '../../../tokens/colors';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 export function MealForm() {
   const {
@@ -25,16 +27,14 @@ export function MealForm() {
   } = useMealForm();
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
+    <KeyboardAwareScrollView
+      className="flex-1 bg-surface-app"
+      contentContainerClassName="p-screen-x gap-6 pb-40"
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      enableOnAndroid={true}
+      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
     >
-      <ScrollView 
-        className="flex-1 bg-surface-app" 
-        contentContainerClassName="p-screen-x gap-6 pb-40"
-        keyboardShouldPersistTaps="handled"
-      >
         <Card className="gap-4">
           <Typography variant="subtitle">Meal Details</Typography>
           <View className="gap-3">
@@ -57,7 +57,7 @@ export function MealForm() {
         <View className="gap-4">
           <View className="flex-row items-center justify-between">
             <Typography variant="subtitle">Foods</Typography>
-            <Button title="Add Food" size="sm" variant="secondary" onPress={() => setModalVisible(true)} />
+            <Button size="sm" variant="secondary" onPress={() => setModalVisible(true)}><Text>Add Food</Text></Button>
           </View>
 
           {selectedItems.length > 0 ? (
@@ -87,8 +87,8 @@ export function MealForm() {
         </View>
 
         <View className="gap-3 pb-10">
-          <Button title="Save Meal" onPress={handleSave} disabled={selectedItems.length === 0} />
-          <Button title="Cancel" variant="outline" onPress={goBack} />
+          <Button onPress={handleSave} disabled={selectedItems.length === 0}><Text>Save Meal</Text></Button>
+          <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
         </View>
 
         <FoodSelectorModal 
@@ -96,7 +96,6 @@ export function MealForm() {
           onClose={() => setModalVisible(false)} 
           onConfirm={(selections) => setSelectedItems(selections)} 
         />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 }

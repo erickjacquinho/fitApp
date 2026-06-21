@@ -1,15 +1,23 @@
-import { MenuScreen } from '../../src/features/diet/components/MenuScreen';
-import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
+import { useState, useEffect } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import { MenuScreen } from "../../src/features/diet/components/MenuScreen";
+
+const formatDate = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
 
 export default function DietTab() {
-  return (
-    <MainTabScreen
-      eyebrow="My Diet"
-      title="Daily Menu"
-      description="Track your caloric intake and macronutrients for today."
-      scrollable={false}
-    >
-      <MenuScreen />
-    </MainTabScreen>
-  );
+  const { date } = useLocalSearchParams<{ date?: string }>();
+  const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
+
+  useEffect(() => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  }, [date]);
+
+  return <MenuScreen selectedDate={selectedDate} onSelectDate={setSelectedDate} />;
 }

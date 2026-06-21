@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import { View, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Typography } from '../../../components/atoms/Typography';
-import { Button } from '../../../components/atoms/Button';
 import { DietWidget } from './DietWidget';
 import { TrainingWidget } from './TrainingWidget';
 import { useDashboardMetrics } from '../hooks/useDashboardMetrics';
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 export function DashboardScreen() {
   const { metrics, isLoading, refetch } = useDashboardMetrics();
@@ -32,7 +33,7 @@ export function DashboardScreen() {
   });
 
   return (
-    <ScrollView
+    <ScrollView keyboardShouldPersistTaps="handled"
       className="flex-1 bg-surface-app p-4"
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={['#005B94']} />
@@ -80,18 +81,8 @@ export function DashboardScreen() {
             Quick Actions
           </Typography>
           <View className="flex-row gap-2">
-            <Button
-              title="Add Calories"
-              variant="outline"
-              className="flex-1"
-              onPress={() => router.push('/diet/create-meal')}
-            />
-            <Button
-              title="Workout Plan"
-              variant="secondary"
-              className="flex-1"
-              onPress={() => router.push('/training')}
-            />
+            <Button variant="outline" className="flex-1" onPress={() => router.push('/diet/create-meal')}><Text>Add Calories</Text></Button>
+            <Button variant="secondary" className="flex-1" onPress={() => router.push('/training')}><Text>Workout Plan</Text></Button>
           </View>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import { schemaMigrations, createTable } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, createTable, addColumns } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
   migrations: [
@@ -91,6 +91,52 @@ export default schemaMigrations({
             { name: 'reps_done', type: 'number' },
             { name: 'weight', type: 'number' },
             { name: 'reps_reserve_done', type: 'number', isOptional: true },
+            { name: 'created_at', type: 'number' },
+            { name: 'updated_at', type: 'number' },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 3,
+      steps: [
+        addColumns({
+          table: 'meals',
+          columns: [
+            { name: 'order_index', type: 'number', isOptional: true },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 4,
+      steps: [
+        addColumns({
+          table: 'meals',
+          columns: [
+            { name: 'target_date', type: 'string', isOptional: true },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 5,
+      steps: [
+        addColumns({
+          table: 'workout_sessions',
+          columns: [
+            { name: 'target_date', type: 'string', isIndexed: true, isOptional: true },
+          ],
+        }),
+      ],
+    },
+    {
+      toVersion: 6,
+      steps: [
+        createTable({
+          name: 'exercise_definitions',
+          columns: [
+            { name: 'name', type: 'string' },
             { name: 'created_at', type: 'number' },
             { name: 'updated_at', type: 'number' },
           ],
