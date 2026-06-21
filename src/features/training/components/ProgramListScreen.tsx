@@ -3,11 +3,11 @@ import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Plus, Trash2, Dumbbell, History, Play } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { useProgramList } from '../hooks/useProgramList';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 export function ProgramListScreen() {
   const {

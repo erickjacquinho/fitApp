@@ -3,13 +3,13 @@ import { View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import WorkoutSession from '../../../db/models/WorkoutSession';
 import { Q } from '@nozbe/watermelondb';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 interface DailyTrainingScreenProps {
   selectedDate: string;

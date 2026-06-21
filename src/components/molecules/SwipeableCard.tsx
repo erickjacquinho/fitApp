@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import { Card, CardProps } from '../atoms/Card';
 import { Icon } from '../atoms/Icon';
 import { COLORS } from '../../tokens/colors';
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { Card, CardProps } from "@/components/ui/card";
 
 export interface SwipeableCardProps extends CardProps {
   onDelete?: () => void;
   onEdit?: () => void;
+  children?: React.ReactNode;
 }
 
 export function SwipeableCard({ onDelete, onEdit, children, ...props }: SwipeableCardProps) {
@@ -43,7 +44,7 @@ export function SwipeableCard({ onDelete, onEdit, children, ...props }: Swipeabl
   // Extract standard margin classes so they can be applied outside the Swipeable
   const classNameStr = props.className || '';
   const marginClasses: string[] = classNameStr.match(/m[b|t|l|r|x|y]?-\d+/g) || [];
-  const otherClasses = classNameStr.split(' ').filter(c => !marginClasses.includes(c)).join(' ');
+  const otherClasses = classNameStr.split(' ').filter((c: string) => !marginClasses.includes(c)).join(' ');
 
   return (
     <View className={marginClasses.join(' ')}>

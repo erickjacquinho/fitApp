@@ -3,7 +3,7 @@ import { View, Modal, Pressable } from 'react-native';
 import { Typography } from '../atoms/Typography';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
-import { Card } from '../atoms/Card';
+import { Card } from "@/components/ui/card";
 
 export interface ConfirmModalProps {
   visible: boolean;

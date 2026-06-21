@@ -3,10 +3,10 @@ import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, Trophy } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 export function SessionDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

@@ -3,8 +3,8 @@ import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-nat
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
+import { Card } from "@/components/ui/card";
 
 export function HistoryScreen() {
   const { history, isLoading, loadHistory } = useWorkoutHistory();

@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { useFoodForm } from '../hooks/useFoodForm';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 export function FoodForm() {
   const { id } = useLocalSearchParams<{ id: string }>();

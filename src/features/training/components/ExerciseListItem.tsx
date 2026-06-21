@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { CheckCircle2, Circle } from 'lucide-react-native';
 import { Typography } from '../../../components/atoms/Typography';
-import { Card } from '../../../components/atoms/Card';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 
 interface ExerciseListItemProps {
   name: string;
