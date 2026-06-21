@@ -2,7 +2,7 @@ import { View, TextInputProps } from 'react-native';
 import { Input } from '../atoms/Input';
 import { Icon } from '../atoms/Icon';
 import { IconButton } from './IconButton';
-import { COLORS } from '../atoms/colors';
+import { COLORS } from '../../tokens/colors';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

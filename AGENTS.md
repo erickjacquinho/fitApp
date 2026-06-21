@@ -12,6 +12,8 @@
 - Zustand for global state.
 - WatermelonDB for offline-first persistence.
 - Atomic Design for shared UI components.
+- IMPORTANT: Use exact versions for dependencies. No `^` or `~` in `package.json`.
+- IMPORTANT: Never change or update stack versions unless explicitly requested.
 
 ## Project Structure
 - App routes live in `app/`.

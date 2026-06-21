@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch as RNSwitch, SwitchProps as RNSwitchProps } from 'react-native';
-import { COLORS } from './colors';
+import { COLORS } from '../../tokens/colors';
 
 export interface SwitchProps extends RNSwitchProps {}
 

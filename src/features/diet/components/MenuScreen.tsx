@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
 import { Pressable } from 'react-native';
 import { Icon } from '../../../components/atoms/Icon';
-import { COLORS } from '../../../components/atoms/colors';
+import { COLORS } from '../../../tokens/colors';
 import { View, FlatList } from 'react-native';
 import { Typography } from '../../../components/atoms/Typography';
 import { Button } from '../../../components/atoms/Button';

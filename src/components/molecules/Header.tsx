@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Typography } from '../atoms/Typography';
 import { Icon } from '../atoms/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from '../atoms/colors';
+import { COLORS } from '../../tokens/colors';
 
 export interface HeaderProps {
   title: string;

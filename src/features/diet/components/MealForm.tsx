@@ -10,7 +10,7 @@ import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';
 import { Food } from '../../../db';
 import { Icon } from '../../../components/atoms/Icon';
-import { COLORS } from '../../../components/atoms/colors';
+import { COLORS } from '../../../tokens/colors';
 
 export function MealForm() {
   const {

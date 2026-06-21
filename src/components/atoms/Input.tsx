@@ -2,7 +2,7 @@ import React, { forwardRef, useState } from 'react';
 import { TextInput, TextInputProps } from 'react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { COLORS } from './colors';
+import { COLORS } from '../../tokens/colors';
 
 export interface InputProps extends TextInputProps {
   isError?: boolean;

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Pressable } from 'react-native';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../atoms/Typography';
-import { COLORS } from '../atoms/colors';
+import { COLORS } from '../../tokens/colors';
 
 interface DateSelectorProps {
   selectedDate: string; // YYYY-MM-DD
