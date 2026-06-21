@@ -91,14 +91,37 @@ const buttonTextVariants = cva(
   }
 );
 
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 type ButtonProps = React.ComponentProps<typeof Pressable> & React.RefAttributes<typeof Pressable> & VariantProps<typeof buttonVariants>;
 
-function Button({ className, variant, size, ...props }: ButtonProps) {
+function Button({ className, variant, size, onPressIn, onPressOut, style, ...props }: ButtonProps) {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = (e: any) => {
+    scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
+    if (onPressIn) onPressIn(e);
+  };
+
+  const handlePressOut = (e: any) => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+    if (onPressOut) onPressOut(e);
+  };
+
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
-      <Pressable
+      <AnimatedPressable
         className={cn(props.disabled && 'opacity-50', buttonVariants({ variant, size }), className)}
         role="button"
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[animatedStyle, style as any]}
         {...props}
       />
     </TextClassContext.Provider>
