@@ -27,6 +27,7 @@
 ## Working Rules
 - Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
 - **Component Source Rule:** `@react-native-reusables` (Shadcn UI for React Native) is the primary source for components. Before creating any custom component, ALWAYS analyze if there is an existing component in this library that fulfills the requirement. Use `npx @react-native-reusables/cli@latest add <component>` to add it.
+- **Component Styling Rule:** Whenever a new component is added (especially via `@react-native-reusables` CLI) or modified, you MUST review its Tailwind classes. Ensure all generic colors and sizes (`bg-primary`, `bg-destructive`, `bg-background`, etc.) are explicitly replaced with our exact semantic tokens from `tailwind.config.js` (e.g., `bg-primary-main`, `bg-tomato-main`, `bg-surface-app`, `h-control-md`).
 - Before creating a new UI component, check existing components in `src/components/` and feature folders.
 - Prefer extending existing atoms/molecules over creating duplicates.
 - Keep changes focused. Do not refactor unrelated code.
