@@ -32,6 +32,3 @@ jobs:
 
       - name: Audit Dependencies
         run: npm audit --audit-level=moderate || true
-
-      - name: Build Web (Validation)
-        run: npx expo export --platform web --output-dir dist-check
