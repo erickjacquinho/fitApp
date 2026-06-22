@@ -12,7 +12,7 @@ export class MealService {
       throw new Error('ValidationError: Meal name is required');
     }
     return await database.write(async () => {
-      const newMeal = await this.mealsCollection.create((meal) => {
+      const newMeal = this.mealsCollection.prepareCreate((meal) => {
         meal.name = mealData.name.trim();
         meal.quantity = mealData.quantity;
         meal.preparationState = mealData.preparationState;
@@ -28,7 +28,7 @@ export class MealService {
         })
       );
 
-      await database.batch(...mealItemRecords);
+      await database.batch(newMeal, ...mealItemRecords);
 
       return newMeal;
     });

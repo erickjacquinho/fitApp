@@ -31,7 +31,8 @@
     "plugins": [
       "expo-router",
       "expo-dev-client",
-      "@morrowdigital/watermelondb-expo-plugin"
+      "@morrowdigital/watermelondb-expo-plugin",
+      "./plugins/withWatermelonDBJSIFix.js"
     ]
   }
 }

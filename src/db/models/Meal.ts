@@ -1,5 +1,6 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import { Model, Query } from '@nozbe/watermelondb';
+import { text, field, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import MealItem from './MealItem';
 
 export default class Meal extends Model {
   static table = 'meals';
@@ -7,13 +8,13 @@ export default class Meal extends Model {
     meal_items: { type: 'has_many', foreignKey: 'meal_id' },
   } as const;
 
-  @field('name') name!: string;
+  @text('name') name!: string;
   @field('quantity') quantity!: number;
-  @field('preparation_state') preparationState!: string;
+  @text('preparation_state') preparationState!: string;
   @field('order_index') orderIndex!: number;
-  @field('target_date') targetDate!: string;
+  @text('target_date') targetDate!: string;
 
-  @children('meal_items') items!: any;
+  @children('meal_items') items!: Query<MealItem>;
 
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;

@@ -1,5 +1,5 @@
 import { Model, Relation } from '@nozbe/watermelondb';
-import { field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
 import WorkoutSession from './WorkoutSession';
 import Exercise from './Exercise';
 
@@ -10,8 +10,8 @@ export default class ExerciseExecution extends Model {
     exercises: { type: 'belongs_to', key: 'exercise_id' },
   } as const;
 
-  @field('workout_session_id') workoutSessionId!: string;
-  @field('exercise_id') exerciseId!: string;
+  @text('workout_session_id') workoutSessionId!: string;
+  @text('exercise_id') exerciseId!: string;
   @field('set_number') setNumber!: number;
   @field('reps_done') repsDone!: number;
   @field('weight') weight!: number;

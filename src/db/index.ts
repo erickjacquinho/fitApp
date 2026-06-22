@@ -17,7 +17,7 @@ const adapter = new SQLiteAdapter({
   schema,
   migrations,
   dbName: 'fitapp_db_v3',
-  jsi: false, // JSI is not supported in standard Expo Go
+  jsi: true, // Habilitado para Dev Build
   onSetUpError: (error) => {
     console.error('WatermelonDB setup error', error);
   },

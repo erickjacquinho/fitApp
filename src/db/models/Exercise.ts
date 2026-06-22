@@ -1,5 +1,5 @@
 import { Model, Relation } from '@nozbe/watermelondb';
-import { field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
 import TrainingBlock from './TrainingBlock';
 
 export default class Exercise extends Model {
@@ -8,12 +8,12 @@ export default class Exercise extends Model {
     training_blocks: { type: 'belongs_to', key: 'block_id' },
   } as const;
 
-  @field('block_id') blockId!: string;
-  @field('name') name!: string;
+  @text('block_id') blockId!: string;
+  @text('name') name!: string;
   @field('sets') sets!: number;
   @field('reps_min') repsMin!: number;
   @field('reps_max') repsMax!: number;
-  @field('advanced_technique') advancedTechnique!: string;
+  @text('advanced_technique') advancedTechnique!: string;
   @field('reps_reserve') repsReserve!: number;
 
   @relation('training_blocks', 'block_id') trainingBlock!: Relation<TrainingBlock>;

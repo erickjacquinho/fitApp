@@ -1,12 +1,12 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, field, readonly, date } from '@nozbe/watermelondb/decorators';
 
 export default class Food extends Model {
   static table = 'foods';
 
-  @field('name') name!: string;
+  @text('name') name!: string;
   @field('preparation_weight') preparationWeight!: number;
-  @field('description') description!: string;
+  @text('description') description!: string;
   @field('protein') protein!: number;
   @field('carbohydrates') carbohydrates!: number;
   @field('fat') fat!: number;

@@ -47,7 +47,7 @@ export function FoodForm() {
             
             <Typography variant="caption">Preparation Weight (g)</Typography>
             <Input 
-              value={form.preparationWeight} 
+              value={String(form.preparationWeight ?? '')} 
               onChangeText={(val) => setFormValue('preparationWeight', val)} 
               keyboardType="numeric" 
             />
@@ -68,7 +68,7 @@ export function FoodForm() {
             <View className="flex-1 gap-1">
               <Typography variant="caption">Protein</Typography>
               <Input 
-                value={form.protein} 
+                value={String(form.protein ?? '')} 
                 onChangeText={(val) => setFormValue('protein', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
@@ -77,7 +77,7 @@ export function FoodForm() {
             <View className="flex-1 gap-1">
               <Typography variant="caption">Carbs</Typography>
               <Input 
-                value={form.carbohydrates} 
+                value={String(form.carbohydrates ?? '')} 
                 onChangeText={(val) => setFormValue('carbohydrates', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
@@ -86,7 +86,7 @@ export function FoodForm() {
             <View className="flex-1 gap-1">
               <Typography variant="caption">Fat</Typography>
               <Input 
-                value={form.fat} 
+                value={String(form.fat ?? '')} 
                 onChangeText={(val) => setFormValue('fat', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 

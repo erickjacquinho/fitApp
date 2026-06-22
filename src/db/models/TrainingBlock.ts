@@ -1,5 +1,5 @@
 import { Model, Query, Relation } from '@nozbe/watermelondb';
-import { field, relation, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, field, relation, children, readonly, date } from '@nozbe/watermelondb/decorators';
 import Program from './Program';
 import Exercise from './Exercise';
 
@@ -10,8 +10,8 @@ export default class TrainingBlock extends Model {
     exercises: { type: 'has_many', foreignKey: 'block_id' },
   } as const;
 
-  @field('program_id') programId!: string;
-  @field('name') name!: string;
+  @text('program_id') programId!: string;
+  @text('name') name!: string;
   @field('order') order!: number;
 
   @relation('programs', 'program_id') program!: Relation<Program>;

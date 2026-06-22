@@ -3,7 +3,6 @@ import { View, Pressable } from 'react-native';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import { Icon } from '../atoms/Icon';
 import { COLORS } from '../../tokens/colors';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Card, CardProps } from "@/components/ui/card";
 
 export interface SwipeableCardProps extends CardProps {
