@@ -38,8 +38,8 @@ export class WorkoutService {
               exercise.sets = exerciseData.sets;
               exercise.repsMin = exerciseData.repsMin;
               exercise.repsMax = exerciseData.repsMax;
-              exercise.advancedTechnique = exerciseData.advancedTechnique;
-              exercise.repsReserve = exerciseData.repsReserve;
+              exercise.advancedTechnique = exerciseData.advancedTechnique?.trim() || null;
+              exercise.repsReserve = exerciseData.repsReserve ?? null;
             });
             exerciseRecords.push(newExercise);
           }
@@ -68,8 +68,8 @@ export class WorkoutService {
         exercise.sets = exerciseData.sets;
         exercise.repsMin = exerciseData.repsMin;
         exercise.repsMax = exerciseData.repsMax;
-        exercise.advancedTechnique = exerciseData.advancedTechnique;
-        exercise.repsReserve = exerciseData.repsReserve;
+        exercise.advancedTechnique = exerciseData.advancedTechnique?.trim() || null;
+        exercise.repsReserve = exerciseData.repsReserve ?? null;
       });
     });
   }

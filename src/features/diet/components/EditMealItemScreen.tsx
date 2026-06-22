@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
@@ -9,6 +8,8 @@ import MealItem from '../../../db/models/MealItem';
 import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
 
 interface EditMealItemScreenProps {
   food: Food;
@@ -38,43 +39,42 @@ function EditMealItemScreenComponent({ food, mealItem }: EditMealItemScreenProps
 
   return (
     <View className="flex-1 bg-surface-app px-screen-x pt-6 gap-6">
-      <View className="bg-surface-raised border border-soft rounded-2xl p-4 gap-4 shadow-sm">
-        <Typography variant="title">{food.name}</Typography>
+      <Card>
+        <Text variant="title">{food.name}</Text>
         
         <View className="flex-row items-center justify-between border-b border-soft pb-4">
-          <Typography variant="text" color="muted">Quantidade (g)</Typography>
-          <TextInput
-            className="font-semibold text-text-primary text-right w-24 bg-surface-app border border-soft rounded-lg px-3 py-2"
+          <Text variant="text" color="muted">Quantidade (g)</Text>
+          <Input
+            className="w-24 text-right font-semibold"
             keyboardType="numeric"
             value={quantityStr}
             onChangeText={setQuantityStr}
             placeholder="0"
-            placeholderTextColor="#9ca3af"
           />
         </View>
 
         <View className="gap-2">
-          <Typography variant="subtitle" className="mb-1">Valores Nutricionais</Typography>
+          <Text variant="subtitle" className="mb-1">Valores nutricionais</Text>
           <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Proteínas</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.protein)}g</Typography>
+            <Text variant="text" color="muted">Proteínas</Text>
+            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.protein)}g</Text>
           </View>
           <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Carboidratos</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.carbs)}g</Typography>
+            <Text variant="text" color="muted">Carboidratos</Text>
+            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.carbs)}g</Text>
           </View>
           <View className="flex-row justify-between">
-            <Typography variant="text" color="muted">Gorduras</Typography>
-            <Typography variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.fat)}g</Typography>
+            <Text variant="text" color="muted">Gorduras</Text>
+            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.fat)}g</Text>
           </View>
           <View className="flex-row justify-between pt-2 mt-2 border-t border-soft">
-            <Typography variant="text" className="font-bold text-text-primary">Calorias</Typography>
-            <Typography variant="text" className="font-bold text-primary-main">{Math.round(calculatedMacros.calories)} kcal</Typography>
+            <Text variant="text" className="font-bold text-text-main">Calorias</Text>
+            <Text variant="text" className="font-bold text-accent-main">{Math.round(calculatedMacros.calories)} kcal</Text>
           </View>
         </View>
-      </View>
+      </Card>
 
-      <Button onPress={handleUpdate} disabled={quantity <= 0}><Text>Salvar Alterações</Text></Button>
+      <Button onPress={handleUpdate} disabled={quantity <= 0}><Text>Salvar alterações</Text></Button>
     </View>
   );
 }

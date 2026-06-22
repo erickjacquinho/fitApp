@@ -37,8 +37,21 @@
 - Use `kebab-case` for files and directories.
 - Use design tokens from `tailwind.config.js` and `global.css`; avoid hardcoded visual values when a token exists.
 
+## Component Creation and Modification Flow
+Follow this sequence for every new or modified UI component:
+1. Open `.agents/rules/designsystem-guide.md`, `.agents/rules/component-workflow.md`, and only the focused rule files relevant to the task.
+2. Search `src/components/` and the target feature for an existing component or composition before adding anything.
+3. Check the current React Native Reusables registry for behavioral equivalence, including interaction, state, accessibility, and platform behavior. Visual similarity alone is insufficient.
+4. Prefer an existing local component from `src/components/ui/`. If the equivalent is not local, add it with `npx @react-native-reusables/cli@latest add <component>`.
+5. Review every generated file and dependency change. Preserve exact dependency versions and never overwrite an already customized local primitive without reviewing its diff.
+6. Replace all generic registry classes with FitApp semantic tokens from `tailwind.config.js`. Remove hardcoded colors, arbitrary static sizes, unsupported radii, and default shadows.
+7. Choose one integration form: direct primitive use; a thin shared adapter that preserves a stable app contract; a domain composition; or a documented custom component when no behavioral equivalent exists.
+8. Migrate all consumers, remove obsolete duplicate components and imports, and keep feature-specific behavior inside its feature.
+9. Validate TypeScript, dependency compatibility, Expo diagnostics, dependency audit, web export, accessibility requirements, and native-client impact according to the Validation section.
+
 ## Rule Lookup
 - Use `.agents/rules/designsystem-guide.md` as the design system index.
+- Use `.agents/rules/component-workflow.md` for registry adoption, adapter, and custom-component decisions.
 - When a task touches UI, styling, layout, accessibility, icons, content, components, forms, feedback, navigation, or data display, open only the focused rule file that matches the task.
 - Prefer focused rule files over broad docs when there is overlap.
 - Do not load every rule file by default; read only what is needed for the current change.
@@ -49,6 +62,7 @@
 
 ## Validation
 - Validate changes before finishing.
+- **Development APK Rule:** Automatically rebuild the Android development client whenever changes affect native dependencies, Expo plugins or configuration, `android/`, native build settings, or dev-client compatibility. Do not wait for the user to request it. Replace the root `fitApp-dev.apk` with the generated `android/app/build/outputs/apk/debug/app-debug.apk` and verify that both SHA-256 hashes match. JavaScript/TypeScript-only changes do not require a new APK unless runtime validation proves the installed client is incompatible.
 - Prefer these checks when relevant:
   - `npx tsc --noEmit`
   - `npx expo install --check`

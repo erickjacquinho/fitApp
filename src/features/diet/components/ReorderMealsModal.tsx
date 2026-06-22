@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Typography } from '../../../components/atoms/Typography';
-import { Icon } from '../../../components/atoms/Icon';
+import { Icon } from '@/components/ui/icon';
 import Meal from '../../../db/models/Meal';
 import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { GripVertical } from 'lucide-react-native';
 
 interface ReorderMealsModalProps {
   visible: boolean;
@@ -34,18 +34,20 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
     return (
       <ScaleDecorator>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel={`Reordenar ${item.name}`}
           activeOpacity={1}
           onLongPress={drag}
           disabled={isActive}
-          className={`flex-row items-center justify-between p-4 mb-2 rounded-xl border border-soft ${
-            isActive ? 'bg-surface-app shadow-md' : 'bg-surface-raised'
+          className={`mb-2 flex-row items-center justify-between rounded-md border border-soft p-4 ${
+            isActive ? 'bg-surface-app' : 'bg-surface-raised'
           }`}
         >
           <View>
-            <Typography variant="subtitle">{item.name}</Typography>
-            {item.preparationState ? <Typography variant="caption" color="muted">{item.preparationState}</Typography> : null}
+            <Text variant="subtitle">{item.name}</Text>
+            {item.preparationState ? <Text variant="caption" color="muted">{item.preparationState}</Text> : null}
           </View>
-          <Icon name="GripVertical" size={20} color="#9ca3af" />
+          <Icon as={GripVertical} className="text-text-muted" />
         </TouchableOpacity>
       </ScaleDecorator>
     );
@@ -56,15 +58,15 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
       <GestureHandlerRootView style={styles.container}>
         <View className="flex-1 bg-surface-app pt-6 px-screen-x pb-8">
           <View className="flex-row justify-between items-center mb-6">
-            <Typography variant="title">Reordenar Refeições</Typography>
-            <TouchableOpacity onPress={onClose}>
-              <Typography variant="text" className="text-primary-main font-semibold">Cancelar</Typography>
-            </TouchableOpacity>
+            <Text variant="title">Reordenar refeições</Text>
+            <Button variant="ghost" onPress={onClose}>
+              <Text color="accent">Cancelar</Text>
+            </Button>
           </View>
           
-          <Typography variant="caption" color="muted" className="mb-4">
+          <Text variant="caption" color="muted" className="mb-4">
             Segure e arraste para alterar a ordem.
-          </Typography>
+          </Text>
 
           <DraggableFlatList keyboardShouldPersistTaps="handled"
             data={data}
@@ -75,7 +77,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
           />
 
           <View className="pt-4">
-            <Button onPress={handleSave}><Text>Salvar Nova Ordem</Text></Button>
+            <Button onPress={handleSave}><Text>Salvar ordem</Text></Button>
           </View>
         </View>
       </GestureHandlerRootView>
@@ -83,6 +85,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
   );
 }
 
+// DraggableFlatList and GestureHandlerRootView require React Native style objects.
 const styles = StyleSheet.create({
   container: {
     flex: 1,

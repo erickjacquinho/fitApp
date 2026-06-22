@@ -1,5 +1,5 @@
 import { Model, Query } from '@nozbe/watermelondb';
-import { field, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, children, readonly, date } from '@nozbe/watermelondb/decorators';
 import TrainingBlock from './TrainingBlock';
 
 export default class Program extends Model {
@@ -8,7 +8,7 @@ export default class Program extends Model {
     training_blocks: { type: 'has_many', foreignKey: 'program_id' },
   } as const;
 
-  @field('name') name!: string;
+  @text('name') name!: string;
 
   @children('training_blocks') trainingBlocks!: Query<TrainingBlock>;
 

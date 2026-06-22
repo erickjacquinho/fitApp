@@ -1,9 +1,15 @@
-import React from 'react';
-import { View, Modal, Pressable } from 'react-native';
-import { Typography } from '../atoms/Typography';
-import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Text } from '@/components/ui/text';
-import { Card } from "@/components/ui/card";
+import { useRef } from 'react';
 
 export interface ConfirmModalProps {
   visible: boolean;
@@ -26,45 +32,48 @@ export function ConfirmModal({
   cancelLabel = 'Cancelar',
   isDestructive = false,
 }: ConfirmModalProps) {
-  return (
-    <Modal
-      transparent
-      visible={visible}
-      animationType="fade"
-      onRequestClose={onCancel}
-    >
-      <Pressable 
-        className="flex-1 bg-black/40 items-center justify-center p-screen-x"
-        onPress={onCancel}
-      >
-        <Pressable onPress={(e) => e.stopPropagation()}>
-          <Card className="w-full max-w-sm bg-surface-app border-strong gap-4">
-            <View className="gap-2">
-              <Typography variant="title">{title}</Typography>
-              <Typography color="muted">{description}</Typography>
-            </View>
+  const actionHandledRef = useRef(false);
 
-            <View className="flex-row gap-3">
-              <View className="flex-1">
-                <Button 
-                  variant="outline" 
-                  onPress={onCancel} 
-                >
-                  <Text>{cancelLabel}</Text>
-                </Button>
-              </View>
-              <View className="flex-1">
-                <Button 
-                  variant={isDestructive ? 'destructive' : 'default'} 
-                  onPress={onConfirm} 
-                >
-                  <Text>{confirmLabel}</Text>
-                </Button>
-              </View>
-            </View>
-          </Card>
-        </Pressable>
-      </Pressable>
-    </Modal>
+  return (
+    <AlertDialog
+      open={visible}
+      onOpenChange={(open) => {
+        if (!open) {
+          if (actionHandledRef.current) {
+            actionHandledRef.current = false;
+            return;
+          }
+          onCancel();
+        }
+      }}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="flex-row">
+          <AlertDialogCancel
+            className="flex-1"
+            onPress={() => {
+              actionHandledRef.current = true;
+              onCancel();
+            }}
+          >
+            <Text>{cancelLabel}</Text>
+          </AlertDialogCancel>
+          <AlertDialogAction
+            className="flex-1"
+            variant={isDestructive ? 'destructive' : 'default'}
+            onPress={() => {
+              actionHandledRef.current = true;
+              onConfirm();
+            }}
+          >
+            <Text>{confirmLabel}</Text>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

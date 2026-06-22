@@ -1,9 +1,16 @@
 import { withLayoutContext } from 'expo-router';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Icon } from '../../src/components/atoms/Icon';
+import { Icon } from '@/components/ui/icon';
 import { COLORS } from '../../src/tokens/colors';
+import { ChartLine, Dumbbell, House, Utensils, User, type LucideIcon } from 'lucide-react-native';
 import { Platform } from 'react-native';
+import { SIZES } from '@/tokens/sizes';
+import { SPACING } from '@/tokens/spacing';
+import { ROUNDED } from '@/tokens/rounded';
+import { BORDER_WIDTH } from '@/tokens/border';
+import { FONT_SIZE } from '@/tokens/typography';
+import { FONT_WEIGHT } from '@/tokens/font-weight';
 
 const { Navigator } = createMaterialTopTabNavigator();
 const SwipeTabs = withLayoutContext(Navigator);
@@ -11,51 +18,51 @@ const SwipeTabs = withLayoutContext(Navigator);
 type TabIconProps = {
   color: string;
   focused: boolean;
-  name: 'ChartLine' | 'Dumbbell' | 'House' | 'Utensils' | 'User';
+  icon: LucideIcon;
 };
 
-function TabIcon({ color, focused, name }: TabIconProps) {
-  return <Icon name={name} color={color} size={focused ? 22 : 20} />;
+function TabIcon({ color, focused, icon }: TabIconProps) {
+  return <Icon as={icon} color={color} size={focused ? SIZES.iconLarge : SIZES.iconMedium} />;
 }
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
-  const tabBarHeight = 64 + Math.max(insets.bottom, 8);
+  const tabBarHeight = SIZES.tabBar + Math.max(insets.bottom, SPACING.small);
 
   return (
     <SwipeTabs
       tabBarPosition="bottom"
       screenOptions={{
         swipeEnabled: true,
-        tabBarActiveTintColor: COLORS.tabActive || '#000',
-        tabBarInactiveTintColor: COLORS.iconMuted || '#ccc',
+        tabBarActiveTintColor: COLORS.tabActive,
+        tabBarInactiveTintColor: COLORS.iconMuted,
         tabBarShowLabel: true,
         tabBarIndicatorStyle: { height: 0 }, // Esconde a linha indicadora
         tabBarStyle: {
-          backgroundColor: COLORS.surfaceRaised || '#fff',
-          borderTopColor: COLORS.borderSoft || '#eee',
-          borderTopWidth: 1,
+          backgroundColor: COLORS.surfaceRaised,
+          borderTopColor: COLORS.borderSoft,
+          borderTopWidth: BORDER_WIDTH.small,
           height: tabBarHeight,
-          paddingBottom: Platform.OS === 'ios' ? insets.bottom : 8,
+          paddingBottom: Platform.OS === 'ios' ? insets.bottom : SPACING.small,
           justifyContent: 'center',
           elevation: 0, // Android shadow
           shadowOpacity: 0, // iOS shadow
         },
         tabBarItemStyle: {
-          minHeight: 44,
-          borderRadius: 5,
-          marginHorizontal: 2,
+          minHeight: SIZES.touchTarget,
+          borderRadius: ROUNDED.small,
+          marginHorizontal: SPACING.xsmall,
           padding: 0,
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         },
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '700',
+          fontSize: FONT_SIZE.default,
+          fontWeight: FONT_WEIGHT.xlarge,
           letterSpacing: 0,
           textTransform: 'none', // Previne letras maiúsculas automáticas
-          marginTop: 4,
+          marginTop: SPACING.xsmall,
         },
       }}
     >
@@ -64,7 +71,7 @@ export default function TabsLayout() {
         options={{
           title: 'Dieta',
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-            <TabIcon name="Utensils" color={color} focused={focused} />
+            <TabIcon icon={Utensils} color={color} focused={focused} />
           ),
         }}
       />
@@ -73,7 +80,7 @@ export default function TabsLayout() {
         options={{
           title: 'Treino',
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-            <TabIcon name="Dumbbell" color={color} focused={focused} />
+            <TabIcon icon={Dumbbell} color={color} focused={focused} />
           ),
         }}
       />
@@ -82,7 +89,7 @@ export default function TabsLayout() {
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-            <TabIcon name="House" color={color} focused={focused} />
+            <TabIcon icon={House} color={color} focused={focused} />
           ),
         }}
       />
@@ -91,7 +98,7 @@ export default function TabsLayout() {
         options={{
           title: 'Estatísticas',
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-            <TabIcon name="ChartLine" color={color} focused={focused} />
+            <TabIcon icon={ChartLine} color={color} focused={focused} />
           ),
         }}
       />
@@ -100,7 +107,7 @@ export default function TabsLayout() {
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }) => (
-            <TabIcon name="User" color={color} focused={focused} />
+            <TabIcon icon={User} color={color} focused={focused} />
           ),
         }}
       />

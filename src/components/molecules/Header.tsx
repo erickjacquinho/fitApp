@@ -1,10 +1,11 @@
+import { Text } from '@/components/ui/text';
 import { ReactNode } from 'react';
-import { View, Pressable } from 'react-native';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Typography } from '../atoms/Typography';
-import { Icon } from '../atoms/Icon';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from '../../tokens/colors';
+import { ArrowLeft } from 'lucide-react-native';
 
 export interface HeaderProps {
   title: string;
@@ -25,19 +26,22 @@ export function Header({ title, showBackButton, headerLeft, headerRight }: Heade
       <View className="flex-row items-center justify-between min-h-control-md">
         <View className="flex-1 items-start justify-center">
           {headerLeft ? headerLeft : showBackButton ? (
-            <Pressable 
+            <Button
+              accessibilityLabel="Voltar"
+              variant="ghost"
+              size="icon"
               onPress={() => router.back()}
-              className="w-11 h-11 items-center justify-center -ml-1"
+              className="-ml-1"
             >
-              <Icon name="ArrowLeft" size={24} color={COLORS.textMain} />
-            </Pressable>
+              <Icon as={ArrowLeft} size={24} />
+            </Button>
           ) : null}
         </View>
 
         <View className="flex-2 items-center">
-          <Typography variant="label" className="text-center">
+          <Text variant="label" className="text-center">
             {title}
-          </Typography>
+          </Text>
         </View>
 
         <View className="flex-1 items-end justify-center">

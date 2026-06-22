@@ -1,5 +1,5 @@
+import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
-import { Typography } from '../../src/components/atoms/Typography';
 import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
 
 export default function StatisticsPage() {
@@ -9,10 +9,10 @@ export default function StatisticsPage() {
     >
       <View className="gap-3">
         <View className="rounded-md border border-soft bg-component-card-bg p-4">
-          <Typography variant="subtitle">Resumo semanal</Typography>
-          <Typography variant="text" color="muted">
+          <Text variant="subtitle">Resumo semanal</Text>
+          <Text variant="text" color="muted">
             Aqui entram os gráficos e comparativos principais.
-          </Typography>
+          </Text>
         </View>
       </View>
     </MainTabScreen>

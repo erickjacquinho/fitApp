@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SetInputRow } from './SetInputRow';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Icon } from '@/components/ui/icon';
 
 interface SetState {
   setNumber: number;
@@ -84,7 +83,7 @@ export function ExecuteExerciseModal({
     const repsVal = parseInt(setItem.reps, 10);
 
     if (isNaN(weightVal) || isNaN(repsVal)) {
-      alert('Please enter valid numbers for weight and repetitions');
+      alert('Informe valores válidos para peso e repetições.');
       return;
     }
 
@@ -95,7 +94,7 @@ export function ExecuteExerciseModal({
       setSets(updated);
     } catch (error) {
       console.error('Error saving set:', error);
-      alert('Failed to save set');
+      alert('Não foi possível salvar a série.');
     }
   };
 
@@ -127,7 +126,7 @@ export function ExecuteExerciseModal({
       setSets(updated);
     } catch (error) {
       console.error('Error deleting set:', error);
-      alert('Failed to delete set');
+      alert('Não foi possível excluir a série.');
     }
   };
 
@@ -136,10 +135,10 @@ export function ExecuteExerciseModal({
       visible={visible} 
       onClose={onClose} 
       title={exerciseName}
-      subtitle={`Target: ${targetSets} sets x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
+      subtitle={`Meta: ${targetSets} séries x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
     >
       {/* Sets List */}
-      <ScrollView keyboardShouldPersistTaps="handled" className="mt-2 flex-grow-0" style={{ maxHeight: 350 }}>
+      <ScrollView keyboardShouldPersistTaps="handled" className="mt-2 flex-shrink">
         {sets.map((item, index) => (
           <SetInputRow
             key={item.setNumber}
@@ -155,19 +154,20 @@ export function ExecuteExerciseModal({
       </ScrollView>
 
       {/* Add set button */}
-      <TouchableOpacity
+      <Button
+        variant="outline"
         onPress={handleAddSet}
-        className="my-3 flex-row items-center justify-center gap-2 rounded border border-dashed border-primary-main py-2 active:bg-primary-main/5"
+        className="my-3 border-dashed"
       >
-        <Plus size={16} color="#005B94" />
-        <Typography variant="label" className="text-primary-main">
-          Add Extra Set
-        </Typography>
-      </TouchableOpacity>
+        <Icon as={Plus} size={16} className="text-accent-main" />
+        <Text variant="label" color="accent">
+          Adicionar série
+        </Text>
+      </Button>
 
       {/* Actions */}
       <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
-        <Button variant="outline" className="flex-1" onPress={onClose}><Text>Close</Text></Button>
+        <Button variant="outline" className="flex-1" onPress={onClose}><Text>Fechar</Text></Button>
       </View>
     </BottomSheetModal>
   );

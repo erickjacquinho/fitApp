@@ -1,6 +1,6 @@
+import { Text } from '@/components/ui/text';
 import { ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Typography } from '../atoms/Typography';
 import { Header } from '../molecules/Header';
 
 interface MainTabScreenProps {

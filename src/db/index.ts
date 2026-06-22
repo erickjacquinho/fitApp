@@ -14,10 +14,10 @@ import ExerciseExecution from './models/ExerciseExecution';
 import ExerciseDefinition from './models/ExerciseDefinition';
 
 const adapter = new SQLiteAdapter({
-  dbName: 'fitapp_db_v2',
   schema,
   migrations,
-  jsi: false, // JSI is not supported in standard Expo Go
+  dbName: 'fitapp_db_v3',
+  jsi: true, // Habilitado para Dev Build
   onSetUpError: (error) => {
     console.error('WatermelonDB setup error', error);
   },

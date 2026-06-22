@@ -70,11 +70,11 @@ export function useProgramForm() {
     );
   };
 
-  const handleExerciseChange = (
+  const handleExerciseChange = <Field extends keyof ExerciseDTO>(
     blockId: string,
     exerciseId: string,
-    field: keyof ExerciseDTO,
-    value: any
+    field: Field,
+    value: ExerciseDTO[Field]
   ) => {
     setBlocks(
       blocks.map((b) => {
@@ -93,6 +93,8 @@ export function useProgramForm() {
   };
 
   const handleSave = async () => {
+    if (isSaving) return;
+
     if (!programName.trim()) {
       Alert.alert('Validation Error', 'Program name is required');
       return;

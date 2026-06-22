@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, Pressable, Platform } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Typography } from '../../../components/atoms/Typography';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';
-import { Food } from '../../../db';
-import { Icon } from '../../../components/atoms/Icon';
-import { COLORS } from '../../../tokens/colors';
+import { Icon } from '@/components/ui/icon';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { X } from 'lucide-react-native';
+import { SIZES } from '@/tokens/sizes';
 
 export function MealForm() {
   const {
@@ -27,37 +26,40 @@ export function MealForm() {
   } = useMealForm();
 
   return (
-    <KeyboardAwareScrollView
-      className="flex-1 bg-surface-app"
-      contentContainerClassName="p-screen-x gap-6 pb-40"
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      enableOnAndroid={true}
-      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
+      <ScrollView
+        className="flex-1 bg-surface-app"
+        contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      >
         <Card className="gap-4">
-          <Typography variant="subtitle">Meal Details</Typography>
+          <Text variant="subtitle">Detalhes da refeição</Text>
           <View className="gap-3">
-            <Typography variant="caption">Meal Name (e.g. Breakfast)</Typography>
+            <Text variant="caption">Nome da refeição</Text>
             <Input 
               value={form.name} 
               onChangeText={(val) => setFormValue('name', val)} 
-              placeholder="Name your meal" 
+              placeholder="Ex.: Café da manhã"
             />
             
-            <Typography variant="caption">Preparation State</Typography>
+            <Text variant="caption">Estado de preparo</Text>
             <Input 
               value={form.preparationState} 
               onChangeText={(val) => setFormValue('preparationState', val)} 
-              placeholder="e.g. Raw, Cooked"
+              placeholder="Ex.: Cru, cozido"
             />
           </View>
         </Card>
 
         <View className="gap-4">
           <View className="flex-row items-center justify-between">
-            <Typography variant="subtitle">Foods</Typography>
-            <Button size="sm" variant="secondary" onPress={() => setModalVisible(true)}><Text>Add Food</Text></Button>
+            <Text variant="subtitle">Alimentos</Text>
+            <Button size="sm" variant="secondary" onPress={() => setModalVisible(true)}><Text>Adicionar alimento</Text></Button>
           </View>
 
           {selectedItems.length > 0 ? (
@@ -65,30 +67,35 @@ export function MealForm() {
               {selectedItems.map((item) => (
                 <Card key={item.food.id} className="flex-row items-center justify-between py-3">
                   <View className="flex-1">
-                    <Typography variant="subtitle">{item.food.name}</Typography>
-                    <Typography variant="caption" color="muted">{item.quantity}g</Typography>
+                    <Text variant="subtitle">{item.food.name}</Text>
+                    <Text variant="caption" color="muted">{item.quantity}g</Text>
                   </View>
-                  <Pressable onPress={() => removeFood(item.food.id)}>
-                    <Icon name="X" size={20} color={COLORS.error} />
-                  </Pressable>
+                  <Button
+                    accessibilityLabel={`Remover ${item.food.name}`}
+                    variant="ghost"
+                    size="icon"
+                    onPress={() => removeFood(item.food.id)}
+                  >
+                    <Icon as={X} className="text-tomato-main" />
+                  </Button>
                 </Card>
               ))}
               
               <View className="mt-2 p-4 bg-surface-raised rounded-md border border-soft">
-                <Typography variant="caption" className="mb-2">Total Macros</Typography>
+                <Text variant="caption" className="mb-2">Macros totais</Text>
                 <PreviewMacros items={selectedItems} />
               </View>
             </View>
           ) : (
             <Card className="items-center py-10 border-dashed">
-              <Typography color="muted">No foods added yet</Typography>
+              <Text color="muted">Nenhum alimento adicionado.</Text>
             </Card>
           )}
         </View>
 
-        <View className="gap-3 pb-10">
-          <Button onPress={handleSave} disabled={selectedItems.length === 0}><Text>Save Meal</Text></Button>
-          <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
+        <View className="gap-3 pb-page">
+          <Button onPress={handleSave} disabled={selectedItems.length === 0}><Text>Salvar refeição</Text></Button>
+          <Button variant="outline" onPress={goBack}><Text>Cancelar</Text></Button>
         </View>
 
         <FoodSelectorModal 
@@ -96,6 +103,7 @@ export function MealForm() {
           onClose={() => setModalVisible(false)} 
           onConfirm={(selections) => setSelectedItems(selections)} 
         />
-    </KeyboardAwareScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

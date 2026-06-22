@@ -1,8 +1,9 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View, Pressable } from 'react-native';
+import { View } from 'react-native';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
-import { Typography } from '../atoms/Typography';
-import { COLORS } from '../../tokens/colors';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 
 interface DateSelectorProps {
   selectedDate: string; // YYYY-MM-DD
@@ -38,13 +39,13 @@ export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) 
 
   return (
     <View className="flex-row items-center justify-between px-4 py-3 bg-surface-app border-b border-soft">
-      <Pressable onPress={() => changeDate(-1)} className="p-2">
-        <ChevronLeft size={24} color={COLORS.textMain} />
-      </Pressable>
-      <Typography variant="title">{formatDateLabel(selectedDate)}</Typography>
-      <Pressable onPress={() => changeDate(1)} className="p-2">
-        <ChevronRight size={24} color={COLORS.textMain} />
-      </Pressable>
+      <Button accessibilityLabel="Dia anterior" variant="ghost" size="icon" onPress={() => changeDate(-1)}>
+        <Icon as={ChevronLeft} size={24} />
+      </Button>
+      <Text variant="title">{formatDateLabel(selectedDate)}</Text>
+      <Button accessibilityLabel="Próximo dia" variant="ghost" size="icon" onPress={() => changeDate(1)}>
+        <Icon as={ChevronRight} size={24} />
+      </Button>
     </View>
   );
 };

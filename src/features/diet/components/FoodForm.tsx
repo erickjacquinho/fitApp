@@ -1,18 +1,16 @@
 import React from 'react';
 import { View, Platform } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Typography } from '../../../components/atoms/Typography';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useFoodForm } from '../hooks/useFoodForm';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { SIZES } from '@/tokens/sizes';
 
 export function FoodForm() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const insets = useSafeAreaInsets();
 
   const {
     form,
@@ -24,32 +22,35 @@ export function FoodForm() {
   } = useFoodForm(id);
 
   return (
-    <KeyboardAwareScrollView
-      className="flex-1 bg-surface-app"
-      contentContainerClassName="p-screen-x gap-6 pb-40"
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      enableOnAndroid={true}
-      extraScrollHeight={Platform.OS === 'ios' ? 88 : 20}
+    <KeyboardAvoidingView
+      className="flex-1"
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
+      <ScrollView
+        className="flex-1 bg-surface-app"
+        contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      >
         <Card className="gap-4">
-          <Typography variant="subtitle">Basic Info</Typography>
+          <Text variant="subtitle">Informações básicas</Text>
           <View className="gap-3">
-            <Typography variant="caption">Name</Typography>
+            <Text variant="caption">Nome</Text>
             <Input 
               value={form.name} 
               onChangeText={(val) => setFormValue('name', val)} 
-              placeholder="e.g. Chicken Breast" 
+              placeholder="Ex.: Peito de frango"
             />
             
-            <Typography variant="caption">Preparation Weight (g)</Typography>
+            <Text variant="caption">Peso de preparo (g)</Text>
             <Input 
-              value={form.preparationWeight} 
+              value={String(form.preparationWeight ?? '')} 
               onChangeText={(val) => setFormValue('preparationWeight', val)} 
               keyboardType="numeric" 
             />
 
-            <Typography variant="caption">Description (Optional)</Typography>
+            <Text variant="caption">Descrição (opcional)</Text>
             <Input 
               value={form.description} 
               onChangeText={(val) => setFormValue('description', val)} 
@@ -60,30 +61,30 @@ export function FoodForm() {
         </Card>
 
         <Card className="gap-4">
-          <Typography variant="subtitle">Nutritional Info (per 100g)</Typography>
+          <Text variant="subtitle">Informações nutricionais (por 100 g)</Text>
           <View className="flex-row gap-3">
             <View className="flex-1 gap-1">
-              <Typography variant="caption">Protein</Typography>
+              <Text variant="caption">Proteínas</Text>
               <Input 
-                value={form.protein} 
+                value={String(form.protein ?? '')} 
                 onChangeText={(val) => setFormValue('protein', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
               />
             </View>
             <View className="flex-1 gap-1">
-              <Typography variant="caption">Carbs</Typography>
+              <Text variant="caption">Carboidratos</Text>
               <Input 
-                value={form.carbohydrates} 
+                value={String(form.carbohydrates ?? '')} 
                 onChangeText={(val) => setFormValue('carbohydrates', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
               />
             </View>
             <View className="flex-1 gap-1">
-              <Typography variant="caption">Fat</Typography>
+              <Text variant="caption">Gorduras</Text>
               <Input 
-                value={form.fat} 
+                value={String(form.fat ?? '')} 
                 onChangeText={(val) => setFormValue('fat', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
@@ -92,17 +93,22 @@ export function FoodForm() {
           </View>
 
           <View className="pt-3 border-t border-soft flex-row items-center justify-between">
-            <Typography variant="subtitle">Estimated Calories</Typography>
-            <Typography variant="title" className="text-primary-main">
+            <Text variant="subtitle">Calorias estimadas</Text>
+            <Text variant="title" className="text-accent-main">
               {form.calories} kcal
-            </Typography>
+            </Text>
           </View>
         </Card>
 
-        <View className="gap-3 pb-10">
-          <Button onPress={handleSave}><Text>Save Food</Text></Button>
-          <Button variant="outline" onPress={goBack}><Text>Cancel</Text></Button>
+        <View className="gap-3 pb-page">
+          <Button onPress={handleSave} disabled={isSaving}>
+            <Text>{isSaving ? 'Salvando...' : 'Salvar alimento'}</Text>
+          </Button>
+          <Button variant="outline" onPress={goBack} disabled={isSaving}>
+            <Text>Cancelar</Text>
+          </Button>
         </View>
-    </KeyboardAwareScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

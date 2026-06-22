@@ -5,7 +5,7 @@ import { ProgramListScreen } from '../../src/features/training/components/Progra
 export default function ProgramsRoute() {
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="Programas de Treino" showBackButton />
+      <Header title="Programas de treino" showBackButton />
       <ProgramListScreen />
     </View>
   );

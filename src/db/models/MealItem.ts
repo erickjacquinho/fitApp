@@ -1,5 +1,7 @@
-import { Model } from '@nozbe/watermelondb';
-import { field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
+import { Model, Relation } from '@nozbe/watermelondb';
+import { text, field, relation, readonly, date } from '@nozbe/watermelondb/decorators';
+import Meal from './Meal';
+import Food from './Food';
 
 export default class MealItem extends Model {
   static table = 'meal_items';
@@ -8,12 +10,12 @@ export default class MealItem extends Model {
     foods: { type: 'belongs_to', key: 'food_id' },
   } as const;
 
-  @field('meal_id') mealId!: string;
-  @field('food_id') foodId!: string;
+  @text('meal_id') mealId!: string;
+  @text('food_id') foodId!: string;
   @field('quantity') quantity!: number;
 
-  @relation('meals', 'meal_id') meal!: any;
-  @relation('foods', 'food_id') food!: any;
+  @relation('meals', 'meal_id') meal!: Relation<Meal>;
+  @relation('foods', 'food_id') food!: Relation<Food>;
 
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;

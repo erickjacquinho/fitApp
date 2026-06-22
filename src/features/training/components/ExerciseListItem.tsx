@@ -1,10 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { CheckCircle2, Circle } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
+import { Icon } from '@/components/ui/icon';
 
 interface ExerciseListItemProps {
   name: string;
@@ -35,29 +35,29 @@ export function ExerciseListItem({
     >
       <View className="mr-3">
         {isCompleted ? (
-          <CheckCircle2 size={24} color="#2e7d32" />
+          <Icon as={CheckCircle2} size={24} className="text-success-main" />
         ) : (
-          <Circle size={24} color="#ccc" />
+          <Icon as={Circle} size={24} className="text-text-muted" />
         )}
       </View>
 
       <View className="flex-1">
-        <Typography
+        <Text
           variant="subtitle"
-          className={`text-base font-bold ${isCompleted ? 'line-through text-gray-500' : ''}`}
+          className={` font-bold ${isCompleted ? 'line-through text-text-muted' : ''}`}
         >
           {name}
-        </Typography>
-        <Typography variant="caption" color="muted" className="mt-1">
-          Target: {targetSets} sets x {repsMin}-{repsMax} reps
+        </Text>
+        <Text variant="caption" color="muted" className="mt-1">
+          Meta: {targetSets} séries x {repsMin}-{repsMax} reps
           {advancedTechnique && ` • ${advancedTechnique}`}
-        </Typography>
-        <Typography variant="caption" className="mt-0.5 text-primary-main">
-          Logged: {setsCount}/{targetSets} sets
-        </Typography>
+        </Text>
+        <Text variant="caption" color="accent" className="mt-1">
+          Registradas: {setsCount}/{targetSets} séries
+        </Text>
       </View>
 
-      <Button variant={isCompleted ? 'outline' : 'default'} size="sm" onPress={onPress}><Text>{setsCount > 0 ? 'Edit' : 'Start'}</Text></Button>
+      <Button variant={isCompleted ? 'outline' : 'default'} size="sm" onPress={onPress}><Text>{setsCount > 0 ? 'Editar' : 'Iniciar'}</Text></Button>
     </Card>
   );
 }

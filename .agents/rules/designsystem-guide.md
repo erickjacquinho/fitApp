@@ -12,6 +12,7 @@ FitApp is Android-first for MVP validation. iOS support comes after Android vali
 - `iconography-guidelines.md`: Lucide usage, sizes, stroke, semantic colors.
 - `content-guidelines.md`: Brazilian Portuguese UI copy, CTAs, labels, errors, empty states.
 - `component-guidelines.md`: shared component contracts for atoms, molecules, and organisms.
+- `component-workflow.md`: registry-first discovery, equivalence decisions, generated component review, adapters, migration, and evidence.
 - `form-guidelines.md`: field anatomy, validation, errors, submit behavior, keyboard behavior.
 - `feedback-guidelines.md`: loading, skeleton, toast, inline error, success, warning, offline, empty states.
 - `navigation-guidelines.md`: stack headers, bottom tabs, back actions, primary actions.

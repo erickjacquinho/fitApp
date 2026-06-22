@@ -1,9 +1,10 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { View, FlatList, Pressable, ActivityIndicator } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { DailySummaryCard } from '../../../components/molecules/DailySummaryCard';
 import { useCalendarSummary } from '../hooks/useCalendarSummary';
 import { useRouter } from 'expo-router';
+import { COLORS } from '@/tokens/colors';
 
 export const CalendarSummaryScreen = () => {
   const { summaries, loading } = useCalendarSummary();
@@ -12,7 +13,7 @@ export const CalendarSummaryScreen = () => {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-surface-app">
-        <ActivityIndicator size="large" color="#FF6B6B" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
@@ -34,7 +35,7 @@ export const CalendarSummaryScreen = () => {
         }}
         ListEmptyComponent={
           <View className="items-center py-20">
-            <Typography color="muted">Nenhum histórico encontrado.</Typography>
+            <Text color="muted">Nenhum histórico encontrado.</Text>
           </View>
         }
       />

@@ -1,18 +1,17 @@
+import { Text } from '@/components/ui/text';
+import { SIZES } from '@/tokens/sizes';
 import React from 'react';
 import { View } from 'react-native';
-import { Typography } from '../atoms/Typography';
 
 interface ProgressCircleProps {
   percentage: number;
   size?: number;
-  strokeWidth?: number;
-  color?: string;
   label?: string;
 }
 
 export function ProgressCircle({
   percentage,
-  size = 64,
+  size = SIZES.progressCircle,
   label,
 }: ProgressCircleProps) {
   const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
@@ -22,13 +21,13 @@ export function ProgressCircle({
       className="items-center justify-center rounded-full bg-surface-app border border-soft relative"
       style={{ width: size, height: size }}
     >
-      <Typography variant="label" className="font-bold text-primary-main text-xs">
+      <Text variant="label" className="font-bold text-accent-main">
         {clampedPercentage}%
-      </Typography>
+      </Text>
       {label && (
-        <Typography variant="caption" color="muted" className="absolute -bottom-5 text-[10px]">
+        <Text variant="caption" color="muted" className="absolute -bottom-5">
           {label}
-        </Typography>
+        </Text>
       )}
     </View>
   );

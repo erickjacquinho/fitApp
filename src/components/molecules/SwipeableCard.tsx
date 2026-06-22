@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Pressable } from 'react-native';
-import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import { Icon } from '../atoms/Icon';
-import { COLORS } from '../../tokens/colors';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { View } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
+import { Button } from '@/components/ui/button';
 import { Card, CardProps } from "@/components/ui/card";
+import { Icon } from '@/components/ui/icon';
+import { Pencil, Trash2 } from 'lucide-react-native';
 
 export interface SwipeableCardProps extends CardProps {
   onDelete?: () => void;
@@ -22,20 +22,26 @@ export function SwipeableCard({ onDelete, onEdit, children, ...props }: Swipeabl
     return (
       <View className="flex-row items-stretch pl-2">
         {onEdit && (
-          <Pressable 
+          <Button
+            accessibilityLabel="Editar"
+            variant="secondary"
+            size="icon"
             onPress={onEdit}
-            className="w-16 items-center justify-center bg-orange-100 rounded-md mr-2"
+            className="h-full w-16 bg-info-soft mr-2"
           >
-            <Icon name="Pencil" color="#f97316" size={20} />
-          </Pressable>
+            <Icon as={Pencil} className="text-info-main" />
+          </Button>
         )}
         {onDelete && (
-          <Pressable 
+          <Button
+            accessibilityLabel="Excluir"
+            variant="destructive"
+            size="icon"
             onPress={onDelete}
-            className="w-16 items-center justify-center bg-tomato-soft rounded-md"
+            className="h-full w-16 bg-tomato-soft"
           >
-            <Icon name="Trash2" color={COLORS.error || '#f00'} size={20} />
-          </Pressable>
+            <Icon as={Trash2} className="text-tomato-main" />
+          </Button>
         )}
       </View>
     );

@@ -10,6 +10,7 @@ FitApp targets phone screens only. Android is validated first; iOS support follo
 - Main scrollable content should use `gap-content-gap`.
 - Major sections should use `gap-section-gap` or `mb-section-gap`.
 - Page-level groups may use `gap-page-gap` when vertical room allows.
+- Use `pb-content-bottom` for tab content clearance, `pb-overlay-action` for fixed overlay actions, and `pb-form-bottom` or `pb-long-form-bottom` for keyboard-aware forms.
 
 ## Conceptual Grid
 Use a 4-column conceptual grid for phone layouts.

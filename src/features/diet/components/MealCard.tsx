@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Pressable } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import Meal from '../../../db/models/Meal';
@@ -13,6 +12,8 @@ import { MealService } from '../services/meal-service';
 import { Trash2 } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Icon } from '@/components/ui/icon';
+import { Card } from '@/components/ui/card';
 
 function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
   const router = useRouter();
@@ -43,15 +44,15 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
   };
 
   return (
-    <View className="mb-6 bg-surface-raised border border-soft rounded-2xl overflow-hidden shadow-sm">
+    <Card className="mb-6 overflow-hidden p-0">
       <View className="px-4 py-3 bg-surface-app border-b border-soft flex-row justify-between items-center">
         <View>
-          <Typography variant="subtitle">{meal.name}</Typography>
-          {meal.preparationState ? <Typography variant="caption" color="muted">{meal.preparationState}</Typography> : null}
+          <Text variant="subtitle">{meal.name}</Text>
+          {meal.preparationState ? <Text variant="caption" color="muted">{meal.preparationState}</Text> : null}
         </View>
-        <Pressable onPress={onDelete} className="p-2">
-          <Trash2 size={20} color="#EF4444" />
-        </Pressable>
+        <Button accessibilityLabel={`Excluir ${meal.name}`} variant="ghost" size="icon" onPress={onDelete}>
+          <Icon as={Trash2} className="text-tomato-main" />
+        </Button>
       </View>
       
       <View className="p-4 gap-3">
@@ -65,11 +66,11 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
           />
         ))}
         
-        <Button variant="secondary" onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}><Text>+ Adicionar Alimento</Text></Button>
+        <Button variant="secondary" onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}><Text>Adicionar alimento</Text></Button>
         
         {foodItems.length > 0 && <MealMacrosSummary macros={macros} />}
       </View>
-    </View>
+    </Card>
   );
 }
 

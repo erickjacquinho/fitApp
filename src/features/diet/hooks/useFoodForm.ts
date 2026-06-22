@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { Alert } from 'react-native';
 import { FoodService } from '../services/food-service';
+
+interface FoodFormState {
+  name: string;
+  preparationWeight: string;
+  description: string;
+  protein: string;
+  carbohydrates: string;
+  fat: string;
+  calories: string;
+}
 
 export function useFoodForm(id?: string) {
   const router = useRouter();
@@ -39,7 +50,7 @@ export function useFoodForm(id?: string) {
     }
   }, [id]);
 
-  const setFormValue = (field: string, value: string) => {
+  const setFormValue = (field: keyof FoodFormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -52,6 +63,8 @@ export function useFoodForm(id?: string) {
   };
 
   const handleSave = async () => {
+    if (isSaving) return;
+
     setIsSaving(true);
     try {
       const data = {
@@ -72,6 +85,7 @@ export function useFoodForm(id?: string) {
       router.back();
     } catch (err) {
       console.error('Error saving food:', err);
+      Alert.alert('Error', 'Unable to save food. Review the fields and try again.');
     } finally {
       setIsSaving(false);
     }

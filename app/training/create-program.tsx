@@ -5,7 +5,7 @@ import { View } from 'react-native';
 export default function CreateProgramRoute() {
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="New Program" showBackButton />
+      <Header title="Novo programa" showBackButton />
       <ProgramForm />
     </View>
   );

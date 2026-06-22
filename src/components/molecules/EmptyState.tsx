@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Typography } from '../atoms/Typography';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { Icon } from '@/components/ui/icon';
 import { LucideIcon } from 'lucide-react-native';
 
 export interface EmptyStateProps {
@@ -14,7 +14,7 @@ export interface EmptyStateProps {
 }
 
 export function EmptyState({
-  icon: Icon,
+  icon: IconComponent,
   title,
   subtitle,
   buttonText,
@@ -22,19 +22,19 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <View className="flex-1 items-center justify-center py-10 px-6 gap-2">
-      <View className="items-center justify-center h-16 w-16 rounded-full bg-soft mb-2">
-        <Icon size={32} color="#6F6254" />
+      <View className="items-center justify-center h-16 w-16 rounded-full bg-surface-muted mb-2">
+        <Icon as={IconComponent} size={32} className="text-text-muted" />
       </View>
-      <Typography variant="title" className="text-center">
+      <Text variant="title" className="text-center">
         {title}
-      </Typography>
+      </Text>
       {subtitle && (
-        <Typography variant="text" color="muted" className="text-center mt-1">
+        <Text variant="text" color="muted" className="text-center mt-1">
           {subtitle}
-        </Typography>
+        </Text>
       )}
       {buttonText && onButtonPress && (
-        <View className="mt-6 w-full max-w-[200px]">
+        <View className="mt-6 w-full">
           <Button variant="outline" onPress={onButtonPress}><Text>{buttonText}</Text></Button>
         </View>
       )}

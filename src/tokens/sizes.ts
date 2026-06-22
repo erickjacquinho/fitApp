@@ -1,0 +1,16 @@
+export const SIZES = {
+  iconSmall: 16,
+  iconMedium: 20,
+  iconLarge: 24,
+  touchTarget: 44,
+  controlSmall: 36,
+  controlMedium: 44,
+  controlLarge: 52,
+  inputMedium: 48,
+  tabBar: 64,
+  progressCircle: 64,
+  keyboardOffsetScreenIos: 88,
+  keyboardOffsetScreenAndroid: 20,
+  keyboardOffsetSheetIos: 100,
+  keyboardOffsetSheetAndroid: 40,
+} as const;

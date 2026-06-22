@@ -2,20 +2,21 @@ import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Platform, Pressable } from 'react-native';
+import { SIZES } from '@/tokens/sizes';
 
 const buttonVariants = cva(
   cn(
-    'group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none',
+    'group shrink-0 flex-row items-center justify-center gap-2 rounded-sm shadow-none',
     Platform.select({
-      web: "focus-visible:border-primary-main focus-visible:ring-primary-main/50 aria-invalid:ring-tomato-main/20 dark:aria-invalid:ring-tomato-main/40 aria-invalid:border-tomato-main whitespace-nowrap outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      web: "focus-visible:border-accent-main focus-visible:ring-accent-main/30 aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     })
   ),
   {
     variants: {
       variant: {
         default: cn(
-          'bg-primary-main active:bg-primary-dark',
-          Platform.select({ web: 'hover:bg-primary-dark' })
+          'bg-component-button-primary-bg active:bg-component-button-primary-pressed',
+          Platform.select({ web: 'hover:bg-component-button-primary-pressed' })
         ),
         destructive: cn(
           'bg-tomato-main active:bg-tomato-dark',
@@ -41,8 +42,8 @@ const buttonVariants = cva(
       },
       size: {
         default: cn('h-control-md px-4 py-2', Platform.select({ web: 'has-[>svg]:px-3' })),
-        sm: cn('h-control-sm gap-1.5 rounded-md px-3', Platform.select({ web: 'has-[>svg]:px-2.5' })),
-        lg: cn('h-control-lg rounded-md px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
+        sm: cn('h-control-sm gap-2 rounded-sm px-3', Platform.select({ web: 'has-[>svg]:px-2' })),
+        lg: cn('h-control-lg rounded-sm px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
         icon: 'h-control-md w-control-md',
       },
     },
@@ -61,19 +62,19 @@ const buttonTextVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-white-pure',
-        destructive: 'text-white-pure',
+        default: 'text-text-inverse',
+        destructive: 'text-text-inverse',
         outline: cn(
-          'text-primary-main group-active:text-primary-dark',
-          Platform.select({ web: 'group-hover:text-primary-dark' })
+          'text-accent-main group-active:text-accent-dark',
+          Platform.select({ web: 'group-hover:text-accent-dark' })
         ),
         secondary: 'text-text-main group-active:text-text-main',
         ghost: cn(
-          'text-primary-main group-active:text-primary-dark',
-          Platform.select({ web: 'group-hover:text-primary-dark' })
+          'text-accent-main group-active:text-accent-dark',
+          Platform.select({ web: 'group-hover:text-accent-dark' })
         ),
         link: cn(
-          'text-primary-main group-active:underline',
+          'text-accent-main group-active:underline',
           Platform.select({ web: 'underline-offset-4 hover:underline group-hover:underline' })
         ),
       },
@@ -91,37 +92,25 @@ const buttonTextVariants = cva(
   }
 );
 
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 type ButtonProps = React.ComponentProps<typeof Pressable> & React.RefAttributes<typeof Pressable> & VariantProps<typeof buttonVariants>;
 
-function Button({ className, variant, size, onPressIn, onPressOut, style, ...props }: ButtonProps) {
-  const scale = useSharedValue(1);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  const handlePressIn = (e: any) => {
-    scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
-    if (onPressIn) onPressIn(e);
-  };
-
-  const handlePressOut = (e: any) => {
-    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
-    if (onPressOut) onPressOut(e);
-  };
+function Button({ className, variant, size, style, hitSlop, ...props }: ButtonProps) {
+  const resolvedHitSlop =
+    hitSlop ??
+    (size === 'sm' ? (SIZES.touchTarget - SIZES.controlSmall) / 2 : undefined);
 
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
-      <AnimatedPressable
-        className={cn(props.disabled && 'opacity-50', buttonVariants({ variant, size }), className)}
+      <Pressable
+        className={cn(
+          props.disabled && 'opacity-50',
+          'active:opacity-80', // Fallback feedback effect
+          buttonVariants({ variant, size }),
+          className
+        )}
         role="button"
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        style={[animatedStyle, style as any]}
+        hitSlop={resolvedHitSlop}
+        style={style}
         {...props}
       />
     </TextClassContext.Provider>

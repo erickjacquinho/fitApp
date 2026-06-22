@@ -1,9 +1,12 @@
+import { Text } from '@/components/ui/text';
 import React, { useState, useEffect } from 'react';
-import { View, Modal, TouchableOpacity, FlatList, TextInput, Platform } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { View, Modal, Pressable, FlatList, Platform } from 'react-native';
 import { ExerciseDictionaryService } from '../services/exercise-dictionary-service';
 import ExerciseDefinition from '../../../db/models/ExerciseDefinition';
-import { X, Search, Plus } from 'lucide-react-native';
+import { X, Plus } from 'lucide-react-native';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
+import { SearchBar } from '@/components/molecules/SearchBar';
 
 interface Props {
   value: string;
@@ -43,67 +46,68 @@ export function ExerciseSelect({ value, onChange }: Props) {
 
   return (
     <>
-      <TouchableOpacity 
+      <Button
+        variant="outline"
         onPress={() => setModalVisible(true)}
-        className="flex-1 rounded border border-soft bg-white-pure px-3 py-1.5 justify-center"
+        className="flex-1 justify-start"
       >
-        <Typography variant="text" className={value ? 'font-bold text-black-main text-sm' : 'text-gray-400 text-sm'}>
-          {value || 'Select Exercise'}
-        </Typography>
-      </TouchableOpacity>
+        <Text variant="text" color={value ? 'default' : 'muted'}>
+          {value || 'Selecionar exercício'}
+        </Text>
+      </Button>
 
       <Modal visible={modalVisible} animationType="slide" transparent>
-        <View className="flex-1 bg-black/50 justify-end">
-          <View className="bg-surface-app h-[80%] rounded-t-3xl p-4">
+        <View className="flex-1 justify-end bg-black-main/50">
+          <View className="h-selection-sheet rounded-t-lg bg-surface-app p-4">
             <View className="flex-row justify-between items-center mb-4">
-              <Typography variant="title">Select Exercise</Typography>
-              <TouchableOpacity onPress={() => setModalVisible(false)} className="p-2">
-                <X size={24} color="#666" />
-              </TouchableOpacity>
+              <Text variant="title">Selecionar exercício</Text>
+              <Button accessibilityLabel="Fechar" variant="ghost" size="icon" onPress={() => setModalVisible(false)}>
+                <Icon as={X} size={24} className="text-text-muted" />
+              </Button>
             </View>
 
-            <View className="flex-row items-center border border-soft rounded-lg px-3 py-2 bg-white-pure mb-4">
-              <Search size={20} color="#999" />
-              <TextInput 
-                value={search}
-                onChangeText={setSearch}
-                placeholder="Search or create new..."
-                className="flex-1 ml-2 text-black-main"
-                autoFocus={Platform.OS === 'ios'}
-              />
-            </View>
+            <SearchBar
+              value={search}
+              onChangeText={setSearch}
+              onClear={() => setSearch('')}
+              placeholder="Buscar ou criar exercício..."
+              autoFocus={Platform.OS === 'ios'}
+              containerClassName="mb-4"
+            />
 
             <FlatList 
               data={filtered}
               keyExtractor={item => item.id}
               renderItem={({ item }) => (
-                <TouchableOpacity 
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Selecionar ${item.name}`}
                   className="py-3 border-b border-soft"
                   onPress={() => {
                     onChange(item.name);
                     setModalVisible(false);
                   }}
                 >
-                  <Typography variant="text" className="font-bold text-black-main">{item.name}</Typography>
-                </TouchableOpacity>
+                  <Text variant="text" className="font-bold text-text-main">{item.name}</Text>
+                </Pressable>
               )}
               ListEmptyComponent={() => (
                 <View className="py-8 items-center">
-                  <Typography variant="text" color="muted">No exercises found.</Typography>
+                  <Text variant="text" color="muted">Nenhum exercício encontrado.</Text>
                 </View>
               )}
             />
 
             {search.trim().length > 0 && !exactMatch && (
-              <TouchableOpacity 
-                className="mt-4 bg-primary-main rounded-lg py-3 flex-row justify-center items-center gap-2"
+              <Button
+                className="mt-4"
                 onPress={handleCreate}
               >
-                <Plus size={20} color="#fff" />
-                <Typography variant="text" className="text-white-pure font-bold">
-                  Create "{search.trim()}"
-                </Typography>
-              </TouchableOpacity>
+                <Icon as={Plus} className="text-text-inverse" />
+                <Text>
+                  Criar "{search.trim()}"
+                </Text>
+              </Button>
             )}
           </View>
         </View>

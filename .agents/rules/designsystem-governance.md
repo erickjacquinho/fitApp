@@ -3,12 +3,16 @@
 These rules control how the FitApp design system evolves.
 
 ## Creating Components
+Follow `component-workflow.md` before applying the criteria below.
+
 Create a new shared component only when:
 - The pattern appears in 3 or more places.
 - The pattern is cross-feature.
 - The behavior and variants can be clearly named.
 
 Keep feature-specific components inside `src/features/<feature>/components/`.
+
+Every retained custom shared component must have a recorded behavioral non-equivalence reason. Missing registry parity, required domain composition, or specialized gesture behavior are acceptable reasons; visual preference is not.
 
 ## Extending Components
 Prefer extending an existing atom or molecule when:

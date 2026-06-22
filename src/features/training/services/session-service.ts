@@ -56,7 +56,7 @@ export class SessionService {
         return await existing.update((exec) => {
           exec.repsDone = data.repsDone;
           exec.weight = data.weight;
-          exec.repsReserveDone = data.repsReserveDone;
+          exec.repsReserveDone = data.repsReserveDone ?? null;
         });
       }
 
@@ -66,7 +66,7 @@ export class SessionService {
         exec.setNumber = data.setNumber;
         exec.repsDone = data.repsDone;
         exec.weight = data.weight;
-        exec.repsReserveDone = data.repsReserveDone;
+        exec.repsReserveDone = data.repsReserveDone ?? null;
       });
     });
   }

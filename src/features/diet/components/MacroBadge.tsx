@@ -1,6 +1,7 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { Badge } from '@/components/ui/badge';
+import type { BadgeProps } from '@/components/ui/badge';
 
 export type MacroType = 'protein' | 'carbs' | 'fat' | 'calories';
 
@@ -12,23 +13,18 @@ interface MacroBadgeProps {
 }
 
 export function MacroBadge({ label, value, type, unit = 'g' }: MacroBadgeProps) {
-  const typeColors = {
-    protein: 'bg-primary-soft',
-    carbs: 'bg-accent-soft',
-    fat: 'bg-tomato-soft',
-    calories: 'bg-gray-300',
+  const typeVariants: Record<MacroType, BadgeProps['variant']> = {
+    protein: 'info',
+    carbs: 'warning',
+    fat: 'secondary',
+    calories: 'neutral',
   };
 
   const actualUnit = type === 'calories' ? 'kcal' : unit;
 
   return (
-    <View className={`px-2 py-1 rounded-md flex-row items-center gap-1 ${typeColors[type]}`}>
-      <Typography variant="caption" className="font-bold">
-        {label}:
-      </Typography>
-      <Typography variant="caption">
-        {value.toFixed(1)}{actualUnit}
-      </Typography>
-    </View>
+    <Badge variant={typeVariants[type]}>
+      <Text variant="caption">{label}: {value.toFixed(1)}{actualUnit}</Text>
+    </Badge>
   );
 }

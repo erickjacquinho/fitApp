@@ -1,8 +1,10 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { Trash2, Check } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 
 interface SetInputRowProps {
   setNumber: number;
@@ -25,64 +27,68 @@ export function SetInputRow({
 }: SetInputRowProps) {
   return (
     <View
-      className={`mb-3 flex-row items-center gap-2 rounded border p-2 ${
-        isSaved ? 'border-success-main/30 bg-success-main/5' : 'border-soft bg-white-pure'
+      className={`mb-3 flex-row items-center gap-2 rounded-sm border p-2 ${
+        isSaved ? 'border-success-main/30 bg-success-main/5' : 'border-soft bg-component-input-bg'
       }`}
     >
       <View className="w-12 items-center justify-center">
-        <Typography variant="label" color="muted">
-          Set {setNumber}
-        </Typography>
+        <Text variant="label" color="muted">
+          Série {setNumber}
+        </Text>
       </View>
 
       {/* Weight Input */}
-      <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
+      <View className="flex-1 flex-row items-center rounded-sm border border-soft px-2 py-1 bg-surface-app">
         <Input
           keyboardType="numeric"
           placeholder="0"
           value={weight}
           onChangeText={(val) => onInputChange('weight', val)}
-          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-black-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-main"
         />
-        <Typography variant="caption" color="muted" className="ml-1">
+        <Text variant="caption" color="muted" className="ml-1">
           kg
-        </Typography>
+        </Text>
       </View>
 
       {/* Reps Input */}
-      <View className="flex-1 flex-row items-center rounded border border-soft px-2 py-1 bg-surface-app">
+      <View className="flex-1 flex-row items-center rounded-sm border border-soft px-2 py-1 bg-surface-app">
         <Input
           keyboardType="numeric"
           placeholder="0"
           value={reps}
           onChangeText={(val) => onInputChange('reps', val)}
-          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-black-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-main"
         />
-        <Typography variant="caption" color="muted" className="ml-1">
+        <Text variant="caption" color="muted" className="ml-1">
           reps
-        </Typography>
+        </Text>
       </View>
 
       {/* Actions */}
       <View className="flex-row items-center gap-1">
         {/* Save Check */}
-        <TouchableOpacity
+        <Button
+          accessibilityLabel={`Salvar série ${setNumber}`}
+          variant={isSaved ? 'secondary' : 'default'}
+          size="icon"
           onPress={onSave}
-          className={`h-9 w-9 items-center justify-center rounded ${
-            isSaved ? 'bg-success-main' : 'bg-primary-main'
-          }`}
+          className={isSaved ? 'bg-success-main' : undefined}
         >
-          <Check size={16} color="#fff" />
-        </TouchableOpacity>
+          <Icon as={Check} size={16} className="text-text-inverse" />
+        </Button>
 
         {/* Delete */}
         {onRemove && (
-          <TouchableOpacity
+          <Button
+            accessibilityLabel={`Excluir série ${setNumber}`}
+            variant="ghost"
+            size="icon"
             onPress={onRemove}
-            className="h-9 w-9 items-center justify-center rounded bg-tomato-main/10"
+            className="bg-tomato-soft"
           >
-            <Trash2 size={16} color="#ef4444" />
-          </TouchableOpacity>
+            <Icon as={Trash2} size={16} className="text-tomato-main" />
+          </Button>
         )}
       </View>
     </View>

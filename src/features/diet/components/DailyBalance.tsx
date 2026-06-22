@@ -1,6 +1,6 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { View } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
 
 interface DailyBalanceProps {
   protein: number;
@@ -14,20 +14,20 @@ export function DailyBalance({ protein, carbs, fat, calories }: DailyBalanceProp
     <View className="bg-surface-raised border-b border-soft pb-2 pt-2">
       <View className="flex-row">
         <View className="flex-1 px-1 py-3 items-center justify-center border-r border-soft">
-          <Typography variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Proteína</Typography>
-          <Typography variant="subtitle" className="text-text-primary">{Math.round(protein)}g</Typography>
+          <Text variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Proteína</Text>
+          <Text variant="subtitle" className="text-text-main">{Math.round(protein)}g</Text>
         </View>
         <View className="flex-1 px-1 py-3 items-center justify-center border-r border-soft">
-          <Typography variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Carbos</Typography>
-          <Typography variant="subtitle" className="text-text-primary">{Math.round(carbs)}g</Typography>
+          <Text variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Carbos</Text>
+          <Text variant="subtitle" className="text-text-main">{Math.round(carbs)}g</Text>
         </View>
         <View className="flex-1 px-1 py-3 items-center justify-center border-r border-soft">
-          <Typography variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Gordura</Typography>
-          <Typography variant="subtitle" className="text-text-primary">{Math.round(fat)}g</Typography>
+          <Text variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Gordura</Text>
+          <Text variant="subtitle" className="text-text-main">{Math.round(fat)}g</Text>
         </View>
         <View className="flex-1 px-1 py-3 items-center justify-center">
-          <Typography variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Calorias</Typography>
-          <Typography variant="subtitle" className="text-text-primary">{Math.round(calories)}</Typography>
+          <Text variant="caption" color="muted" className="uppercase font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>Calorias</Text>
+          <Text variant="subtitle" className="text-text-main">{Math.round(calories)}</Text>
         </View>
       </View>
     </View>

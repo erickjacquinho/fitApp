@@ -1,10 +1,12 @@
+import { Text } from '@/components/ui/text';
 import React, { useState, useCallback } from 'react';
 import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
 import { Card } from "@/components/ui/card";
+import { Icon } from '@/components/ui/icon';
+import { COLORS } from '@/tokens/colors';
 
 export function HistoryScreen() {
   const { history, isLoading, loadHistory } = useWorkoutHistory();
@@ -26,7 +28,7 @@ export function HistoryScreen() {
     });
   };
 
-  const getDuration = (start: number, end?: number) => {
+  const getDuration = (start: number, end?: number | null) => {
     if (!end) return 'N/A';
     const diffMs = end - start;
     const diffMins = Math.round(diffMs / 1000 / 60);
@@ -36,20 +38,20 @@ export function HistoryScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-app">
-        <ActivityIndicator size="large" color="#005B94" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
-      <Typography variant="title" className="mb-4 text-2xl font-bold">
-        Workout History
-      </Typography>
+      <Text variant="title" className="mb-4 font-bold">
+        Histórico de treinos
+      </Text>
 
       {history.map((session) => {
         // We need to fetch the program name dynamically
-        const [programName, setProgramName] = useState('Loading program...');
+        const [programName, setProgramName] = useState('Carregando programa...');
 
         React.useEffect(() => {
           session.program.fetch().then((p) => {
@@ -59,6 +61,8 @@ export function HistoryScreen() {
 
         return (
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Ver detalhes do treino"
             key={session.id}
             onPress={() =>
               router.push({
@@ -68,30 +72,30 @@ export function HistoryScreen() {
             }
             activeOpacity={0.7}
           >
-            <Card className="mb-3 p-4 flex-row items-center justify-between border border-soft bg-component-card-bg active:bg-soft/10">
+            <Card className="mb-3 p-4 flex-row items-center justify-between border border-soft bg-component-card-bg active:bg-surface-muted/10">
               <View className="flex-1 pr-2">
-                <Typography variant="subtitle" className="font-bold text-base">
+                <Text variant="subtitle" className="font-bold">
                   {programName}
-                </Typography>
+                </Text>
                 
                 <View className="flex-row items-center gap-4 mt-2">
                   <View className="flex-row items-center gap-1">
-                    <Calendar size={14} color="#666" />
-                    <Typography variant="caption" color="muted">
+                    <Icon as={Calendar} size={16} className="text-text-muted" />
+                    <Text variant="caption" color="muted">
                       {formatDate(session.startDate)}
-                    </Typography>
+                    </Text>
                   </View>
 
                   <View className="flex-row items-center gap-1">
-                    <Clock size={14} color="#666" />
-                    <Typography variant="caption" color="muted">
+                    <Icon as={Clock} size={16} className="text-text-muted" />
+                    <Text variant="caption" color="muted">
                       {getDuration(session.startDate, session.endDate)}
-                    </Typography>
+                    </Text>
                   </View>
                 </View>
               </View>
 
-              <ChevronRight size={18} color="#666" />
+              <Icon as={ChevronRight} className="text-text-muted" />
             </Card>
           </TouchableOpacity>
         );
@@ -99,15 +103,15 @@ export function HistoryScreen() {
 
       {history.length === 0 && (
         <View className="my-12 items-center justify-center py-10">
-          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-soft">
-            <Dumbbell size={32} color="#666" />
+          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
+            <Icon as={Dumbbell} size={32} className="text-text-muted" />
           </View>
-          <Typography variant="subtitle" className="mb-2 text-center">
-            No Workouts Logged Yet
-          </Typography>
-          <Typography variant="text" color="muted" className="text-center">
-            Complete active training sessions to build your history.
-          </Typography>
+          <Text variant="subtitle" className="mb-2 text-center">
+            Nenhum treino registrado
+          </Text>
+          <Text variant="text" color="muted" className="text-center">
+            Finalize um treino para criar seu histórico.
+          </Text>
         </View>
       )}
     </ScrollView>

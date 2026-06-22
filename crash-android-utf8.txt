@@ -1,0 +1,286 @@
+﻿06-21 23:51:38.700 I/HoneySpace.BackgroundManagerImpl( 2474): setProgressToBlurView[ch=159244824, st =  com.honeyspace.sdk.HomeScreen$Normal@457e718, progress = 1.0, wb= 0.0]
+06-21 23:51:38.700 I/HoneySpace.HomescreenPot( 2474): onShown, showHoneyState = com.honeyspace.sdk.HomeScreen$Normal@457e718, screenShow: true
+06-21 23:51:38.700 I/HoneySpace.HomescreenViewModel( 2474): resetProgress
+06-21 23:51:38.700 I/HoneySpace.BackgroundManagerImpl( 2474): checkAndUpdateBackgroundEffect: com.honeyspace.sdk.HomeScreen$Normal@457e718, ch=159244824, forceApply=false
+06-21 23:51:38.700 I/HoneySpace.WorkspacePot( 2474): notifyOnShown, com.honeyspace.sdk.HomeScreen$Normal@457e718
+06-21 23:51:38.701 I/SemDvfsHyPerManager( 1222): acquire hyper - GESTURE_DETECTED_HRR/1222@27, type = -999
+06-21 23:51:38.701 I/SemDvfsHyPerManager( 1222): acquire hyper - GESTURE_DETECTED_HRR/1222@27, type = -999
+06-21 23:51:38.701 I/SemDvfsHyPerManager( 1222): acquire hyper - SMOOTH_SCROLL/1222@25, type = -999
+06-21 23:51:38.701 I/HoneySpace.WhiteBgColorUpdater( 2474): changeWhiteBgSystemUIColor, com.android.internal.policy.DecorView{dd462e V.E...... R....... 0,0-1080,2340 aid=0}[LauncherActivity], type = 2, supportWhiteBg = true, forced = false, fromHoneyType = workspace, darkStatusBar = 1, darkNavigationBar = false
+06-21 23:51:38.702 I/HoneySpace.WhiteBgColorChanger( 2474): changeStatusBarColor, view = com.android.internal.policy.DecorView{dd462e V.E...... R....... 0,0-1080,2340 aid=0}[LauncherActivity], isDarkColor = true
+06-21 23:51:38.702 I/HoneySpace.WhiteBgColorUpdater( 2474): changeWhiteBgSystemUIColor, com.android.internal.policy.DecorView{dd462e V.E...... R....... 0,0-1080,2340 aid=0}[LauncherActivity], type = 3, supportWhiteBg = true, forced = false, fromHoneyType = workspace, darkStatusBar = 1, darkNavigationBar = false
+06-21 23:51:38.702 I/HoneySpace.WhiteBgColorChanger( 2474): changeNavigationBarColor, view = com.android.internal.policy.DecorView{dd462e V.E...... R....... 0,0-1080,2340 aid=0}[LauncherActivity], isDarkColor = false
+06-21 23:51:38.702 I/HoneySpace.HoneyScreenManagerImpl( 2474): setContentsAlpha, state: com.honeyspace.sdk.HomeScreen$Normal@457e718
+06-21 23:51:38.703 I/HoneySpace.HomescreenPot( 2474): setContentsAlpha, alpha : 0.0
+06-21 23:51:38.703 I/HoneySpace.RecentsAnimationManager( 2474): onAnimationStart
+06-21 23:51:38.703 I/HoneySpace.LeashUpdater( 2474): showAppearedLeashOverlayTarget
+06-21 23:51:38.703 I/HoneySpace.LeashUpdater( 2474): showHomeTarget, leash : Surface(name=Surface(name=Task=1#46)/@0xdcd4535_transition-leash#47019)/@0x6350cc
+06-21 23:51:38.703 I/HoneySpace.Player( 2474): [Player:A(38.703)] create
+06-21 23:51:38.703 I/HoneySpace.FloatingAnimator( 2474): playerCount: 1
+06-21 23:51:38.703 I/HoneySpace.TransitionUtils( 2474): [getRotationChange] home-0, app-0
+06-21 23:51:38.703 I/HoneySpace.TransitionUtils( 2474): getWindowTargetBounds: Rect(0, 0 - 1080, 2340)
+06-21 23:51:38.703 I/HoneySpace.Player( 2474): setup no target anim
+06-21 23:51:38.703 I/HoneySpace.Player( 2474): [Player:A(38.703)] catch
+06-21 23:51:38.703 I/HoneySpace.RectFSpringRelayer( 2474): springRelay created, 72020522
+06-21 23:51:38.704 I/HoneySpace.MultiStateCallback( 2474): [61913100] Adding [STATE_RECENTS_ANIMATION_STARTED (16)] to [STATE_GESTURE_START, STATE_START_RECENTS_TRANSITION, STATE_GESTURE_START_HOME_SCREEN, STATE_WALLPAPER_ANIMATOR_START, STATE_GESTURE_MOVE_START (786565)]
+06-21 23:51:38.704 I/SAMSUNGWALLET(10308): [Hint_PayHintService] onReceive() action=android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.704 I/HoneySpace.RecentsAnimationController( 2474): enableInputConsumer
+06-21 23:51:38.704 V/ShellRecents( 1854): [202543827] RecentsController.setInputConsumerEnabled: set focus to recents
+06-21 23:51:38.705 D/LocalDisplayAdapter( 1222): updateActiveModeLocked for d=4633128672291735939, mActiveModeId=1, mActiveSfDisplayMode=DisplayMode{id=0, width=1080, height=2340, xDpi=386.366, yDpi=388.47, peakRefreshRate=120.00001, vsyncRate=120.00001, appVsyncOffsetNanos=0, presentationDeadlineNanos=9333333, supportedHdrTypes=[2, 3, 4], group=0}
+06-21 23:51:38.705 I/SLPASVC ( 8448): +onDestroy(): Handler (com.samsung.euicc.lpaService.NotificationService$NotificationHandler) {de6c2f8}[at com.samsung.euicc.lpaService.NotificationService.onDestroy(NotificationService.java:25)]
+06-21 23:51:38.705 I/SLPASVC ( 8448): -onDestroy()                                                                                        [at com.samsung.euicc.lpaService.NotificationService.onDestroy(NotificationService.java:31)]
+06-21 23:51:38.706 I/HYPER-HAL(  859): [RequestManager.cpp]acquire(): Acquired ID : 780652  [1222 / 27]    HINT : GESTURE_DETECTED_HRR    list : [TIMEOUT / 2298]
+06-21 23:51:38.707 I/HYPER-HAL(  859): [RequestManager.cpp]acquire(): Acquired ID : 780652  [1222 / 27]    HINT : GESTURE_DETECTED_HRR    list : [TIMEOUT / 2298]
+06-21 23:51:38.709 D/PowerManagerService( 1222): [api] setScreenDimDurationOverrideFromWindowManagerInternal: timeoutMillis: 100000
+06-21 23:51:38.710 D/SGM:FgCheckThread( 1222): TaskStackListener.onTaskFocusChanged(), taskId=38683, focused=false
+06-21 23:51:38.710 D/SGM:FgCheckThread( 1222): TaskStackListener.onTaskFocusChanged(), taskId=38485, focused=true
+06-21 23:51:38.710 D/SGM:FgCheckThread( 1222):   sendRunningComponentFocus(), pkgName: com.sec.android.app.launcher, userId: 0
+06-21 23:51:38.710 D/InputDispatcher( 1222): Focused application(0): ActivityRecord{142303276 u0 com.sec.android.app.launcher/.activities.LauncherActivity t38485}
+06-21 23:51:38.710 I/BLASTBufferQueue_Java( 2474): update, w= 1080 h= 2340 mName = VRI[LauncherActivity]@d10a33 mNativeObject= 0xb400007a2a1bf8c0 sc.mNativeObject= 0xb400007bca157750 format= -2 caller= android.view.ViewRootImpl.updateBlastSurfaceIfNeeded:3592 android.view.ViewRootImpl.relayoutWindow:11813 android.view.ViewRootImpl.performTraversals:4840 android.view.ViewRootImpl.doTraversal:3959 android.view.ViewRootImpl$TraversalRunnable.run:13034 android.view.Choreographer$CallbackRecord.run:1961
+06-21 23:51:38.710 I/VRI[LauncherActivity]@d10a33( 2474): Relayout returned: old=(0,0,1080,2340) new=(0,0,1080,2340) relayoutAsync=true req=(1080,2340)0 dur=0 res=0x0 s={true 0xb400007bba1535d0} ch=false seqId=0
+06-21 23:51:38.710 D/WindowManager( 1222): Changing focus from Window{beca042 u0 com.anonymous.fitapp/com.anonymous.fitapp.MainActivity} to Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity} displayId=0 Callers=com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:264 com.android.server.wm.ActivityTaskManagerService.setFocusedTask:19 com.android.server.wm.ActivityTaskManagerService.focusTopTask:53 android.app.IActivityTaskManager$Stub.onTransact:2765
+06-21 23:51:38.710 I/VRI[LauncherActivity]@d10a33( 2474): registerCallbackForPendingTransactions
+06-21 23:51:38.711 I/WindowManager( 1222): Cancelling animation restarting=true, leash=Surface(name=Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013)/@0x8587fba
+06-21 23:51:38.711 I/WindowManager( 1222): Reparenting to original parent: Surface(name=WindowToken{1626727 type=2000 android.os.BinderProxy@718bc41}#82)/@0x2bebfc5, destroy=false, surface=Surface(name=17dfdd4 StatusBar#83)/@0x720263c
+06-21 23:51:38.711 I/WindowManager( 1222): Reparenting to leash, surface=Surface(name=17dfdd4 StatusBar#83)/@0x720263c, leashParent=Surface(name=WindowToken{1626727 type=2000 android.os.BinderProxy@718bc41}#82)/@0x2bebfc5
+06-21 23:51:38.711 I/SurfaceFlinger(  893): id=47021 createSurf, flag=24000, Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47021
+06-21 23:51:38.711 I/HoneySpace.SPayHandler( 2474): updateSpayHandler(), show = true, defaultPage = true, minusOnePage = false, C8.f2.notifyOnShown(SourceFile:41)
+06-21 23:51:38.711 V/ShellDragAndDrop( 1854): Receive android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.711 D/WindowManager( 1222): makeSurface duration=0 leash=Surface(name=Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47021)/@0xa561895
+06-21 23:51:38.711 D/InsetsSourceProvider( 1222): updateControlForTarget: control=InsetsSourceControl: {5d4a0000 mType=statusBars initiallyVisible mSurfacePosition=Point(0, 0) mInsetsHint=Insets{left=0, top=89, right=0, bottom=0}}, target=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, from=com.android.server.wm.InsetsStateController.onControlTargetChanged:82 com.android.server.wm.InsetsPolicy.updateBarControlTarget:203 com.android.server.wm.DisplayPolicy.updateSystemBarAttributes:439 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:358 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:264
+06-21 23:51:38.711 I/WindowManager( 1222): Cancelling animation restarting=true, leash=Surface(name=Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002)/@0x5ebea45
+06-21 23:51:38.711 I/WindowManager( 1222): Reparenting to original parent: Surface(name=WindowToken{f05dcd5 type=2019 android.os.BinderProxy@78dc2bf}#75)/@0xfe76a28, destroy=false, surface=Surface(name=861cea NavigationBar0#76)/@0x81f404b
+06-21 23:51:38.711 I/WindowManager( 1222): Reparenting to leash, surface=Surface(name=861cea NavigationBar0#76)/@0x81f404b, leashParent=Surface(name=WindowToken{f05dcd5 type=2019 android.os.BinderProxy@78dc2bf}#75)/@0xfe76a28
+06-21 23:51:38.711 D/SGM:FgCheckThread( 1222): onLooperPrepared(), msg: MSG_TASK_FOCUSED, pkgName: com.sec.android.app.launcher, userId: 0
+06-21 23:51:38.711 D/SGM:FgCheckThread( 1222): handleTaskFocused().
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222): sendFocusOutConditionally() - mPrevNotiPkg: com.sec.android.app.samsungapps, userId: 0
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222):   handleTaskFocused(), pkgName: com.sec.android.app.launcher, userID:0
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222): handleResume().
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222): sendFocusOutConditionally() - mPrevNotiPkg: com.sec.android.app.samsungapps, userId: 0
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222):   handleResume(). pkgName: com.sec.android.app.launcher, userId: 0, category: non-game
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222): notifyFocusInOut(). of pkg: com.sec.android.app.launcher, type: 4, isSecGameFamily: false, userId: 0
+06-21 23:51:38.712 D/SGM:FgCheckThread( 1222):   notifyFocusInOut(). do nothing
+06-21 23:51:38.712 D/SGM:SystemHelper( 1222): callReleaseBlock needReleaseBlock:false
+06-21 23:51:38.712 D/AS.MultiSoundManager( 1222): mForegroundUid = 10140
+06-21 23:51:38.712 D/BackgroundInstallControlService( 1222): Package event received: 0
+06-21 23:51:38.712 I/SurfaceFlinger(  893): id=47022 createSurf, flag=24000, Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47022
+06-21 23:51:38.712 D/WindowManager( 1222): makeSurface duration=1 leash=Surface(name=Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47022)/@0x43fcd9b
+06-21 23:51:38.712 I/HoneySpace.LauncherProvider( 2474): call - android.uid.systemui:10051, get_internal_Dex_status, internal_dex_status
+06-21 23:51:38.712 I/HoneySpace.ExternalMethodItem( 2474): updateRefsItemsByEntryPoints. HoneySpaceInfo(name=OneUI, displayId=0)
+06-21 23:51:38.712 D/InsetsSourceProvider( 1222): updateControlForTarget: control=InsetsSourceControl: {c3880001 mType=navigationBars initiallyVisible mSurfacePosition=Point(0, 2214) mInsetsHint=Insets{left=0, top=0, right=0, bottom=39}}, target=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, from=com.android.server.wm.InsetsStateController.onControlTargetChanged:82 com.android.server.wm.InsetsPolicy.updateBarControlTarget:216 com.android.server.wm.DisplayPolicy.updateSystemBarAttributes:439 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:358 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:264
+06-21 23:51:38.713 D/WindowManager( 1222): updateSystemBarAttributes: displayId=0, focusedCanBeNavColorWin=false, win=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, navColorWin=Window{beca042 u0 com.anonymous.fitapp/com.anonymous.fitapp.MainActivity}, caller=com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:358 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:264 com.android.server.wm.ActivityTaskManagerService.setFocusedTask:19
+06-21 23:51:38.713 D/LocationControllerImpl( 1854): onReceive() = android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.713 D/WindowManager( 1222): updateSystemBarAttributes, bhv=2, apr=16, statusBarAprRegions=[AppearanceRegion{ bounds=[0,0][1080,2340]}], requestedVisibilities=503
+06-21 23:51:38.713 D/SecMultiSIMPreferredBarViewModel( 1854): onReceive() - action = android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.713 D/SecMultiSIMPreferredBarViewModel( 1854): Received broadcast that should dismiss popup: android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.713 D/PopupUI.PopupUI( 1854): PopupUIReceiver.onReceive() action : android.intent.action.CLOSE_SYSTEM_DIALOGS
+06-21 23:51:38.713 V/SystemKeyManager( 1222): updateFocusedWindow() is called, com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity
+06-21 23:51:38.713 D/SimTrayProtectionViewModel( 1854): dismiss : isFoldedState()falseisRemoveSimtray() : true
+06-21 23:51:38.713 V/ShellDragAndDrop( 1854): Do not update drop target window visibility: window is already set to 4.
+06-21 23:51:38.713 D/SecVolume.VolumePanelStore( 1854): dispatch [ACTION_DISMISS_REQUESTED with [STATE_NO_DISPATCH], currentAction={isFromOutside : true}, currentState={activeStream=3(vol=0), stream=3(vol=0) } isMediaDefaultEnabled : true, isCaptionComponentEnabled : true, isSetupWizardComplete : true, isVoiceCapable : true, isHasVibrator : true, pinDevice : 0, stream : 3, iconTargetState : 1, timeOutControlsText : 0, timeOutControls : 0, cutoutHeight : 0, iconCurrentState : 1, earProtectLevel : 909, activeStream : 3, timeOut : 3000, ringerModeInternal : 0, systemTimeNow : 136181749}
+06-21 23:51:38.713 D/SecVolume.VolumePanelStore( 1854):   > New State : [STATE_NO_DISPATCH]
+06-21 23:51:38.714 I/SurfaceFlinger(  893): RequestedLayer [Input Consumer recents_animation_input_consumer#117] hidden!! flag  from(1) --> to(0)
+06-21 23:51:38.714 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Input Consumer recents_animation_input_consumer#117 relativeParentId=46882 z=2} no children}] RelativeParent to LayerHierarchy{RequestedLayerState{Task=38683#46882 parentId=47020} 3 children}
+06-21 23:51:38.714 I/SurfaceFlinger(  893): [Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47021] attach to parent LayerHierarchy{RequestedLayerState{WindowToken{1626727 type=2000 android.os.BinderProxy@718bc41}#82 parentId=17} 2 children}
+06-21 23:51:38.714 I/SurfaceFlinger(  893): [Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47022] attach to parent LayerHierarchy{RequestedLayerState{WindowToken{f05dcd5 type=2019 android.os.BinderProxy@78dc2bf}#75 parentId=46882 z=2147483647} 2 children}
+06-21 23:51:38.715 I/SAMSUNGWALLET(10308): [Hint_PayHintService] onReceive() action=com.sec.android.app.launcher.intent.action.UPDATE_SPAY_HANDLER
+06-21 23:51:38.716 I/SAMSUNGWALLET(10308): [Hint_PayHintService] home change, s home : true , default : true , gesture : true , s result : true , prev : false
+06-21 23:51:38.717 V/WindowManager( 1222): performShowLocked: mDrawState=HAS_DRAWN in Window{a79c55f u0 GoogleDiscoverWindow}
+06-21 23:51:38.719 D/[secipm]( 1222): mSecIpmManager report to nap
+06-21 23:51:38.719 I/PkgPredictorService-SecIpmManagerServiceImpl( 1222): reportToNAP uid:10140 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity thisTime:125
+06-21 23:51:38.719 D/PkgPredictorService-SecIpmManagerServiceImpl( 1222): reportToNAP: mHeavyLaunchCounter is false
+06-21 23:51:38.719 D/PkgPredictorService-SecIpmManagerServiceImpl( 1222): ACTION_FOREGROUND_FINISH_EVENT sCurForegroundApp :com.sec.android.app.launcher
+06-21 23:51:38.720 I/SurfaceControl( 1222): apply, lowDebugName=Focus request: recents_animation_input_consumer, caller=android.view.SurfaceControl$Transaction.apply:3569 android.view.SurfaceControl$Transaction.apply:3519 com.android.server.wm.WindowAnimator.animate:468 com.android.server.wm.WindowAnimator$$ExternalSyntheticLambda1.doFrame:14 android.view.Choreographer$CallbackRecord.run:1959 android.view.Choreographer$CallbackRecord.run:1970
+06-21 23:51:38.720 I/HoneySpace.LauncherProvider( 2474): call - com.samsung.android.spay, get_rotation_state, null
+06-21 23:51:38.720 I/HoneySpace.ExternalMethodItem( 2474): updateRefsItemsByEntryPoints. HoneySpaceInfo(name=OneUI, displayId=0)
+06-21 23:51:38.720 I/Rubin   ( 4511): [949] R0.e.s(SourceFile:28) : Notify com.samsung.android.rubin.inferenceengine.contextanalytics.engine.loggers.AppUsageLogger's database is updated.
+06-21 23:51:38.721 I/WindowManager( 1222): Relayout Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}: viewVisibility=0 req=1080x2340 ty=1 d0
+06-21 23:51:38.721 I/SAMSUNGWALLET(10308): [Hint_PayHintService] mIsLauncherPortraitOnlyMode: true, mIsUserLock: false
+06-21 23:51:38.721 D/WindowManager( 1222): updateSystemBarAttributes: displayId=0, focusedCanBeNavColorWin=false, win=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, navColorWin=Window{beca042 u0 com.anonymous.fitapp/com.anonymous.fitapp.MainActivity}, caller=com.android.server.wm.DisplayPolicy.finishPostLayoutPolicyLw:17 com.android.server.wm.RootWindowContainer.applySurfaceChangesTransaction$1:188 com.android.server.wm.RootWindowContainer.performSurfacePlacement:59
+06-21 23:51:38.721 I/CameraService(  999): onUidStateChanged: uid=10348, procState is changed. (8 -> 10)
+06-21 23:51:38.722 D/NavigationBar( 1854): onSystemBarAttributesChanged() -  displayId:0, appearance:24, packageName: com.sec.android.app.launcher (APPEARANCE_LIGHT_STATUS_BARS APPEARANCE_LIGHT_NAVIGATION_BARS ), navbarColorManagedByIme:false
+06-21 23:51:38.722 W/JobScheduler( 1222): Job didn't exist in JobStore: 92de1d5 #u0a348/8515 br.com.bradesco.next/androidx.work.impl.background.systemjob.SystemJobService
+06-21 23:51:38.722 D/WindowManager( 1222): updateSystemBarAttributes, bhv=2, apr=24, statusBarAprRegions=[AppearanceRegion{ bounds=[0,0][1080,2340]}], requestedVisibilities=503
+06-21 23:51:38.723 I/SurfaceFlinger(  893): RequestedLayer [GoogleDiscoverWindow$_5420#47015] hidden!! flag  from(1) --> to(0)
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{861cea NavigationBar0#76 parentId=47022} 1 children}] reparent to LayerHierarchy{RequestedLayerState{Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47022 parentId=75} 1 children}
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{17dfdd4 StatusBar#83 parentId=47021} 1 children}] reparent to LayerHierarchy{RequestedLayerState{Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47021 parentId=82} 1 children}
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Input Consumer recents_animation_input_consumer#117 relativeParentId=46882 z=2} no children}] RelativeParent to LayerHierarchy{RequestedLayerState{Task=38683#46882 parentId=47020} 3 children}
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013} no children}] reparent to OffscreenRoot
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013} no children}] RelativeParent to null
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002} no children}] reparent to OffscreenRoot
+06-21 23:51:38.723 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002} no children}] RelativeParent to null
+06-21 23:51:38.723 I/WindowManager( 1222): Relayout hash=1a3d329, pid=0, syncId=-1: mAttrs={(0,0)(fillxfill) sim={adjust=nothing} layoutInDisplayCutoutMode=always ty=BASE_APPLICATION fmt=TRANSPARENT wanim=0x1030307
+06-21 23:51:38.723 I/WindowManager( 1222):   fl=81910100
+06-21 23:51:38.723 I/WindowManager( 1222):   pfl=10008840
+06-21 23:51:38.723 I/WindowManager( 1222):   apr=8
+06-21 23:51:38.723 I/WindowManager( 1222):   bhv=2
+06-21 23:51:38.723 I/WindowManager( 1222):   fitSides=0
+06-21 23:51:38.723 I/WindowManager( 1222):   frameRateBoostOnTouch=true
+06-21 23:51:38.723 I/WindowManager( 1222):   dvrrWindowFrameRateHint=true screenDimDuration=100000 naviIconColor=0}
+06-21 23:51:38.725 D/SurfaceFlinger(  893): [input] setFocusedWindow: recents_animation_input_consumer
+06-21 23:51:38.726 I/ActivityManager( 1222): Changes in 10348 10 to 19, 384 to 0
+06-21 23:51:38.726 I/CameraService(  999): onUidStateChanged: uid=10348, procState is changed. (10 -> 19)
+06-21 23:51:38.727 I/SAMSUNGWALLET(10308): [Hint_PayHintService] Hint Status - already invisible, skip hide : Disable on home
+06-21 23:51:38.727 I/VRI[LauncherActivity]@d10a33( 2474): mWNT: t=0xb400007afa1dafc0 mBlastBufferQueue=0xb400007a2a1bf8c0 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= com.android.systemui.shared.launcher.ViewRootImplCompat.mergeWithNextTransaction:4 com.honeyspace.transition.utils.SurfaceTransactionApplier.scheduleApply$lambda$1:16 com.honeyspace.transition.utils.SurfaceTransactionApplier.b:0
+06-21 23:51:38.727 D/InputDispatcher( 1222): Once focus requested (0): recents_animation_input_consumer
+06-21 23:51:38.727 D/InputDispatcher( 1222): Focus left window (0): beca042 com.anonymous.fitapp/com.anonymous.fitapp.MainActivity
+06-21 23:51:38.727 D/InputDispatcher( 1222): Focus entered window (0): recents_animation_input_consumer
+06-21 23:51:38.727 I/VRI[LauncherActivity]@d10a33( 2474): mWNT: t=0xb400007afa1e25b0 mBlastBufferQueue=0xb400007a2a1bf8c0 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= com.android.systemui.shared.launcher.ViewRootImplCompat.mergeWithNextTransaction:4 com.honeyspace.transition.utils.SurfaceTransactionApplier.scheduleApply$lambda$1:16 com.honeyspace.transition.utils.SurfaceTransactionApplier.b:0
+06-21 23:51:38.727 I/VRI[LauncherActivity]@d10a33( 2474): mWNT: t=0xb400007afa1e7b40 mBlastBufferQueue=0xb400007a2a1bf8c0 fn= 2 HdrRenderState mRenderHdrSdrRatio=1.0 caller= android.view.ViewRootImpl$10.onFrameDraw:6615 android.view.ViewRootImpl$4.onFrameDraw:2485 android.view.ThreadedRenderer$1.onFrameDraw:751
+06-21 23:51:38.728 I/SurfaceFlinger(  893): id=47013 Removed Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013 (185)
+06-21 23:51:38.728 I/SurfaceFlinger(  893): id=47002 Removed Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002 (185)
+06-21 23:51:38.729 I/ImeFocusController( 6473): onPreWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+06-21 23:51:38.729 W/unknown:BridgelessReact( 6473): ReactHost{0}.raiseSoftException(onWindowFocusChange(hasFocus = "false")): Tried to access onWindowFocusChange while context is not ready
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): Unhandled SoftException
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): com.facebook.react.bridge.ReactNoCrashSoftException: raiseSoftException(onWindowFocusChange(hasFocus = "false")): Tried to access onWindowFocusChange while context is not ready
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.runtime.ReactHostImpl.raiseSoftException(ReactHostImpl.kt:787)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.runtime.ReactHostImpl.raiseSoftException$default(ReactHostImpl.kt:779)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.runtime.ReactHostImpl.onWindowFocusChange(ReactHostImpl.kt:589)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.ReactDelegate.onWindowFocusChanged(ReactDelegate.kt:217)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.ReactActivityDelegate.onWindowFocusChanged(ReactActivityDelegate.java:236)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper$onWindowFocusChanged$1.invokeSuspend(ReactActivityDelegateWrapper.kt:353)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper$onWindowFocusChanged$1.invoke(ReactActivityDelegateWrapper.kt:8)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper$onWindowFocusChanged$1.invoke(ReactActivityDelegateWrapper.kt:4)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper$launchLifecycleScopeWithLock$1.invokeSuspend(ReactActivityDelegateWrapper.kt:485)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:359)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:26)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:358)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:124)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:52)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.BuildersKt.launch(dex-id-83e51c22c62826f4f69ccec77e11c12bd88094bf:1)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:43)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at kotlinx.coroutines.BuildersKt.launch$default(dex-id-83e51c22c62826f4f69ccec77e11c12bd88094bf:1)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper.launchLifecycleScopeWithLock(ReactActivityDelegateWrapper.kt:483)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper.launchLifecycleScopeWithLock$default(ReactActivityDelegateWrapper.kt:479)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at expo.modules.ReactActivityDelegateWrapper.onWindowFocusChanged(ReactActivityDelegateWrapper.kt:351)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.facebook.react.ReactActivity.onWindowFocusChanged(ReactActivity.java:158)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at androidx.appcompat.view.WindowCallbackWrapper.onWindowFocusChanged(WindowCallbackWrapper.java:124)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.android.internal.policy.DecorView.onWindowFocusChanged(DecorView.java:2827)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.View.dispatchWindowFocusChanged(View.java:17901)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewGroup.dispatchWindowFocusChanged(ViewGroup.java:1631)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewRootImpl.dispatchFocusEvent(ViewRootImpl.java:6037)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewRootImpl.handleWindowFocusChanged(ViewRootImpl.java:5920)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewRootImpl.-$$Nest$mhandleWindowFocusChanged(ViewRootImpl.java:0)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewRootImpl$ViewRootHandler.handleMessageImpl(ViewRootImpl.java:8475)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.view.ViewRootImpl$ViewRootHandler.handleMessage(ViewRootImpl.java:8383)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.os.Handler.dispatchMessage(Handler.java:132)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.os.Looper.dispatchMessage(Looper.java:358)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.os.Looper.loopOnce(Looper.java:288)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.os.Looper.loop(Looper.java:392)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at android.app.ActivityThread.main(ActivityThread.java:10346)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at java.lang.reflect.Method.invoke(Native Method)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:638)
+06-21 23:51:38.730 E/unknown:ReactHost( 6473): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:972)
+06-21 23:51:38.730 D/WindowManager( 1222): mRunner#onAnimationStart for remote wallpaper=[android.view.RemoteAnimationTarget@6726949], transaction=startRemoteWallpaperAnimation_50260505
+06-21 23:51:38.730 I/ImeFocusController( 6473): onPostWindowFocus: skipped hasWindowFocus=false mHasImeFocus=true
+06-21 23:51:38.731 E/SurfaceFlinger(  893): alpha changed 0.000 -> 1.000 - Surface(name=TransientLaunchOverlayToken{521823e token=android.os.BinderProxy@70fd5af}#120)/@0x6489b6c_transition-leash#47018
+06-21 23:51:38.731 E/SurfaceFlinger(  893): alpha changed 0.000 -> 1.000 - Surface(name=Task=1#46)/@0xdcd4535_transition-leash#47019
+06-21 23:51:38.731 I/SurfaceFlinger(  893): destroyed Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013
+06-21 23:51:38.731 I/SurfaceFlinger(  893): destroyed Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002
+06-21 23:51:38.731 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Surface(name=TransientLaunchOverlayToken{521823e token=android.os.BinderProxy@70fd5af}#120)/@0x6489b6c_transition-leash#47018 parentId=47017 relativeParentId=47019 z=2} 1 children}] RelativeParent to LayerHierarchy{RequestedLayerState{Surface(name=Task=1#46)/@0xdcd4535_transition-leash#47019 parentId=47017 z=3} 2 children}
+06-21 23:51:38.731 I/HoneySpace.WallpaperAnimator( 2474): onAnimationStart, wallpapers: Surface(name=Surface(name=RemoteWallpaperAnim:1:1#7)/@0x85b0cae - animation-leash of remote_wallpaper#47014)/@0x85a3791
+06-21 23:51:38.731 I/NLog    ( 5735):  ­ƒöÁ     INFO     ­ƒöÁ  lifecycle: app: NextApplication.onTrimMemory
+06-21 23:51:38.732 I/SurfaceFlinger(  893): id=47013 Destroyed Surface(name=17dfdd4 StatusBar#83)/@0x720263c - animation-leash of insets_animation#47013
+06-21 23:51:38.732 I/SurfaceFlinger(  893): id=47002 Destroyed Surface(name=861cea NavigationBar0#76)/@0x81f404b - animation-leash of insets_animation#47002
+06-21 23:51:38.733 I/HoneySpace.RecentsAnimationManager( 2474): startHomeEntering
+06-21 23:51:38.733 I/HoneySpace.GestureAwait( 2474): proceed 0
+06-21 23:51:38.733 I/HoneySpace.InputConsumerProxy( 2474): start launcher proxy
+06-21 23:51:38.733 I/HoneySpace.RecentsAnimationController( 2474): setWillForceFinishToHome: false
+06-21 23:51:38.733 I/HoneySpace.RecentsAnimationController( 2474): setWillFinishToHome true
+06-21 23:51:38.733 I/HoneySpace.AnimationSession( 2474): useLauncherSysBarFlags: true
+06-21 23:51:38.733 I/HoneySpace.MultiStateCallback( 2474): [61913100] Adding [STATE_HOME_ANIMATION_START (1024)] to [STATE_GESTURE_START, STATE_START_RECENTS_TRANSITION, STATE_RECENTS_ANIMATION_STARTED, STATE_GESTURE_START_HOME_SCREEN, STATE_WALLPAPER_ANIMATOR_START, STATE_GESTURE_MOVE_START (786581)]
+06-21 23:51:38.733 I/HoneySpace.RecentsAnimationManager( 2474): startHomeEntering, final = RectF(126.0, 231.0, 897.0, 1837.0), centerMostTask = null
+06-21 23:51:38.734 I/HoneySpace.ShellTransitionManager( 2474): startCloseTransition, startRect: RectF(126.0, 231.0, 897.0, 1837.0), activity: com.sec.android.app.launcher.Launcher@97de218
+06-21 23:51:38.734 I/HoneySpace.AppCloseAnimationDelegate( 2474): findTargetView() called with: targets = com.honeyspace.transition.remote.RemoteAnimationTargets@67e06f6, centerMostInfo = null
+06-21 23:51:38.734 I/HoneySpace.AppCloseAnimationDelegate( 2474): findTargetValue [cookie--2147483648, pkgName-com.anonymous.fitapp]
+06-21 23:51:38.736 D/SystemUIService( 1854): SYSUI_RAM_OPTIMIZATION onTrimMemory=20
+06-21 23:51:38.736 D/CentralSurfaces( 1854): SYSUI_RAM_OPTIMIZATION onTrimMemory=20
+06-21 23:51:38.736 D/HWUI    ( 1854): CacheManager::trimMemory(20)
+06-21 23:51:38.737 D/BackgroundInstallControlService( 1222): Package event received: 0
+06-21 23:51:38.737 D/BackgroundInstallControlService( 1222): Package event received: 0
+06-21 23:51:38.737 D/BackgroundInstallControlService( 1222): Package event received: 0
+06-21 23:51:38.737 D/BackgroundInstallControlService( 1222): Package event received: 0
+06-21 23:51:38.737 E/HandwritingModeController( 1222): Cannot get requestId: Handwriting was not initialized.
+06-21 23:51:38.738 D/SGM:GameManager( 1222): identifyGamePackage. com.sec.android.app.launcher, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+06-21 23:51:38.738 I/DisplayDeviceRepository( 1222): Display device changed render timings: "Tela integrada", renderFrameRate=120.00001, presentationDeadlineNanos=9333333, appVsyncOffsetNanos=0, frameRateOverrides=[{uid=10051 frameRateHz=120.00001}, {uid=10140 frameRateHz=120.00001}, {uid=10362 frameRateHz=120.00001}, {uid=10428 frameRateHz=120.00001}]
+06-21 23:51:38.738 I/HoneySpace.AppCloseAnimationDelegate( 2474): findTargetView found:null, null
+06-21 23:51:38.738 I/HoneySpace.AppCloseAnimationDelegate( 2474): getCloseAnimator : isGestureClosing-true, target-null
+06-21 23:51:38.738 I/HoneySpace.AppCloseAnimationDelegate( 2474): playFloatingIconAnim, appPlayer: A(38.703)
+06-21 23:51:38.738 I/HoneySpace.TransitionUtils( 2474): [getRotationChange] home-0, app-0
+06-21 23:51:38.738 I/HoneySpace.TransitionUtils( 2474): getWindowTargetBounds: Rect(0, 0 - 1080, 2340)
+06-21 23:51:38.738 I/HoneySpace.Player( 2474): setup no target anim
+06-21 23:51:38.738 D/WindowManager( 1222): updateSystemBarAttributes: displayId=0, focusedCanBeNavColorWin=false, win=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, navColorWin=Window{1a3d329 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity}, caller=com.android.server.wm.DisplayPolicy.finishPostLayoutPolicyLw:17 com.android.server.wm.RootWindowContainer.applySurfaceChangesTransaction$1:188 com.android.server.wm.RootWindowContainer.performSurfacePlacement:59
+06-21 23:51:38.738 I/HoneySpace.SpringAnimPlayer( 2474): [Player:A(38.703)] spring onAnimationStart
+06-21 23:51:38.739 I/HoneySpace.ContentsAnimator( 2474): from : 0.0
+06-21 23:51:38.739 D/WindowManager( 1222): updateSystemBarAttributes, bhv=2, apr=8, statusBarAprRegions=[AppearanceRegion{LIGHT_STATUS_BARS bounds=[0,0][1080,2340]}], requestedVisibilities=503
+06-21 23:51:38.739 I/HoneySpace.HoneyScreenManagerImpl( 2474): Close floating task bar
+06-21 23:51:38.739 D/PerProcessNandswap$NandswapHandler( 1222): nandswap start for non-activity com.google.android.gms.ui(pid 6797) action:14 adj:935 type:1
+06-21 23:51:38.739 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Input Consumer recents_animation_input_consumer#117 relativeParentId=46882 z=2} no children}] RelativeParent to LayerHierarchy{RequestedLayerState{Task=38683#46882 parentId=47020} 3 children}
+06-21 23:51:38.740 I/Rubin   ( 4511): [949] com.samsung.android.rubin.inferenceengine.contextanalytics.engine.monitors.moment.exercise.ExercisingWithCmhMonitor.isSatisfiedByCmh(SourceFile:49) : isSatisfiedByCmh is false
+06-21 23:51:38.740 I/HoneySpace.ContentsAnimator( 2474): ContentsAnimator start [240338889]
+06-21 23:51:38.741 I/HoneySpace.WorkspaceViewModel( 2474): StartContentAnimation, type: AppClose, inProgress: true
+06-21 23:51:38.741 I/HoneySpace.EdgePanel.CocktailHostRepositoryImpl( 2474): onNoteResume
+06-21 23:51:38.741 I/HoneySpace.EdgePanel.EdgePanelContainerViewModel( 2474): cocktailHostRepository.edgePanelOperation NoteResumeComponent(componentName=ComponentInfo{com.sec.android.app.launcher/com.sec.android.app.launcher.Launcher})
+06-21 23:51:38.741 I/HoneySpace.EdgePanel.ActivityUtils( 2474): HomePackage : com.sec.android.app.launcher, resumePackageName : com.sec.android.app.launcher, className : com.sec.android.app.launcher.Launcher
+06-21 23:51:38.741 I/HoneySpace.SystemUiRepository( 2474): systemUiFlags: a11y_click|a11y_long_click|awake
+06-21 23:51:38.742 I/HoneySpace.WallpaperAnimator( 2474): startWallpaperAnimation, isOpen-false, from:1.3, to:1.0, duration:1200, startFromLock=false
+06-21 23:51:38.742 I/HoneySpace.TaskbarEventTracker( 2474): invokeEvent() called with: event = SystemUiStateChanged(stateFlags=268435504, displayId=0)
+06-21 23:51:38.742 I/HoneySpace.WallpaperAnimator( 2474): wallpaper animation start [203176410]
+06-21 23:51:38.742 I/HoneySpace.WallpaperAnimator( 2474): startWallpaperAnimation, isOpen-false, from:1.3, to:1.0, duration:1200, startFromLock=false
+06-21 23:51:38.742 I/HoneySpace.WallpaperAnimator( 2474): already animating toward final value - 1.0
+06-21 23:51:38.743 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(126.0, 231.0, 897.0, 1837.0)
+06-21 23:51:38.743 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(126.0, 231.0, 897.0, 1837.0)
+06-21 23:51:38.743 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(126.0, 231.0, 897.0, 1837.0)
+06-21 23:51:38.744 I/InsetsSourceConsumer( 2474): applyRequestedVisibilityToControl: visible=true, type=statusBars, host=com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity
+06-21 23:51:38.744 I/InsetsSourceConsumer( 2474): applyRequestedVisibilityToControl: visible=true, type=navigationBars, host=com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity
+06-21 23:51:38.745 I/HoneySpace.OneUiSpace( 2474): received close system dialog reason=homekey
+06-21 23:51:38.745 I/HoneySpace.WallpaperAnimator( 2474): startWallpaperAnimation, isOpen-false, from:1.3, to:1.0, duration:1200, startFromLock=false
+06-21 23:51:38.745 I/HoneySpace.WallpaperAnimator( 2474): already animating toward final value - 1.0
+06-21 23:51:38.746 D/StackScroller( 1854): onDisplayChanged for predraw skip to 2
+06-21 23:51:38.746 D/WifiDisplayAdapter( 1222): isFitToActiveDisplayLocked : false
+06-21 23:51:38.748 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Input Consumer recents_animation_input_consumer#117 relativeParentId=46882 z=2} no children}] RelativeParent to LayerHierarchy{RequestedLayerState{Task=38683#46882 parentId=47020} 3 children}
+06-21 23:51:38.748 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(126.0, 231.0, 897.0, 1837.0)
+06-21 23:51:38.748 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(126.0, 233.32202, 897.0, 1839.322)
+06-21 23:51:38.748 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(127.360596, 236.26569, 895.6394, 1835.19)
+06-21 23:51:38.748 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(127.360596, 236.26569, 895.6394, 1835.19)
+06-21 23:51:38.750 D/SamsungLightBarControlHelper( 1854): updateStatusBar (BLACK icon) numStacks:1, StatusBarMode:MODE_TRANSPARENT, lightBarBounds:[Rect(0, 0 - 1080, 2340)], StatusBarState:SHADE, packageName:, isWhiteKeyguardStatusBar:true
+06-21 23:51:38.750 D/SamsungLightBarControlHelper( 1854): onStatusBarAppearanceChanged() -  sbModeChanged:false, statusBarMode:0, barState:MODE_TRANSPARENT, isKeyguardShowing:false, navbarColorManagedByIme:false, (AppearanceRegion{LIGHT_STATUS_BARS bounds=[0,0][1080,2340]}, )
+06-21 23:51:38.750 D/NavigationBar( 1854): onSystemBarAttributesChanged() -  displayId:0, appearance:8, packageName: com.sec.android.app.launcher (APPEARANCE_LIGHT_STATUS_BARS ), navbarColorManagedByIme:false
+06-21 23:51:38.751 D/DisplayLifecycle( 1854): updateDisplay id = 0
+06-21 23:51:38.751 I/{OngoingActivityController}( 1854): onTaskFocusChanged but OA data is empty
+06-21 23:51:38.752 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.752 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.752 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.752 I/VRI[LauncherActivity]@d10a33( 2474): mWNT: t=0xb400007afa1f7e40 mBlastBufferQueue=0xb400007a2a1bf8c0 fn= 4 HdrRenderState mRenderHdrSdrRatio=1.0 caller= com.android.systemui.shared.launcher.ViewRootImplCompat.mergeWithNextTransaction:4 com.honeyspace.transition.utils.SurfaceTransactionApplier.scheduleApply$lambda$1:16 com.honeyspace.transition.utils.SurfaceTransactionApplier.b:0
+06-21 23:51:38.752 I/HoneySpace.TopTaskSource( 2474): onTaskFocusChanged(): taskId = 38485
+06-21 23:51:38.752 I/HoneySpace.Memory-Monitor( 2474): current state = 2, didTrim = false
+06-21 23:51:38.756 I/SurfaceFlinger(  893): [LayerHierarchy{RequestedLayerState{Input Consumer recents_animation_input_consumer#117 relativeParentId=46882 z=2} no children}] RelativeParent to LayerHierarchy{RequestedLayerState{Task=38683#46882 parentId=47020} 3 children}
+06-21 23:51:38.756 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(127.360596, 245.96307, 895.6394, 1844.8872)
+06-21 23:51:38.756 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(132.84262, 257.79688, 890.15735, 1828.2762)
+06-21 23:51:38.756 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(132.96387, 257.79688, 890.2786, 1828.2762)
+06-21 23:51:38.758 I/VRI[LauncherActivity]@d10a33( 2474): mWNT: t=0xb400007afa1a9fd0 mBlastBufferQueue=0xb400007a2a1bf8c0 fn= 5 HdrRenderState mRenderHdrSdrRatio=1.0 caller= com.android.systemui.shared.launcher.ViewRootImplCompat.mergeWithNextTransaction:4 com.honeyspace.transition.utils.SurfaceTransactionApplier.scheduleApply$lambda$1:16 com.honeyspace.transition.utils.SurfaceTransactionApplier.b:0
+06-21 23:51:38.760 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.760 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.760 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
+06-21 23:51:38.762 D/SurfaceFlinger(  893): Display 4633128672291735939 HWC layers:
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        DEVICE |            7962869367380 | 00000100 | RGBA_8888    |  120.0  260.0  960.0 2080.0 |    0    0 1080 2340 | Wallpaper BBQ wrapper 5_system#71 (3)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        DEVICE |           10625749100711 | 00002100 | RGBA_8888    |    0.0    0.0 1080.0 2340.0 |    0    0 1080 2340 | com.sec.android.app.launcher/com.sec[...]ivities.LauncherActivity$_2474#47016 (4)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        CLIENT |           10625749100690 | 00002100 | RGBA_8888    |    0.0    0.0    1.0    1.0 |  539 2339  540 2340 | RecentsTransitionOverlay$_2474#123 (23914)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        CLIENT |           27801323307051 | 00002102 | RGBA_8888    |    0.0    0.0 1080.0 2340.0 |    0    0 1080 2340 | com.anonymous.fitapp/com.anonymous.fitapp.MainActivity$_6473#47001 (2)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        CLIENT |           27801323307054 | 00002100 | RGBA_8888    |    0.0    0.0 1080.0   69.0 |    0   89 1080  158 | PopupWindow:73cf68e$_6473#47005 (50)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        CLIENT |            7962869450599 | 00002100 | RGBA_8888    |    0.0    0.0 1080.0  126.0 |    0 221
+06-21 23:51:38.762 D/SurfaceFlinger(  893): 4 1080 2340 | NavigationBar0$_1854#86 (131698)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        DEVICE |            7962869450574 | 00002100 | RGBA_8888    |    0.0    0.0 1080.0   89.0 |    0    0 1080   89 | StatusBar$_1854#90 (127680)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        DEVICE |           10625749100601 | 00002100 | RGBA_8888    |    0.0    0.0   80.0  277.0 | 1000  238 1080  515 | com.sec.android.app.launcher/com.sam[...]l.app.CocktailBarService$_2474#46354 (1)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):        DEVICE |           78971563671581 | 00002100 | RGBA_8888    |  950.0  275.0 2030.0 2615.0 |    0    0 1080 2340 | $_18387#6994 (27)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):  DISPLAY_DECO |            7962869450524 | 00002340 | 0x0000038    |    0.0    0.0 1080.0 2340.0 |    0    0 1080 2340 | ScreenDecorHwcOverlay$_1854#95 (452)
+06-21 23:51:38.762 D/SurfaceFlinger(  893):
+06-21 23:51:38.762 D/NativeSemDvfsManager(  893): acquire:: timeout = 2000 mIsAcquired = 1  mTagName : SurfaceFlinger
+06-21 23:51:38.764 E/NativeCustomFrequencyManager(  893): [NativeCFMS] BpCustomFrequencyManager::acquire()
+06-21 23:51:38.764 I/HYPER-HAL(  859): [RequestManager.cpp]acquire(): Acquired ID : 1793671  [893 / 1000]    HINT : SF_GPU_MINLOCK    list : [TIMEOUT / 2000]
+06-21 23:51:38.764 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(132.96387, 273.96368, 890.2786, 1844.4431)
+06-21 23:51:38.764 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(141.71277, 292.78168, 881.5297, 1818.0283)
+06-21 23:51:38.764 I/HoneySpace.RectFAnimation( 2474): animateToFinalPosition RectF(142.05191, 292.78168, 881.8689, 1818.0283)
+06-21 23:51:38.765 D/SurfaceFlinger(  893): GPIS:: requestGpisForClientComposition
+06-21 23:51:38.767 D/NotificationIconContainerStatusBarViewModel( 1854): current tint area is empty!!!
