@@ -6,7 +6,7 @@ export default class Food extends Model {
 
   @text('name') name!: string;
   @field('preparation_weight') preparationWeight!: number;
-  @text('description') description!: string;
+  @text('description') description!: string | null;
   @field('protein') protein!: number;
   @field('carbohydrates') carbohydrates!: number;
   @field('fat') fat!: number;

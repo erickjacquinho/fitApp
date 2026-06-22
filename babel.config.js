@@ -10,9 +10,5 @@ module.exports = function (api) {
             ["@babel/plugin-proposal-decorators", { legacy: true }],
             "react-native-reanimated/plugin",
         ],
-        assumptions: {
-            setPublicClassFields: true,
-            privateFieldsAsProperties: true,
-        },
     };
 };

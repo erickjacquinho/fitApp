@@ -128,6 +128,10 @@
     --layout-content-gap: var(--space-screen);
     --layout-section-gap: var(--space-category);
     --layout-page-gap: var(--space-page);
+    --layout-content-bottom-space: 80px;
+    --layout-overlay-action-space: 128px;
+    --layout-form-bottom-space: 160px;
+    --layout-long-form-bottom-space: 192px;
 
     --size-icon-sm: 16px;
     --size-icon-md: 20px;
@@ -146,6 +150,9 @@
     --size-tabbar-height: 64px;
     --size-bottom-sheet-handle-width: 40px;
     --size-bottom-sheet-handle-height: 4px;
+    --size-bottom-sheet-max-height: 85%;
+    --size-selection-sheet-height: 80%;
+    --size-color-swatch-height: 80px;
 
     --motion-duration-fast: 120ms;
     --motion-duration-base: 180ms;

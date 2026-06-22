@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, FlatList, Pressable } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
 import { useFoodBank } from '../hooks/useFoodBank';
@@ -61,19 +60,19 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   return (
     <View className="flex-1 bg-surface-app">
       <View className="px-screen-x py-compact gap-4">
-        <SearchBar value={search} onChangeText={setSearch} placeholder="Search in your food bank..." />
+        <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Button variant={isSelectionMode ? "outline" : "default"} onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')}><Text>{isSelectionMode ? "Cancel" : "+ Create New Food"}</Text></Button>
+            <Button variant={isSelectionMode ? "outline" : "default"} onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')}><Text>{isSelectionMode ? 'Cancelar' : 'Criar alimento'}</Text></Button>
           </View>
           {isSelectionMode ? (
             <View className="flex-1">
-              <Button variant="destructive" disabled={bulkSelections.size === 0} onPress={handleBulkDelete}><Text>{`Delete (${bulkSelections.size})`}</Text></Button>
+              <Button variant="destructive" disabled={bulkSelections.size === 0} onPress={handleBulkDelete}><Text>{`Excluir (${bulkSelections.size})`}</Text></Button>
             </View>
           ) : (
             <View className="flex-1">
-              <Button variant="secondary" onPress={() => setIsSelectionMode(true)}><Text>Select</Text></Button>
+              <Button variant="secondary" onPress={() => setIsSelectionMode(true)}><Text>Selecionar</Text></Button>
             </View>
           )}
         </View>
@@ -82,29 +81,31 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
       <FlatList keyboardShouldPersistTaps="handled"
         data={filteredFoods}
         keyExtractor={(item) => item.id}
-        contentContainerClassName="px-screen-x pb-20"
+        contentContainerClassName="px-screen-x pb-content-bottom"
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
             <Pressable 
+              accessibilityRole="button"
+              accessibilityLabel={`Selecionar ${item.name}`}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);
                 else if (mealId) handleAddFoodToMeal(item.id);
               }}
             >
               <SwipeableCard 
-                className={`mb-3 ${isSelected ? 'border-primary-main bg-primary-soft/10' : ''}`}
+                className={`mb-3 ${isSelected ? 'border-accent-main bg-accent-soft/10' : ''}`}
                 onEdit={isSelectionMode ? undefined : () => router.push({ pathname: '/diet/create-food', params: { id: item.id } })}
                 onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
               >
                 <View className="flex-row items-center justify-between">
                   <View className="flex-1">
-                    <Typography variant="subtitle">{item.name}</Typography>
-                    <Typography variant="caption" color="muted">
+                    <Text variant="subtitle">{item.name}</Text>
+                    <Text variant="caption" color="muted">
                       {item.protein}P • {item.carbohydrates}C • {item.fat}G
-                    </Typography>
+                    </Text>
                   </View>
-                  <Typography variant="highlight">{item.calories} kcal</Typography>
+                  <Text variant="highlight">{item.calories} kcal</Text>
                 </View>
               </SwipeableCard>
             </Pressable>
@@ -112,15 +113,15 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         }}
         ListEmptyComponent={
           <View className="items-center py-20">
-            <Typography color="muted">No foods found</Typography>
+            <Text color="muted">Nenhum alimento encontrado.</Text>
           </View>
         }
       />
 
       <ConfirmModal 
         visible={deleteModalVisible}
-        title="Delete Food?"
-        description="This action cannot be undone. This food will be removed from your bank."
+        title="Excluir alimento?"
+        description="O alimento será removido do seu banco."
         onConfirm={handleDelete}
         onCancel={() => setDeleteModalVisible(false)}
         isDestructive

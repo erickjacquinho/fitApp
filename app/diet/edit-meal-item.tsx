@@ -12,7 +12,7 @@ export default function EditMealItemRoute() {
 
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="Editar Quantidade" showBackButton />
+      <Header title="Editar quantidade" showBackButton />
       <EditMealItemScreen mealItemId={mealItemId} foodId={foodId} />
     </View>
   );

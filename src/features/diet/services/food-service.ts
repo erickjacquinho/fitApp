@@ -18,7 +18,7 @@ export class FoodService {
       return await this.collection.create((food) => {
         food.name = data.name.trim();
         food.preparationWeight = data.preparationWeight;
-        food.description = data.description;
+        food.description = data.description?.trim() || null;
         food.protein = data.protein;
         food.carbohydrates = data.carbohydrates;
         food.fat = data.fat;
@@ -33,7 +33,7 @@ export class FoodService {
       return await food.update((f) => {
         if (data.name !== undefined) f.name = data.name;
         if (data.preparationWeight !== undefined) f.preparationWeight = data.preparationWeight;
-        if (data.description !== undefined) f.description = data.description;
+        if (data.description !== undefined) f.description = data.description.trim() || null;
         if (data.protein !== undefined) f.protein = data.protein;
         if (data.carbohydrates !== undefined) f.carbohydrates = data.carbohydrates;
         if (data.fat !== undefined) f.fat = data.fat;

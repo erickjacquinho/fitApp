@@ -25,7 +25,7 @@ FitApp uses a warm neutral palette with controlled functional accents.
 Use accent for primary actions and progress. Use tomato only for error, danger, destructive actions, and hard limits.
 
 ## Typography
-Use the `Typography` atom whenever possible.
+Use the canonical `Text` primitive from `src/components/ui/text.tsx`.
 
 - Type scale: `text-display`, `text-title`, `text-subtitle`, `text-text`, `text-highlight`, `text-label`, `text-caption`.
 - Font family: `font-sans`.
@@ -87,6 +87,7 @@ Use fixed size tokens for repeated UI dimensions.
 - Inputs: `h-input-md`.
 - Avatars: `w-avatar-sm h-avatar-sm`, `w-avatar-md h-avatar-md`, `w-avatar-lg h-avatar-lg`.
 - Tab bar: `h-tabbar`.
+- Selection sheet: `h-selection-sheet`; bottom sheet: `max-h-sheet`.
 
 ## Motion
 Motion must be subtle and functional.

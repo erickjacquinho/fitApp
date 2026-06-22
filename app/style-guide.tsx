@@ -1,6 +1,5 @@
 import { View, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
-import { Typography } from '../src/components/atoms/Typography';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 
@@ -12,47 +11,47 @@ export default function StyleGuide() {
       <View className="p-screen-y-comfortable gap-page-gap">
         {/* Seção de Tipografia */}
         <View>
-          <Typography variant="label" className="mb-4">01. Tipografia (Helvetica Now)</Typography>
+          <Text variant="label" className="mb-4">01. Tipografia (Helvetica Now)</Text>
           
           <View className="gap-4 bg-surface-muted p-6 rounded-md border border-soft">
             <View>
-              <Typography variant="caption" className="mb-1">Display</Typography>
-              <Typography variant="display">99.5</Typography>
+              <Text variant="caption" className="mb-1">Destaque</Text>
+              <Text variant="display">99.5</Text>
             </View>
 
             <View>
-              <Typography variant="caption" className="mb-1">Title</Typography>
-              <Typography variant="title">Building the Future</Typography>
+              <Text variant="caption" className="mb-1">Título</Text>
+              <Text variant="title">Building the Future</Text>
             </View>
 
             <View>
-              <Typography variant="caption" className="mb-1">Subtitle</Typography>
-              <Typography variant="subtitle">A minimalist approach to fitness tracking.</Typography>
+              <Text variant="caption" className="mb-1">Subtítulo</Text>
+              <Text variant="subtitle">A minimalist approach to fitness tracking.</Text>
             </View>
 
             <View>
-              <Typography variant="caption" className="mb-1">Body Text</Typography>
-              <Typography variant="text">
+              <Text variant="caption" className="mb-1">Texto</Text>
+              <Text variant="text">
                 O FitApp utiliza neutros quentes como base para evitar o contraste agressivo do preto absoluto, 
                 garantindo uma experiência visual premium e confortável.
-              </Typography>
+              </Text>
             </View>
 
             <View>
-              <Typography variant="caption" className="mb-1">Highlight</Typography>
-              <Typography variant="highlight">Destaque oliva</Typography>
+              <Text variant="caption" className="mb-1">Realce</Text>
+              <Text variant="highlight">Destaque oliva</Text>
             </View>
 
             <View>
-              <Typography variant="caption" className="mb-1">Label / Tag</Typography>
-              <Typography variant="label">Strength Training</Typography>
+              <Text variant="caption" className="mb-1">Rótulo</Text>
+              <Text variant="label">Treino de força</Text>
             </View>
           </View>
         </View>
 
         {/* Seção de Cores */}
         <View>
-          <Typography variant="label" color="default" className="mb-4">02. Paleta de Cores</Typography>
+          <Text variant="label" color="default" className="mb-4">02. Paleta de Cores</Text>
           
           <View className="flex-row flex-wrap gap-2">
             <ColorCard name="Surface App" className="bg-surface-app border border-soft" />
@@ -66,7 +65,7 @@ export default function StyleGuide() {
 
         {/* Seção de Botões */}
         <View>
-          <Typography variant="label" color="default" className="mb-4">03. Componentes de Ação</Typography>
+          <Text variant="label" color="default" className="mb-4">03. Componentes de Ação</Text>
           
           <View className="gap-4">
             <Button variant="default"><Text>PRIMARY</Text></Button>
@@ -74,8 +73,8 @@ export default function StyleGuide() {
             <Button variant="ghost"><Text>GHOST ACTION</Text></Button>
             <Button variant="destructive"><Text>DESTRUCTIVE</Text></Button>
             <View className="flex-row gap-4">
-              <Button variant="default" size="sm" className="flex-1"><Text>SMALL</Text></Button>
-              <Button variant="default" disabled className="flex-1"><Text>DISABLED</Text></Button>
+              <Button variant="default" size="sm" className="flex-1"><Text>PEQUENO</Text></Button>
+              <Button variant="default" disabled className="flex-1"><Text>DESATIVADO</Text></Button>
             </View>
           </View>
         </View>
@@ -87,8 +86,8 @@ export default function StyleGuide() {
 function ColorCard({ name, className }: { name: string, className: string }) {
   return (
     <View className="w-5/12 mb-2">
-      <View className={`h-20 rounded-md mb-2 ${className}`} />
-      <Typography variant="caption" color="default">{name}</Typography>
+      <View className={`mb-2 h-color-swatch rounded-md ${className}`} />
+      <Text variant="caption" color="default">{name}</Text>
     </View>
   );
 }

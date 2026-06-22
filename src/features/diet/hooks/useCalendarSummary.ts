@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { database } from '../../../db';
+import Food from '../../../db/models/Food';
 import Meal from '../../../db/models/Meal';
 import { aggregateMacros, Macros } from '../utils/macro-utils';
 
@@ -16,7 +17,7 @@ export function useCalendarSummary() {
     const fetchSummaries = async () => {
       try {
         const meals = await database.get<Meal>('meals').query().fetch();
-        const grouped: Record<string, any[]> = {};
+        const grouped: Record<string, Array<{ food: Food; quantity: number }>> = {};
 
         for (const meal of meals) {
           if (!meal.targetDate) continue;

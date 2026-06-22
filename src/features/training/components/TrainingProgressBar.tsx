@@ -1,6 +1,7 @@
+import { Text } from '@/components/ui/text';
+import { Progress } from '@/components/ui/progress';
 import React from 'react';
 import { View } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
 
 interface TrainingProgressBarProps {
   completed: number;
@@ -13,17 +14,12 @@ export function TrainingProgressBar({ completed, total }: TrainingProgressBarPro
   return (
     <View className="mb-4 rounded-md border border-soft bg-component-card-bg p-4">
       <View className="flex-row items-center justify-between mb-2">
-        <Typography variant="label">Session Progress</Typography>
-        <Typography variant="label" className="text-primary-main">
-          {completed}/{total} Exercises ({percentage}%)
-        </Typography>
+        <Text variant="label">Progresso da sessão</Text>
+        <Text variant="label" color="accent">
+          {completed}/{total} exercícios ({percentage}%)
+        </Text>
       </View>
-      <View className="h-2 w-full overflow-hidden rounded-full bg-surface-app">
-        <View
-          className="h-full bg-primary-main transition-all duration-300"
-          style={{ width: `${percentage}%` }}
-        />
-      </View>
+      <Progress value={percentage} />
     </View>
   );
 }

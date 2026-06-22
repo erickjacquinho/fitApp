@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
+import { View } from 'react-native';
 import { NutritionalInfoDisplay } from '../../../components/molecules/NutritionalInfoDisplay';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -9,6 +8,8 @@ import Food from '../../../db/models/Food';
 import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
 
 interface AddFoodToMealScreenProps {
   food: Food;
@@ -39,25 +40,24 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
 
   return (
     <View className="flex-1 bg-surface-app px-screen-x pt-6 gap-6">
-      <View className="bg-surface-raised border border-soft rounded-2xl p-4 gap-4 shadow-sm">
-        <Typography variant="title">{food.name}</Typography>
+      <Card>
+        <Text variant="title">{food.name}</Text>
         
         <View className="flex-row items-center justify-between border-b border-soft pb-4">
-          <Typography variant="text" color="muted">Quantidade (g)</Typography>
-          <TextInput
-            className="font-semibold text-text-primary text-right w-24 bg-surface-app border border-soft rounded-lg px-3 py-2"
+          <Text variant="text" color="muted">Quantidade (g)</Text>
+          <Input
+            className="w-24 text-right font-semibold"
             keyboardType="numeric"
             value={quantityStr}
             onChangeText={setQuantityStr}
             placeholder="0"
-            placeholderTextColor="#9ca3af"
           />
         </View>
 
         <NutritionalInfoDisplay macros={calculatedMacros} />
-      </View>
+      </Card>
 
-      <Button onPress={handleAdd} disabled={quantity <= 0}><Text>Adicionar à Refeição</Text></Button>
+      <Button onPress={handleAdd} disabled={quantity <= 0}><Text>Adicionar à refeição</Text></Button>
     </View>
   );
 }

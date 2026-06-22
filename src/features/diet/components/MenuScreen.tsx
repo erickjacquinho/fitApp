@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
-import { Pressable } from 'react-native';
-import { Icon } from '../../../components/atoms/Icon';
-import { COLORS } from '../../../tokens/colors';
+import { Icon } from '@/components/ui/icon';
 import { View, FlatList } from 'react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -18,7 +15,7 @@ import { MealService } from '../services/meal-service';
 import { ReorderMealsModal } from './ReorderMealsModal';
 
 import { DateSelector } from '../../../components/molecules/DateSelector';
-import { CalendarDays } from 'lucide-react-native';
+import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -79,23 +76,29 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   return (
     <MainTabScreen
-      title="Minha Dieta"
+      title="Minha dieta"
       scrollable={false}
       headerLeft={
         meals.length > 1 ? (
-          <Pressable onPress={() => setReorderModalVisible(true)} className="p-2 -ml-2">
-            <Icon name="ArrowUpDown" size={24} color={COLORS.textMain} />
-          </Pressable>
+          <Button
+            accessibilityLabel="Reordenar refeições"
+            variant="ghost"
+            size="icon"
+            className="-ml-2"
+            onPress={() => setReorderModalVisible(true)}
+          >
+            <Icon as={ArrowUpDown} size={24} />
+          </Button>
         ) : undefined
       }
       headerRight={
-        <View className="flex-row items-center gap-4 p-2 -mr-2">
-          <Pressable onPress={() => router.push('/diet/calendar-summary')}>
-            <CalendarDays size={24} color={COLORS.textMain} />
-          </Pressable>
-          <Pressable onPress={() => router.push('/diet/food-bank')}>
-            <Icon name="Apple" size={24} color={COLORS.textMain} />
-          </Pressable>
+        <View className="-mr-2 flex-row items-center gap-2">
+          <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
+            <Icon as={CalendarDays} size={24} />
+          </Button>
+          <Button accessibilityLabel="Abrir banco de alimentos" variant="ghost" size="icon" onPress={() => router.push('/diet/food-bank')}>
+            <Icon as={Apple} size={24} />
+          </Button>
         </View>
       }
     >
@@ -111,20 +114,20 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         <FlatList keyboardShouldPersistTaps="handled"
           data={meals}
           keyExtractor={(item) => item.id}
-          contentContainerClassName="px-screen-x pb-20 pt-4"
+          contentContainerClassName="px-screen-x pb-content-bottom pt-4"
           renderItem={({ item }) => (
             <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
           )}
         ListFooterComponent={
           <View className="mt-4">
-            <Button variant="outline" onPress={handleAddMeal}><Text>+ Adicionar Refeição</Text></Button>
+            <Button variant="outline" onPress={handleAddMeal}><Text>Adicionar refeição</Text></Button>
           </View>
         }
       />
 
       <ConfirmModal 
         visible={deleteModalVisible}
-        title="Remover Refeição?"
+        title="Remover refeição?"
         description="Esta ação removerá a refeição do seu menu diário."
         onConfirm={handleDelete}
         onCancel={() => setDeleteModalVisible(false)}

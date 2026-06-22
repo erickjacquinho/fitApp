@@ -5,7 +5,7 @@ import { View } from 'react-native';
 export default function ActiveSessionRoute() {
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="Workout Execution" showBackButton />
+      <Header title="Treino em andamento" showBackButton />
       <WorkoutSessionScreen />
     </View>
   );

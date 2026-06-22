@@ -4,12 +4,12 @@ import { View } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const cardVariants = cva(
-  'flex flex-col gap-4 rounded-xl p-card shadow-none',
+  'flex flex-col gap-4 rounded-md p-card shadow-none',
   {
     variants: {
       variant: {
         default: 'bg-component-card-bg border border-component-card-border',
-        elevated: 'bg-white-pure dark:bg-black-main shadow-sm border-0',
+        elevated: 'border-0 bg-surface-raised shadow-floating',
         outline: 'bg-transparent border border-border-soft',
       },
     },
@@ -33,7 +33,7 @@ function Card({ className, variant, ...props }: CardProps) {
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {
-  return <View className={cn('flex flex-col gap-1.5 px-6', className)} {...props} />;
+  return <View className={cn('flex flex-col gap-2 px-6', className)} {...props} />;
 }
 
 function CardTitle({
@@ -57,7 +57,7 @@ function CardDescription({
   className,
   ...props
 }: React.ComponentProps<typeof Text> & React.RefAttributes<typeof Text>) {
-  return <Text className={cn('text-muted-foreground text-sm', className)} {...props} />;
+  return <Text variant="caption" color="muted" className={className} {...props} />;
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {

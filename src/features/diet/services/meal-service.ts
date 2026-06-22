@@ -85,7 +85,7 @@ export class MealService {
     await database.write(async () => {
       await database.batch(
         meal.prepareMarkAsDeleted(),
-        ...mealItems.map((item: any) => item.prepareMarkAsDeleted())
+        ...mealItems.map((item) => item.prepareMarkAsDeleted())
       );
     });
   }

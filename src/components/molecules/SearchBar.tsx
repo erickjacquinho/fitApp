@@ -1,7 +1,8 @@
 import { View, TextInputProps } from 'react-native';
-import { Icon } from '../atoms/Icon';
-import { IconButton } from './IconButton';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { COLORS } from '../../tokens/colors';
+import { Search, X } from 'lucide-react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ export function SearchBar({ value, onClear, containerClassName, ...props }: Sear
   return (
     <View className={twMerge(clsx('relative flex-row items-center', containerClassName))}>
       <View className="absolute left-3 z-10" pointerEvents="none">
-        <Icon name="Search" size={20} color={COLORS.iconMuted} />
+        <Icon as={Search} className="text-text-muted" />
       </View>
       <Input
         value={value}
@@ -25,7 +26,14 @@ export function SearchBar({ value, onClear, containerClassName, ...props }: Sear
       />
       {value ? (
         <View className="absolute right-1 z-10">
-          <IconButton icon="X" size={20} iconColor={COLORS.iconMuted} onPress={onClear} />
+          <Button
+            accessibilityLabel="Limpar busca"
+            variant="ghost"
+            size="icon"
+            onPress={onClear}
+          >
+            <Icon as={X} className="text-text-muted" />
+          </Button>
         </View>
       ) : null}
     </View>

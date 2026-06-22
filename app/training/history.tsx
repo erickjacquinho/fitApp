@@ -5,7 +5,7 @@ import { View } from 'react-native';
 export default function HistoryRoute() {
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="Workout History" showBackButton />
+      <Header title="Histórico de treinos" showBackButton />
       <HistoryScreen />
     </View>
   );

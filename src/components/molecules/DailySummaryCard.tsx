@@ -1,6 +1,6 @@
+import { Text } from '@/components/ui/text';
 import React from 'react';
 import { View, Pressable } from 'react-native';
-import { Typography } from '../atoms/Typography';
 import { SwipeableCard } from './SwipeableCard';
 import { Macros } from '../../features/diet/utils/macro-utils';
 
@@ -15,16 +15,16 @@ export const DailySummaryCard = ({ date, macros, onPress }: DailySummaryCardProp
   const displayDate = `${dd}/${mm}/${yyyy}`;
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Ver resumo de ${displayDate}`} onPress={onPress}>
       <SwipeableCard>
         <View className="flex-row justify-between items-center">
           <View className="flex-1">
-            <Typography variant="subtitle">{displayDate}</Typography>
-            <Typography variant="caption" color="muted">
+            <Text variant="subtitle">{displayDate}</Text>
+            <Text variant="caption" color="muted">
               {Math.round(macros.protein)}P • {Math.round(macros.carbs)}C • {Math.round(macros.fat)}G
-            </Typography>
+            </Text>
           </View>
-          <Typography variant="highlight">{Math.round(macros.calories)} kcal</Typography>
+          <Text variant="highlight">{Math.round(macros.calories)} kcal</Text>
         </View>
       </SwipeableCard>
     </Pressable>

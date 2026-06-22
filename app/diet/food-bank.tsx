@@ -9,7 +9,7 @@ export default function FoodBankRoute() {
   
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="Food Bank" showBackButton />
+      <Header title="Banco de alimentos" showBackButton />
       <FoodBankScreen mealId={mealId} />
     </View>
   );

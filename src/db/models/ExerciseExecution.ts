@@ -15,7 +15,7 @@ export default class ExerciseExecution extends Model {
   @field('set_number') setNumber!: number;
   @field('reps_done') repsDone!: number;
   @field('weight') weight!: number;
-  @field('reps_reserve_done') repsReserveDone!: number;
+  @field('reps_reserve_done') repsReserveDone!: number | null;
 
   @relation('workout_sessions', 'workout_session_id') workoutSession!: Relation<WorkoutSession>;
   @relation('exercises', 'exercise_id') exercise!: Relation<Exercise>;

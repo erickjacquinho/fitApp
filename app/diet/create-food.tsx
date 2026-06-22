@@ -5,7 +5,7 @@ import { View } from 'react-native';
 export default function CreateFoodRoute() {
   return (
     <View className="flex-1 bg-surface-app">
-      <Header title="New Food" showBackButton />
+      <Header title="Novo alimento" showBackButton />
       <FoodForm />
     </View>
   );

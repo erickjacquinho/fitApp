@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Plus, Trash2, Dumbbell, History, Play } from 'lucide-react-native';
-import { Typography } from '../../../components/atoms/Typography';
 import { useProgramList } from '../hooks/useProgramList';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
+import { Icon } from '@/components/ui/icon';
 
 export function ProgramListScreen() {
   const {
@@ -27,31 +27,31 @@ export function ProgramListScreen() {
 
   const handleStartSession = (programId: string, programName: string, blocks: TrainingBlock[]) => {
     if (blocks.length === 0) {
-      Alert.alert('No Workouts', 'This program does not have any workout blocks. Add blocks first.');
+      Alert.alert('Sem treinos', 'Este programa não possui blocos de treino. Adicione um bloco primeiro.');
       return;
     }
 
     if (activeSession) {
       Alert.alert(
-        'Active Workout',
-        'You already have an ongoing training session. Resume or finish it first.',
+        'Treino em andamento',
+        'Você já possui uma sessão em andamento. Retome ou finalize o treino primeiro.',
         [
-          { text: 'Go to Active Workout', onPress: () => router.push('/training/active') },
-          { text: 'Cancel', style: 'cancel' }
+          { text: 'Ir para o treino', onPress: () => router.push('/training/active') },
+          { text: 'Cancelar', style: 'cancel' }
         ]
       );
       return;
     }
 
     Alert.alert(
-      'Start Workout',
-      `Choose a workout block to begin from "${programName}":`,
+      'Iniciar treino',
+      `Escolha um bloco do programa "${programName}":`,
       [
         ...blocks.map((block) => ({
           text: block.name,
           onPress: () => startSession(programId, block.id),
         })),
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Cancelar', style: 'cancel' },
       ]
     );
   };
@@ -60,91 +60,95 @@ export function ProgramListScreen() {
     <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
       {/* Quick Action Banner */}
       {activeSession ? (
-        <Card className="mb-4 border-primary-main/30 bg-primary-main/5 p-4 flex-row items-center justify-between">
+        <Card className="mb-4 border-accent-main/30 bg-accent-main/5 p-4 flex-row items-center justify-between">
           <View className="flex-1 pr-2">
-            <Typography variant="subtitle" className="text-primary-main">
-              Workout Session in Progress!
-            </Typography>
-            <Typography variant="caption" color="muted">
-              You have an unfinished workout session active in the background.
-            </Typography>
+            <Text variant="subtitle" className="text-accent-main">
+              Sessão de treino em andamento
+            </Text>
+            <Text variant="caption" color="muted">
+              Há uma sessão de treino não finalizada.
+            </Text>
           </View>
-          <Button size="sm" onPress={() => router.push('/training/active')}><Text>Resume</Text></Button>
+          <Button size="sm" onPress={() => router.push('/training/active')}><Text>Retomar</Text></Button>
         </Card>
       ) : null}
 
       {/* Main Buttons */}
       <View className="mb-4 flex-row gap-2">
-        <TouchableOpacity
+        <Button
+          variant="outline"
           onPress={() => router.push('/training/history')}
-          className="flex-1 flex-row items-center justify-center gap-2 rounded border border-soft bg-white-pure py-3 active:bg-soft/10"
+          className="flex-1"
         >
-          <History size={18} color="#005B94" />
-          <Typography variant="label">Workout History</Typography>
-        </TouchableOpacity>
+          <Icon as={History} className="text-accent-main" />
+          <Text variant="label">Histórico</Text>
+        </Button>
 
-        <TouchableOpacity
+        <Button
           onPress={() => router.push('/training/create-program')}
-          className="flex-1 flex-row items-center justify-center gap-2 rounded bg-primary-main py-3 active:bg-primary-dark"
+          className="flex-1"
         >
-          <Plus size={18} color="#fff" />
-          <Typography variant="label" color="inverse">
-            New Program
-          </Typography>
-        </TouchableOpacity>
+          <Icon as={Plus} className="text-text-inverse" />
+          <Text variant="label" color="inverse">
+            Novo programa
+          </Text>
+        </Button>
       </View>
 
       {/* Programs List */}
-      <Typography variant="title" className="mb-3">
-        Training Programs
-      </Typography>
+      <Text variant="title" className="mb-3">
+        Programas de treino
+      </Text>
 
       {programsData.map(({ program, blocks }) => (
         <Card key={program.id} className="mb-4 p-4">
           <View className="flex-row items-start justify-between">
             <View className="flex-1 pr-2">
-              <Typography variant="subtitle" className="text-lg font-bold">
+              <Text variant="subtitle" className="font-bold">
                 {program.name}
-              </Typography>
-              <Typography variant="caption" color="muted" className="mt-1">
-                {blocks.length} workout routines ({blocks.map((b) => b.name).join(', ') || 'no workouts'})
-              </Typography>
+              </Text>
+              <Text variant="caption" color="muted" className="mt-1">
+                {blocks.length} blocos ({blocks.map((b) => b.name).join(', ') || 'sem treinos'})
+              </Text>
             </View>
 
-            <TouchableOpacity
+            <Button
+              accessibilityLabel={`Excluir ${program.name}`}
+              variant="ghost"
+              size="icon"
               onPress={() => handleDeleteProgram(program.id, program.name)}
-              className="p-1"
             >
-              <Trash2 size={16} color="#ef4444" />
-            </TouchableOpacity>
+              <Icon as={Trash2} size={16} className="text-tomato-main" />
+            </Button>
           </View>
 
           {blocks.length > 0 && (
-            <TouchableOpacity
+            <Button
+              variant="outline"
               onPress={() => handleStartSession(program.id, program.name, blocks)}
-              className="mt-4 flex-row items-center justify-center gap-2 rounded bg-surface-app py-2.5 active:bg-soft/20 border border-soft"
+              className="mt-4"
             >
-              <Play size={14} color="#005B94" fill="#005B94" />
-              <Typography variant="label" className="text-sm text-primary-main">
-                Start Training Routine
-              </Typography>
-            </TouchableOpacity>
+              <Icon as={Play} size={16} className="text-accent-main" fill="currentColor" />
+              <Text variant="label" className="text-accent-main">
+                Iniciar treino
+              </Text>
+            </Button>
           )}
         </Card>
       ))}
 
       {programsData.length === 0 && !isLoading && (
         <View className="my-12 items-center justify-center py-10">
-          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-soft">
-            <Dumbbell size={32} color="#666" />
+          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
+            <Icon as={Dumbbell} size={32} className="text-text-muted" />
           </View>
-          <Typography variant="subtitle" className="mb-2 text-center">
-            No Training Programs Found
-          </Typography>
-          <Typography variant="text" color="muted" className="text-center mb-6">
-            Build your routines, exercises, and log your execution volume.
-          </Typography>
-          <Button onPress={() => router.push('/training/create-program')}><Text>Create Your First Program</Text></Button>
+          <Text variant="subtitle" className="mb-2 text-center">
+            Nenhum programa de treino
+          </Text>
+          <Text variant="text" color="muted" className="text-center mb-6">
+            Crie suas rotinas e registre sua evolução.
+          </Text>
+          <Button onPress={() => router.push('/training/create-program')}><Text>Criar primeiro programa</Text></Button>
         </View>
       )}
     </ScrollView>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { DateSelector } from '../../../components/molecules/DateSelector';
-import { Typography } from '../../../components/atoms/Typography';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import WorkoutSession from '../../../db/models/WorkoutSession';
@@ -42,13 +41,13 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
       <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
         {sessions.length > 0 ? (
           <View className="gap-4">
-            <Typography variant="title" className="mb-2">Treinos do Dia</Typography>
+            <Text variant="title" className="mb-2">Treinos do dia</Text>
             {sessions.map(session => (
-              <Card key={session.id} className="p-4 border-l-4 border-primary-main">
-                <Typography variant="subtitle">Sessão {session.status === 'active' ? '(Em Andamento)' : '(Concluída)'}</Typography>
-                <Typography variant="caption" color="muted">
+              <Card key={session.id} className="p-4 border-l-4 border-accent-main">
+                <Text variant="subtitle">Sessão {session.status === 'active' ? '(Em Andamento)' : '(Concluída)'}</Text>
+                <Text variant="caption" color="muted">
                   Início: {new Date(session.startDate).toLocaleTimeString()}
-                </Typography>
+                </Text>
                 <Button size="sm" variant="outline" className="mt-4" onPress={() => {
                                         if (session.status === 'active') {
                                           router.push('/training/active');
@@ -61,13 +60,13 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
           </View>
         ) : (
           <View className="my-12 items-center justify-center py-10">
-            <Typography variant="subtitle" className="mb-2 text-center">
+            <Text variant="subtitle" className="mb-2 text-center">
               Nenhum treino planejado
-            </Typography>
-            <Typography variant="text" color="muted" className="text-center mb-6">
+            </Text>
+            <Text variant="text" color="muted" className="text-center mb-6">
               Inicie um treino para registrá-lo neste dia.
-            </Typography>
-            <Button onPress={() => router.push({ pathname: '/training/programs', params: { date: selectedDate } })}><Text>Iniciar Treino</Text></Button>
+            </Text>
+            <Button onPress={() => router.push({ pathname: '/training/programs', params: { date: selectedDate } })}><Text>Iniciar treino</Text></Button>
           </View>
         )}
       </ScrollView>
