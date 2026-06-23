@@ -10,7 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Icon } from '@/components/ui/icon';
+import { Label } from '@/components/ui/label';
+import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { SIZES } from '@/tokens/sizes';
+import { router } from 'expo-router';
 
 export function ProgramForm() {
   const {
@@ -25,6 +28,9 @@ export function ProgramForm() {
     handleExerciseChange,
     handleSave,
     isSaving,
+    errors,
+    feedback,
+    clearFeedback,
   } = useProgramForm();
 
   return (
@@ -39,15 +45,26 @@ export function ProgramForm() {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
-        <Text variant="label" className="mb-1 text-text-muted">
-          Nome do programa
-        </Text>
-        <Input
-          placeholder="Ex.: Hipertrofia ABC"
-          value={programName}
-          onChangeText={setProgramName}
-          className="mb-4 font-bold"
-        />
+        {errors.global && (
+          <Text variant="caption" className="text-tomato-main text-center my-2">
+            {errors.global}
+          </Text>
+        )}
+
+        <View className="mb-6 bg-surface-app p-4 rounded-xl border border-soft">
+          <Label className="mb-2">Nome do Programa</Label>
+          <Input
+            placeholder="Ex.: Hipertrofia ABC"
+            value={programName}
+            onChangeText={setProgramName}
+            className={`mb-4 font-bold ${errors.programName ? 'border-tomato-main' : ''}`}
+          />
+          {errors.programName && (
+            <Text variant="caption" className="text-tomato-main mt-1">
+              {errors.programName}
+            </Text>
+          )}
+        </View>
 
         <View className="mb-4 flex-row items-center justify-between border-b border-soft pb-2">
           <Text variant="title">Blocos de treino</Text>
@@ -73,7 +90,7 @@ export function ProgramForm() {
                 placeholder="Ex.: Treino A"
                 value={block.name}
                 onChangeText={(val) => handleBlockNameChange(block.id, val)}
-                className="flex-1 font-bold"
+                className={`flex-1 font-bold ${errors.blockNames?.[block.id] ? 'border-tomato-main' : ''}`}
               />
               <Button
                 accessibilityLabel={`Excluir bloco ${block.name || bIdx + 1}`}
@@ -85,6 +102,11 @@ export function ProgramForm() {
                 <Icon as={Trash2} size={16} className="text-tomato-main" />
               </Button>
             </View>
+            {errors.blockNames?.[block.id] && (
+              <Text variant="caption" className="text-tomato-main mb-4">
+                {errors.blockNames[block.id]}
+              </Text>
+            )}
 
             {/* Exercises */}
             <Text variant="label" className="mb-2 text-text-muted">
@@ -103,6 +125,11 @@ export function ProgramForm() {
                       handleExerciseChange(block.id, exercise.id, 'name', val)
                     }
                   />
+                  {errors.exercises?.[exercise.id] && (
+                    <Text variant="caption" className="text-tomato-main mt-1">
+                      {errors.exercises[exercise.id]}
+                    </Text>
+                  )}
                   <Button
                     accessibilityLabel={`Excluir exercício ${exercise.name || eIdx + 1}`}
                     variant="ghost"
@@ -255,6 +282,22 @@ export function ProgramForm() {
           <Text>{isSaving ? 'Criando...' : 'Criar programa'}</Text>
         </Button>
       </ScrollView>
+
+      <FeedbackDialog
+        visible={!!feedback}
+        onClose={() => {
+          if (feedback?.type === 'success') {
+            router.back();
+          }
+          clearFeedback();
+        }}
+        state={{
+          visible: !!feedback,
+          title: feedback?.title || '',
+          description: feedback?.message || '',
+          isError: feedback?.type === 'error'
+        }}
+      />
     </KeyboardAvoidingView>
   );
 }

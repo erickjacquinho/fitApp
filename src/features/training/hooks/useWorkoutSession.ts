@@ -66,7 +66,7 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
       }
     } catch (error) {
       console.error('Error loading session data:', error);
-      Alert.alert('Error', 'Failed to load workout details');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -98,31 +98,13 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     setExecutions(updatedExecs);
   };
 
-  const handleFinishWorkout = () => {
+  const handleFinishWorkout = async () => {
     if (!session) return;
-
-    Alert.alert(
-      'Finish Session',
-      'Are you sure you want to finish your workout session?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes, Finish',
-          onPress: async () => {
-            try {
-              const completedSession = await SessionService.finishSession(session.id);
-              router.replace({
-                pathname: `/training/details/[id]`,
-                params: { id: completedSession.id },
-              });
-            } catch (err) {
-              console.error('Error finishing session:', err);
-              Alert.alert('Error', 'Failed to finish session');
-            }
-          },
-        },
-      ]
-    );
+    const completedSession = await SessionService.finishSession(session.id);
+    router.replace({
+      pathname: `/training/details/[id]`,
+      params: { id: completedSession.id },
+    });
   };
 
   const getExerciseExecutions = (exerciseId: string) => {

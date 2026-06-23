@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { Alert } from 'react-native';
+
 import { FoodService } from '../services/food-service';
 
 interface FoodFormState {
@@ -27,6 +27,10 @@ export function useFoodForm(id?: string) {
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string, preparationWeight?: string }>({});
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error', title: string, message?: string } | null>(null);
+
+  const clearFeedback = () => setFeedback(null);
 
   useEffect(() => {
     if (id) {
@@ -65,6 +69,21 @@ export function useFoodForm(id?: string) {
   const handleSave = async () => {
     if (isSaving) return;
 
+    let isValid = true;
+    const newErrors: typeof errors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+      isValid = false;
+    }
+    if (!form.preparationWeight || parseFloat(form.preparationWeight) <= 0) {
+      newErrors.preparationWeight = 'Peso de preparo inválido';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    if (!isValid) return;
+
     setIsSaving(true);
     try {
       const data = {
@@ -82,10 +101,10 @@ export function useFoodForm(id?: string) {
       } else {
         await FoodService.create(data);
       }
-      router.back();
+      setFeedback({ type: 'success', title: 'Sucesso', message: 'Alimento salvo com sucesso' });
     } catch (err) {
       console.error('Error saving food:', err);
-      Alert.alert('Error', 'Unable to save food. Review the fields and try again.');
+      setFeedback({ type: 'error', title: 'Erro', message: 'Não foi possível salvar o alimento. Verifique os campos e tente novamente.' });
     } finally {
       setIsSaving(false);
     }
@@ -97,6 +116,9 @@ export function useFoodForm(id?: string) {
     calculateCalories,
     handleSave,
     isSaving,
+    errors,
+    feedback,
+    clearFeedback,
     goBack: () => router.back(),
   };
 }

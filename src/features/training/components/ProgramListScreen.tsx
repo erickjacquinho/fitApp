@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
+import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
+import { ConfirmModal } from '@/components/organisms/ConfirmModal';
+import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
 
 export function ProgramListScreen() {
   const {
@@ -15,9 +18,18 @@ export function ProgramListScreen() {
     activeSession,
     isLoading,
     loadData,
-    handleDeleteProgram,
+    deleteProgram,
     startSession,
   } = useProgramList();
+
+  const [feedbackVisible, setFeedbackVisible] = React.useState(false);
+  const [feedbackState, setFeedbackState] = React.useState<{ title: string, message: string }>({ title: '', message: '' });
+  const [activeSessionConfirmVisible, setActiveSessionConfirmVisible] = React.useState(false);
+  const [deleteConfirmVisible, setDeleteConfirmVisible] = React.useState(false);
+  const [programToDelete, setProgramToDelete] = React.useState<{ id: string, name: string } | null>(null);
+  
+  const [blockSelectVisible, setBlockSelectVisible] = React.useState(false);
+  const [selectedProgram, setSelectedProgram] = React.useState<{ id: string, name: string, blocks: TrainingBlock[] } | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,35 +37,36 @@ export function ProgramListScreen() {
     }, [loadData])
   );
 
+  const handleDeleteAttempt = (id: string, name: string) => {
+    setProgramToDelete({ id, name });
+    setDeleteConfirmVisible(true);
+  };
+
+  const onConfirmDelete = async () => {
+    if (!programToDelete) return;
+    try {
+      setDeleteConfirmVisible(false);
+      await deleteProgram(programToDelete.id);
+    } catch (err) {
+      setFeedbackState({ title: 'Erro ao excluir', message: 'Não foi possível excluir o programa.' });
+      setFeedbackVisible(true);
+    }
+  };
+
   const handleStartSession = (programId: string, programName: string, blocks: TrainingBlock[]) => {
     if (blocks.length === 0) {
-      Alert.alert('Sem treinos', 'Este programa não possui blocos de treino. Adicione um bloco primeiro.');
+      setFeedbackState({ title: 'Sem treinos', message: 'Este programa não possui blocos de treino. Adicione um bloco primeiro.' });
+      setFeedbackVisible(true);
       return;
     }
 
     if (activeSession) {
-      Alert.alert(
-        'Treino em andamento',
-        'Você já possui uma sessão em andamento. Retome ou finalize o treino primeiro.',
-        [
-          { text: 'Ir para o treino', onPress: () => router.push('/training/active') },
-          { text: 'Cancelar', style: 'cancel' }
-        ]
-      );
+      setActiveSessionConfirmVisible(true);
       return;
     }
 
-    Alert.alert(
-      'Iniciar treino',
-      `Escolha um bloco do programa "${programName}":`,
-      [
-        ...blocks.map((block) => ({
-          text: block.name,
-          onPress: () => startSession(programId, block.id),
-        })),
-        { text: 'Cancelar', style: 'cancel' },
-      ]
-    );
+    setSelectedProgram({ id: programId, name: programName, blocks });
+    setBlockSelectVisible(true);
   };
 
   return (
@@ -116,7 +129,7 @@ export function ProgramListScreen() {
               accessibilityLabel={`Excluir ${program.name}`}
               variant="ghost"
               size="icon"
-              onPress={() => handleDeleteProgram(program.id, program.name)}
+              onPress={() => handleDeleteAttempt(program.id, program.name)}
             >
               <Icon as={Trash2} size={16} className="text-tomato-main" />
             </Button>
@@ -151,6 +164,71 @@ export function ProgramListScreen() {
           <Button onPress={() => router.push('/training/create-program')}><Text>Criar primeiro programa</Text></Button>
         </View>
       )}
+
+      <FeedbackDialog
+        visible={feedbackVisible}
+        onClose={() => setFeedbackVisible(false)}
+        state={{
+          visible: feedbackVisible,
+          title: feedbackState.title,
+          description: feedbackState.message,
+          isError: true
+        }}
+      />
+
+      <ConfirmModal
+        visible={deleteConfirmVisible}
+        onCancel={() => setDeleteConfirmVisible(false)}
+        onConfirm={onConfirmDelete}
+        title="Excluir programa"
+        description={`Tem certeza que deseja excluir o programa "${programToDelete?.name}"?`}
+        confirmLabel="Excluir"
+        cancelLabel="Cancelar"
+        isDestructive={true}
+      />
+
+      <ConfirmModal
+        visible={activeSessionConfirmVisible}
+        onCancel={() => setActiveSessionConfirmVisible(false)}
+        onConfirm={() => {
+          setActiveSessionConfirmVisible(false);
+          router.push('/training/active');
+        }}
+        title="Treino em andamento"
+        description="Você já possui uma sessão em andamento. Retome ou finalize o treino primeiro."
+        confirmLabel="Ir para o treino"
+        cancelLabel="Cancelar"
+      />
+
+      <BottomSheetModal
+        visible={blockSelectVisible}
+        onClose={() => setBlockSelectVisible(false)}
+        title="Iniciar treino"
+      >
+        <View className="pb-4">
+          <Text variant="caption" color="muted" className="mb-4">
+            Escolha um bloco do programa "{selectedProgram?.name}":
+          </Text>
+          {selectedProgram?.blocks.map((block) => (
+            <Button
+              key={block.id}
+              variant="outline"
+              className="mb-2"
+              onPress={async () => {
+                setBlockSelectVisible(false);
+                try {
+                  await startSession(selectedProgram.id, block.id);
+                } catch (err) {
+                  setFeedbackState({ title: 'Erro', message: 'Não foi possível iniciar a sessão.' });
+                  setFeedbackVisible(true);
+                }
+              }}
+            >
+              <Text>{block.name}</Text>
+            </Button>
+          ))}
+        </View>
+      </BottomSheetModal>
     </ScrollView>
   );
 }

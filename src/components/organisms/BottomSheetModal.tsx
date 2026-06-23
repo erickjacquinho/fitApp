@@ -1,69 +1,66 @@
-import { Text } from '@/components/ui/text';
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
 import React from 'react';
-import { View, Modal, ModalProps, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View, KeyboardAvoidingView, Platform, TouchableOpacity, ModalProps } from 'react-native';
 import { X } from 'lucide-react-native';
-import { SPACING } from '@/tokens/spacing';
+import { Icon } from '@/components/ui/icon';
+import { Text } from '@/components/ui/text';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+  DialogPortal,
+  DialogOverlay,
+} from '@/components/ui/dialog';
 
 export interface BottomSheetModalProps extends Omit<ModalProps, 'visible' | 'animationType' | 'transparent'> {
-  title: string;
-  subtitle?: string;
   visible: boolean;
   onClose: () => void;
+  title?: string;
+  subtitle?: string;
   children: React.ReactNode;
 }
 
 export function BottomSheetModal({
-  title,
-  subtitle,
   visible,
   onClose,
+  title,
+  subtitle,
   children,
   ...props
 }: BottomSheetModalProps) {
-  const insets = useSafeAreaInsets();
-
   return (
-    <Modal visible={visible} animationType="slide" transparent {...props}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1 justify-end bg-black-main/50"
-      >
-        <TouchableOpacity
-          accessible={false}
-          className="flex-1"
-          activeOpacity={1} 
-          onPress={onClose} 
-        />
-        <View 
-          className="max-h-sheet rounded-t-lg bg-surface-app px-4 pt-2 shadow-floating"
-          style={{ paddingBottom: Math.max(insets.bottom, SPACING.default) }}
+    <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
+      <DialogPortal>
+        <DialogOverlay className="justify-end p-0" />
+        <DialogContent
+          className="absolute bottom-0 w-full max-w-full rounded-t-3xl rounded-b-none p-0 pb-safe gap-0 border-t border-x-0 border-b-0 border-soft m-0 sm:max-w-full"
         >
-          {/* Header */}
-          <View className="flex-row items-center justify-between border-b border-soft pb-3 pt-2">
-            <View className="flex-1 pr-4">
-              <Text variant="title">
-                {title}
-              </Text>
-              {subtitle && (
-                <Text variant="caption" color="muted" className="mt-1">
-                  {subtitle}
-                </Text>
-              )}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            className="w-full flex-shrink"
+          >
+            <DialogHeader className="flex-row items-start justify-between border-b border-soft px-4 py-4 m-0">
+              <View className="flex-1">
+                <DialogTitle className="text-lg font-bold">{title || ''}</DialogTitle>
+                {!!subtitle && (
+                  <Text variant="caption" className="text-text-muted mt-1">
+                    {subtitle}
+                  </Text>
+                )}
+              </View>
+              <DialogClose asChild>
+                <TouchableOpacity accessibilityLabel="Fechar" className="p-2 -mr-2">
+                  <Icon as={X} className="text-text-muted" size={24} />
+                </TouchableOpacity>
+              </DialogClose>
+            </DialogHeader>
+            <View className="flex-shrink px-4 py-4">
+              {children}
             </View>
-            <Button accessibilityLabel="Fechar" variant="ghost" size="icon" onPress={onClose}>
-              <Icon as={X} />
-            </Button>
-          </View>
-
-          {/* Content */}
-          <View className="mt-2 flex-shrink">
-            {children}
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    </Modal>
+          </KeyboardAvoidingView>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   );
 }

@@ -13,6 +13,20 @@ Before creating a component, search existing atoms, molecules, and feature compo
 - Domain cards, summaries, screen shells, swipe gestures, calendars, charts, and bottom sheets remain custom only when the registry has no behaviorally equivalent primitive.
 - The complete decision and validation flow lives in `component-workflow.md`.
 
+## Container Classification (Card vs Structural View)
+- Every decorated container must be classified as a Canonical Card, a structural layout/inset region, an interactive row, or a domain wrapper.
+- **Use `Card` when:** grouping independent content, highlighting standalone domain objects, or separating a discrete section from the screen background.
+- **Use `View` (Structural Layout) when:** establishing screen padding (`px-screen`), safe area boundaries, background coloration without elevation, row/column alignment, or full-width inset regions (`bg-surface-app` / `bg-surface-muted` without borders/shadows).
+- **Rule:** Never nest Cards inside Cards. If a Card needs internal groupings, use soft `View` dividers, sub-headers, or structural layouts.
+
+## Popup Patterns
+- Do not use React Native's native `Modal` component directly.
+- Do not use `Alert.alert` in application code.
+- **Use `AlertDialog` when:** The flow requires an explicit, blocking decision (e.g. destructive actions like deletions).
+- **Use `Dialog` when:** Displaying supplementary content, simple forms, or unconstrained overlays.
+- **Use `ConfirmModal` / `FeedbackDialog` when:** Adapting Canonical Dialogs to handle standard confirmation, feedback, or state-driven notifications.
+- **Use `BottomSheetModal` when:** Presenting selection sheets, pickers, or non-blocking secondary tasks where the user maintains context of the screen behind it.
+
 ## Typography
 - Canonical source: `src/components/ui/text.tsx`.
 - Purpose: render all app text consistently.

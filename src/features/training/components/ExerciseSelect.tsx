@@ -7,6 +7,7 @@ import { X, Plus } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchBar } from '@/components/molecules/SearchBar';
+import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
 
 interface Props {
   value: string;
@@ -56,62 +57,57 @@ export function ExerciseSelect({ value, onChange }: Props) {
         </Text>
       </Button>
 
-      <Modal visible={modalVisible} animationType="slide" transparent>
-        <View className="flex-1 justify-end bg-black-main/50">
-          <View className="h-selection-sheet rounded-t-lg bg-surface-app p-4">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text variant="title">Selecionar exercício</Text>
-              <Button accessibilityLabel="Fechar" variant="ghost" size="icon" onPress={() => setModalVisible(false)}>
-                <Icon as={X} size={24} className="text-text-muted" />
-              </Button>
-            </View>
+      <BottomSheetModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        title="Selecionar exercício"
+      >
+        <View className="h-selection-sheet pt-2">
+          <SearchBar
+            value={search}
+            onChangeText={setSearch}
+            onClear={() => setSearch('')}
+            placeholder="Buscar ou criar exercício..."
+            autoFocus={Platform.OS === 'ios'}
+            containerClassName="mb-4"
+          />
 
-            <SearchBar
-              value={search}
-              onChangeText={setSearch}
-              onClear={() => setSearch('')}
-              placeholder="Buscar ou criar exercício..."
-              autoFocus={Platform.OS === 'ios'}
-              containerClassName="mb-4"
-            />
-
-            <FlatList 
-              data={filtered}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={`Selecionar ${item.name}`}
-                  className="py-3 border-b border-soft"
-                  onPress={() => {
-                    onChange(item.name);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text variant="text" className="font-bold text-text-main">{item.name}</Text>
-                </Pressable>
-              )}
-              ListEmptyComponent={() => (
-                <View className="py-8 items-center">
-                  <Text variant="text" color="muted">Nenhum exercício encontrado.</Text>
-                </View>
-              )}
-            />
-
-            {search.trim().length > 0 && !exactMatch && (
-              <Button
-                className="mt-4"
-                onPress={handleCreate}
+          <FlatList 
+            data={filtered}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Selecionar ${item.name}`}
+                className="py-3 border-b border-soft"
+                onPress={() => {
+                  onChange(item.name);
+                  setModalVisible(false);
+                }}
               >
-                <Icon as={Plus} className="text-text-inverse" />
-                <Text>
-                  Criar "{search.trim()}"
-                </Text>
-              </Button>
+                <Text variant="text" className="font-bold text-text-main">{item.name}</Text>
+              </Pressable>
             )}
-          </View>
+            ListEmptyComponent={() => (
+              <View className="py-8 items-center">
+                <Text variant="text" color="muted">Nenhum exercício encontrado.</Text>
+              </View>
+            )}
+          />
+
+          {search.trim().length > 0 && !exactMatch && (
+            <Button
+              className="mt-4"
+              onPress={handleCreate}
+            >
+              <Icon as={Plus} className="text-text-inverse" />
+              <Text>
+                Criar "{search.trim()}"
+              </Text>
+            </Button>
+          )}
         </View>
-      </Modal>
+      </BottomSheetModal>
     </>
   );
 }

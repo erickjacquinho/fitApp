@@ -52,7 +52,7 @@ export function TrainingWidget({
             {programName}
           </Text>
 
-          <View className="flex-row items-center gap-2 mt-2 mb-3 bg-surface-app p-3 rounded-sm border border-soft">
+          <View className="flex-row items-center gap-2 mt-2 mb-3 bg-surface-raised p-3 rounded-md border border-soft">
             {hasTrainedToday ? (
               <Icon as={CheckCircle2} className="text-success-main" />
             ) : (

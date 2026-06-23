@@ -1,6 +1,7 @@
 import { Text } from '@/components/ui/text';
 import { View } from 'react-native';
 import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
+import { Card, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function ProfilePage() {
   return (
@@ -8,12 +9,12 @@ export default function ProfilePage() {
       title="Perfil"
     >
       <View className="gap-3">
-        <View className="rounded-md border border-soft bg-component-card-bg p-4">
-          <Text variant="subtitle">Configurações principais</Text>
-          <Text variant="text" color="muted">
+        <Card>
+          <CardTitle>Configurações principais</CardTitle>
+          <CardDescription>
             Base pronta para perfil, metas e ajustes de uso.
-          </Text>
-        </View>
+          </CardDescription>
+        </Card>
       </View>
     </MainTabScreen>
   );

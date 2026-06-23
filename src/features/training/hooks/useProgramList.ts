@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Alert } from 'react-native';
 import { WorkoutService } from '../services/workout-service';
 import { SessionService } from '../services/session-service';
 import Program from '../../../db/models/Program';
@@ -40,27 +39,14 @@ export function useProgramList() {
     }
   }, []);
 
-  const handleDeleteProgram = (id: string, name: string) => {
-    Alert.alert(
-      'Delete Program',
-      `Are you sure you want to delete the program "${name}"? All associated workouts and plans will be lost.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await WorkoutService.deleteProgram(id);
-              await loadData();
-            } catch (err) {
-              console.error('Error deleting program:', err);
-              Alert.alert('Error', 'Failed to delete program');
-            }
-          },
-        },
-      ]
-    );
+  const deleteProgram = async (id: string) => {
+    try {
+      await WorkoutService.deleteProgram(id);
+      await loadData();
+    } catch (err) {
+      console.error('Error deleting program:', err);
+      throw err;
+    }
   };
 
   const startSession = async (programId: string, blockId: string) => {
@@ -73,7 +59,7 @@ export function useProgramList() {
       });
     } catch (err) {
       console.error('Error starting session:', err);
-      Alert.alert('Error', 'Failed to start session');
+      throw err;
     }
   };
 
@@ -82,7 +68,7 @@ export function useProgramList() {
     activeSession,
     isLoading,
     loadData,
-    handleDeleteProgram,
+    deleteProgram,
     startSession,
   };
 }

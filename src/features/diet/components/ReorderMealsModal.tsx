@@ -8,6 +8,7 @@ import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { GripVertical } from 'lucide-react-native';
+import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
 
 interface ReorderMealsModalProps {
   visible: boolean;
@@ -54,16 +55,9 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
   };
 
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <BottomSheetModal visible={visible} onClose={onClose} title="Reordenar refeições">
       <GestureHandlerRootView style={styles.container}>
-        <View className="flex-1 bg-surface-app pt-6 px-screen-x pb-8">
-          <View className="flex-row justify-between items-center mb-6">
-            <Text variant="title">Reordenar refeições</Text>
-            <Button variant="ghost" onPress={onClose}>
-              <Text color="accent">Cancelar</Text>
-            </Button>
-          </View>
-          
+        <View className="flex-1 min-h-[400px]">
           <Text variant="caption" color="muted" className="mb-4">
             Segure e arraste para alterar a ordem.
           </Text>
@@ -81,7 +75,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
           </View>
         </View>
       </GestureHandlerRootView>
-    </Modal>
+    </BottomSheetModal>
   );
 }
 

@@ -77,6 +77,9 @@ Before completion, provide:
 
 - a search proving obsolete component imports are gone;
 - a search proving generic registry tokens and raw visual literals are gone from affected files;
+- a search proving zero `Modal` imports from `react-native`;
+- a search proving zero `Alert.alert` usages in application code;
+- explicit documentation in the design artifact of every Card classification vs structural View decision;
 - TypeScript validation;
 - dependency exact-version validation;
 - Expo dependency and project diagnostics;

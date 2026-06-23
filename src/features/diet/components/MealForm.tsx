@@ -81,10 +81,10 @@ export function MealForm() {
                 </Card>
               ))}
               
-              <View className="mt-2 p-4 bg-surface-raised rounded-md border border-soft">
+              <Card className="mt-2">
                 <Text variant="caption" className="mb-2">Macros totais</Text>
                 <PreviewMacros items={selectedItems} />
-              </View>
+              </Card>
             </View>
           ) : (
             <Card className="items-center py-10 border-dashed">

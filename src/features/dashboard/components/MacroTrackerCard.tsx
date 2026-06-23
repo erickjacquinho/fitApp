@@ -28,7 +28,7 @@ export function MacroTrackerCard({
   };
 
   return (
-    <View className="flex-1 rounded-sm border border-soft bg-surface-app p-2">
+    <View className="flex-1 rounded-md border border-soft bg-surface-raised p-3">
       <Text variant="caption" className={`mb-1 text-center ${toneClasses[tone].text}`}>
         {name}
       </Text>

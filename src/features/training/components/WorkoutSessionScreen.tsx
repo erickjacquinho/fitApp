@@ -8,12 +8,22 @@ import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import Exercise from '../../../db/models/Exercise';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Card } from "@/components/ui/card";
 import { COLORS } from '@/tokens/colors';
+import { ConfirmModal } from '@/components/organisms/ConfirmModal';
+import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
   const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [confirmFinishVisible, setConfirmFinishVisible] = useState(false);
+  const [feedbackState, setFeedbackState] = useState<{
+    visible: boolean;
+    type: 'error' | 'success' | 'warning' | 'info';
+    title: string;
+    message: string;
+  }>({ visible: false, type: 'info', title: '', message: '' });
 
   const {
     session,
@@ -41,6 +51,24 @@ export function WorkoutSessionScreen() {
   const handleDeleteSetCallback = async (setNumber: number) => {
     if (!activeExercise) return;
     await handleDeleteSet(activeExercise.id, setNumber);
+  };
+
+  const handleAttemptFinish = () => {
+    setConfirmFinishVisible(true);
+  };
+
+  const onConfirmFinish = async () => {
+    try {
+      setConfirmFinishVisible(false);
+      await handleFinishWorkout();
+    } catch (error) {
+      setFeedbackState({
+        visible: true,
+        type: 'error',
+        title: 'Erro ao finalizar',
+        message: 'Não foi possível salvar a sessão. Tente novamente.',
+      });
+    }
   };
 
   if (isLoading) {
@@ -89,14 +117,14 @@ export function WorkoutSessionScreen() {
         })}
 
         {exercises.length === 0 && (
-          <View className="my-8 items-center justify-center p-6 bg-component-card-bg border border-soft rounded-sm">
+          <Card className="my-8 items-center justify-center py-10 border-dashed">
             <Text variant="text" color="muted" className="text-center">
               Nenhum exercício neste bloco de treino.
             </Text>
-          </View>
+          </Card>
         )}
 
-        <Button onPress={handleFinishWorkout} className="my-6 min-h-control-lg bg-success-main active:bg-success-dark"><Text>Finalizar treino</Text></Button>
+        <Button onPress={handleAttemptFinish} className="my-6 min-h-control-lg bg-success-main active:bg-success-dark"><Text>Finalizar treino</Text></Button>
       </ScrollView>
 
       {activeExercise && (
@@ -122,6 +150,27 @@ export function WorkoutSessionScreen() {
           onDeleteSet={handleDeleteSetCallback}
         />
       )}
+
+      <ConfirmModal
+        visible={confirmFinishVisible}
+        onCancel={() => setConfirmFinishVisible(false)}
+        onConfirm={onConfirmFinish}
+        title="Finalizar Treino"
+        description="Tem certeza que deseja finalizar esta sessão de treino?"
+        confirmLabel="Sim, Finalizar"
+        cancelLabel="Cancelar"
+      />
+
+      <FeedbackDialog
+        visible={feedbackState.visible}
+        onClose={() => setFeedbackState(prev => ({ ...prev, visible: false }))}
+        state={{
+          visible: feedbackState.visible,
+          title: feedbackState.title,
+          description: feedbackState.message,
+          isError: feedbackState.type === 'error'
+        }}
+      />
     </View>
   );
 }

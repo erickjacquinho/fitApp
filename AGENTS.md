@@ -26,6 +26,7 @@
 
 ## Working Rules
 - Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
+- **Universal Validation Rule:** Every future implementation MUST follow `.agents/rules/full-validation-gate.md`. Its per-task validation, regression policy, Android runtime proof, and final Full Gate are blocking completion requirements.
 - **Component Source Rule:** `@react-native-reusables` (Shadcn UI for React Native) is the primary source for components. Before creating any custom component, ALWAYS analyze if there is an existing component in this library that fulfills the requirement. Use `npx @react-native-reusables/cli@latest add <component>` to add it.
 - **Component Styling Rule:** Whenever a new component is added (especially via `@react-native-reusables` CLI) or modified, you MUST review its Tailwind classes. Ensure all generic colors and sizes (`bg-primary`, `bg-destructive`, `bg-background`, etc.) are explicitly replaced with our exact semantic tokens from `tailwind.config.js` (e.g., `bg-primary-main`, `bg-tomato-main`, `bg-surface-app`, `h-control-md`).
 - Before creating a new UI component, check existing components in `src/components/` and feature folders.
@@ -61,6 +62,7 @@ Follow this sequence for every new or modified UI component:
 - Execute tudo exatamente como a skill `sdd` descreve. 
 
 ## Validation
+- Follow `.agents/rules/full-validation-gate.md` for every implementation. Task-specific validation may add checks but MUST NOT weaken or replace the Full Gate.
 - Validate changes before finishing.
 - **Development APK Rule:** Automatically rebuild the Android development client whenever changes affect native dependencies, Expo plugins or configuration, `android/`, native build settings, or dev-client compatibility. Do not wait for the user to request it. Replace the root `fitApp-dev.apk` with the generated `android/app/build/outputs/apk/debug/app-debug.apk` and verify that both SHA-256 hashes match. JavaScript/TypeScript-only changes do not require a new APK unless runtime validation proves the installed client is incompatible.
 - Prefer these checks when relevant:

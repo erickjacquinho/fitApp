@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { FeedbackDialog } from "@/components/organisms/FeedbackDialog";
 import { SIZES } from '@/tokens/sizes';
 
 export function FoodForm() {
@@ -18,6 +19,9 @@ export function FoodForm() {
     calculateCalories,
     handleSave,
     isSaving,
+    errors,
+    feedback,
+    clearFeedback,
     goBack,
   } = useFoodForm(id);
 
@@ -41,14 +45,18 @@ export function FoodForm() {
               value={form.name} 
               onChangeText={(val) => setFormValue('name', val)} 
               placeholder="Ex.: Peito de frango"
+              className={errors.name ? 'border-tomato-main' : ''}
             />
+            {errors.name && <Text variant="caption" className="text-tomato-main">{errors.name}</Text>}
             
             <Text variant="caption">Peso de preparo (g)</Text>
             <Input 
               value={String(form.preparationWeight ?? '')} 
               onChangeText={(val) => setFormValue('preparationWeight', val)} 
               keyboardType="numeric" 
+              className={errors.preparationWeight ? 'border-tomato-main' : ''}
             />
+            {errors.preparationWeight && <Text variant="caption" className="text-tomato-main">{errors.preparationWeight}</Text>}
 
             <Text variant="caption">Descrição (opcional)</Text>
             <Input 
@@ -109,6 +117,22 @@ export function FoodForm() {
           </Button>
         </View>
       </ScrollView>
+
+      <FeedbackDialog
+        visible={!!feedback}
+        onClose={() => {
+          if (feedback?.type === 'success') {
+            goBack();
+          }
+          clearFeedback();
+        }}
+        state={{
+          visible: !!feedback,
+          title: feedback?.title || '',
+          description: feedback?.message || '',
+          isError: feedback?.type === 'error'
+        }}
+      />
     </KeyboardAvoidingView>
   );
 }
