@@ -16,7 +16,7 @@ export function FoodEntryCard({ food, quantity, onDelete, onEdit }: FoodEntryCar
   const macros = calculateMacros(food, quantity);
 
   return (
-    <SwipeableCard className="mb-2 bg-surface-raised border border-soft" onDelete={onDelete} onEdit={onEdit}>
+    <SwipeableCard className="mb-2 bg-surface-raised border border-soft" onDelete={onDelete} onPress={onEdit}>
       <View className="flex-row items-center justify-between">
         <View className="flex-1">
           <Text variant="subtitle">{food.name}</Text>

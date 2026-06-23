@@ -57,7 +57,8 @@ export function ProgramForm() {
             placeholder="Ex.: Hipertrofia ABC"
             value={programName}
             onChangeText={setProgramName}
-            className={`mb-4 font-bold ${errors.programName ? 'border-tomato-main' : ''}`}
+            className="mb-4 font-bold"
+            hasError={!!errors.programName}
           />
           {errors.programName && (
             <Text variant="caption" className="text-tomato-main mt-1">
@@ -90,7 +91,8 @@ export function ProgramForm() {
                 placeholder="Ex.: Treino A"
                 value={block.name}
                 onChangeText={(val) => handleBlockNameChange(block.id, val)}
-                className={`flex-1 font-bold ${errors.blockNames?.[block.id] ? 'border-tomato-main' : ''}`}
+                className="flex-1 font-bold"
+                hasError={!!errors.blockNames?.[block.id]}
               />
               <Button
                 accessibilityLabel={`Excluir bloco ${block.name || bIdx + 1}`}

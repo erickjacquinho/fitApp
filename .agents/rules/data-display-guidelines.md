@@ -26,7 +26,7 @@ Data UI must be scannable, compact, and honest about missing data.
 ## Progress
 - Progress indicators must include readable numeric values.
 - Do not rely only on color.
-- Positive progress uses success or accent depending on context.
+- Positive progress uses `blue-500` for generic progress (blue-first rule); use the macro family color (`blue-500` protein, `amber-500` carb, `orange-500` fat) for macro-specific progress bars.
 
 ## Charts
 - Charts must have clear labels, units, and time range.

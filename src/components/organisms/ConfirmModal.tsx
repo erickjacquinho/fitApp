@@ -34,6 +34,12 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   const actionHandledRef = useRef(false);
 
+  const handleSafeAction = (actionFn: () => void) => {
+    setTimeout(() => {
+      actionFn();
+    }, 150);
+  };
+
   return (
     <AlertDialog
       open={visible}
@@ -43,7 +49,7 @@ export function ConfirmModal({
             actionHandledRef.current = false;
             return;
           }
-          onCancel();
+          handleSafeAction(onCancel);
         }
       }}
     >
@@ -57,7 +63,7 @@ export function ConfirmModal({
             className="flex-1"
             onPress={() => {
               actionHandledRef.current = true;
-              onCancel();
+              handleSafeAction(onCancel);
             }}
           >
             <Text>{cancelLabel}</Text>
@@ -67,7 +73,7 @@ export function ConfirmModal({
             variant={isDestructive ? 'destructive' : 'default'}
             onPress={() => {
               actionHandledRef.current = true;
-              onConfirm();
+              handleSafeAction(onConfirm);
             }}
           >
             <Text>{confirmLabel}</Text>

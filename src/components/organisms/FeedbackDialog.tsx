@@ -22,18 +22,20 @@ export function FeedbackDialog({
   state,
   actionLabel = 'Entendi',
 }: FeedbackDialogProps) {
-  const actionHandledRef = useRef(false);
+  // O uso de setTimeout previne um crash fatal no iOS onde a navegação (router.back)
+  // destrói a tela enquanto o Modal nativo ainda está processando sua animação de fechamento.
+  const handleSafeClose = () => {
+    setTimeout(() => {
+      onClose();
+    }, 150);
+  };
 
   return (
     <AlertDialog
       open={visible}
       onOpenChange={(open) => {
         if (!open) {
-          if (actionHandledRef.current) {
-            actionHandledRef.current = false;
-            return;
-          }
-          onClose();
+          handleSafeClose();
         }
       }}
     >
@@ -47,12 +49,7 @@ export function FeedbackDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction
-            onPress={() => {
-              actionHandledRef.current = true;
-              onClose();
-            }}
-          >
+          <AlertDialogAction onPress={() => {}}>
             <Text>{actionLabel}</Text>
           </AlertDialogAction>
         </AlertDialogFooter>

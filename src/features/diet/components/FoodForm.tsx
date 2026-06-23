@@ -45,7 +45,7 @@ export function FoodForm() {
               value={form.name} 
               onChangeText={(val) => setFormValue('name', val)} 
               placeholder="Ex.: Peito de frango"
-              className={errors.name ? 'border-tomato-main' : ''}
+              hasError={!!errors.name}
             />
             {errors.name && <Text variant="caption" className="text-tomato-main">{errors.name}</Text>}
             
@@ -54,7 +54,7 @@ export function FoodForm() {
               value={String(form.preparationWeight ?? '')} 
               onChangeText={(val) => setFormValue('preparationWeight', val)} 
               keyboardType="numeric" 
-              className={errors.preparationWeight ? 'border-tomato-main' : ''}
+              hasError={!!errors.preparationWeight}
             />
             {errors.preparationWeight && <Text variant="caption" className="text-tomato-main">{errors.preparationWeight}</Text>}
 
@@ -74,28 +74,31 @@ export function FoodForm() {
             <View className="flex-1 gap-1">
               <Text variant="caption">Proteínas</Text>
               <Input 
-                value={String(form.protein ?? '')} 
+                value={form.protein} 
                 onChangeText={(val) => setFormValue('protein', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
+                placeholder="0"
               />
             </View>
             <View className="flex-1 gap-1">
               <Text variant="caption">Carboidratos</Text>
               <Input 
-                value={String(form.carbohydrates ?? '')} 
+                value={form.carbohydrates} 
                 onChangeText={(val) => setFormValue('carbohydrates', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
+                placeholder="0"
               />
             </View>
             <View className="flex-1 gap-1">
               <Text variant="caption">Gorduras</Text>
               <Input 
-                value={String(form.fat ?? '')} 
+                value={form.fat} 
                 onChangeText={(val) => setFormValue('fat', val)} 
                 onBlur={calculateCalories}
                 keyboardType="numeric" 
+                placeholder="0"
               />
             </View>
           </View>

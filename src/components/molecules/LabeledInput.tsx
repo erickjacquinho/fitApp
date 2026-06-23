@@ -28,8 +28,9 @@ export const LabeledInput = forwardRef<TextInput, LabeledInputProps>(
           ref={ref}
           aria-labelledby={labelId}
           aria-invalid={hasError}
+          hasError={hasError}
           {...props}
-          className={twMerge(className, hasError && 'border-tomato-main')}
+          className={className}
         />
         {errorText ? (
           <Text variant="caption" color="error">

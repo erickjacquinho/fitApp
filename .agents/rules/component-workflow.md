@@ -51,15 +51,19 @@ After the command:
 
 ## Generated Component Token Review
 
-Every generated or modified component MUST replace generic registry utilities with FitApp semantics:
+Every generated or modified component MUST replace generic registry utilities with FitApp Mineral Warm semantics:
 
-- `background` -> `surface-*` or a component background token;
-- `foreground` -> `text-main` or `text-inverse`;
-- `primary` -> `accent-*` or a component action token;
+- `background` -> `surface-*` (`neutral-100` app bg, `neutral-50` card, `neutral-0` elevated) or a component background token;
+- `foreground` -> `text-main` (`neutral-900`) or `text-inverse` (`neutral-0`);
+- `primary` -> `blue-*` tokens (NOT olive/accent). Primary action, selection, focus, and progress use `blue-500`;
 - `destructive` -> `tomato-*`;
-- `muted` -> `surface-muted` or `text-muted` according to role;
-- `border` and `ring` -> `border-*` and semantic focus tokens;
-- generic sizes -> `icon-*`, `control-*`, `input-*`, `touch-target`, or another declared token.
+- `muted` -> `surface-muted` (`neutral-50`) or `text-muted` (`neutral-500`/`neutral-600`) according to role;
+- `border` and `ring` -> `border-subtle` (`neutral-200`), `border-strong` (`neutral-300`), `border-control` (`neutral-500`), or focus `blue-500`;
+- generic sizes -> `icon-*`, `control-*`, `input-*`, `touch-target`, or another declared token;
+- `secondary` (registry) -> `neutral-900` (dark secondary) or `neutral-50` (soft surface), never olive;
+- `accent` (registry) -> `blue-500` per Mineral Warm blue-first rule.
+
+> See `docs/design-system/mineral-warm.md` section 18 for the mandatory token usage rules and section 2 for the blue-first rule.
 
 Also enforce the focused radius, shadow, typography, layout, iconography, content, and accessibility rules. Static arbitrary values are forbidden when a token can represent the role.
 

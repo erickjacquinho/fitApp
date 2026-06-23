@@ -5,15 +5,28 @@ import { Button } from '@/components/ui/button';
 import { Card, CardProps } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
 import { Pencil, Trash2 } from 'lucide-react-native';
+import { Animated, Pressable } from 'react-native';
 
 export interface SwipeableCardProps extends CardProps {
   onDelete?: () => void;
-  onEdit?: () => void;
+  onPress?: () => void;
   children?: React.ReactNode;
 }
 
-export function SwipeableCard({ onDelete, onEdit, children, ...props }: SwipeableCardProps) {
-  const renderRightActions = () => {
+export function SwipeableCard({ onDelete, onPress, children, ...props }: SwipeableCardProps) {
+  const deleteTriggered = React.useRef(false);
+  const listenerId = React.useRef<string | null>(null);
+
+  const renderRightActions = (progress: Animated.AnimatedInterpolation<number>, dragX: Animated.AnimatedInterpolation<number>) => {
+    // Escuta o arraste para "swipe to delete" longo
+    if (onDelete && !listenerId.current) {
+      listenerId.current = dragX.addListener(({ value }) => {
+        if (value < -200 && !deleteTriggered.current) {
+          deleteTriggered.current = true;
+          onDelete();
+        }
+      });
+    }
     // We use styling to match the card layout.
     // The inner buttons fill the height. If the Card has mb-2, we need to handle the bottom margin
     // so the buttons don't stretch into the margin. The easiest way is to apply a padding or margin to match.
@@ -21,23 +34,17 @@ export function SwipeableCard({ onDelete, onEdit, children, ...props }: Swipeabl
     // However, it's generally cleaner to just let the buttons align with the card's rounded-md.
     return (
       <View className="flex-row items-stretch pl-2">
-        {onEdit && (
-          <Button
-            accessibilityLabel="Editar"
-            variant="secondary"
-            size="icon"
-            onPress={onEdit}
-            className="h-full w-16 bg-info-soft mr-2"
-          >
-            <Icon as={Pencil} className="text-info-main" />
-          </Button>
-        )}
         {onDelete && (
           <Button
             accessibilityLabel="Excluir"
             variant="destructive"
             size="icon"
-            onPress={onDelete}
+            onPress={() => {
+              if (!deleteTriggered.current) {
+                deleteTriggered.current = true;
+                onDelete();
+              }
+            }}
             className="h-full w-16 bg-tomato-soft"
           >
             <Icon as={Trash2} className="text-tomato-main" />
@@ -52,12 +59,22 @@ export function SwipeableCard({ onDelete, onEdit, children, ...props }: Swipeabl
   const marginClasses: string[] = classNameStr.match(/m[b|t|l|r|x|y]?-\d+/g) || [];
   const otherClasses = classNameStr.split(' ').filter((c: string) => !marginClasses.includes(c)).join(' ');
 
+  const content = (
+    <Card {...props} className={otherClasses}>
+      {children}
+    </Card>
+  );
+
   return (
     <View className={marginClasses.join(' ')}>
       <Swipeable renderRightActions={renderRightActions}>
-        <Card {...props} className={otherClasses}>
-          {children}
-        </Card>
+        {onPress ? (
+          <Pressable onPress={onPress}>
+            {content}
+          </Pressable>
+        ) : (
+          content
+        )}
       </Swipeable>
     </View>
   );

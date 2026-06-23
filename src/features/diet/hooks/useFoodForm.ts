@@ -20,10 +20,10 @@ export function useFoodForm(id?: string) {
     name: '',
     preparationWeight: '100',
     description: '',
-    protein: '0',
-    carbohydrates: '0',
-    fat: '0',
-    calories: '0',
+    protein: '',
+    carbohydrates: '',
+    fat: '',
+    calories: '',
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -41,10 +41,10 @@ export function useFoodForm(id?: string) {
             name: food.name,
             preparationWeight: food.preparationWeight.toString(),
             description: food.description || '',
-            protein: food.protein.toString(),
-            carbohydrates: food.carbohydrates.toString(),
-            fat: food.fat.toString(),
-            calories: food.calories.toString(),
+            protein: food.protein ? food.protein.toString() : '',
+            carbohydrates: food.carbohydrates ? food.carbohydrates.toString() : '',
+            fat: food.fat ? food.fat.toString() : '',
+            calories: food.calories ? food.calories.toString() : '',
           });
         } catch (error) {
           console.error('Error loading food:', error);
@@ -101,7 +101,7 @@ export function useFoodForm(id?: string) {
       } else {
         await FoodService.create(data);
       }
-      setFeedback({ type: 'success', title: 'Sucesso', message: 'Alimento salvo com sucesso' });
+      router.back();
     } catch (err) {
       console.error('Error saving food:', err);
       setFeedback({ type: 'error', title: 'Erro', message: 'Não foi possível salvar o alimento. Verifique os campos e tente novamente.' });

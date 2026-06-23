@@ -2,7 +2,10 @@
 
 These rules define FitApp visual foundations. Use them before creating or changing shared UI.
 
+**Normative source:** `docs/design-system/mineral-warm.md`. All primitive values, semantic mappings, contrast evidence, and usage rules come from that document. This file provides the NativeWind/token interface; it does not override the canonical spec.
+
 ## Token Architecture
+
 Tokens live in two layers:
 
 1. `global.css`: primitive and semantic CSS variables.
@@ -11,31 +14,48 @@ Tokens live in two layers:
 Components MUST use NativeWind token utilities. Do not use raw hex, raw font sizes, arbitrary spacing, or inline visual values.
 
 ## Color System
-FitApp uses a warm neutral palette with controlled functional accents.
 
-- Surfaces: `surface-app`, `surface-raised`, `surface-muted`, `surface-subtle`, `surface-strong`.
-- Text: `text-main`, `text-muted`, `text-inverse`.
-- Borders: `border-soft`, `border-strong`.
-- Primary action: `accent-main`, `accent-light`, `accent-soft`, `accent-dark`.
-- Error and danger: `tomato-main`, `tomato-light`, `tomato-soft`, `tomato-dark`.
-- Success: `success-main`, `success-soft`, `success-dark`.
-- Info: `info-main`, `info-soft`, `info-dark`.
-- Warning: `warning-main`, `warning-soft`, `warning-dark`.
+FitApp uses the Mineral Warm palette. The primary accent is **blue**, not olive.
 
-Use accent for primary actions and progress. Use tomato only for error, danger, destructive actions, and hard limits.
+> See `docs/design-system/mineral-warm.md` sections 1–3 for all primitive hex values, semantic token mappings, and light/dark theme values.
+
+Current NativeWind semantic families (after Phase 2 migration):
+
+- **Surface**: `surface-app` (`neutral-100`), `surface-raised` (`neutral-50`), `surface-elevated` (`neutral-0`).
+- **Text**: `text-main` (`neutral-900`), `text-muted` (`neutral-500` on surface, `neutral-600` on background), `text-inverse` (`neutral-0`).
+- **Border**: `border-subtle` (`neutral-200`), `border-strong` (`neutral-300`), `border-control` (`neutral-500`).
+- **Primary / blue**: `primary-500`, `primary-600`, `primary-700`, `primary-50`, `primary-100`, `primary-200`, `primary-900`.
+- **Protein**: maps to blue family.
+- **Carbohydrate / amber**: `amber-500`, `amber-200`, `amber-50`, `amber-900`.
+- **Fat / orange**: `orange-500`, `orange-200`, `orange-50`, `orange-900`.
+- **Moss / success**: `moss-500`, `moss-200`, `moss-50`, `moss-900`.
+- **Tomato / error**: `tomato-500`, `tomato-200`, `tomato-50`, `tomato-900`.
+- **Mustard / warning**: `mustard-500`, `mustard-200`, `mustard-50`, `mustard-900`.
+- **Neutral**: `neutral-0` through `neutral-950`.
+
+**Do not use olive, accent-olive, or the legacy `primary`/`accent`/`secondary` groups for new components.**
+Legacy groups remain in `tailwind.config.js` only for backwards compatibility with existing code during the migration window (Phases 2–7). After Phase 7 they are removed.
+
+### Blue-First Rule
+
+Every generic highlighted element uses blue as the first choice. This includes: primary CTA, selection, active item, focus, link, progress indicator, and emphasized data. See `mineral-warm.md` section 2 for the complete rule.
 
 ## Typography
+
 Use the canonical `Text` primitive from `src/components/ui/text.tsx`.
 
 - Type scale: `text-display`, `text-title`, `text-subtitle`, `text-text`, `text-highlight`, `text-label`, `text-caption`.
-- Font family: `font-sans`.
-- Weights: `font-regular`, `font-semibold`, `font-bold`, `font-black`.
+- Font family: `font-sans` (resolves to Helvetica Now after Phase 2; fallback Helvetica → Arial → sans-serif).
+- Weights: `font-regular` (400), `font-semibold` (600), `font-bold` (700). Weight `font-black` (900) is for display only.
 - Line heights: `leading-display`, `leading-title`, `leading-subtitle`, `leading-body`, `leading-label`, `leading-caption`.
 - Tracking: `tracking-tight`, `tracking-normal`, `tracking-wide`, `tracking-label`.
+
+> See `mineral-warm.md` section 4 for the full typography hierarchy table with colors, sizes, and line heights.
 
 Do not override font size, line height, or letter spacing inside feature components unless a new token is first added.
 
 ## Spacing
+
 The spacing system is based on a 4px grid.
 
 Primary scale:
@@ -53,16 +73,22 @@ Extended scale:
 Avoid arbitrary spacing. Prefer `gap-*` over manual margins when composing groups.
 
 ## Borders
-Borders must be thin and low contrast.
 
-- Default: `border-thin border-soft`.
-- Quiet separators: `border-hairline border-soft`.
-- Selected or focused structure: `border-thin border-strong`.
+> See `mineral-warm.md` section 6 for the full border and divider table.
 
-Avoid dark borders and `border-2` in normal UI.
-Avoid pairing a very bright surface with a much darker border in standard app UI. High-luminance border contrast should be treated as an exception, not the default.
+- Card and grouping border: `border-thin border-subtle` (`neutral-200`).
+- Highlighted card: `border-thin border-strong` (`neutral-300`).
+- Input and control default: `border-thin border-control` (`neutral-500`).
+- Control hover: `border-control-hover` (`neutral-600`).
+- Selection: `border-2 border-primary-500` (`blue-500`, 2px).
+- Focus: `border-2 border-primary-500` + `3px blue-100` halo.
+- Error: `border-tomato-500`.
+- Disabled: `border-neutral-300`.
+
+Avoid dark borders and arbitrary border widths in normal UI.
 
 ## Radius
+
 Use small radii only.
 
 - `rounded-sm`: buttons, inputs, badges, compact controls.
@@ -71,14 +97,17 @@ Use small radii only.
 - `rounded-xl`: rare large feature containers.
 - `rounded-2xl`: maximum allowed radius.
 
+Cards use `12–16px` radius (`rounded-lg` or `rounded-xl`). Use the same radius in equivalent cards.
 Avoid `rounded-full` unless the element is inherently circular, such as an avatar or progress dot.
 
 ## Shadows
+
 Shadows are disabled by default.
 
 Use `shadow-floating` only for floating UI: bottom sheets, menus, popovers, or temporary overlays.
 
 ## Size Tokens
+
 Use fixed size tokens for repeated UI dimensions.
 
 - Icons: `w-icon-sm h-icon-sm`, `w-icon-md h-icon-md`, `w-icon-lg h-icon-lg`.
@@ -90,6 +119,7 @@ Use fixed size tokens for repeated UI dimensions.
 - Selection sheet: `h-selection-sheet`; bottom sheet: `max-h-sheet`.
 
 ## Motion
+
 Motion must be subtle and functional.
 
 - Durations: `duration-fast`, `duration-base`, `duration-slow`.
@@ -98,13 +128,13 @@ Motion must be subtle and functional.
 Prefer pressed states over decorative animation.
 
 ## Component Tokens
+
 Component tokens are allowed when a value belongs to a shared component contract.
 
-Current component token groups:
-- Button primary.
-- Button danger.
+Current component token groups (values updated in Phase 2):
+- Button primary (blue).
+- Button danger (tomato).
 - Input.
 - Card.
 
 Prefer semantic tokens for feature UI and component tokens for shared atoms/molecules.
-In standard app flows, `surface-raised` and `component-card-bg` should stay close to the main warm neutral surfaces instead of using stark white by default.

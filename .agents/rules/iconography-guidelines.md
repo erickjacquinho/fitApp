@@ -14,10 +14,10 @@ Lucide is the default icon library for FitApp.
 ## Color
 - Default icon color should follow text color.
 - Muted icons use `text-muted`.
-- Primary action icons use `accent-main` only when action emphasis is needed.
-- Error/destructive icons use `tomato-main`.
-- Warning icons use `warning-main`.
-- Success icons use `success-main`.
+- Primary action icons use `blue-500` (Mineral Warm blue-first rule) when action emphasis is needed.
+- Error/destructive icons use `tomato-700` (icon-weight per `mineral-warm.md` section 10).
+- Warning icons use `mustard-700` (per `mineral-warm.md` section 10).
+- Success icons use `moss-700` (per `mineral-warm.md` section 12).
 
 ## Usage
 - Icon-only buttons are allowed for common actions: back, close, search, clear, edit, delete.

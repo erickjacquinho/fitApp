@@ -85,30 +85,25 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
-            <Pressable 
-              accessibilityRole="button"
-              accessibilityLabel={`Selecionar ${item.name}`}
+            <SwipeableCard 
+              className={`mb-3 ${isSelected ? 'border-accent-main bg-accent-soft/10' : ''}`}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);
                 else if (mealId) handleAddFoodToMeal(item.id);
+                else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
               }}
+              onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
             >
-              <SwipeableCard 
-                className={`mb-3 ${isSelected ? 'border-accent-main bg-accent-soft/10' : ''}`}
-                onEdit={isSelectionMode ? undefined : () => router.push({ pathname: '/diet/create-food', params: { id: item.id } })}
-                onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
-              >
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-1">
-                    <Text variant="subtitle">{item.name}</Text>
-                    <Text variant="caption" color="muted">
-                      {item.protein}P • {item.carbohydrates}C • {item.fat}G
-                    </Text>
-                  </View>
-                  <Text variant="highlight">{item.calories} kcal</Text>
+              <View className="flex-row items-center justify-between">
+                <View className="flex-1">
+                  <Text variant="subtitle">{item.name}</Text>
+                  <Text variant="caption" color="muted">
+                    {item.protein}P • {item.carbohydrates}C • {item.fat}G
+                  </Text>
                 </View>
-              </SwipeableCard>
-            </Pressable>
+                <Text variant="highlight">{item.calories} kcal</Text>
+              </View>
+            </SwipeableCard>
           );
         }}
         ListEmptyComponent={

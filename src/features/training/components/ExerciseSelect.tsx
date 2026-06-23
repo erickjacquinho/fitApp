@@ -102,7 +102,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
             >
               <Icon as={Plus} className="text-text-inverse" />
               <Text>
-                Criar "{search.trim()}"
+                Criar &quot;{search.trim()}&quot;
               </Text>
             </Button>
           )}

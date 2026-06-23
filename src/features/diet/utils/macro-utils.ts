@@ -8,6 +8,9 @@ export interface Macros {
 }
 
 export function calculateMacros(food: Food, quantity: number): Macros {
+  if (!food) {
+    return { protein: 0, carbs: 0, fat: 0, calories: 0 };
+  }
   const factor = quantity / (food.preparationWeight || 100);
   return {
     protein: (food.protein || 0) * factor,

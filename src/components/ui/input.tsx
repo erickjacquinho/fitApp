@@ -1,30 +1,108 @@
 import { cn } from '@/lib/utils';
-import { Platform, TextInput } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Platform, TextInput, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 
-function Input({ className, ...props }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
-  return (
-    <TextInput
-      className={cn(
-        'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-component-input-border bg-component-input-bg px-4 py-2 font-sans text-text leading-body text-text-main shadow-none transition-all duration-base',
-        'focus:border-thin focus:border-component-input-focus',
-        props.editable === false &&
-        cn(
-          'opacity-50',
-          Platform.select({ web: 'disabled:pointer-events-none disabled:cursor-not-allowed' })
-        ),
-        Platform.select({
-          web: cn(
-            'placeholder:text-text-muted selection:bg-accent-main selection:text-text-inverse outline-none',
-            'focus-visible:border-component-input-focus focus-visible:ring-2 focus-visible:ring-accent-main/30',
-            'aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main'
-          ),
-          native: 'placeholder:text-text-muted',
-        }),
-        className
-      )}
-      {...props}
-    />
-  );
+export interface InputProps extends React.ComponentProps<typeof TextInput> {
+  hasError?: boolean;
+  'aria-invalid'?: boolean;
 }
+
+const Input = React.forwardRef<TextInput, InputProps>(
+  ({ className, value, onChangeText, hasError, 'aria-invalid': ariaInvalid, onFocus, onBlur, ...props }, ref) => {
+    const [localValue, setLocalValue] = useState(value);
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    const focusAnim = useSharedValue(0);
+
+    useEffect(() => {
+      setLocalValue(value);
+    }, [value]);
+
+    const handleChangeText = (text: string) => {
+      setLocalValue(text);
+      if (onChangeText) {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+          onChangeText(text);
+        }, 200);
+      }
+    };
+
+    useEffect(() => {
+      return () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      };
+    }, []);
+
+    const isInvalid = hasError || ariaInvalid;
+
+    const [frame, setFrame] = useState({ x: 0, y: 0, width: 0, height: 0 });
+
+    const handleFocus = (e: any) => {
+      focusAnim.value = withTiming(1, { duration: 150, easing: Easing.out(Easing.ease) });
+      if (onFocus) onFocus(e);
+    };
+
+    const handleBlur = (e: any) => {
+      focusAnim.value = withTiming(0, { duration: 150, easing: Easing.in(Easing.ease) });
+      if (onBlur) onBlur(e);
+    };
+
+    const ringStyle = useAnimatedStyle(() => {
+      const ringWidth = focusAnim.value * 3;
+      return {
+        opacity: focusAnim.value,
+        borderWidth: ringWidth,
+        left: frame.x - ringWidth,
+        top: frame.y - ringWidth,
+        width: frame.width + ringWidth * 2,
+        height: frame.height + ringWidth * 2,
+        borderRadius: 4 + ringWidth,
+      };
+    });
+
+    return (
+      <View className={cn("relative w-full", className?.includes('flex-1') ? 'flex-1' : '')}>
+        {Platform.OS !== 'web' && frame.width > 0 && (
+          <Animated.View 
+            style={ringStyle}
+            className="absolute border-accent-main/30 bg-transparent"
+            pointerEvents="none"
+          />
+        )}
+        <TextInput
+          ref={ref}
+          onLayout={(e) => setFrame(e.nativeEvent.layout)}
+          value={localValue}
+          onChangeText={handleChangeText}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          aria-invalid={ariaInvalid}
+          className={cn(
+            'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-component-input-border bg-component-input-bg px-4 py-2 font-sans text-text leading-body text-text-main shadow-none transition-colors duration-base',
+            'focus:border-thin focus:border-component-input-focus',
+            props.editable === false &&
+              cn(
+                'opacity-50',
+                Platform.select({ web: 'disabled:pointer-events-none disabled:cursor-not-allowed' })
+              ),
+            isInvalid && 'border-tomato-main text-tomato-main',
+            Platform.select({
+              web: cn(
+                'placeholder:text-text-muted selection:bg-accent-main selection:text-text-inverse outline-none',
+                'focus-visible:border-component-input-focus focus-visible:ring-2 focus-visible:ring-accent-main/30',
+                'aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main'
+              ),
+              native: 'placeholder:text-text-muted',
+            }),
+            className
+          )}
+          {...props}
+        />
+      </View>
+    );
+  }
+);
+Input.displayName = 'Input';
 
 export { Input };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import Meal from '../../../db/models/Meal';
@@ -14,6 +14,29 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
 import { Card } from '@/components/ui/card';
+
+function MacroProportionBar({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
+  const p = macros?.protein || 0;
+  const c = macros?.carbs || 0;
+  const f = macros?.fat || 0;
+  const total = p + c + f;
+  
+  if (!total || total <= 0 || isNaN(total)) {
+    return <View className="h-[3px] w-full bg-border-soft" />;
+  }
+
+  const cPct = Math.round((c / total) * 100);
+  const pPct = Math.round((p / total) * 100);
+  const fPct = Math.round((f / total) * 100);
+
+  return (
+    <View className="h-[3px] w-full flex-row overflow-hidden bg-border-soft">
+      {cPct > 0 && <View style={{ width: `${cPct}%` }} className="bg-info-main h-full" />}
+      {pPct > 0 && <View style={{ width: `${pPct}%` }} className="bg-tomato-main h-full" />}
+      {fPct > 0 && <View style={{ width: `${fPct}%` }} className="bg-warning-main h-full" />}
+    </View>
+  );
+}
 
 function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
   const router = useRouter();
@@ -45,20 +68,18 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
 
   return (
     <Card className="mb-6 overflow-hidden p-0">
-      <View className="px-4 py-3 bg-surface-app border-b border-soft flex-row justify-between items-center">
-        <View>
-          <Text variant="subtitle">{meal.name}</Text>
-          {meal.preparationState ? <Text variant="caption" color="muted">{meal.preparationState}</Text> : null}
-        </View>
-        <Button accessibilityLabel={`Excluir ${meal.name}`} variant="ghost" size="icon" onPress={onDelete}>
-          <Icon as={Trash2} className="text-tomato-main" />
-        </Button>
+      <View className="px-4 py-3 bg-surface-app flex-row justify-between items-center">
+        <Text variant="subtitle">{meal.name}</Text>
+        <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
+          <Icon as={Trash2} className="text-text-muted" size={16} />
+        </Pressable>
       </View>
+      <MacroProportionBar macros={macros} />
       
       <View className="p-4 gap-3">
-        {foodItems.map((item, index) => (
+        {foodItems.map((item) => (
           <FoodEntryCard 
-            key={index} 
+            key={item.id} 
             food={item.food} 
             quantity={item.quantity} 
             onDelete={() => handleDeleteItem(item.id)}

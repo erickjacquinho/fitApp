@@ -207,7 +207,7 @@ export function ProgramListScreen() {
       >
         <View className="pb-4">
           <Text variant="caption" color="muted" className="mb-4">
-            Escolha um bloco do programa "{selectedProgram?.name}":
+            Escolha um bloco do programa &quot;{selectedProgram?.name}&quot;:
           </Text>
           {selectedProgram?.blocks.map((block) => (
             <Button
