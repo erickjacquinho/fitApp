@@ -6,11 +6,12 @@ import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
+import { useThemeColors } from '../../../hooks/useThemeColors';
 import { Icon } from '@/components/ui/icon';
-import { COLORS } from '@/tokens/colors';
 
 export function SessionDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { primary } = useThemeColors();
 
   const {
     session,
@@ -41,7 +42,7 @@ export function SessionDetailsScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-surface">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }

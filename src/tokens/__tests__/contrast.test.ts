@@ -32,24 +32,50 @@ export function getContrastRatio(hex1: string, hex2: string): number {
   return (lightest + 0.05) / (darkest + 0.05);
 }
 
+const contrastCases = [
+  {
+    name: 'Light: Primary Text on Background',
+    foreground: lightTheme.textPrimary,
+    background: lightTheme.background,
+    minRatio: 4.5,
+  },
+  {
+    name: 'Light: Secondary Text on Surface',
+    foreground: lightTheme.textSecondarySurface,
+    background: lightTheme.surface,
+    minRatio: 4.5,
+  },
+  {
+    name: 'Light: Error on Background',
+    foreground: lightTheme.error,
+    background: lightTheme.background,
+    minRatio: 3.0,
+  },
+  {
+    name: 'Dark: Primary Text on Background',
+    foreground: darkTheme.textPrimary,
+    background: darkTheme.background,
+    minRatio: 4.5,
+  },
+  {
+    name: 'Dark: Secondary Text on Surface',
+    foreground: darkTheme.textSecondarySurface,
+    background: darkTheme.surface,
+    minRatio: 4.5,
+  },
+  {
+    name: 'Dark: Error on Background',
+    foreground: darkTheme.error,
+    background: darkTheme.background,
+    minRatio: 4.5,
+  },
+];
+
 describe('Theme Contrast Normative Assertions', () => {
-  it('lightTheme textPrimary should have > 4.5 contrast against background', () => {
-    const ratio = getContrastRatio(lightTheme.textPrimary, lightTheme.background);
-    expect(ratio).toBeGreaterThan(4.5);
-  });
-
-  it('lightTheme error should have > 3.0 contrast against background', () => {
-    const ratio = getContrastRatio(lightTheme.error, lightTheme.background);
-    expect(ratio).toBeGreaterThan(3.0);
-  });
-
-  it('darkTheme textPrimary should have > 4.5 contrast against background', () => {
-    const ratio = getContrastRatio(darkTheme.textPrimary, darkTheme.background);
-    expect(ratio).toBeGreaterThan(4.5);
-  });
-
-  it('darkTheme error should have > 4.5 contrast against background', () => {
-    const ratio = getContrastRatio(darkTheme.error, darkTheme.background);
-    expect(ratio).toBeGreaterThan(4.5);
+  contrastCases.forEach((testCase) => {
+    it(`${testCase.name} should have >= ${testCase.minRatio} contrast`, () => {
+      const ratio = getContrastRatio(testCase.foreground, testCase.background);
+      expect(ratio).toBeGreaterThanOrEqual(testCase.minRatio);
+    });
   });
 });

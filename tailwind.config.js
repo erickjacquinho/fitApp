@@ -20,12 +20,6 @@ module.exports = {
           DEFAULT: 'var(--color-surface)',
           elevated: 'var(--color-surface-elevated)',
           disabled: 'var(--color-surface-disabled)',
-          /* LEGACY ALIASES (DEPRECATED - DO NOT USE FOR NEW COMPONENTS) */
-          app: 'var(--color-offwhite)',
-          raised: 'var(--color-cream)',
-          muted: 'var(--color-cream)',
-          subtle: 'var(--color-beige)',
-          strong: 'var(--color-sand)',
         },
         border: {
           subtle: 'var(--color-border-subtle)',
@@ -33,8 +27,6 @@ module.exports = {
           control: 'var(--color-border-control)',
           'control-hover': 'var(--color-border-control-hover)',
           focus: 'var(--color-border-focus)',
-          /* LEGACY */
-          soft: 'var(--color-border-soft)',
         },
         text: {
           primary: 'var(--color-text-primary)',
@@ -44,42 +36,21 @@ module.exports = {
             DEFAULT: 'var(--color-text-secondary-surface)',
           },
           disabled: 'var(--color-text-disabled)',
-          /* LEGACY */
-          main: 'var(--color-text-main)',
-          muted: 'var(--color-text-muted)',
-          inverse: 'var(--color-white-pure)',
         },
         primary: {
           DEFAULT: 'var(--color-primary)',
-          /* LEGACY */
-          main: 'var(--color-primary-main)',
-          light: 'var(--color-primary-light)',
-          soft: 'var(--color-primary-soft)',
-          dark: 'var(--color-primary-dark)',
         },
         protein: 'var(--color-protein)',
         carbohydrate: 'var(--color-carbohydrate)',
         fat: 'var(--color-fat)',
         info: {
           DEFAULT: 'var(--color-info)',
-          /* LEGACY */
-          main: 'var(--color-info-main)',
-          soft: 'var(--color-info-soft)',
-          dark: 'var(--color-info-dark)',
         },
         warning: {
           DEFAULT: 'var(--color-warning)',
-          /* LEGACY */
-          main: 'var(--color-warning-main)',
-          soft: 'var(--color-warning-soft)',
-          dark: 'var(--color-warning-dark)',
         },
         success: {
           DEFAULT: 'var(--color-success)',
-          /* LEGACY */
-          main: 'var(--color-success-main)',
-          soft: 'var(--color-success-soft)',
-          dark: 'var(--color-success-dark)',
         },
         error: 'var(--color-error)',
         link: {
@@ -89,64 +60,6 @@ module.exports = {
         data: {
           4: 'var(--color-data-4)',
           5: 'var(--color-data-5)',
-        },
-        
-        /* LEGACY ALIASES (DEPRECATED - DO NOT USE FOR NEW COMPONENTS) */
-        accent: {
-          main: 'var(--color-accent-main)',
-          light: 'var(--color-accent-light)',
-          soft: 'var(--color-accent-soft)',
-          dark: 'var(--color-accent-dark)',
-        },
-        tomato: {
-          main: 'var(--color-tomato-main)',
-          light: 'var(--color-tomato-light)',
-          soft: 'var(--color-tomato-soft)',
-          dark: 'var(--color-tomato-dark)',
-        },
-        secondary: {
-          main: 'var(--color-secondary-main)',
-          light: 'var(--color-secondary-light)',
-          soft: 'var(--color-secondary-soft)',
-          dark: 'var(--color-secondary-dark)',
-        },
-        white: {
-          pure: 'var(--color-white-pure)',
-          base: 'var(--color-white-base)',
-          soft: 'var(--color-white-soft)',
-        },
-        black: {
-          main: 'var(--color-black-main)',
-          soft: 'var(--color-black-soft)',
-          light: 'var(--color-black-light)',
-        },
-        gray: {
-          300: 'var(--color-gray-300)',
-          400: 'var(--color-gray-400)',
-          500: 'var(--color-gray-500)',
-          700: 'var(--color-gray-700)',
-        },
-        component: {
-          button: {
-            primary: {
-              bg: 'var(--component-button-primary-bg)',
-              pressed: 'var(--component-button-primary-bg-pressed)',
-              text: 'var(--component-button-primary-text)',
-            },
-            danger: {
-              bg: 'var(--component-button-danger-bg)',
-              pressed: 'var(--component-button-danger-bg-pressed)',
-            },
-          },
-          input: {
-            bg: 'var(--component-input-bg)',
-            border: 'var(--component-input-border)',
-            focus: 'var(--component-input-border-focus)',
-          },
-          card: {
-            bg: 'var(--component-card-bg)',
-            border: 'var(--component-card-border)',
-          },
         },
       },
       fontFamily: {

@@ -6,7 +6,7 @@ import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
 import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
-import { COLORS } from '@/tokens/colors';
+import { useThemeColors } from '../../../hooks/useThemeColors';
 import WorkoutSession from '@/db/models/WorkoutSession';
 
 const formatDate = (timestamp: number) => {
@@ -79,6 +79,7 @@ function HistorySessionItem({ session }: { session: WorkoutSession }) {
 
 export function HistoryScreen() {
   const { history, isLoading, loadHistory } = useWorkoutHistory();
+  const { primary } = useThemeColors();
 
   useFocusEffect(
     useCallback(() => {
@@ -90,7 +91,7 @@ export function HistoryScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-surface">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }

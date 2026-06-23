@@ -1,7 +1,6 @@
 import { View, TextInputProps } from 'react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { COLORS } from '../../tokens/colors';
 import { Search, X } from 'lucide-react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';

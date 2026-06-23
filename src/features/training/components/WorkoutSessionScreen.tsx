@@ -9,7 +9,7 @@ import Exercise from '../../../db/models/Exercise';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
-import { COLORS } from '@/tokens/colors';
+import { useThemeColors } from '../../../hooks/useThemeColors';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 
@@ -18,6 +18,7 @@ export function WorkoutSessionScreen() {
   const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmFinishVisible, setConfirmFinishVisible] = useState(false);
+  const { primary } = useThemeColors();
 
   const {
     session,
@@ -70,7 +71,7 @@ export function WorkoutSessionScreen() {
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center bg-surface">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
