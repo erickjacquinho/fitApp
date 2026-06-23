@@ -17,7 +17,7 @@ export function useCalendarSummary() {
     const fetchSummaries = async () => {
       try {
         const meals = await database.get<Meal>('meals').query().fetch();
-        const grouped: Record<string, Array<{ food: Food; quantity: number }>> = {};
+        const grouped: Record<string, { food: Food; quantity: number }[]> = {};
 
         for (const meal of meals) {
           if (!meal.targetDate) continue;

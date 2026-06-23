@@ -15,28 +15,34 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: cn(
-          'bg-component-button-primary-bg active:bg-component-button-primary-pressed',
-          Platform.select({ web: 'hover:bg-component-button-primary-pressed' })
+          'bg-primary active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         destructive: cn(
-          'bg-tomato-main active:bg-tomato-dark',
+          'bg-error active:opacity-80',
           Platform.select({
-            web: 'hover:bg-tomato-dark focus-visible:ring-tomato-main/20',
+            web: 'hover:opacity-90 focus-visible:ring-error/20',
+          })
+        ),
+        warning: cn(
+          'bg-warning active:opacity-80',
+          Platform.select({
+            web: 'hover:opacity-90',
           })
         ),
         outline: cn(
-          'border border-border-strong bg-surface-app active:bg-surface-muted',
+          'border border-border-strong bg-surface active:bg-surface-elevated',
           Platform.select({
-            web: 'hover:bg-surface-muted',
+            web: 'hover:bg-surface-elevated',
           })
         ),
         secondary: cn(
-          'bg-surface-muted active:bg-surface-strong',
-          Platform.select({ web: 'hover:bg-surface-strong' })
+          'bg-surface-elevated active:bg-surface',
+          Platform.select({ web: 'hover:bg-surface' })
         ),
         ghost: cn(
-          'active:bg-surface-muted',
-          Platform.select({ web: 'hover:bg-surface-muted' })
+          'active:bg-surface-elevated',
+          Platform.select({ web: 'hover:bg-surface-elevated' })
         ),
         link: '',
       },
@@ -64,17 +70,18 @@ const buttonTextVariants = cva(
       variant: {
         default: 'text-text-inverse',
         destructive: 'text-text-inverse',
+        warning: 'text-text-primary',
         outline: cn(
-          'text-accent-main group-active:text-accent-dark',
-          Platform.select({ web: 'group-hover:text-accent-dark' })
+          'text-primary group-active:text-primary',
+          Platform.select({ web: 'group-hover:text-primary' })
         ),
-        secondary: 'text-text-main group-active:text-text-main',
+        secondary: 'text-text-primary group-active:text-text-primary',
         ghost: cn(
-          'text-accent-main group-active:text-accent-dark',
-          Platform.select({ web: 'group-hover:text-accent-dark' })
+          'text-primary group-active:text-primary',
+          Platform.select({ web: 'group-hover:text-primary' })
         ),
         link: cn(
-          'text-accent-main group-active:underline',
+          'text-link group-active:underline',
           Platform.select({ web: 'underline-offset-4 hover:underline group-hover:underline' })
         ),
       },

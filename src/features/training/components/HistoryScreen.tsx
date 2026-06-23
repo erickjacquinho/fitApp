@@ -7,7 +7,7 @@ import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
 import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
 import { COLORS } from '@/tokens/colors';
-import { WorkoutSession } from '@/db/models/WorkoutSession';
+import WorkoutSession from '@/db/models/WorkoutSession';
 
 const formatDate = (timestamp: number) => {
   const d = new Date(timestamp);
@@ -31,7 +31,7 @@ function HistorySessionItem({ session }: { session: WorkoutSession }) {
   const [programName, setProgramName] = useState('Carregando programa...');
 
   React.useEffect(() => {
-    session.program.fetch().then((p) => {
+    session.program.fetch().then((p: any) => {
       if (p) setProgramName(p.name);
     });
   }, [session]);

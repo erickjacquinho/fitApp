@@ -4,10 +4,10 @@ import { MacroBadge } from './MacroBadge';
 import { Food } from '../../../db';
 
 interface PreviewMacrosProps {
-  items: Array<{
+  items: {
     food: Food;
     quantity: number;
-  }>;
+  }[];
 }
 
 export function PreviewMacros({ items }: PreviewMacrosProps) {

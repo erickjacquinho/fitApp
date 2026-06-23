@@ -27,7 +27,7 @@ export function TrainingWidget({
 
   return (
     <Card>
-      <View className="flex-row items-center justify-between border-b border-soft pb-3 mb-3">
+      <View className="flex-row items-center justify-between border-b border-border-subtle pb-3 mb-3">
         <Text variant="subtitle" className="font-bold">
           Plano de treino
         </Text>
@@ -38,8 +38,8 @@ export function TrainingWidget({
             size="sm"
             onPress={() => router.push('/training')}
           >
-            <Icon as={Play} size={16} className="text-accent-main" fill="currentColor" />
-            <Text variant="caption" color="accent">
+            <Icon as={Play} size={16} className="text-primary" fill="currentColor" />
+            <Text variant="caption" className="text-primary">
               Iniciar
             </Text>
           </Button>
@@ -52,20 +52,20 @@ export function TrainingWidget({
             {programName}
           </Text>
 
-          <View className="flex-row items-center gap-2 mt-2 mb-3 bg-surface-raised p-3 rounded-md border border-soft">
+          <View className="flex-row items-center gap-2 mt-2 mb-3 bg-surface p-3 rounded-md border border-border-subtle">
             {hasTrainedToday ? (
-              <Icon as={CheckCircle2} className="text-success-main" />
+              <Icon as={CheckCircle2} className="text-success" />
             ) : (
-              <Icon as={Dumbbell} className="text-text-muted" />
+              <Icon as={Dumbbell} className="text-text-secondary" />
             )}
-            <Text variant="caption" className={hasTrainedToday ? 'text-success-main font-bold' : ''}>
+            <Text variant="caption" className={hasTrainedToday ? 'text-success font-bold' : ''}>
               {hasTrainedToday ? 'Treino concluído hoje.' : 'Nenhum treino registrado hoje.'}
             </Text>
           </View>
 
           {/* Weekly Summary */}
           <View className="flex-row items-center justify-between mb-2">
-            <Text variant="caption" color="muted">
+            <Text variant="caption" className="text-text-secondary">
               Meta semanal
             </Text>
             <Text variant="caption" className="font-bold">
@@ -77,10 +77,10 @@ export function TrainingWidget({
 
           {lastVolume > 0 && (
             <View className="flex-row items-center gap-2 mt-1">
-              <Icon as={Calendar} size={16} className="text-text-muted" />
-              <Text variant="caption" color="muted">
+              <Icon as={Calendar} size={16} className="text-text-secondary" />
+              <Text variant="caption" className="text-text-secondary">
                 Volume da última sessão:{' '}
-                <Text variant="caption" className="font-bold text-text-main">
+                <Text variant="caption" className="font-bold text-text-primary">
                   {lastVolume.toLocaleString()} kg
                 </Text>
               </Text>
@@ -89,7 +89,7 @@ export function TrainingWidget({
         </View>
       ) : (
         <View className="py-4 items-center justify-center">
-          <Text variant="text" color="muted" className="text-center mb-4">
+          <Text variant="text" className="text-text-secondary text-center mb-4">
             Nenhum programa de treino ativo.
           </Text>
           <Button
@@ -106,9 +106,9 @@ export function TrainingWidget({
       <Button
         variant="ghost"
         onPress={() => router.push('/training')}
-        className="mt-4 border-t border-soft"
+        className="mt-4 border-t border-border-subtle"
       >
-        <Text variant="caption" color="accent">
+        <Text variant="caption" className="text-primary">
           Ver programas
         </Text>
       </Button>

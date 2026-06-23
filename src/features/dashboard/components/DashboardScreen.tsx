@@ -6,10 +6,13 @@ import { TrainingWidget } from './TrainingWidget';
 import { useDashboardMetrics } from '../hooks/useDashboardMetrics';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { COLORS } from '@/tokens/colors';
+import { useColorScheme } from 'nativewind';
+import { lightTheme, darkTheme } from '@/tokens/theme';
 
 export function DashboardScreen() {
   const { metrics, isLoading, refetch } = useDashboardMetrics();
+  const { colorScheme } = useColorScheme();
+  const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
 
   useFocusEffect(
     useCallback(() => {
@@ -19,8 +22,8 @@ export function DashboardScreen() {
 
   if (isLoading && !metrics) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -34,14 +37,14 @@ export function DashboardScreen() {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled"
-      className="flex-1 bg-surface-app p-4"
+      className="flex-1 bg-background p-4"
       refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[COLORS.primary]} />
+        <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[colors.primary]} />
       }
     >
       {/* Welcome Banner */}
       <View className="mb-4">
-        <Text variant="caption" color="muted" className="uppercase font-bold tracking-wide">
+        <Text variant="caption" className="text-text-secondary uppercase font-bold tracking-wide">
           {dateStr}
         </Text>
         <Text variant="title" className="font-bold mt-1">

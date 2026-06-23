@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
@@ -14,22 +15,83 @@ module.exports = {
         caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)', fontWeight: '400' }],
       },
       colors: {
+        background: 'var(--color-background)',
         surface: {
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+          disabled: 'var(--color-surface-disabled)',
+          /* LEGACY ALIASES (DEPRECATED - DO NOT USE FOR NEW COMPONENTS) */
           app: 'var(--color-offwhite)',
           raised: 'var(--color-cream)',
           muted: 'var(--color-cream)',
           subtle: 'var(--color-beige)',
           strong: 'var(--color-sand)',
         },
+        border: {
+          subtle: 'var(--color-border-subtle)',
+          strong: 'var(--color-border-strong)',
+          control: 'var(--color-border-control)',
+          'control-hover': 'var(--color-border-control-hover)',
+          focus: 'var(--color-border-focus)',
+          /* LEGACY */
+          soft: 'var(--color-border-soft)',
+        },
         text: {
+          primary: 'var(--color-text-primary)',
+          secondary: {
+            surface: 'var(--color-text-secondary-surface)',
+            background: 'var(--color-text-secondary-background)',
+            DEFAULT: 'var(--color-text-secondary-surface)',
+          },
+          disabled: 'var(--color-text-disabled)',
+          /* LEGACY */
           main: 'var(--color-text-main)',
           muted: 'var(--color-text-muted)',
           inverse: 'var(--color-white-pure)',
         },
-        border: {
-          soft: 'var(--color-border-soft)',
-          strong: 'var(--color-border-strong)',
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          /* LEGACY */
+          main: 'var(--color-primary-main)',
+          light: 'var(--color-primary-light)',
+          soft: 'var(--color-primary-soft)',
+          dark: 'var(--color-primary-dark)',
         },
+        protein: 'var(--color-protein)',
+        carbohydrate: 'var(--color-carbohydrate)',
+        fat: 'var(--color-fat)',
+        info: {
+          DEFAULT: 'var(--color-info)',
+          /* LEGACY */
+          main: 'var(--color-info-main)',
+          soft: 'var(--color-info-soft)',
+          dark: 'var(--color-info-dark)',
+        },
+        warning: {
+          DEFAULT: 'var(--color-warning)',
+          /* LEGACY */
+          main: 'var(--color-warning-main)',
+          soft: 'var(--color-warning-soft)',
+          dark: 'var(--color-warning-dark)',
+        },
+        success: {
+          DEFAULT: 'var(--color-success)',
+          /* LEGACY */
+          main: 'var(--color-success-main)',
+          soft: 'var(--color-success-soft)',
+          dark: 'var(--color-success-dark)',
+        },
+        error: 'var(--color-error)',
+        link: {
+          DEFAULT: 'var(--color-link)',
+          visited: 'var(--color-link-visited)',
+        },
+        data: {
+          4: 'var(--color-data-4)',
+          5: 'var(--color-data-5)',
+        },
+        
+        /* LEGACY ALIASES (DEPRECATED - DO NOT USE FOR NEW COMPONENTS) */
         accent: {
           main: 'var(--color-accent-main)',
           light: 'var(--color-accent-light)',
@@ -42,20 +104,27 @@ module.exports = {
           soft: 'var(--color-tomato-soft)',
           dark: 'var(--color-tomato-dark)',
         },
-        success: {
-          main: 'var(--color-success-main)',
-          soft: 'var(--color-success-soft)',
-          dark: 'var(--color-success-dark)',
+        secondary: {
+          main: 'var(--color-secondary-main)',
+          light: 'var(--color-secondary-light)',
+          soft: 'var(--color-secondary-soft)',
+          dark: 'var(--color-secondary-dark)',
         },
-        info: {
-          main: 'var(--color-info-main)',
-          soft: 'var(--color-info-soft)',
-          dark: 'var(--color-info-dark)',
+        white: {
+          pure: 'var(--color-white-pure)',
+          base: 'var(--color-white-base)',
+          soft: 'var(--color-white-soft)',
         },
-        warning: {
-          main: 'var(--color-warning-main)',
-          soft: 'var(--color-warning-soft)',
-          dark: 'var(--color-warning-dark)',
+        black: {
+          main: 'var(--color-black-main)',
+          soft: 'var(--color-black-soft)',
+          light: 'var(--color-black-light)',
+        },
+        gray: {
+          300: 'var(--color-gray-300)',
+          400: 'var(--color-gray-400)',
+          500: 'var(--color-gray-500)',
+          700: 'var(--color-gray-700)',
         },
         component: {
           button: {
@@ -79,34 +148,6 @@ module.exports = {
             border: 'var(--component-card-border)',
           },
         },
-        primary: {
-          main: 'var(--color-primary-main)',
-          light: 'var(--color-primary-light)',
-          soft: 'var(--color-primary-soft)',
-          dark: 'var(--color-primary-dark)',
-        },
-        secondary: {
-          main: 'var(--color-secondary-main)',
-          light: 'var(--color-secondary-light)',
-          soft: 'var(--color-secondary-soft)',
-          dark: 'var(--color-secondary-dark)',
-        },
-        white: {
-          pure: 'var(--color-white-pure)',
-          base: 'var(--color-white-base)',
-          soft: 'var(--color-white-soft)',
-        },
-        black: {
-          main: 'var(--color-black-main)',
-          soft: 'var(--color-black-soft)',
-          light: 'var(--color-black-light)',
-        },
-        gray: {
-          300: 'var(--color-gray-300)',
-          400: 'var(--color-gray-400)',
-          500: 'var(--color-gray-500)',
-          700: 'var(--color-gray-700)',
-        }
       },
       fontFamily: {
         sans: ["Helvetica", "Arial", "sans-serif"],

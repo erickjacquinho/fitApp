@@ -41,7 +41,7 @@ export function FeedbackDialog({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className={state.isError ? 'text-tomato-main' : 'text-text-main'}>
+          <AlertDialogTitle className={state.isError ? 'text-error' : 'text-text-primary'}>
             {state.title}
           </AlertDialogTitle>
           <AlertDialogDescription>

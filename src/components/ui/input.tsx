@@ -66,7 +66,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
         {Platform.OS !== 'web' && frame.width > 0 && (
           <Animated.View 
             style={ringStyle}
-            className="absolute border-accent-main/30 bg-transparent"
+            className="absolute border-primary/30 bg-transparent"
             pointerEvents="none"
           />
         )}
@@ -79,21 +79,21 @@ const Input = React.forwardRef<TextInput, InputProps>(
           onBlur={handleBlur}
           aria-invalid={ariaInvalid}
           className={cn(
-            'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-component-input-border bg-component-input-bg px-4 py-2 font-sans text-text leading-body text-text-main shadow-none transition-colors duration-base',
-            'focus:border-thin focus:border-component-input-focus',
+            'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-border-strong bg-surface px-4 py-2 font-sans text-text leading-body text-text-primary shadow-none transition-colors duration-base',
+            'focus:border-thin focus:border-border-focus',
             props.editable === false &&
               cn(
                 'opacity-50',
                 Platform.select({ web: 'disabled:pointer-events-none disabled:cursor-not-allowed' })
               ),
-            isInvalid && 'border-tomato-main text-tomato-main',
+            isInvalid && 'border-error text-error',
             Platform.select({
               web: cn(
-                'placeholder:text-text-muted selection:bg-accent-main selection:text-text-inverse outline-none',
-                'focus-visible:border-component-input-focus focus-visible:ring-2 focus-visible:ring-accent-main/30',
-                'aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main'
+                'placeholder:text-text-secondary selection:bg-primary selection:text-text-inverse outline-none',
+                'focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-primary/30',
+                'aria-invalid:ring-error/20 aria-invalid:border-error'
               ),
-              native: 'placeholder:text-text-muted',
+              native: 'placeholder:text-text-secondary',
             }),
             className
           )}

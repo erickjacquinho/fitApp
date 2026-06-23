@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Platform } from 'react-native';
-import { KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Platform , KeyboardAvoidingView, ScrollView } from 'react-native';
+
 import { useFoodForm } from '../hooks/useFoodForm';
 import { useLocalSearchParams } from 'expo-router';
 import { Button } from "@/components/ui/button";

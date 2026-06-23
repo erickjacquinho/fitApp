@@ -70,7 +70,7 @@ function DialogContent({
       <DialogOverlay>
         <DialogPrimitive.Content
           className={cn(
-            'z-50 flex w-full max-w-sm flex-col gap-4 rounded-lg border border-border-strong bg-surface-app p-card shadow-none',
+            'z-50 flex w-full max-w-sm flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none',
             Platform.select({
               web: 'animate-in fade-in-0 zoom-in-95 duration-200',
             }),
@@ -88,7 +88,7 @@ function DialogContent({
             hitSlop={12}>
             <Icon
               as={X}
-              className={cn('text-text-main web:pointer-events-none size-4 shrink-0')}
+              className={cn('text-text-secondary web:pointer-events-none size-4 shrink-0')}
             />
             <Text className="sr-only">Close</Text>
           </DialogPrimitive.Close>
@@ -116,7 +116,7 @@ function DialogFooter({ className, ...props }: ViewProps) {
 function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn('text-title font-bold leading-title text-text-main', className)}
+      className={cn('text-title font-bold leading-title text-text-primary', className)}
       {...props}
     />
   );
@@ -128,7 +128,7 @@ function DialogDescription({
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
-      className={cn('text-text font-regular leading-body text-text-muted', className)}
+      className={cn('text-text font-regular leading-body text-text-secondary', className)}
       {...props}
     />
   );

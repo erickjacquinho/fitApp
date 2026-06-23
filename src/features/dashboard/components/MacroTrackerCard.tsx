@@ -22,20 +22,20 @@ export function MacroTrackerCard({
 }: MacroTrackerCardProps) {
   const clampedProgress = Math.min(Math.max(progress, 0), 100);
   const toneClasses: Record<MacroTone, { text: string; progress: string }> = {
-    protein: { text: 'text-info-main', progress: 'bg-info-main' },
-    carbs: { text: 'text-warning-dark', progress: 'bg-warning-main' },
-    fat: { text: 'text-tomato-main', progress: 'bg-tomato-main' },
+    protein: { text: 'text-protein', progress: 'bg-protein' },
+    carbs: { text: 'text-carbohydrate', progress: 'bg-carbohydrate' },
+    fat: { text: 'text-fat', progress: 'bg-fat' },
   };
 
   return (
-    <View className="flex-1 rounded-md border border-soft bg-surface-raised p-3">
+    <View className="flex-1 rounded-md border border-border-subtle bg-surface p-3">
       <Text variant="caption" className={`mb-1 text-center ${toneClasses[tone].text}`}>
         {name}
       </Text>
       <Text variant="label" className="text-center font-bold">
         {current}g
       </Text>
-      <Text variant="caption" color="muted" className="text-center">
+      <Text variant="caption" className="text-text-secondary text-center">
         de {target}g
       </Text>
       <Progress

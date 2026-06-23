@@ -38,7 +38,7 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       className={cn(
-        'border-b border-border-soft',
+        'border-b border-border-subtle',
         Platform.select({ web: 'last:border-b-0' }),
         className
       )}
@@ -79,15 +79,15 @@ function AccordionTrigger({
   return (
     <TextClassContext.Provider
       value={cn(
-        'text-left text-subtitle font-semibold text-text-main'
+        'text-left text-subtitle font-semibold text-text-primary'
       )}>
       <AccordionPrimitive.Header>
         <AccordionPrimitive.Trigger {...props} asChild>
           <Trigger
             className={cn(
-              'min-h-touch-target flex-row items-center justify-between gap-4 rounded-sm px-4 py-3 active:bg-surface-muted disabled:opacity-50',
+              'min-h-touch-target flex-row items-center justify-between gap-4 rounded-sm px-4 py-3 active:bg-surface-elevated disabled:opacity-50',
               Platform.select({
-                web: 'flex flex-1 outline-none transition-all focus-visible:border-accent-main focus-visible:ring-2 focus-visible:ring-accent-main/30 disabled:pointer-events-none',
+                web: 'flex flex-1 outline-none transition-all focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-primary/30 disabled:pointer-events-none',
               }),
               className
             )}>
@@ -97,7 +97,7 @@ function AccordionTrigger({
                 as={ChevronDown}
                 size={16}
                 className={cn(
-                  'shrink-0 text-text-muted',
+                  'shrink-0 text-text-secondary',
                   Platform.select({
                     web: 'pointer-events-none translate-y-0.5 transition-transform duration-200',
                   })
@@ -118,7 +118,7 @@ function AccordionContent({
 }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   const { isExpanded } = AccordionPrimitive.useItemContext();
   return (
-    <TextClassContext.Provider value="text-text text-text-main">
+    <TextClassContext.Provider value="text-text text-text-primary">
       <AccordionPrimitive.Content
         className={cn(
           'overflow-hidden',

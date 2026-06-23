@@ -14,14 +14,14 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-accent-main',
-        secondary: 'bg-surface-muted',
-        destructive: 'bg-tomato-main',
-        outline: 'border-border-soft bg-transparent',
-        success: 'bg-success-soft',
-        warning: 'bg-warning-soft',
-        info: 'bg-info-soft',
-        neutral: 'bg-surface-strong',
+        default: 'bg-primary',
+        secondary: 'bg-surface-elevated',
+        destructive: 'bg-error',
+        outline: 'border border-border-subtle bg-transparent',
+        success: 'bg-success',
+        warning: 'bg-warning',
+        info: 'bg-info',
+        neutral: 'bg-surface-disabled',
       },
     },
     defaultVariants: {
@@ -34,13 +34,13 @@ const badgeTextVariants = cva('text-caption font-bold leading-caption', {
   variants: {
     variant: {
       default: 'text-text-inverse',
-      secondary: 'text-text-main',
+      secondary: 'text-text-primary',
       destructive: 'text-text-inverse',
-      outline: 'text-text-main',
-      success: 'text-success-dark',
-      warning: 'text-warning-dark',
-      info: 'text-info-dark',
-      neutral: 'text-text-main',
+      outline: 'text-text-primary',
+      success: 'text-text-inverse',
+      warning: 'text-text-primary',
+      info: 'text-text-inverse',
+      neutral: 'text-text-primary',
     },
   },
   defaultVariants: {

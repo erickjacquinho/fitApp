@@ -20,7 +20,7 @@ export const DailySummaryCard = ({ date, macros, onPress }: DailySummaryCardProp
         <View className="flex-row justify-between items-center">
           <View className="flex-1">
             <Text variant="subtitle">{displayDate}</Text>
-            <Text variant="caption" color="muted">
+            <Text variant="caption" className="text-text-secondary">
               {Math.round(macros.protein)}P • {Math.round(macros.carbs)}C • {Math.round(macros.fat)}G
             </Text>
           </View>

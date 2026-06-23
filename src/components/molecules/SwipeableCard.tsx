@@ -1,11 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View , Animated, Pressable } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Button } from '@/components/ui/button';
 import { Card, CardProps } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
 import { Pencil, Trash2 } from 'lucide-react-native';
-import { Animated, Pressable } from 'react-native';
+
 
 export interface SwipeableCardProps extends CardProps {
   onDelete?: () => void;
@@ -45,9 +45,9 @@ export function SwipeableCard({ onDelete, onPress, children, ...props }: Swipeab
                 onDelete();
               }
             }}
-            className="h-full w-16 bg-tomato-soft"
+            className="h-full w-16 bg-error"
           >
-            <Icon as={Trash2} className="text-tomato-main" />
+            <Icon as={Trash2} className="text-error-foreground" />
           </Button>
         )}
       </View>

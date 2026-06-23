@@ -21,7 +21,7 @@ export function Header({ title, showBackButton, headerLeft, headerRight }: Heade
   return (
     <View 
       style={{ paddingTop: insets.top }}
-      className="bg-surface-app border-b border-soft px-screen-x py-compact"
+      className="border-b border-border-subtle bg-surface px-screen-x py-compact"
     >
       <View className="flex-row items-center justify-between min-h-control-md">
         <View className="flex-1 items-start justify-center">

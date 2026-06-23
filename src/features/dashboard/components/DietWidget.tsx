@@ -40,7 +40,7 @@ export function DietWidget({
 
   return (
     <Card>
-      <View className="flex-row items-center justify-between border-b border-soft pb-3 mb-3">
+      <View className="flex-row items-center justify-between border-b border-border-subtle pb-3 mb-3">
         <Text variant="subtitle" className="font-bold">
           Dieta e nutrição
         </Text>
@@ -50,8 +50,8 @@ export function DietWidget({
           size="sm"
           onPress={() => router.push('/diet/create-meal')}
         >
-          <Icon as={Plus} size={16} className="text-accent-main" />
-          <Text variant="caption" color="accent">
+          <Icon as={Plus} size={16} className="text-primary" />
+          <Text variant="caption" className="text-primary">
             Adicionar refeição
           </Text>
         </Button>
@@ -61,14 +61,14 @@ export function DietWidget({
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-1 pr-4">
           <View className="flex-row items-baseline gap-1">
-            <Text variant="display" color="accent">
+            <Text variant="display" className="text-primary">
               {calories}
             </Text>
-            <Text variant="caption" color="muted">
+            <Text variant="caption" className="text-text-secondary">
               / {goal} kcal consumidas
             </Text>
           </View>
-          <Text variant="caption" color="muted" className="mt-1">
+          <Text variant="caption" className="text-text-secondary mt-1">
             {remaining > 0 ? `${remaining} kcal restantes` : 'Meta atingida'}
           </Text>
         </View>
@@ -107,9 +107,9 @@ export function DietWidget({
       <Button
         variant="ghost"
         onPress={() => router.push('/diet')}
-        className="mt-4 border-t border-soft"
+        className="mt-4 border-t border-border-subtle"
       >
-        <Text variant="caption" color="accent">
+        <Text variant="caption" className="text-primary">
           Ver detalhes da dieta
         </Text>
       </Button>

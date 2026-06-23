@@ -13,7 +13,7 @@ export function useMealForm() {
     preparationState: 'Raw',
   });
 
-  const [selectedItems, setSelectedItems] = useState<Array<{ food: Food; quantity: number }>>([]);
+  const [selectedItems, setSelectedItems] = useState<{ food: Food; quantity: number }[]>([]);
 
   const setFormValue = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));

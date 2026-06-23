@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Platform } from 'react-native';
-import { KeyboardAvoidingView, FlatList } from 'react-native';
+import { View, Platform , KeyboardAvoidingView, FlatList } from 'react-native';
+
 import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodService } from '../services/food-service';
@@ -14,7 +14,7 @@ import { SIZES } from '@/tokens/sizes';
 interface FoodSelectorModalProps {
   visible: boolean;
   onClose: () => void;
-  onConfirm: (selections: Array<{ food: Food; quantity: number }>) => void;
+  onConfirm: (selections: { food: Food; quantity: number }[]) => void;
 }
 
 export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorModalProps) {

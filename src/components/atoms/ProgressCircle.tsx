@@ -18,14 +18,14 @@ export function ProgressCircle({
 
   return (
     <View
-      className="items-center justify-center rounded-full bg-surface-app border border-soft relative"
+      className="relative items-center justify-center rounded-full border border-border-subtle bg-surface"
       style={{ width: size, height: size }}
     >
-      <Text variant="label" className="font-bold text-accent-main">
+      <Text variant="label" className="font-bold text-primary">
         {clampedPercentage}%
       </Text>
       {label && (
-        <Text variant="caption" color="muted" className="absolute -bottom-5">
+        <Text variant="caption" className="absolute -bottom-5 text-text-secondary">
           {label}
         </Text>
       )}

@@ -142,3 +142,42 @@ WatermelonDB is a React Native library with no supported web target. The web exp
 **Resolution:** Add a `.eslintignore`-style web exclusion for `src/db/` in `webpack.config.js` or Expo web config, or accept this as a permanent constraint given FitApp is Android-first (MVP). Decision deferred to Phase 7 or when web support is scoped.
 
 Ownership: Phase 7 (web scope decision).
+
+---
+
+## Phase 2 (Theme and Typography Foundations)
+
+### T002 — Font Source Hashes
+
+| Font File | SHA-256 |
+|---|---|
+| `HelveticaNowDisplay-Bold.otf` | `0DC128C852C5E80856FA16E9BBF4E60AF70F9A0B4BA1F3B82AE9BDE72A8DE153` |
+| `HelveticaNowText-Regular.otf` | `017175B48B201C919FDAE54F590ED38474C476E48614D385DFB630B7817A481B` |
+| `HelveticaNowText-Medium.otf` | `9DF25C14674C79B53762830BF93E6E9D68F84116AAD1C7BE6ED4A2A2CB1F3CD7` |
+| `HelveticaNowText-Bold.otf` | `AA34C7BADA563266D7DD7AA0840359147CA89F86B43113F5F743A39F0AF25817` |
+
+## Phase 3 - Canonical Primitives Evidence
+
+- **Tests Passed**: `npx jest` executed successfully for `card`, `badge`, `input`, `dialog`, `alert-dialog` bypass tests. 11 suites, 33 tests total.
+- **Type Check**: `npx tsc --noEmit` passed.
+- **Lint**: `npm run lint` within bounds.
+- **Expo Doctor**: `npx expo-doctor` running cleanly.
+- **Static Scans**: Confirmed `src/components/ui/` files use `surface`, `border-subtle`, `primary`, `error` tokens instead of `bg-surface-app`, `border-soft`, `bg-accent-main`. No raw hex codes detected.
+- **Catalog**: Primitive tokens properly documented in `app/style-guide.tsx`.
+
+## Phase 2 - Typography and Action Primitives Evidence
+
+### Typography and Contrast Validation
+- **Contrast Check**: Automated WCAG 2.1 AA assertions for token combinations (error, primary, backgrounds) passing.
+- **Typography Parity**: `TYPOGRAPHY` exports verified and regressed against obsolete FONT_WEIGHT scales.
+
+### Tools Validation
+- **tsc**: Compiled with 0 errors (`npx tsc --noEmit`).
+- **jest**: Token unit tests, hooks tests passed (`npx jest src/tokens src/hooks`).
+- **expo-doctor**: Run and passed.
+- **npm audit**: Addressed where applicable (Expo dependencies).
+- **expo export (web)**: Blocked by known WatermelonDB decorator limitation.
+
+### Dev Client Validation (Android)
+- **APK Target**: `fitApp-dev.apk` updated from `android/app/build/outputs/apk/debug/app-debug.apk`.
+- **SHA-256 Hash**: `E0C083D9941415B3803D3D0113C5E3E1E53E3ED93BF5167C74363E43B4C3B7D6` (verified identical between build output and root).

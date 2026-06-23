@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Pressable, Platform } from 'react-native';
-import { KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Pressable, Platform , KeyboardAvoidingView, ScrollView } from 'react-native';
+
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';

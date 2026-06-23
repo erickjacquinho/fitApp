@@ -18,7 +18,7 @@ export function ListItem({ title, subtitle, rightAccessory, leftAccessory, disab
       disabled={disabled}
       className={twMerge(
         clsx(
-          'flex-row items-center px-4 py-3 bg-surface-raised border-b border-soft active:bg-surface-muted',
+          'flex-row items-center border-b border-border-subtle bg-surface-elevated px-4 py-3 active:bg-surface-sunken',
           disabled && 'opacity-50',
           className
         )
@@ -29,7 +29,7 @@ export function ListItem({ title, subtitle, rightAccessory, leftAccessory, disab
       <View className="flex-1 flex-col">
         <Text variant="subtitle">{title}</Text>
         {subtitle ? (
-          <Text variant="text" color="muted">
+          <Text variant="text" className="text-text-secondary">
             {subtitle}
           </Text>
         ) : null}

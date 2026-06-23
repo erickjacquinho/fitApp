@@ -28,7 +28,7 @@ function Icon({ as: IconComponent, className, size = SIZES.iconMedium, ...props 
   return (
     <IconImpl
       as={IconComponent}
-      className={cn('text-text-main', textClass, className)}
+      className={cn('text-text-primary', textClass, className)}
       size={size}
       {...props}
     />
