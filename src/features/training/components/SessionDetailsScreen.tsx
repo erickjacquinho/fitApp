@@ -6,7 +6,7 @@ import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
-import { useThemeColors } from '../../../hooks/useThemeColors';
+import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { Icon } from '@/components/ui/icon';
 
 export function SessionDetailsScreen() {

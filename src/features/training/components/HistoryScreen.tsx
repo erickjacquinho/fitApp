@@ -6,7 +6,7 @@ import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
 import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
-import { useThemeColors } from '../../../hooks/useThemeColors';
+import { useThemeColors } from '../../../hooks/use-theme-colors';
 import WorkoutSession from '@/db/models/WorkoutSession';
 
 const formatDate = (timestamp: number) => {

@@ -9,7 +9,7 @@ import Exercise from '../../../db/models/Exercise';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
-import { useThemeColors } from '../../../hooks/useThemeColors';
+import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 
