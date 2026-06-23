@@ -32,7 +32,7 @@ export function MealForm() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
       <ScrollView
-        className="flex-1 bg-surface-app"
+        className="flex-1 bg-surface"
         contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
@@ -68,7 +68,7 @@ export function MealForm() {
                 <Card key={item.food.id} className="flex-row items-center justify-between py-3">
                   <View className="flex-1">
                     <Text variant="subtitle">{item.food.name}</Text>
-                    <Text variant="caption" color="muted">{item.quantity}g</Text>
+                    <Text variant="caption" className="text-text-secondary">{item.quantity}g</Text>
                   </View>
                   <Button
                     accessibilityLabel={`Remover ${item.food.name}`}
@@ -76,7 +76,7 @@ export function MealForm() {
                     size="icon"
                     onPress={() => removeFood(item.food.id)}
                   >
-                    <Icon as={X} className="text-tomato-main" />
+                    <Icon as={X} className="text-error" />
                   </Button>
                 </Card>
               ))}
@@ -88,7 +88,7 @@ export function MealForm() {
             </View>
           ) : (
             <Card className="items-center py-10 border-dashed">
-              <Text color="muted">Nenhum alimento adicionado.</Text>
+              <Text className="text-text-secondary">Nenhum alimento adicionado.</Text>
             </Card>
           )}
         </View>

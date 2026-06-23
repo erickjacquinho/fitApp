@@ -38,12 +38,12 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
   };
 
   return (
-    <View className="flex-1 bg-surface-app px-screen-x pt-6 gap-6">
+    <View className="flex-1 bg-surface px-screen-x pt-6 gap-6">
       <Card>
         <Text variant="title">{food.name}</Text>
         
-        <View className="flex-row items-center justify-between border-b border-soft pb-4">
-          <Text variant="text" color="muted">Quantidade (g)</Text>
+        <View className="flex-row items-center justify-between border-b border-border-subtle pb-4">
+          <Text variant="text" className="text-text-secondary">Quantidade (g)</Text>
           <Input
             className="w-24 text-right font-semibold"
             keyboardType="numeric"

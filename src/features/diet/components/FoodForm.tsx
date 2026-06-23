@@ -32,7 +32,7 @@ export function FoodForm() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
       <ScrollView
-        className="flex-1 bg-surface-app"
+        className="flex-1 bg-surface"
         contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
@@ -47,7 +47,7 @@ export function FoodForm() {
               placeholder="Ex.: Peito de frango"
               hasError={!!errors.name}
             />
-            {errors.name && <Text variant="caption" className="text-tomato-main">{errors.name}</Text>}
+            {errors.name && <Text variant="caption" className="text-error">{errors.name}</Text>}
             
             <Text variant="caption">Peso de preparo (g)</Text>
             <Input 
@@ -56,7 +56,7 @@ export function FoodForm() {
               keyboardType="numeric" 
               hasError={!!errors.preparationWeight}
             />
-            {errors.preparationWeight && <Text variant="caption" className="text-tomato-main">{errors.preparationWeight}</Text>}
+            {errors.preparationWeight && <Text variant="caption" className="text-error">{errors.preparationWeight}</Text>}
 
             <Text variant="caption">Descrição (opcional)</Text>
             <Input 
@@ -103,9 +103,9 @@ export function FoodForm() {
             </View>
           </View>
 
-          <View className="pt-3 border-t border-soft flex-row items-center justify-between">
+          <View className="pt-3 border-t border-border-subtle flex-row items-center justify-between">
             <Text variant="subtitle">Calorias estimadas</Text>
-            <Text variant="title" className="text-accent-main">
+            <Text variant="title" className="text-primary">
               {form.calories} kcal
             </Text>
           </View>

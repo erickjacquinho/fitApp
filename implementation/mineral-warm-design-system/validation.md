@@ -181,3 +181,30 @@ Ownership: Phase 7 (web scope decision).
 ### Dev Client Validation (Android)
 - **APK Target**: `fitApp-dev.apk` updated from `android/app/build/outputs/apk/debug/app-debug.apk`.
 - **SHA-256 Hash**: `E0C083D9941415B3803D3D0113C5E3E1E53E3ED93BF5167C74363E43B4C3B7D6` (verified identical between build output and root).
+
+## Phase 4 and 5 - Shared UI and Dashboard Evidence
+
+### Components Migrated
+- **Organisms/Popups**: `ConfirmModal.tsx`, `FeedbackDialog.tsx`, `BottomSheetModal.tsx`
+- **Shell**: `app/_layout.tsx`, `app/(tabs)/_layout.tsx`, `main-tab-screen.tsx`
+- **Dashboard**: `DashboardScreen.tsx`, `DietWidget.tsx`, `TrainingWidget.tsx`, `MacroTrackerCard.tsx`
+
+### Validation
+- **Tests Passed**: Added and passed bypass tests for layout, tab routing, and dashboard widgets (`organisms.test.tsx`, `shell.test.tsx`, `DashboardScreen.test.tsx`).
+- **Lints and TypeScript**: Resolved lints via automated fix, TypeScript passed (`tsc --noEmit`).
+- **Semantic Tokens**: Completely replaced `COLORS` usages in Dashboard with `lightTheme`, `darkTheme`, and `useColorScheme`. Migrated nested cards and backgrounds to `bg-surface` and `bg-background`.
+
+## Phase 5 - Diet Component Evidence
+
+### Components Migrated
+- **Macro Utils**: `src/features/diet/utils/macro-utils.ts`
+- **Diet Tab / Screens**: `MenuScreen.tsx`, `diet.tsx`, `FoodBankScreen.tsx`, `AddFoodToMealScreen.tsx`, `EditMealItemScreen.tsx`, `CalendarSummaryScreen.tsx`
+- **Molecules / Cards**: `MealCard.tsx`, `DailyBalance.tsx`, `MacroBadge.tsx`, `MealMacrosSummary.tsx`, `PreviewMacros.tsx`, `FoodEntryCard.tsx`, `DailySummaryCard.tsx`
+- **Forms / Modals**: `FoodForm.tsx`, `MealForm.tsx`, `FoodSelectorModal.tsx`, `ReorderMealsModal.tsx`
+
+### Validation
+- **Tests Passed**: Added and passed bypass tests `diet-components.test.ts`, `food-bank-components.test.ts`, `meal-form-components.test.ts`, `quantity-screens.test.ts`, `calendar-components.test.ts`. Verified no `COLORS`, `bg-surface-app`, `bg-surface-raised`, `border-soft`, `text-text-main`, `text-tomato-main`, `color="muted"`, `text-accent-main` are used.
+- **Lints and TypeScript**: Passed ESLint with zero errors (max-warnings < 41), TypeScript passed (`tsc --noEmit`).
+- **Web Export**: Ran Expo web bundler check (`npx expo export --platform web --output-dir dist-check`). Export fails on WatermelonDB decorators (`@text`), which is an accepted and documented project constraint.
+- **Semantic Tokens**: `MacroBadge` completely replaced shadcn badge variants with hard-mapped tailwind class tokens `bg-protein`, `bg-carbohydrate`, `bg-fat`. Forms and menus are using `bg-surface`, `border-border-subtle`, `text-text-secondary`, and `text-primary`.
+- **Legacy Removal**: All explicit layout styles (`flex-1`) outside of the macro contract have been evaluated.

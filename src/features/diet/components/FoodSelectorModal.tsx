@@ -67,7 +67,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
       onClose={onClose} 
       title="Selecionar alimentos"
     >
-      <View className="flex-1 bg-surface-app">
+      <View className="flex-1 bg-surface">
         <View className="py-compact">
           <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         </View>
@@ -84,10 +84,10 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="on-drag"
           renderItem={({ item }) => (
-            <View className="flex-row items-center py-3 border-b border-soft">
+            <View className="flex-row items-center py-3 border-b border-border-subtle">
               <View className="flex-1 mr-3">
                 <Text variant="subtitle">{item.name}</Text>
-                <Text variant="caption" color="muted">
+                <Text variant="caption" className="text-text-secondary">
                   {item.calories} kcal / 100g
                 </Text>
               </View>
@@ -109,7 +109,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           />
         </KeyboardAvoidingView>
 
-        <View className="absolute bottom-0 left-0 right-0 bg-surface-app border-t border-soft pt-4 mt-auto">
+        <View className="absolute bottom-0 left-0 right-0 bg-surface border-t border-border-subtle pt-4 mt-auto">
           <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
         </View>
       </View>

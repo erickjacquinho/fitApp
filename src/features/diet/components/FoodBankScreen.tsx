@@ -58,7 +58,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   };
 
   return (
-    <View className="flex-1 bg-surface-app">
+    <View className="flex-1 bg-surface">
       <View className="px-screen-x py-compact gap-4">
         <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         
@@ -86,7 +86,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
           const isSelected = bulkSelections.has(item.id);
           return (
             <SwipeableCard 
-              className={`mb-3 ${isSelected ? 'border-accent-main bg-accent-soft/10' : ''}`}
+              className={`mb-3 ${isSelected ? 'border-primary bg-primary/10' : ''}`}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);
                 else if (mealId) handleAddFoodToMeal(item.id);
@@ -97,18 +97,18 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
               <View className="flex-row items-center justify-between">
                 <View className="flex-1">
                   <Text variant="subtitle">{item.name}</Text>
-                  <Text variant="caption" color="muted">
+                  <Text variant="caption" className="text-text-secondary">
                     {item.protein}P • {item.carbohydrates}C • {item.fat}G
                   </Text>
                 </View>
-                <Text variant="highlight">{item.calories} kcal</Text>
+                <Text className="font-bold text-primary">{item.calories} kcal</Text>
               </View>
             </SwipeableCard>
           );
         }}
         ListEmptyComponent={
           <View className="items-center py-20">
-            <Text color="muted">Nenhum alimento encontrado.</Text>
+            <Text className="text-text-secondary">Nenhum alimento encontrado.</Text>
           </View>
         }
       />

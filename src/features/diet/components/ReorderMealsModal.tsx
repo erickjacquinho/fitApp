@@ -40,15 +40,15 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
           activeOpacity={1}
           onLongPress={drag}
           disabled={isActive}
-          className={`mb-2 flex-row items-center justify-between rounded-md border border-soft p-4 ${
-            isActive ? 'bg-surface-app' : 'bg-surface-raised'
+          className={`mb-2 flex-row items-center justify-between rounded-md border border-border-subtle p-4 ${
+            isActive ? 'bg-surface-elevated' : 'bg-surface'
           }`}
         >
           <View>
             <Text variant="subtitle">{item.name}</Text>
-            {item.preparationState ? <Text variant="caption" color="muted">{item.preparationState}</Text> : null}
+            {item.preparationState ? <Text variant="caption" className="text-text-secondary">{item.preparationState}</Text> : null}
           </View>
-          <Icon as={GripVertical} className="text-text-muted" />
+          <Icon as={GripVertical} className="text-text-secondary" />
         </TouchableOpacity>
       </ScaleDecorator>
     );
@@ -58,7 +58,7 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
     <BottomSheetModal visible={visible} onClose={onClose} title="Reordenar refeições">
       <GestureHandlerRootView style={styles.container}>
         <View className="flex-1 min-h-[400px]">
-          <Text variant="caption" color="muted" className="mb-4">
+          <Text variant="caption" className="text-text-secondary mb-4">
             Segure e arraste para alterar a ordem.
           </Text>
 

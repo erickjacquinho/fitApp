@@ -22,7 +22,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const total = p + c + f;
   
   if (!total || total <= 0 || isNaN(total)) {
-    return <View className="h-[3px] w-full bg-border-soft" />;
+    return <View className="h-[3px] w-full bg-border-subtle" />;
   }
 
   const cPct = Math.round((c / total) * 100);
@@ -30,10 +30,10 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const fPct = Math.round((f / total) * 100);
 
   return (
-    <View className="h-[3px] w-full flex-row overflow-hidden bg-border-soft">
-      {cPct > 0 && <View style={{ width: `${cPct}%` }} className="bg-info-main h-full" />}
-      {pPct > 0 && <View style={{ width: `${pPct}%` }} className="bg-tomato-main h-full" />}
-      {fPct > 0 && <View style={{ width: `${fPct}%` }} className="bg-warning-main h-full" />}
+    <View className="h-[3px] w-full flex-row overflow-hidden bg-border-subtle">
+      {cPct > 0 && <View style={{ width: `${cPct}%` }} className="bg-carbohydrate h-full" />}
+      {pPct > 0 && <View style={{ width: `${pPct}%` }} className="bg-protein h-full" />}
+      {fPct > 0 && <View style={{ width: `${fPct}%` }} className="bg-fat h-full" />}
     </View>
   );
 }
@@ -68,10 +68,10 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
 
   return (
     <Card className="mb-6 overflow-hidden p-0">
-      <View className="px-4 py-3 bg-surface-app flex-row justify-between items-center">
+      <View className="px-4 py-3 bg-surface flex-row justify-between items-center">
         <Text variant="subtitle">{meal.name}</Text>
         <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
-          <Icon as={Trash2} className="text-text-muted" size={16} />
+          <Icon as={Trash2} className="text-text-secondary" size={16} />
         </Pressable>
       </View>
       <MacroProportionBar macros={macros} />

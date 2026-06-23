@@ -24,7 +24,7 @@ export const DailySummaryCard = ({ date, macros, onPress }: DailySummaryCardProp
               {Math.round(macros.protein)}P • {Math.round(macros.carbs)}C • {Math.round(macros.fat)}G
             </Text>
           </View>
-          <Text variant="highlight">{Math.round(macros.calories)} kcal</Text>
+          <Text className="font-bold text-primary">{Math.round(macros.calories)} kcal</Text>
         </View>
       </SwipeableCard>
     </Pressable>

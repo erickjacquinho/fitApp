@@ -7,6 +7,15 @@ export interface Macros {
   calories: number;
 }
 
+export type MacroKey = 'protein' | 'carbs' | 'fat' | 'calories';
+
+export const MACRO_METADATA: Record<MacroKey, { label: string; token: string }> = {
+  protein: { label: 'Proteínas', token: 'protein' },
+  carbs: { label: 'Carboidratos', token: 'carbohydrate' },
+  fat: { label: 'Gorduras', token: 'fat' },
+  calories: { label: 'Calorias', token: 'primary' },
+};
+
 export function calculateMacros(food: Food, quantity: number): Macros {
   if (!food) {
     return { protein: 0, carbs: 0, fat: 0, calories: 0 };
