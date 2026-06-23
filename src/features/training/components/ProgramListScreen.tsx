@@ -20,10 +20,11 @@ export function ProgramListScreen() {
     loadData,
     deleteProgram,
     startSession,
+    feedback,
+    setFeedback,
+    clearFeedback,
   } = useProgramList();
 
-  const [feedbackVisible, setFeedbackVisible] = React.useState(false);
-  const [feedbackState, setFeedbackState] = React.useState<{ title: string, message: string }>({ title: '', message: '' });
   const [activeSessionConfirmVisible, setActiveSessionConfirmVisible] = React.useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = React.useState(false);
   const [programToDelete, setProgramToDelete] = React.useState<{ id: string, name: string } | null>(null);
@@ -44,19 +45,13 @@ export function ProgramListScreen() {
 
   const onConfirmDelete = async () => {
     if (!programToDelete) return;
-    try {
-      setDeleteConfirmVisible(false);
-      await deleteProgram(programToDelete.id);
-    } catch (err) {
-      setFeedbackState({ title: 'Erro ao excluir', message: 'Não foi possível excluir o programa.' });
-      setFeedbackVisible(true);
-    }
+    setDeleteConfirmVisible(false);
+    await deleteProgram(programToDelete.id);
   };
 
   const handleStartSession = (programId: string, programName: string, blocks: TrainingBlock[]) => {
     if (blocks.length === 0) {
-      setFeedbackState({ title: 'Sem treinos', message: 'Este programa não possui blocos de treino. Adicione um bloco primeiro.' });
-      setFeedbackVisible(true);
+      setFeedback({ type: 'info', title: 'Sem treinos', message: 'Este programa não possui blocos de treino. Adicione um bloco primeiro.' });
       return;
     }
 
@@ -70,15 +65,15 @@ export function ProgramListScreen() {
   };
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface p-4">
       {/* Quick Action Banner */}
       {activeSession ? (
-        <Card className="mb-4 border-accent-main/30 bg-accent-main/5 p-4 flex-row items-center justify-between">
+        <Card className="mb-4 border-primary bg-primary-soft p-4 flex-row items-center justify-between">
           <View className="flex-1 pr-2">
-            <Text variant="subtitle" className="text-accent-main">
+            <Text variant="subtitle" className="text-primary">
               Sessão de treino em andamento
             </Text>
-            <Text variant="caption" color="muted">
+            <Text variant="caption" className="text-text-secondary">
               Há uma sessão de treino não finalizada.
             </Text>
           </View>
@@ -93,7 +88,7 @@ export function ProgramListScreen() {
           onPress={() => router.push('/training/history')}
           className="flex-1"
         >
-          <Icon as={History} className="text-accent-main" />
+          <Icon as={History} className="text-primary" />
           <Text variant="label">Histórico</Text>
         </Button>
 
@@ -120,7 +115,7 @@ export function ProgramListScreen() {
               <Text variant="subtitle" className="font-bold">
                 {program.name}
               </Text>
-              <Text variant="caption" color="muted" className="mt-1">
+              <Text variant="caption" className="text-text-secondary mt-1">
                 {blocks.length} blocos ({blocks.map((b) => b.name).join(', ') || 'sem treinos'})
               </Text>
             </View>
@@ -131,7 +126,7 @@ export function ProgramListScreen() {
               size="icon"
               onPress={() => handleDeleteAttempt(program.id, program.name)}
             >
-              <Icon as={Trash2} size={16} className="text-tomato-main" />
+              <Icon as={Trash2} size={16} className="text-error" />
             </Button>
           </View>
 
@@ -141,8 +136,8 @@ export function ProgramListScreen() {
               onPress={() => handleStartSession(program.id, program.name, blocks)}
               className="mt-4"
             >
-              <Icon as={Play} size={16} className="text-accent-main" fill="currentColor" />
-              <Text variant="label" className="text-accent-main">
+              <Icon as={Play} size={16} className="text-primary" fill="currentColor" />
+              <Text variant="label" className="text-primary">
                 Iniciar treino
               </Text>
             </Button>
@@ -152,13 +147,13 @@ export function ProgramListScreen() {
 
       {programsData.length === 0 && !isLoading && (
         <View className="my-12 items-center justify-center py-10">
-          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
-            <Icon as={Dumbbell} size={32} className="text-text-muted" />
+          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-disabled">
+            <Icon as={Dumbbell} size={32} className="text-text-secondary" />
           </View>
           <Text variant="subtitle" className="mb-2 text-center">
             Nenhum programa de treino
           </Text>
-          <Text variant="text" color="muted" className="text-center mb-6">
+          <Text variant="text" className="text-text-secondary text-center mb-6">
             Crie suas rotinas e registre sua evolução.
           </Text>
           <Button onPress={() => router.push('/training/create-program')}><Text>Criar primeiro programa</Text></Button>
@@ -166,13 +161,13 @@ export function ProgramListScreen() {
       )}
 
       <FeedbackDialog
-        visible={feedbackVisible}
-        onClose={() => setFeedbackVisible(false)}
+        visible={!!feedback}
+        onClose={clearFeedback}
         state={{
-          visible: feedbackVisible,
-          title: feedbackState.title,
-          description: feedbackState.message,
-          isError: true
+          visible: !!feedback,
+          title: feedback?.title || '',
+          description: feedback?.message || '',
+          isError: feedback?.type === 'error'
         }}
       />
 
@@ -206,7 +201,7 @@ export function ProgramListScreen() {
         title="Iniciar treino"
       >
         <View className="pb-4">
-          <Text variant="caption" color="muted" className="mb-4">
+          <Text variant="caption" className="text-text-secondary mb-4">
             Escolha um bloco do programa &quot;{selectedProgram?.name}&quot;:
           </Text>
           {selectedProgram?.blocks.map((block) => (
@@ -216,12 +211,7 @@ export function ProgramListScreen() {
               className="mb-2"
               onPress={async () => {
                 setBlockSelectVisible(false);
-                try {
-                  await startSession(selectedProgram.id, block.id);
-                } catch (err) {
-                  setFeedbackState({ title: 'Erro', message: 'Não foi possível iniciar a sessão.' });
-                  setFeedbackVisible(true);
-                }
+                await startSession(selectedProgram.id, block.id);
               }}
             >
               <Text>{block.name}</Text>

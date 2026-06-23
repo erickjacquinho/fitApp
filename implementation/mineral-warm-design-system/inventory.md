@@ -32,4 +32,6 @@ The user has uncommitted modifications to several shared components. Their behav
 - **SwipeableCard.tsx**: Contains swipe gesture logic that must not be disrupted when changing background tokens.
 - **ConfirmModal.tsx & FeedbackDialog.tsx**: Retain specific state management or animation behaviors.
 - **input.tsx**: Retains custom ring animations and focus states.
+- **ProgramForm.tsx**: Retains deeply nested form state for `BlockDTO` and `ExerciseDTO`, with complex dynamic block/exercise addition and validation logic.
+
 These components must only have their styling tokens migrated to Mineral Warm (e.g. `surface-muted` to `surface-elevated`) without modifying their functional logic or React hooks.

@@ -23,3 +23,11 @@ export interface ExecutionDTO {
   weight: number;
   repsReserveDone?: number;
 }
+
+export interface PresentationFeedback {
+  type: 'success' | 'error' | 'info';
+  title: string;
+  message: string;
+}
+
+export type PendingState = 'idle' | 'loading' | 'saving' | 'deleting';

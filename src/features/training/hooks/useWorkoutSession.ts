@@ -6,6 +6,7 @@ import WorkoutSession from '../../../db/models/WorkoutSession';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import Exercise from '../../../db/models/Exercise';
 import ExerciseExecution from '../../../db/models/ExerciseExecution';
+import { PresentationFeedback } from '../types';
 
 export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
@@ -13,6 +14,9 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [executions, setExecutions] = useState<ExerciseExecution[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState<PresentationFeedback | null>(null);
+
+  const clearFeedback = () => setFeedback(null);
 
   const loadWorkoutData = useCallback(async () => {
     try {
@@ -132,5 +136,8 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     getExerciseExecutions,
     isExerciseCompleted,
     getCompletedExercisesCount,
+    feedback,
+    setFeedback,
+    clearFeedback,
   };
 }

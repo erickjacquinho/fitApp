@@ -18,12 +18,6 @@ export function WorkoutSessionScreen() {
   const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmFinishVisible, setConfirmFinishVisible] = useState(false);
-  const [feedbackState, setFeedbackState] = useState<{
-    visible: boolean;
-    type: 'error' | 'success' | 'warning' | 'info';
-    title: string;
-    message: string;
-  }>({ visible: false, type: 'info', title: '', message: '' });
 
   const {
     session,
@@ -36,6 +30,9 @@ export function WorkoutSessionScreen() {
     getExerciseExecutions,
     isExerciseCompleted,
     getCompletedExercisesCount,
+    feedback,
+    setFeedback,
+    clearFeedback,
   } = useWorkoutSession(params.sessionId, params.blockId);
 
   const handleOpenExerciseModal = (exercise: Exercise) => {
@@ -62,8 +59,7 @@ export function WorkoutSessionScreen() {
       setConfirmFinishVisible(false);
       await handleFinishWorkout();
     } catch (error) {
-      setFeedbackState({
-        visible: true,
+      setFeedback({
         type: 'error',
         title: 'Erro ao finalizar',
         message: 'Não foi possível salvar a sessão. Tente novamente.',
@@ -73,14 +69,14 @@ export function WorkoutSessionScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app">
+      <View className="flex-1 items-center justify-center bg-surface">
         <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-surface-app">
+    <View className="flex-1 bg-surface">
       <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
         {block && (
           <Text variant="title" className="mb-2 font-bold">
@@ -93,7 +89,7 @@ export function WorkoutSessionScreen() {
           total={exercises.length}
         />
 
-        <Text variant="label" className="mb-3 text-text-muted">
+        <Text variant="label" className="mb-3 text-text-secondary">
           Exercícios
         </Text>
 
@@ -118,13 +114,13 @@ export function WorkoutSessionScreen() {
 
         {exercises.length === 0 && (
           <Card className="my-8 items-center justify-center py-10 border-dashed">
-            <Text variant="text" color="muted" className="text-center">
+            <Text variant="text" className="text-text-secondary text-center">
               Nenhum exercício neste bloco de treino.
             </Text>
           </Card>
         )}
 
-        <Button onPress={handleAttemptFinish} className="my-6 min-h-control-lg bg-success-main active:bg-success-dark"><Text>Finalizar treino</Text></Button>
+        <Button onPress={handleAttemptFinish} className="my-6 min-h-[var(--size-control-lg)] bg-success"><Text>Finalizar treino</Text></Button>
       </ScrollView>
 
       {activeExercise && (
@@ -162,13 +158,13 @@ export function WorkoutSessionScreen() {
       />
 
       <FeedbackDialog
-        visible={feedbackState.visible}
-        onClose={() => setFeedbackState(prev => ({ ...prev, visible: false }))}
+        visible={!!feedback}
+        onClose={clearFeedback}
         state={{
-          visible: feedbackState.visible,
-          title: feedbackState.title,
-          description: feedbackState.message,
-          isError: feedbackState.type === 'error'
+          visible: !!feedback,
+          title: feedback?.title || '',
+          description: feedback?.message || '',
+          isError: feedback?.type === 'error'
         }}
       />
     </View>

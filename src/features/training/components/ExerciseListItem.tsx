@@ -30,29 +30,29 @@ export function ExerciseListItem({
   return (
     <Card
       className={`mb-3 p-4 flex-row items-center border ${
-        isCompleted ? 'border-success-main/30 bg-success-main/5' : 'border-soft'
+        isCompleted ? 'border-success border-opacity-30 bg-success bg-opacity-5' : 'border-border-subtle'
       }`}
     >
       <View className="mr-3">
         {isCompleted ? (
-          <Icon as={CheckCircle2} size={24} className="text-success-main" />
+          <Icon as={CheckCircle2} size={24} className="text-success" />
         ) : (
-          <Icon as={Circle} size={24} className="text-text-muted" />
+          <Icon as={Circle} size={24} className="text-text-secondary" />
         )}
       </View>
 
       <View className="flex-1">
         <Text
           variant="subtitle"
-          className={` font-bold ${isCompleted ? 'line-through text-text-muted' : ''}`}
+          className={` font-bold ${isCompleted ? 'line-through text-text-secondary' : ''}`}
         >
           {name}
         </Text>
-        <Text variant="caption" color="muted" className="mt-1">
+        <Text variant="caption" className="text-text-secondary mt-1">
           Meta: {targetSets} séries x {repsMin}-{repsMax} reps
           {advancedTechnique && ` • ${advancedTechnique}`}
         </Text>
-        <Text variant="caption" color="accent" className="mt-1">
+        <Text variant="caption" className="text-primary mt-1">
           Registradas: {setsCount}/{targetSets} séries
         </Text>
       </View>

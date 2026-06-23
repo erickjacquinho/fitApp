@@ -35,7 +35,7 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
   }, []);
 
   return (
-    <View className="flex-1 bg-surface-app">
+    <View className="flex-1 bg-surface">
       <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
       
       <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
@@ -43,9 +43,9 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
           <View className="gap-4">
             <Text variant="title" className="mb-2">Treinos do dia</Text>
             {sessions.map(session => (
-              <Card key={session.id} className="p-4 border-l-4 border-accent-main">
+              <Card key={session.id} className="p-4 border-l-4 border-primary">
                 <Text variant="subtitle">Sessão {session.status === 'active' ? '(Em Andamento)' : '(Concluída)'}</Text>
-                <Text variant="caption" color="muted">
+                <Text variant="caption" className="text-text-secondary">
                   Início: {new Date(session.startDate).toLocaleTimeString()}
                 </Text>
                 <Button size="sm" variant="outline" className="mt-4" onPress={() => {
@@ -63,7 +63,7 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
             <Text variant="subtitle" className="mb-2 text-center">
               Nenhum treino planejado
             </Text>
-            <Text variant="text" color="muted" className="text-center mb-6">
+            <Text variant="text" className="text-text-secondary text-center mb-6">
               Inicie um treino para registrá-lo neste dia.
             </Text>
             <Button onPress={() => router.push({ pathname: '/training/programs', params: { date: selectedDate } })}><Text>Iniciar treino</Text></Button>

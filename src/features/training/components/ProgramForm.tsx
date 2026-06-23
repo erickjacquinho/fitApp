@@ -40,18 +40,18 @@ export function ProgramForm() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
       <ScrollView
-        className="flex-1 bg-surface-app"
+        className="flex-1 bg-surface"
         contentContainerClassName="p-4 pb-long-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
         {errors.global && (
-          <Text variant="caption" className="text-tomato-main text-center my-2">
+          <Text variant="caption" className="text-error text-center my-2">
             {errors.global}
           </Text>
         )}
 
-        <View className="mb-6 bg-surface-app p-4 rounded-xl border border-soft">
+        <View className="mb-6 bg-surface p-4 rounded-xl border border-border-subtle">
           <Label className="mb-2">Nome do Programa</Label>
           <Input
             placeholder="Ex.: Hipertrofia ABC"
@@ -61,21 +61,21 @@ export function ProgramForm() {
             hasError={!!errors.programName}
           />
           {errors.programName && (
-            <Text variant="caption" className="text-tomato-main mt-1">
+            <Text variant="caption" className="text-error mt-1">
               {errors.programName}
             </Text>
           )}
         </View>
 
-        <View className="mb-4 flex-row items-center justify-between border-b border-soft pb-2">
+        <View className="mb-4 flex-row items-center justify-between border-b border-border-subtle pb-2">
           <Text variant="title">Blocos de treino</Text>
           <Button
             variant="secondary"
             size="sm"
             onPress={handleAddBlock}
           >
-            <Icon as={Plus} size={16} className="text-accent-main" />
-            <Text variant="label" className="text-accent-main">
+            <Icon as={Plus} size={16} className="text-primary" />
+            <Text variant="label" className="text-primary">
               Adicionar bloco
             </Text>
           </Button>
@@ -84,7 +84,7 @@ export function ProgramForm() {
         {blocks.map((block, bIdx) => (
           <View
             key={block.id}
-            className="mb-4 rounded-md border border-soft bg-component-card-bg p-4"
+            className="mb-4 rounded-md border border-border-subtle bg-surface-elevated p-4"
           >
             <View className="flex-row items-center justify-between mb-3 gap-2">
               <Input
@@ -99,26 +99,25 @@ export function ProgramForm() {
                 variant="ghost"
                 size="icon"
                 onPress={() => handleRemoveBlock(block.id)}
-                className="bg-tomato-soft"
               >
-                <Icon as={Trash2} size={16} className="text-tomato-main" />
+                <Icon as={Trash2} size={16} className="text-error" />
               </Button>
             </View>
             {errors.blockNames?.[block.id] && (
-              <Text variant="caption" className="text-tomato-main mb-4">
+              <Text variant="caption" className="text-error mb-4">
                 {errors.blockNames[block.id]}
               </Text>
             )}
 
             {/* Exercises */}
-            <Text variant="label" className="mb-2 text-text-muted">
+            <Text variant="label" className="mb-2 text-text-secondary">
               Exercícios
             </Text>
 
             {block.exercises.map((exercise, eIdx) => (
               <View
                 key={exercise.id}
-                className="mb-3 rounded-md border border-soft bg-surface-app p-3"
+                className="mb-3 rounded-md border border-border-subtle bg-surface p-3"
               >
                 <View className="flex-row justify-between items-center mb-2 gap-2">
                   <ExerciseSelect
@@ -128,7 +127,7 @@ export function ProgramForm() {
                     }
                   />
                   {errors.exercises?.[exercise.id] && (
-                    <Text variant="caption" className="text-tomato-main mt-1">
+                    <Text variant="caption" className="text-error mt-1">
                       {errors.exercises[exercise.id]}
                     </Text>
                   )}
@@ -138,14 +137,14 @@ export function ProgramForm() {
                     size="icon"
                     onPress={() => handleRemoveExercise(block.id, exercise.id)}
                   >
-                    <Icon as={Trash2} size={16} className="text-tomato-main" />
+                    <Icon as={Trash2} size={16} className="text-error" />
                   </Button>
                 </View>
 
                 <View className="flex-row gap-2">
                   {/* Sets */}
                   <View className="flex-1">
-                    <Text variant="caption" color="muted" className="mb-1 text-center">
+                    <Text variant="caption" className="text-text-secondary mb-1 text-center">
                       Séries
                     </Text>
                     <Input
@@ -166,7 +165,7 @@ export function ProgramForm() {
 
                   {/* Min Reps */}
                   <View className="flex-1">
-                    <Text variant="caption" color="muted" className="mb-1 text-center">
+                    <Text variant="caption" className="text-text-secondary mb-1 text-center">
                       Reps mín.
                     </Text>
                     <Input
@@ -187,7 +186,7 @@ export function ProgramForm() {
 
                   {/* Max Reps */}
                   <View className="flex-1">
-                    <Text variant="caption" color="muted" className="mb-1 text-center">
+                    <Text variant="caption" className="text-text-secondary mb-1 text-center">
                       Reps máx.
                     </Text>
                     <Input
@@ -210,7 +209,7 @@ export function ProgramForm() {
                 <View className="flex-row gap-2 mt-2">
                   {/* Advanced Tech */}
                   <View className="flex-2">
-                    <Text variant="caption" color="muted" className="mb-1">
+                    <Text variant="caption" className="text-text-secondary mb-1">
                       Técnica avançada (opcional)
                     </Text>
                     <Input
@@ -230,7 +229,7 @@ export function ProgramForm() {
 
                   {/* RIR */}
                   <View className="flex-1">
-                    <Text variant="caption" color="muted" className="mb-1 text-center">
+                    <Text variant="caption" className="text-text-secondary mb-1 text-center">
                       RIR
                     </Text>
                     <Input
@@ -258,8 +257,8 @@ export function ProgramForm() {
               onPress={() => handleAddExercise(block.id)}
               className="border-dashed"
             >
-              <Icon as={Plus} size={16} className="text-text-muted" />
-              <Text variant="caption" color="muted">
+              <Icon as={Plus} size={16} className="text-text-secondary" />
+              <Text variant="caption" className="text-text-secondary">
                 Adicionar exercício
               </Text>
             </Button>

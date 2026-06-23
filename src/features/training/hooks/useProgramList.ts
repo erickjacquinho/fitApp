@@ -5,6 +5,7 @@ import { SessionService } from '../services/session-service';
 import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import WorkoutSession from '../../../db/models/WorkoutSession';
+import { PresentationFeedback } from '../types';
 
 export interface ProgramWithBlocks {
   program: Program;
@@ -16,6 +17,9 @@ export function useProgramList() {
   const [activeSession, setActiveSession] = useState<WorkoutSession | null>(null);
   const { date } = useLocalSearchParams<{ date?: string }>();
   const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState<PresentationFeedback | null>(null);
+
+  const clearFeedback = () => setFeedback(null);
 
   const loadData = useCallback(async () => {
     try {
@@ -45,7 +49,7 @@ export function useProgramList() {
       await loadData();
     } catch (err) {
       console.error('Error deleting program:', err);
-      throw err;
+      setFeedback({ type: 'error', title: 'Erro ao excluir', message: 'Não foi possível excluir o programa.' });
     }
   };
 
@@ -59,7 +63,7 @@ export function useProgramList() {
       });
     } catch (err) {
       console.error('Error starting session:', err);
-      throw err;
+      setFeedback({ type: 'error', title: 'Erro', message: 'Não foi possível iniciar a sessão.' });
     }
   };
 
@@ -70,5 +74,8 @@ export function useProgramList() {
     loadData,
     deleteProgram,
     startSession,
+    feedback,
+    setFeedback,
+    clearFeedback,
   };
 }

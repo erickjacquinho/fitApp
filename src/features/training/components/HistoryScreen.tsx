@@ -48,7 +48,7 @@ function HistorySessionItem({ session }: { session: WorkoutSession }) {
       }
       activeOpacity={0.7}
     >
-      <Card className="mb-3 p-4 flex-row items-center justify-between border border-soft bg-component-card-bg active:bg-surface-muted/10">
+      <Card className="mb-3 p-4 flex-row items-center justify-between border border-border-subtle bg-surface active:opacity-80">
         <View className="flex-1 pr-2">
           <Text variant="subtitle" className="font-bold">
             {programName}
@@ -56,22 +56,22 @@ function HistorySessionItem({ session }: { session: WorkoutSession }) {
           
           <View className="flex-row items-center gap-4 mt-2">
             <View className="flex-row items-center gap-1">
-              <Icon as={Calendar} size={16} className="text-text-muted" />
-              <Text variant="caption" color="muted">
+              <Icon as={Calendar} size={16} className="text-text-secondary" />
+              <Text variant="caption" className="text-text-secondary">
                 {formatDate(session.startDate)}
               </Text>
             </View>
 
             <View className="flex-row items-center gap-1">
-              <Icon as={Clock} size={16} className="text-text-muted" />
-              <Text variant="caption" color="muted">
+              <Icon as={Clock} size={16} className="text-text-secondary" />
+              <Text variant="caption" className="text-text-secondary">
                 {getDuration(session.startDate, session.endDate)}
               </Text>
             </View>
           </View>
         </View>
 
-        <Icon as={ChevronRight} className="text-text-muted" />
+        <Icon as={ChevronRight} className="text-text-secondary" />
       </Card>
     </TouchableOpacity>
   );
@@ -89,14 +89,14 @@ export function HistoryScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app">
+      <View className="flex-1 items-center justify-center bg-surface">
         <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface p-4">
       <Text variant="title" className="mb-4 font-bold">
         Histórico de treinos
       </Text>
@@ -107,13 +107,13 @@ export function HistoryScreen() {
 
       {history.length === 0 && (
         <View className="my-12 items-center justify-center py-10">
-          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
-            <Icon as={Dumbbell} size={32} className="text-text-muted" />
+          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-surface-elevated">
+            <Icon as={Dumbbell} size={32} className="text-text-secondary" />
           </View>
           <Text variant="subtitle" className="mb-2 text-center">
             Nenhum treino registrado
           </Text>
-          <Text variant="text" color="muted" className="text-center">
+          <Text variant="text" className="text-text-secondary text-center">
             Finalize um treino para criar seu histórico.
           </Text>
         </View>

@@ -16,7 +16,7 @@ export function TrainingProgressBar({ completed, total }: TrainingProgressBarPro
     <Card className="mb-4">
       <View className="flex-row items-center justify-between mb-2">
         <Text variant="label">Progresso da sessão</Text>
-        <Text variant="label" color="accent">
+        <Text variant="label" className="text-primary">
           {completed}/{total} exercícios ({percentage}%)
         </Text>
       </View>

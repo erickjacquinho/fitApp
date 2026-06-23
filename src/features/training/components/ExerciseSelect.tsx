@@ -52,7 +52,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
         onPress={() => setModalVisible(true)}
         className="flex-1 justify-start"
       >
-        <Text variant="text" color={value ? 'default' : 'muted'}>
+        <Text variant="text" className={value ? 'text-text-primary' : 'text-text-secondary'}>
           {value || 'Selecionar exercício'}
         </Text>
       </Button>
@@ -79,7 +79,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`Selecionar ${item.name}`}
-                className="py-3 border-b border-soft"
+                className="py-3 border-b border-border-subtle"
                 onPress={() => {
                   onChange(item.name);
                   setModalVisible(false);
@@ -90,7 +90,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
             )}
             ListEmptyComponent={() => (
               <View className="py-8 items-center">
-                <Text variant="text" color="muted">Nenhum exercício encontrado.</Text>
+                <Text variant="text" className="text-text-secondary">Nenhum exercício encontrado.</Text>
               </View>
             )}
           />

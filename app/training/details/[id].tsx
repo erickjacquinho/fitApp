@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 export default function SessionDetailsRoute() {
   return (
-    <View className="flex-1 bg-surface-app">
+    <View className="flex-1 bg-surface">
       <Header title="Resumo do treino" showBackButton />
       <SessionDetailsScreen />
     </View>

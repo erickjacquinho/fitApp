@@ -159,14 +159,14 @@ export function ExecuteExerciseModal({
         onPress={handleAddSet}
         className="my-3 border-dashed"
       >
-        <Icon as={Plus} size={16} className="text-accent-main" />
-        <Text variant="label" color="accent">
+        <Icon as={Plus} size={16} className="text-primary" />
+        <Text variant="label" className="text-primary">
           Adicionar série
         </Text>
       </Button>
 
       {/* Actions */}
-      <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
+      <View className="mt-2 border-t border-border-subtle pt-3 flex-row gap-2">
         <Button variant="outline" className="flex-1" onPress={onClose}><Text>Fechar</Text></Button>
       </View>
     </BottomSheetModal>

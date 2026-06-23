@@ -40,7 +40,7 @@ export function SessionDetailsScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app">
+      <View className="flex-1 items-center justify-center bg-surface">
         <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
@@ -48,7 +48,7 @@ export function SessionDetailsScreen() {
 
   if (!session) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app p-4">
+      <View className="flex-1 items-center justify-center bg-surface p-4">
         <Text variant="subtitle" className="mb-4">
           Detalhes da sessão não encontrados
         </Text>
@@ -58,16 +58,16 @@ export function SessionDetailsScreen() {
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface-app p-4">
+    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface p-4">
       {/* Trophy / Congrats Header */}
-      <View className="mb-4 items-center justify-center rounded-md bg-success-main/10 p-5 border border-success-main/20">
-        <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-success-main">
+      <View className="mb-4 items-center justify-center rounded-md bg-success bg-opacity-10 p-5 border border-success border-opacity-20">
+        <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-success">
           <Icon as={Trophy} size={24} className="text-text-inverse" />
         </View>
-        <Text variant="title" className="text-success-main font-bold text-center">
+        <Text variant="title" className="text-success font-bold text-center">
           Treino finalizado
         </Text>
-        <Text variant="caption" color="muted" className="text-center mt-1">
+        <Text variant="caption" className="text-text-secondary text-center mt-1">
           Seus dados foram salvos no histórico.
         </Text>
       </View>
@@ -80,22 +80,22 @@ export function SessionDetailsScreen() {
 
         <View className="gap-2">
           <View className="flex-row items-center gap-2">
-            <Icon as={Calendar} size={16} className="text-text-muted" />
-            <Text variant="text" color="muted">
+            <Icon as={Calendar} size={16} className="text-text-secondary" />
+            <Text variant="text" className="text-text-secondary">
               {formatDate(session.startDate)}
             </Text>
           </View>
 
           <View className="flex-row items-center gap-2">
-            <Icon as={Clock} size={16} className="text-text-muted" />
-            <Text variant="text" color="muted">
+            <Icon as={Clock} size={16} className="text-text-secondary" />
+            <Text variant="text" className="text-text-secondary">
               Duração: {getDuration(session.startDate, session.endDate)}
             </Text>
           </View>
 
           <View className="flex-row items-center gap-2">
-            <Icon as={Dumbbell} size={16} className="text-text-muted" />
-            <Text variant="text" color="muted">
+            <Icon as={Dumbbell} size={16} className="text-text-secondary" />
+            <Text variant="text" className="text-text-secondary">
               Carga total:{' '}
               <Text variant="highlight" className="font-bold">
                 {totalVolume.toLocaleString()} kg
@@ -112,18 +112,18 @@ export function SessionDetailsScreen() {
 
       {exercisesSummary.map((ex) => (
         <Card key={ex.exerciseId} className="mb-3 p-4">
-          <View className="flex-row items-center justify-between border-b border-soft pb-2 mb-2">
+          <View className="flex-row items-center justify-between border-b border-border-subtle pb-2 mb-2">
             <Text variant="subtitle" className="font-bold">
               {ex.name}
             </Text>
-            <Text variant="caption" className="font-bold text-accent-main">
+            <Text variant="caption" className="font-bold text-primary">
               Volume: {ex.volume.toLocaleString()} kg
             </Text>
           </View>
 
           {ex.sets.map((set) => (
             <View key={set.setNumber} className="flex-row justify-between py-1">
-              <Text variant="caption" color="muted">
+              <Text variant="caption" className="text-text-secondary">
                 Série {set.setNumber}
               </Text>
               <Text variant="caption" className="font-semibold">
@@ -134,7 +134,7 @@ export function SessionDetailsScreen() {
         </Card>
       ))}
 
-      <Button onPress={() => router.replace('/training')} className="my-6 min-h-control-lg"><Text>Voltar para programas</Text></Button>
+      <Button onPress={() => router.replace('/training')} className="my-6 min-h-[var(--size-control-lg)]"><Text>Voltar para programas</Text></Button>
     </ScrollView>
   );
 }

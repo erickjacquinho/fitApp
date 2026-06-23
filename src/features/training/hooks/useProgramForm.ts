@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { WorkoutService } from '../services/workout-service';
-import { BlockDTO, ExerciseDTO } from '../types';
+import { BlockDTO, ExerciseDTO, PresentationFeedback } from '../types';
 
 export interface ExerciseInput extends ExerciseDTO {
   id: string;
@@ -23,7 +23,7 @@ export function useProgramForm() {
     blockNames?: Record<string, string>;
     exercises?: Record<string, string>;
   }>({});
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error', title: string, message?: string } | null>(null);
+  const [feedback, setFeedback] = useState<PresentationFeedback | null>(null);
 
   const clearFeedback = () => setFeedback(null);
 

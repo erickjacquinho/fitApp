@@ -28,39 +28,39 @@ export function SetInputRow({
   return (
     <View
       className={`mb-3 flex-row items-center gap-2 rounded-sm border p-2 ${
-        isSaved ? 'border-success-main/30 bg-success-main/5' : 'border-soft bg-component-input-bg'
+        isSaved ? 'border-success border-opacity-30 bg-success bg-opacity-5' : 'border-border-subtle bg-surface-elevated'
       }`}
     >
       <View className="w-12 items-center justify-center">
-        <Text variant="label" color="muted">
+        <Text variant="label" className="text-text-secondary">
           Série {setNumber}
         </Text>
       </View>
 
       {/* Weight Input */}
-      <View className="flex-1 flex-row items-center rounded-sm border border-soft px-2 py-1 bg-surface-app">
+      <View className="flex-1 flex-row items-center rounded-sm border border-border-subtle px-2 py-1 bg-surface">
         <Input
           keyboardType="numeric"
           placeholder="0"
           value={weight}
           onChangeText={(val) => onInputChange('weight', val)}
-          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-primary"
         />
-        <Text variant="caption" color="muted" className="ml-1">
+        <Text variant="caption" className="text-text-secondary ml-1">
           kg
         </Text>
       </View>
 
       {/* Reps Input */}
-      <View className="flex-1 flex-row items-center rounded-sm border border-soft px-2 py-1 bg-surface-app">
+      <View className="flex-1 flex-row items-center rounded-sm border border-border-subtle px-2 py-1 bg-surface">
         <Input
           keyboardType="numeric"
           placeholder="0"
           value={reps}
           onChangeText={(val) => onInputChange('reps', val)}
-          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-main"
+          className="border-0 bg-transparent shadow-none px-0 py-0 flex-1 p-0 text-center font-bold text-text-primary"
         />
-        <Text variant="caption" color="muted" className="ml-1">
+        <Text variant="caption" className="text-text-secondary ml-1">
           reps
         </Text>
       </View>
@@ -73,7 +73,7 @@ export function SetInputRow({
           variant={isSaved ? 'secondary' : 'default'}
           size="icon"
           onPress={onSave}
-          className={isSaved ? 'bg-success-main' : undefined}
+          className={isSaved ? 'bg-success' : undefined}
         >
           <Icon as={Check} size={16} className="text-text-inverse" />
         </Button>
@@ -85,9 +85,8 @@ export function SetInputRow({
             variant="ghost"
             size="icon"
             onPress={onRemove}
-            className="bg-tomato-soft"
           >
-            <Icon as={Trash2} size={16} className="text-tomato-main" />
+            <Icon as={Trash2} size={16} className="text-error" />
           </Button>
         )}
       </View>
