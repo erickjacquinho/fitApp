@@ -5,7 +5,7 @@
 - [x] T001 Verify exit evidence and closed implementation tasks for Phases 1-6 in `implementation/mineral-warm-design-system/validation.md`. Target: `implementation/mineral-warm-design-system/validation.md`. Source: Design / Technical Context. Trace: P7-AC-010. Skill: `speckit-analyze`. Evidence: Added Phase 6 evidence to validation.md.
 - [x] T002 [US1] Generate the repository-wide residual route/component/token report in `implementation/mineral-warm-design-system/residuals.md`. Target: `implementation/mineral-warm-design-system/residuals.md`. Source: Design / Residual Scope. Trace: P7-AC-001, P7-AC-002. Skill: `codebase-audit`. Evidence: residuals.md generated.
 - [x] T003 [US1] Map every legacy alias and obsolete primitive API to exact remaining consumers in `implementation/mineral-warm-design-system/residuals.md`. Target: `implementation/mineral-warm-design-system/residuals.md`. Source: Design / Cleanup Contract. Trace: P7-AC-002, P7-AC-003. Skill: `codebase-audit`. Evidence: Mapped in residuals.md (zero consumers found).
-- [ ] T004 [US3] Confirm current native inputs and APK build identity in `implementation/mineral-warm-design-system/validation.md`. Target: `implementation/mineral-warm-design-system/validation.md`. Source: Design / Native and APK Decision. Trace: P7-AC-009. Skill: `react-native-architecture`.
+- [x] T004 [US3] Confirm current native inputs and APK build identity in `implementation/mineral-warm-design-system/validation.md`. Target: `implementation/mineral-warm-design-system/validation.md`. Source: Design / Native and APK Decision. Trace: P7-AC-009. Skill: `react-native-architecture`.
 
 ## Phase 2 - Residual Route Migration
 
