@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Pressable, PressableProps, ViewStyle, StyleProp, GestureResponderEvent } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -22,7 +23,14 @@ export function LongPressable({ onLongPress, children, style, className, ...prop
   const scale = useSharedValue(1);
 
   const handleLongPress = useCallback((e: GestureResponderEvent) => {
-    // A "tremidinha" visual
+    // Haptic feedback (phone vibration) — guarded for dev client without native module
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    } catch {
+      // Native module not available (dev client without rebuild)
+    }
+
+    // Visual shake animation
     translateX.value = withSequence(
       withTiming(-5, { duration: 40 }),
       withTiming(5, { duration: 40 }),
@@ -30,7 +38,7 @@ export function LongPressable({ onLongPress, children, style, className, ...prop
       withTiming(5, { duration: 40 }),
       withTiming(0, { duration: 40 })
     );
-    
+
     if (onLongPress) {
       onLongPress(e);
     }

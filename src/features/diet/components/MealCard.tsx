@@ -19,14 +19,16 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const c = macros?.carbs || 0;
   const f = macros?.fat || 0;
   const total = p + c + f;
-  
+
   if (!total || total <= 0 || isNaN(total)) {
     return <View className="h-1 w-full bg-border-subtle" />;
   }
 
+  // Round two segments and give the remainder to the largest one
+  // to avoid rounding errors that leave a gap at the end of the bar
   const cPct = Math.round((c / total) * 100);
   const pPct = Math.round((p / total) * 100);
-  const fPct = Math.round((f / total) * 100);
+  const fPct = 100 - cPct - pPct;
 
   return (
     <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
