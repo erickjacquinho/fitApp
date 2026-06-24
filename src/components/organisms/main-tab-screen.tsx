@@ -4,7 +4,8 @@ import { ScrollView, View } from 'react-native';
 import { Header } from '../molecules/Header';
 
 interface MainTabScreenProps {
-  title: string;
+  title?: string;
+  customTitle?: ReactNode;
   children?: ReactNode;
   scrollable?: boolean;
   headerLeft?: ReactNode;
@@ -13,6 +14,7 @@ interface MainTabScreenProps {
 
 export function MainTabScreen({
   title,
+  customTitle,
   children,
   scrollable = true,
   headerLeft,
@@ -30,7 +32,7 @@ export function MainTabScreen({
 
   return (
     <View className="flex-1 bg-background">
-      <Header title={title} headerLeft={headerLeft} headerRight={headerRight} />
+      <Header title={title} customTitle={customTitle} headerLeft={headerLeft} headerRight={headerRight} />
       <Container keyboardShouldPersistTaps="handled" {...containerProps}>
         {children}
       </Container>

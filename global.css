@@ -18,68 +18,52 @@
     --color-neutral-900: #241C18;
     --color-neutral-950: #18110E;
 
-    --color-blue-50: #E4E1F7;
     --color-blue-100: #C6C3F8;
     --color-blue-200: #9A96FA;
     --color-blue-500: #0800FF;
     --color-blue-600: #0C04DC;
-    --color-blue-700: #1008BA;
     --color-blue-900: #160E8C;
 
-    --color-amber-50: #F8F0DD;
     --color-amber-100: #F3E3C0;
     --color-amber-200: #ECD194;
     --color-amber-500: #D49300;
     --color-amber-600: #BA8104;
-    --color-amber-700: #9F6F07;
     --color-amber-900: #7C580C;
 
-    --color-orange-50: #F5EADF;
     --color-orange-100: #EDD7C4;
     --color-orange-200: #E1BA9C;
     --color-orange-500: #B85A14;
     --color-orange-600: #A25115;
-    --color-orange-700: #8C4715;
     --color-orange-900: #6E3B16;
 
-    --color-moss-50: #EBECE5;
     --color-moss-100: #D7DBD1;
     --color-moss-200: #B9C1B2;
     --color-moss-500: #556B4D;
     --color-moss-600: #4E5F45;
-    --color-moss-700: #46533D;
     --color-moss-900: #3D4433;
 
-    --color-tomato-50: #F6E8E2;
     --color-tomato-100: #F0D3CB;
     --color-tomato-200: #E6B2A8;
     --color-tomato-500: #C44732;
     --color-tomato-600: #AC412E;
-    --color-tomato-700: #943A2A;
     --color-tomato-900: #743225;
 
-    --color-mustard-50: #F1ECDD;
     --color-mustard-100: #E3DAC0;
     --color-mustard-200: #CEC094;
     --color-mustard-500: #8A6A00;
     --color-mustard-600: #7B5E04;
-    --color-mustard-700: #6B5307;
     --color-mustard-900: #57430C;
 
-    --color-teal-50: #E8ECE8;
     --color-teal-100: #CFDBD7;
     --color-teal-200: #AAC2BE;
     --color-teal-500: #2F6F6A;
     --color-teal-600: #2D635E;
-    --color-teal-700: #2C5651;
     --color-teal-900: #2A4641;
 
-    --color-plum-50: #EFE9E9;
     --color-plum-100: #DFD5D8;
     --color-plum-200: #C6B6C0;
     --color-plum-500: #76506F;
     --color-plum-600: #6A4862;
-    --color-plum-700: #5D4055;
     --color-plum-900: #4D3644;
 
     /* --- LIGHT SEMANTIC TOKENS --- */
@@ -103,6 +87,18 @@
     --color-carbohydrate: var(--color-amber-500);
     --color-fat: var(--color-orange-500);
     --color-info: var(--color-blue-500);
+    --color-warning: var(--color-mustard-500);
+    --color-success: var(--color-moss-500);
+    --color-error: var(--color-tomato-500);
+    --color-link: var(--color-blue-900);
+    --color-link-visited: var(--color-plum-900);
+    --color-data-1: var(--color-blue-500);
+    --color-data-2: var(--color-orange-500);
+    --color-data-3: var(--color-amber-900);
+    --color-data-4: var(--color-teal-500);
+    --color-data-5: var(--color-plum-500);
+    --color-data-6: var(--color-neutral-600);
+    --color-text-inverse: var(--color-neutral-0);
     --font-size-subtitle: 18px;
     --font-size-body: 16px;
     --font-size-label: 14px;
@@ -169,6 +165,7 @@
     --size-bottom-sheet-max-height: 85%;
     --size-selection-sheet-height: 80%;
     --size-color-swatch-height: 80px;
+    --size-food-card: 72px;
 
     --motion-duration-fast: 120ms;
     --motion-duration-base: 180ms;
@@ -208,6 +205,7 @@
       --color-text-primary: #F8F3EB;
       --color-text-secondary: #C9BFB5;
       --color-text-disabled: #82776F;
+      --color-text-inverse: #18110E;
 
       --color-primary: var(--color-blue-200);
       --color-protein: var(--color-blue-200);
@@ -219,6 +217,12 @@
       --color-error: var(--color-tomato-200);
       --color-link: var(--color-blue-200);
       --color-link-visited: var(--color-plum-200);
+      --color-data-1: var(--color-blue-200);
+      --color-data-2: var(--color-orange-200);
+      --color-data-3: var(--color-amber-200);
+      --color-data-4: var(--color-teal-200);
+      --color-data-5: var(--color-plum-200);
+      --color-data-6: var(--color-neutral-300);
     }
   }
 }

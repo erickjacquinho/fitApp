@@ -74,8 +74,8 @@ export function ProgramForm() {
             size="sm"
             onPress={handleAddBlock}
           >
-            <Icon as={Plus} size={16} className="text-primary" />
-            <Text variant="label" className="text-primary">
+            <Icon as={Plus} size={16} />
+            <Text variant="caption">
               Adicionar bloco
             </Text>
           </Button>

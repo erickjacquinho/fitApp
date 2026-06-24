@@ -26,25 +26,35 @@ const buttonVariants = cva(
         ),
         warning: cn(
           'bg-warning active:opacity-80',
-          Platform.select({
-            web: 'hover:opacity-90',
-          })
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        success: cn(
+          'bg-success active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        carbohydrate: cn(
+          'bg-carbohydrate active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        fat: cn(
+          'bg-fat active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         outline: cn(
-          'border border-border-strong bg-surface active:bg-surface-elevated',
+          'border border-border-control bg-transparent active:bg-surface',
           Platform.select({
-            web: 'hover:bg-surface-elevated',
+            web: 'hover:bg-surface',
           })
         ),
         secondary: cn(
-          'bg-surface-elevated active:bg-surface',
-          Platform.select({ web: 'hover:bg-surface' })
+          'bg-text-primary active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         ghost: cn(
-          'active:bg-surface-elevated',
+          'bg-transparent active:bg-surface-elevated',
           Platform.select({ web: 'hover:bg-surface-elevated' })
         ),
-        link: '',
+        link: 'bg-transparent',
       },
       size: {
         default: cn('h-control-md px-4 py-2', Platform.select({ web: 'has-[>svg]:px-3' })),
@@ -62,7 +72,7 @@ const buttonVariants = cva(
 
 const buttonTextVariants = cva(
   cn(
-    'text-text-main font-bold font-sans',
+    'font-bold font-sans',
     Platform.select({ web: 'pointer-events-none transition-colors' })
   ),
   {
@@ -70,15 +80,18 @@ const buttonTextVariants = cva(
       variant: {
         default: 'text-text-inverse',
         destructive: 'text-text-inverse',
-        warning: 'text-text-primary',
+        warning: 'text-text-inverse',
+        success: 'text-text-inverse',
+        carbohydrate: 'text-text-primary',
+        fat: 'text-text-inverse',
         outline: cn(
-          'text-primary group-active:text-primary',
-          Platform.select({ web: 'group-hover:text-primary' })
+          'text-text-primary group-active:text-text-primary',
+          Platform.select({ web: 'group-hover:text-text-primary' })
         ),
-        secondary: 'text-text-primary group-active:text-text-primary',
+        secondary: 'text-text-inverse group-active:text-text-inverse',
         ghost: cn(
-          'text-primary group-active:text-primary',
-          Platform.select({ web: 'group-hover:text-primary' })
+          'text-text-primary group-active:text-text-primary',
+          Platform.select({ web: 'group-hover:text-text-primary' })
         ),
         link: cn(
           'text-link group-active:underline',

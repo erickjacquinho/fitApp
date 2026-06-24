@@ -88,7 +88,7 @@ export function ProgramListScreen() {
           onPress={() => router.push('/training/history')}
           className="flex-1"
         >
-          <Icon as={History} className="text-primary" />
+          <Icon as={History} />
           <Text variant="label">Histórico</Text>
         </Button>
 
@@ -96,8 +96,8 @@ export function ProgramListScreen() {
           onPress={() => router.push('/training/create-program')}
           className="flex-1"
         >
-          <Icon as={Plus} className="text-text-inverse" />
-          <Text variant="label" color="inverse">
+          <Icon as={Plus} />
+          <Text variant="label">
             Novo programa
           </Text>
         </Button>
@@ -136,8 +136,8 @@ export function ProgramListScreen() {
               onPress={() => handleStartSession(program.id, program.name, blocks)}
               className="mt-4"
             >
-              <Icon as={Play} size={16} className="text-primary" fill="currentColor" />
-              <Text variant="label" className="text-primary">
+              <Icon as={Play} size={16} fill="currentColor" />
+              <Text variant="label">
                 Iniciar treino
               </Text>
             </Button>

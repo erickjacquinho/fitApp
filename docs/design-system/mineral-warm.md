@@ -16,12 +16,10 @@ Scale semantics: `500` is the base. `50–200` are light variations for backgrou
 
 | Scale | Blue / protein | Amber / carbohydrate | Orange / fat | Moss / success | Tomato / error |
 |---|---|---|---|---|---|
-| `50` | `#E4E1F7` | `#F8F0DD` | `#F5EADF` | `#EBECE5` | `#F6E8E2` |
 | `100` | `#C6C3F8` | `#F3E3C0` | `#EDD7C4` | `#D7DBD1` | `#F0D3CB` |
 | `200` | `#9A96FA` | `#ECD194` | `#E1BA9C` | `#B9C1B2` | `#E6B2A8` |
 | `500` | `#0800FF` | `#D49300` | `#B85A14` | `#556B4D` | `#C44732` |
 | `600` | `#0C04DC` | `#BA8104` | `#A25115` | `#4E5F45` | `#AC412E` |
-| `700` | `#1008BA` | `#9F6F07` | `#8C4715` | `#46533D` | `#943A2A` |
 | `900` | `#160E8C` | `#7C580C` | `#6E3B16` | `#3D4433` | `#743225` |
 
 ### Auxiliary Families
@@ -30,12 +28,10 @@ Mustard is exclusively for warning. Teal and Plum extend charts; Plum also ident
 
 | Scale | Mustard / warning | Teal / data | Plum / data + visited link |
 |---|---|---|---|
-| `50` | `#F1ECDD` | `#E8ECE8` | `#EFE9E9` |
 | `100` | `#E3DAC0` | `#CFDBD7` | `#DFD5D8` |
 | `200` | `#CEC094` | `#AAC2BE` | `#C6B6C0` |
 | `500` | `#8A6A00` | `#2F6F6A` | `#76506F` |
 | `600` | `#7B5E04` | `#2D635E` | `#6A4862` |
-| `700` | `#6B5307` | `#2C5651` | `#5D4055` |
 | `900` | `#57430C` | `#2A4641` | `#4D3644` |
 
 ### Neutral Scale

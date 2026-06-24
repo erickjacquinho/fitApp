@@ -23,7 +23,7 @@ export const CalendarSummaryScreen = () => {
       <FlatList keyboardShouldPersistTaps="handled"
         data={summaries}
         keyExtractor={(item) => item.date}
-        contentContainerClassName="px-screen-x py-compact gap-3"
+        contentContainerClassName="py-compact gap-3"
         renderItem={({ item }) => {
           return (
             <DailySummaryCard

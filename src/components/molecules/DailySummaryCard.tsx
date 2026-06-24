@@ -1,7 +1,7 @@
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View, Pressable } from 'react-native';
-import { SwipeableCard } from './SwipeableCard';
+import { View } from 'react-native';
+import { ListItem } from './ListItem';
 import { Macros } from '../../features/diet/utils/macro-utils';
 
 interface DailySummaryCardProps {
@@ -15,18 +15,13 @@ export const DailySummaryCard = ({ date, macros, onPress }: DailySummaryCardProp
   const displayDate = `${dd}/${mm}/${yyyy}`;
 
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`Ver resumo de ${displayDate}`} onPress={onPress}>
-      <SwipeableCard>
-        <View className="flex-row justify-between items-center">
-          <View className="flex-1">
-            <Text variant="subtitle">{displayDate}</Text>
-            <Text variant="caption" className="text-text-secondary">
-              {Math.round(macros.protein)}P • {Math.round(macros.carbs)}C • {Math.round(macros.fat)}G
-            </Text>
-          </View>
-          <Text className="font-bold text-primary">{Math.round(macros.calories)} kcal</Text>
-        </View>
-      </SwipeableCard>
-    </Pressable>
+    <ListItem
+      title={displayDate}
+      subtitle={`${Math.round(macros.protein)}P • ${Math.round(macros.carbs)}C • ${Math.round(macros.fat)}G`}
+      rightAccessory={<Text className="font-bold text-primary">{Math.round(macros.calories)} kcal</Text>}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`Ver resumo de ${displayDate}`}
+    />
   );
 };

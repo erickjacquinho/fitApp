@@ -159,8 +159,8 @@ export function ExecuteExerciseModal({
         onPress={handleAddSet}
         className="my-3 border-dashed"
       >
-        <Icon as={Plus} size={16} className="text-primary" />
-        <Text variant="label" className="text-primary">
+        <Icon as={Plus} size={16} />
+        <Text variant="label">
           Adicionar série
         </Text>
       </Button>

@@ -38,7 +38,7 @@ function EditMealItemScreenComponent({ food, mealItem }: EditMealItemScreenProps
   };
 
   return (
-    <View className="flex-1 bg-surface px-screen-x pt-6 gap-6">
+    <View className="flex-1 bg-surface pt-6 gap-6">
       <Card>
         <Text variant="title">{food.name}</Text>
         

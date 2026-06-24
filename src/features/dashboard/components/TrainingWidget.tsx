@@ -38,8 +38,8 @@ export function TrainingWidget({
             size="sm"
             onPress={() => router.push('/training')}
           >
-            <Icon as={Play} size={16} className="text-primary" fill="currentColor" />
-            <Text variant="caption" className="text-primary">
+            <Icon as={Play} size={16} fill="currentColor" />
+            <Text variant="caption">
               Iniciar
             </Text>
           </Button>
@@ -108,7 +108,7 @@ export function TrainingWidget({
         onPress={() => router.push('/training')}
         className="mt-4 border-t border-border-subtle"
       >
-        <Text variant="caption" className="text-primary">
+        <Text variant="caption">
           Ver programas
         </Text>
       </Button>

@@ -50,8 +50,8 @@ export function DietWidget({
           size="sm"
           onPress={() => router.push('/diet/create-meal')}
         >
-          <Icon as={Plus} size={16} className="text-primary" />
-          <Text variant="caption" className="text-primary">
+          <Icon as={Plus} size={16} />
+          <Text variant="caption">
             Adicionar refeição
           </Text>
         </Button>
@@ -109,7 +109,7 @@ export function DietWidget({
         onPress={() => router.push('/diet')}
         className="mt-4 border-t border-border-subtle"
       >
-        <Text variant="caption" className="text-primary">
+        <Text variant="caption">
           Ver detalhes da dieta
         </Text>
       </Button>

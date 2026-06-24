@@ -29,12 +29,10 @@ export interface ThemeColors {
 }
 
 export type PrimitiveColorScale = {
-  50: string;
   100: string;
   200: string;
   500: string;
   600: string;
-  700: string;
   900: string;
 };
 
@@ -90,7 +88,7 @@ export const lightTheme: ThemeColors = {
   link: '#1008BA',
   linkVisited: '#5D4055',
   scrim: 'rgba(24, 17, 14, 0.56)',
-  chartSeries: ['#0800FF', '#B85A14', '#9F6F07', '#2F6F6A', '#76506F', '#625851'],
+  chartSeries: ['#0800FF', '#B85A14', '#7C580C', '#2F6F6A', '#76506F', '#625851'],
 };
 
 export const darkTheme: ThemeColors = {

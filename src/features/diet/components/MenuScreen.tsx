@@ -79,7 +79,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   return (
     <MainTabScreen
-      title="Minha dieta"
+      customTitle={<DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />}
       scrollable={false}
       headerLeft={
         meals.length > 1 ? (
@@ -106,8 +106,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       }
     >
       <View className="flex-1">
-        <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
-        
         <View className="flex-1 relative">
           <View style={{ opacity: showSkeleton ? 0 : 1, flex: 1 }} pointerEvents={showSkeleton ? "none" : "auto"}>
             <DailyBalance 
@@ -134,19 +132,55 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
           {showSkeleton && (
             <View className="absolute inset-0 bg-background z-10 pt-2">
-              <Skeleton className="h-16 w-full mb-4" />
-              <View className="gap-6 pt-2">
-                <View>
-                  <Skeleton className="h-14 w-full mb-1 rounded-t-2xl" />
-                  <Skeleton className="h-[3px] w-full mb-4" />
-                  <Skeleton className="h-12 w-full rounded-md mb-3 mx-4" style={{ width: 'auto' }} />
-                  <Skeleton className="h-10 w-32 rounded-md mx-4" />
+              <View className="px-4 py-6 gap-6">
+                <View className="items-center justify-center py-4">
+                  <View className="flex-row items-center justify-between w-full max-w-[400px]">
+                    <View className="flex-1 items-center">
+                      <Skeleton className="size-24 rounded-full" />
+                    </View>
+                    <View className="flex-1 items-center gap-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-12" />
+                      <Skeleton className="h-3 w-10" />
+                    </View>
+                    <View className="flex-1 items-center gap-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-12" />
+                      <Skeleton className="h-3 w-10" />
+                    </View>
+                    <View className="flex-1 items-center gap-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-12" />
+                      <Skeleton className="h-3 w-10" />
+                    </View>
+                  </View>
                 </View>
-                <View>
-                  <Skeleton className="h-14 w-full mb-1 rounded-t-2xl" />
-                  <Skeleton className="h-[3px] w-full mb-4" />
-                  <Skeleton className="h-12 w-full rounded-md mb-3 mx-4" style={{ width: 'auto' }} />
-                  <Skeleton className="h-10 w-32 rounded-md mx-4" />
+                
+                <View className="gap-6 mt-6">
+                  {[1, 2, 3].map((i) => (
+                    <View key={i} className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
+                      <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
+                        <Skeleton className="h-6 w-24" />
+                        <Skeleton className="h-4 w-12" />
+                      </View>
+                      <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
+                        <Skeleton className="h-1 w-full" />
+                      </View>
+                      <View className="flex-col">
+                        <View className="gap-0">
+                          <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                          <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                        </View>
+                        <View className="px-4 h-control-md flex-row justify-between items-center bg-surface border-b border-border-subtle">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-4 w-40" />
+                        </View>
+                        <View className="h-control-md flex-row items-center justify-center w-full">
+                          <Skeleton className="h-4 w-40" />
+                        </View>
+                      </View>
+                    </View>
+                  ))}
                 </View>
               </View>
             </View>

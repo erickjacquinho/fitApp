@@ -8,13 +8,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'lucide-react-native';
 
 export interface HeaderProps {
-  title: string;
+  title?: string;
   showBackButton?: boolean;
   headerLeft?: ReactNode;
   headerRight?: ReactNode;
+  customTitle?: ReactNode;
 }
 
-export function Header({ title, showBackButton, headerLeft, headerRight }: HeaderProps) {
+export function Header({ title, showBackButton, headerLeft, headerRight, customTitle }: HeaderProps) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -39,9 +40,13 @@ export function Header({ title, showBackButton, headerLeft, headerRight }: Heade
         </View>
 
         <View className="flex-2 items-center">
-          <Text variant="label" className="text-center">
-            {title}
-          </Text>
+          {customTitle ? (
+            customTitle
+          ) : (
+            <Text variant="label" className="text-center">
+              {title}
+            </Text>
+          )}
         </View>
 
         <View className="flex-1 items-end justify-center">

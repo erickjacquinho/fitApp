@@ -36,6 +36,7 @@ module.exports = {
             DEFAULT: 'var(--color-text-secondary-surface)',
           },
           disabled: 'var(--color-text-disabled)',
+          inverse: 'var(--color-text-inverse)',
         },
         primary: {
           DEFAULT: 'var(--color-primary)',
@@ -58,8 +59,12 @@ module.exports = {
           visited: 'var(--color-link-visited)',
         },
         data: {
+          1: 'var(--color-data-1)',
+          2: 'var(--color-data-2)',
+          3: 'var(--color-data-3)',
           4: 'var(--color-data-4)',
           5: 'var(--color-data-5)',
+          6: 'var(--color-data-6)',
         },
       },
       fontFamily: {
@@ -165,6 +170,7 @@ module.exports = {
         "sheet-handle": "var(--size-bottom-sheet-handle-height)",
         "selection-sheet": "var(--size-selection-sheet-height)",
         "color-swatch": "var(--size-color-swatch-height)",
+        "food-card": "var(--size-food-card)",
       },
       minHeight: {
         "touch-target": "var(--size-touch-target)",

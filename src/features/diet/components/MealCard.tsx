@@ -13,7 +13,6 @@ import { Trash2 } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
-import { Card } from '@/components/ui/card';
 
 function MacroProportionBar({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
   const p = macros?.protein || 0;
@@ -22,7 +21,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const total = p + c + f;
   
   if (!total || total <= 0 || isNaN(total)) {
-    return <View className="h-[3px] w-full bg-border-subtle" />;
+    return <View className="h-1 w-full bg-border-subtle" />;
   }
 
   const cPct = Math.round((c / total) * 100);
@@ -30,7 +29,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const fPct = Math.round((f / total) * 100);
 
   return (
-    <View className="h-[3px] w-full flex-row overflow-hidden bg-border-subtle">
+    <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
       {cPct > 0 && <View style={{ width: `${cPct}%` }} className="bg-carbohydrate h-full" />}
       {pPct > 0 && <View style={{ width: `${pPct}%` }} className="bg-protein h-full" />}
       {fPct > 0 && <View style={{ width: `${fPct}%` }} className="bg-fat h-full" />}
@@ -67,31 +66,43 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
   };
 
   return (
-    <Card className="mb-6 overflow-hidden p-0">
-      <View className="px-4 py-3 bg-surface flex-row justify-between items-center">
-        <Text variant="subtitle">{meal.name}</Text>
-        <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
-          <Icon as={Trash2} className="text-text-secondary" size={16} />
-        </Pressable>
+    <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
+      <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
+        <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
+        <View className="flex-row items-center gap-3">
+          <Text variant="label" className="text-text-primary">00:00</Text>
+          <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
+            <Icon as={Trash2} className="text-destructive" size={16} />
+          </Pressable>
+        </View>
       </View>
       <MacroProportionBar macros={macros} />
       
-      <View className="p-4 gap-3">
-        {foodItems.map((item) => (
-          <FoodEntryCard 
-            key={item.id} 
-            food={item.food} 
-            quantity={item.quantity} 
-            onDelete={() => handleDeleteItem(item.id)}
-            onEdit={() => handleEditItem(item.id, item.foodId)}
-          />
-        ))}
+      <View className="flex-col">
+        {foodItems.length > 0 && (
+          <View className="gap-0">
+            {foodItems.map((item) => (
+              <FoodEntryCard 
+                key={item.id} 
+                food={item.food} 
+                quantity={item.quantity} 
+                onDelete={() => handleDeleteItem(item.id)}
+                onEdit={() => handleEditItem(item.id, item.foodId)}
+              />
+            ))}
+          </View>
+        )}
         
-        <Button variant="secondary" onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}><Text>Adicionar alimento</Text></Button>
-        
-        {foodItems.length > 0 && <MealMacrosSummary macros={macros} />}
+        <MealMacrosSummary macros={macros} />
+
+        <Pressable 
+          className="h-control-md flex-row items-center justify-center w-full"
+          onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}
+        >
+          <Text variant="label" className="text-text-primary font-medium">+ Adicionar Alimentos</Text>
+        </Pressable>
       </View>
-    </Card>
+    </View>
   );
 }
 

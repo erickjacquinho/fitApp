@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, FlatList, Pressable } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
+import { SwipeableRow } from '../../../components/molecules/SwipeableRow';
+import { ListItem } from '../../../components/molecules/ListItem';
 import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -59,7 +60,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
 
   return (
     <View className="flex-1 bg-surface">
-      <View className="px-screen-x py-compact gap-4">
+      <View className="py-compact gap-4">
         <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         
         <View className="flex-row gap-3">
@@ -81,29 +82,25 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
       <FlatList keyboardShouldPersistTaps="handled"
         data={filteredFoods}
         keyExtractor={(item) => item.id}
-        contentContainerClassName="px-screen-x pb-content-bottom"
+        contentContainerClassName="pb-content-bottom"
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
-            <SwipeableCard 
-              className={`mb-3 ${isSelected ? 'border-primary bg-primary/10' : ''}`}
-              onPress={() => {
-                if (isSelectionMode) toggleBulkSelection(item.id);
-                else if (mealId) handleAddFoodToMeal(item.id);
-                else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
-              }}
+            <SwipeableRow 
               onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
             >
-              <View className="flex-row items-center justify-between">
-                <View className="flex-1">
-                  <Text variant="subtitle">{item.name}</Text>
-                  <Text variant="caption" className="text-text-secondary">
-                    {item.protein}P • {item.carbohydrates}C • {item.fat}G
-                  </Text>
-                </View>
-                <Text className="font-bold text-primary">{item.calories} kcal</Text>
-              </View>
-            </SwipeableCard>
+              <ListItem
+                title={item.name}
+                subtitle={`${item.protein}P • ${item.carbohydrates}C • ${item.fat}G`}
+                rightAccessory={<Text className="font-bold text-primary">{item.calories} kcal</Text>}
+                onPress={() => {
+                  if (isSelectionMode) toggleBulkSelection(item.id);
+                  else if (mealId) handleAddFoodToMeal(item.id);
+                  else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
+                }}
+                className={isSelected ? 'bg-primary/10' : ''}
+              />
+            </SwipeableRow>
           );
         }}
         ListEmptyComponent={

@@ -33,7 +33,7 @@ export function MealForm() {
     >
       <ScrollView
         className="flex-1 bg-surface"
-        contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
+        contentContainerClassName="py-screen-y gap-6 pb-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
