@@ -80,7 +80,27 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   return (
     <MainTabScreen
       customTitle={<DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />}
-      scrollable={false}
+      isFlatList={true}
+      flatListProps={{
+        data: meals,
+        keyExtractor: (item) => item.id,
+        ListHeaderComponent: (
+          <DailyBalance 
+            protein={dailyMacros.protein}
+            carbs={dailyMacros.carbs}
+            fat={dailyMacros.fat}
+            calories={dailyMacros.calories}
+          />
+        ),
+        renderItem: ({ item }) => (
+          <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
+        ),
+        ListFooterComponent: (
+          <View className="mt-4">
+            <Button variant="outline" onPress={handleAddMeal}><Text>Adicionar refeição</Text></Button>
+          </View>
+        )
+      }}
       headerLeft={
         meals.length > 1 ? (
           <Button
@@ -105,87 +125,59 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </View>
       }
     >
-      <View className="flex-1">
-        <View className="flex-1 relative">
-          <View style={{ opacity: showSkeleton ? 0 : 1, flex: 1 }} pointerEvents={showSkeleton ? "none" : "auto"}>
-            <DailyBalance 
-              protein={dailyMacros.protein}
-              carbs={dailyMacros.carbs}
-              fat={dailyMacros.fat}
-              calories={dailyMacros.calories}
-            />
-
-            <FlatList keyboardShouldPersistTaps="handled"
-              data={meals}
-              keyExtractor={(item) => item.id}
-              contentContainerClassName="pb-content-bottom pt-4"
-              renderItem={({ item }) => (
-                <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
-              )}
-              ListFooterComponent={
-                <View className="mt-4">
-                  <Button variant="outline" onPress={handleAddMeal}><Text>Adicionar refeição</Text></Button>
-                </View>
-              }
-            />
-          </View>
-
-          {showSkeleton && (
-            <View className="absolute inset-0 bg-background z-10 pt-2">
-              <View className="px-4 py-6 gap-6">
-                <View className="items-center justify-center py-4">
-                  <View className="flex-row items-center justify-between w-full max-w-[400px]">
-                    <View className="flex-1 items-center">
-                      <Skeleton className="size-24 rounded-full" />
-                    </View>
-                    <View className="flex-1 items-center gap-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-12" />
-                      <Skeleton className="h-3 w-10" />
-                    </View>
-                    <View className="flex-1 items-center gap-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-12" />
-                      <Skeleton className="h-3 w-10" />
-                    </View>
-                    <View className="flex-1 items-center gap-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-12" />
-                      <Skeleton className="h-3 w-10" />
-                    </View>
-                  </View>
-                </View>
-                
-                <View className="gap-6 mt-6">
-                  {[1, 2, 3].map((i) => (
-                    <View key={i} className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
-                      <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
-                        <Skeleton className="h-6 w-24" />
-                        <Skeleton className="h-4 w-12" />
-                      </View>
-                      <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
-                        <Skeleton className="h-1 w-full" />
-                      </View>
-                      <View className="flex-col">
-                        <View className="gap-0">
-                          <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
-                          <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
-                        </View>
-                        <View className="px-4 h-control-md flex-row justify-between items-center bg-surface border-b border-border-subtle">
-                          <Skeleton className="h-4 w-32" />
-                          <Skeleton className="h-4 w-40" />
-                        </View>
-                        <View className="h-control-md flex-row items-center justify-center w-full">
-                          <Skeleton className="h-4 w-40" />
-                        </View>
-                      </View>
-                    </View>
-                  ))}
-                </View>
+      {showSkeleton && (
+        <View className="absolute inset-0 bg-background z-10 pt-4 px-screen-x">
+          <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-row items-center justify-between py-4 px-card">
+            <View className="flex-row items-center justify-between w-full">
+              <View className="flex-1 items-center">
+                <Skeleton className="size-24 rounded-full" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
               </View>
             </View>
-          )}
+          </View>
+          
+          <View className="gap-0">
+            {[1, 2, 3].map((i) => (
+              <View key={i} className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
+                <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-4 w-12" />
+                </View>
+                <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
+                  <Skeleton className="h-1 w-full" />
+                </View>
+                <View className="flex-col">
+                  <View className="gap-0">
+                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                  </View>
+                  <View className="px-4 h-control-md flex-row justify-between items-center bg-surface border-b border-border-subtle">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-4 w-40" />
+                  </View>
+                  <View className="h-control-md flex-row items-center justify-center w-full">
+                    <Skeleton className="h-4 w-40" />
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
+      )}
 
         <ConfirmModal 
           visible={deleteModalVisible}
@@ -201,7 +193,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           meals={meals}
           onClose={() => setReorderModalVisible(false)}
         />
-      </View>
     </MainTabScreen>
   );
 }

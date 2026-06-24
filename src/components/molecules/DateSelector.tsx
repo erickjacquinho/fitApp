@@ -1,9 +1,11 @@
 import { Text } from '@/components/ui/text';
 import React from 'react';
 import { View } from 'react-native';
+import { LongPressable } from '@/components/ui/long-pressable';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { useRouter } from 'expo-router';
 
 interface DateSelectorProps {
   selectedDate: string; // YYYY-MM-DD
@@ -28,6 +30,8 @@ const formatDateLabel = (dateStr: string) => {
 };
 
 export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) => {
+  const router = useRouter();
+
   const changeDate = (days: number) => {
     const d = new Date(selectedDate + 'T00:00:00');
     d.setDate(d.getDate() + days);
@@ -42,7 +46,12 @@ export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) 
       <Button accessibilityLabel="Dia anterior" variant="ghost" size="icon" onPress={() => changeDate(-1)}>
         <Icon as={ChevronLeft} size={24} />
       </Button>
-      <Text variant="title">{formatDateLabel(selectedDate)}</Text>
+      <LongPressable 
+        className="w-date-selector items-center justify-center" 
+        onLongPress={() => router.push('/diet/calendar-summary')}
+      >
+        <Text variant="title" className="text-center">{formatDateLabel(selectedDate)}</Text>
+      </LongPressable>
       <Button accessibilityLabel="Próximo dia" variant="ghost" size="icon" onPress={() => changeDate(1)}>
         <Icon as={ChevronRight} size={24} />
       </Button>

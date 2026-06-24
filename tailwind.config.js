@@ -153,6 +153,7 @@ module.exports = {
         "avatar-md": "var(--size-avatar-md)",
         "avatar-lg": "var(--size-avatar-lg)",
         "sheet-handle": "var(--size-bottom-sheet-handle-width)",
+        "date-selector": "var(--size-date-selector)",
       },
       height: {
         "icon-sm": "var(--size-icon-sm)",

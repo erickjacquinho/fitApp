@@ -22,7 +22,7 @@ export function DailyBalance({ protein, carbs, fat, calories }: DailyBalanceProp
   const fPct = totalMacros > 0 ? Math.round((fat / totalMacros) * 100) : 0;
 
   return (
-    <View className="py-4 px-4 flex-row items-center justify-between">
+    <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-row items-center justify-between py-4 px-card">
       {/* Gráfico Radial */}
       <View className="items-center justify-center">
         <MacroRadialChart 
