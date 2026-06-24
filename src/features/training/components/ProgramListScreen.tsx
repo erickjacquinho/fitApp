@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
-import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
+import { PopupModal } from '@/components/organisms/PopupModal';
 
 export function ProgramListScreen() {
   const {
@@ -195,7 +195,7 @@ export function ProgramListScreen() {
         cancelLabel="Cancelar"
       />
 
-      <BottomSheetModal
+      <PopupModal
         visible={blockSelectVisible}
         onClose={() => setBlockSelectVisible(false)}
         title="Iniciar treino"
@@ -218,7 +218,7 @@ export function ProgramListScreen() {
             </Button>
           ))}
         </View>
-      </BottomSheetModal>
+      </PopupModal>
     </ScrollView>
   );
 }

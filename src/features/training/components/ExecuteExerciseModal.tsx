@@ -4,7 +4,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
+import { PopupModal } from '../../../components/organisms/PopupModal';
 import { SetInputRow } from './SetInputRow';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -131,7 +131,7 @@ export function ExecuteExerciseModal({
   };
 
   return (
-    <BottomSheetModal 
+    <PopupModal 
       visible={visible} 
       onClose={onClose} 
       title={exerciseName}
@@ -169,6 +169,6 @@ export function ExecuteExerciseModal({
       <View className="mt-2 border-t border-border-subtle pt-3 flex-row gap-2">
         <Button variant="outline" className="flex-1" onPress={onClose}><Text>Fechar</Text></Button>
       </View>
-    </BottomSheetModal>
+    </PopupModal>
   );
 }

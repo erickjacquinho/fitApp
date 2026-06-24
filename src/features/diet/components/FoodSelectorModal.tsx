@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Platform , KeyboardAvoidingView, FlatList } from 'react-native';
 
-import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
+import { PopupModal } from '../../../components/organisms/PopupModal';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
@@ -62,7 +62,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
   const selectedCount = Object.keys(selections).length;
 
   return (
-    <BottomSheetModal 
+    <PopupModal 
       visible={visible} 
       onClose={onClose} 
       title="Selecionar alimentos"
@@ -113,6 +113,6 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
           <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
         </View>
       </View>
-    </BottomSheetModal>
+    </PopupModal>
   );
 }

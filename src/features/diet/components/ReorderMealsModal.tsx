@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Icon } from '@/components/ui/icon';
@@ -8,7 +8,12 @@ import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { GripVertical } from 'lucide-react-native';
-import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface ReorderMealsModalProps {
   visible: boolean;
@@ -16,12 +21,17 @@ interface ReorderMealsModalProps {
   onClose: () => void;
 }
 
+// Each drag row has fixed height so the list height can be computed deterministically.
+const ITEM_HEIGHT = 64;
+const MAX_LIST_HEIGHT = 360;
+
 export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModalProps) {
   const [data, setData] = useState<Meal[]>([]);
+  const { height: screenHeight } = useWindowDimensions();
 
   useEffect(() => {
     if (visible) {
-      setData(meals);
+      setData([...meals]);
     }
   }, [visible, meals]);
 
@@ -30,6 +40,9 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
     await MealService.updateMealOrder(orderedIds);
     onClose();
   };
+
+  // Compute a bounded list height so DraggableFlatList always has explicit space.
+  const listHeight = Math.min(data.length * ITEM_HEIGHT, MAX_LIST_HEIGHT, screenHeight * 0.45);
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Meal>) => {
     return (
@@ -43,10 +56,18 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
           className={`mb-2 flex-row items-center justify-between rounded-md border border-border-subtle p-4 ${
             isActive ? 'bg-surface-elevated' : 'bg-surface'
           }`}
+          style={[
+            { height: ITEM_HEIGHT },
+            isActive ? styles.rowActive : styles.rowIdle,
+          ]}
         >
-          <View>
+          <View style={styles.rowContent}>
             <Text variant="subtitle">{item.name}</Text>
-            {item.preparationState ? <Text variant="caption" className="text-text-secondary">{item.preparationState}</Text> : null}
+            {item.preparationState ? (
+              <Text variant="caption" className="text-text-secondary">
+                {item.preparationState}
+              </Text>
+            ) : null}
           </View>
           <Icon as={GripVertical} className="text-text-secondary" />
         </TouchableOpacity>
@@ -55,36 +76,53 @@ export function ReorderMealsModal({ visible, meals, onClose }: ReorderMealsModal
   };
 
   return (
-    <BottomSheetModal visible={visible} onClose={onClose} title="Reordenar refeições">
-      <GestureHandlerRootView style={styles.container}>
-        <View className="flex-1 min-h-[400px]">
-          <Text variant="caption" className="text-text-secondary mb-4">
+    <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Reordenar refeições</DialogTitle>
+        </DialogHeader>
+
+        {/* GestureHandlerRootView isolates gesture context so drag doesn't leak to the modal. */}
+        <GestureHandlerRootView style={styles.gestureRoot}>
+          <Text variant="caption" className="text-text-secondary mb-3">
             Segure e arraste para alterar a ordem.
           </Text>
 
-          <DraggableFlatList keyboardShouldPersistTaps="handled"
+          <DraggableFlatList
             data={data}
-            onDragEnd={({ data }) => setData(data)}
+            onDragEnd={({ data: reordered }) => setData(reordered)}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
-            containerStyle={styles.listContainer}
+            keyboardShouldPersistTaps="handled"
+            activationDistance={8}
+            // Explicit height is required for DraggableFlatList inside a Modal/Dialog.
+            containerStyle={{ height: listHeight }}
           />
 
           <View className="pt-4">
-            <Button onPress={handleSave}><Text>Salvar ordem</Text></Button>
+            <Button onPress={handleSave}>
+              <Text>Salvar ordem</Text>
+            </Button>
           </View>
-        </View>
-      </GestureHandlerRootView>
-    </BottomSheetModal>
+        </GestureHandlerRootView>
+      </DialogContent>
+    </Dialog>
   );
 }
 
-// DraggableFlatList and GestureHandlerRootView require React Native style objects.
 const styles = StyleSheet.create({
-  container: {
+  gestureRoot: {
+    width: '100%',
+  },
+  rowIdle: {
+    // semantic token bg-surface applied via StyleSheet doesn't work with NativeWind tokens;
+    // we keep it transparent and rely on the elevated state for visual feedback only.
+    opacity: 1,
+  },
+  rowActive: {
+    opacity: 0.85,
+  },
+  rowContent: {
     flex: 1,
   },
-  listContainer: {
-    flex: 1,
-  }
 });

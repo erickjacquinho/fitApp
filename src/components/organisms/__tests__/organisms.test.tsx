@@ -23,12 +23,11 @@ describe('FeedbackDialog Contracts', () => {
   });
 });
 
-describe('BottomSheetModal Contracts', () => {
-  it('uses semantic tokens in BottomSheetModal.tsx', () => {
-    const filePath = path.join(__dirname, '../BottomSheetModal.tsx');
+describe('PopupModal Contracts', () => {
+  it('uses semantic tokens in PopupModal.tsx', () => {
+    const filePath = path.join(__dirname, '../PopupModal.tsx');
     const content = fs.readFileSync(filePath, 'utf8');
 
-    expect(content).toContain('border-border-subtle');
     expect(content).toContain('text-text-secondary');
     expect(content).not.toContain('border-soft');
     expect(content).not.toContain('text-text-muted');

@@ -7,7 +7,7 @@ import { X, Plus } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchBar } from '@/components/molecules/SearchBar';
-import { BottomSheetModal } from '@/components/organisms/BottomSheetModal';
+import { PopupModal } from '@/components/organisms/PopupModal';
 
 interface Props {
   value: string;
@@ -57,7 +57,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
         </Text>
       </Button>
 
-      <BottomSheetModal
+      <PopupModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         title="Selecionar exercício"
@@ -107,7 +107,7 @@ export function ExerciseSelect({ value, onChange }: Props) {
             </Button>
           )}
         </View>
-      </BottomSheetModal>
+      </PopupModal>
     </>
   );
 }
