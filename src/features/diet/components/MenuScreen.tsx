@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
-import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
-import { Icon } from '@/components/ui/icon';
-import { View, FlatList, UIManager, Platform } from 'react-native';
-import { useMenu } from '../hooks/useMenu';
+import { View, UIManager, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
-
-const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
-const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
 import withObservables from '@nozbe/with-observables';
+import { Q } from '@nozbe/watermelondb';
+import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
+
+import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
+import { Icon } from '@/components/ui/icon';
+import { useMenu } from '../hooks/useMenu';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
-import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { DailyBalance } from './DailyBalance';
 import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
-
 import { DateSelector } from '../../../components/molecules/DateSelector';
-import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Skeleton } from '@/components/ui/skeleton';
+import { LongPressable } from '@/components/ui/long-pressable';
+
+const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
+const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
 
 interface MenuScreenProps {
   meals: Meal[];
@@ -145,7 +146,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   return (
     <MainTabScreen
-      customTitle={<DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />}
+      customTitle={
+        <LongPressable onLongPress={startReorder}>
+          <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
+        </LongPressable>
+      }
       isFlatList={false}
       scrollable={false}
       disablePadding={true}
