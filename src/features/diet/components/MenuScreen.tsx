@@ -117,7 +117,7 @@ function DraggableMealItem({
 
   const handleLayout = (e: LayoutChangeEvent) => {
     const h = e.nativeEvent.layout.height;
-    if (h > 0 && heights.value[id] !== h) {
+    if (h > 0 && activeId.value === null && heights.value[id] !== h) {
       heights.value = {
         ...heights.value,
         [id]: h
@@ -205,6 +205,7 @@ function DraggableMealItem({
       <Animated.View 
         onLayout={handleLayout} 
         style={animatedStyle}
+        className="mb-4"
       >
         {children}
       </Animated.View>
@@ -228,10 +229,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
   React.useEffect(() => {
-    if (activeId.value === null && !isUpdatingOrder) {
+    if (!isUpdatingOrder) {
       const ids = meals.map(m => m.id);
       setMealOrderIds(ids);
       order.value = ids;
+      activeId.value = null;
     }
   }, [meals, isUpdatingOrder, activeId, order]);
 
@@ -239,7 +241,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     setMealOrderIds(newOrderIds);
     setIsUpdatingOrder(true);
     setScrollEnabled(true);
-    activeId.value = null;
     try {
       await MealService.updateMealOrder(newOrderIds);
     } catch (error) {
@@ -247,7 +248,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     } finally {
       setIsUpdatingOrder(false);
     }
-  }, [activeId]);
+  }, []);
 
   const handleDelete = async () => {
     if (selectedMealId) {
