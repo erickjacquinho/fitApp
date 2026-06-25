@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
 import { Icon } from '@/components/ui/icon';
-import { View, FlatList, UIManager, Platform } from 'react-native';
+import { View, ScrollView, UIManager, Platform, LayoutChangeEvent } from 'react-native';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
-import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
+import { GestureHandlerRootView, Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withSpring, 
+  runOnJS 
+} from 'react-native-reanimated';
 
-const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
-const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
@@ -20,7 +22,7 @@ import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
 
 import { DateSelector } from '../../../components/molecules/DateSelector';
-import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
+import { Apple, CalendarDays } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Skeleton } from '@/components/ui/skeleton';
@@ -35,55 +37,199 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+const getTheoreticalY = (
+  id: string,
+  orderVal: string[],
+  heightsVal: Record<string, number>,
+  spacing: number
+) => {
+  'worklet';
+  let y = 0;
+  for (let i = 0; i < orderVal.length; i++) {
+    const currentId = orderVal[i];
+    if (currentId === id) {
+      return y;
+    }
+    y += (heightsVal[currentId] || 0) + spacing;
+  }
+  return y;
+};
+
+const recalculateOrder = (
+  activeId: string,
+  currentY: number,
+  orderVal: string[],
+  heightsVal: Record<string, number>,
+  spacing: number
+) => {
+  'worklet';
+  let accumY = 0;
+  let newIndex = 0;
+  
+  for (let i = 0; i < orderVal.length; i++) {
+    const id = orderVal[i];
+    const itemHeight = heightsVal[id] || 0;
+    
+    const midPoint = accumY + itemHeight / 2;
+    if (currentY < midPoint) {
+      newIndex = i;
+      break;
+    }
+    accumY += itemHeight + spacing;
+    newIndex = i;
+  }
+  
+  const currentIndex = orderVal.indexOf(activeId);
+  if (currentIndex !== newIndex && currentIndex !== -1) {
+    const nextOrder = [...orderVal];
+    nextOrder.splice(currentIndex, 1);
+    nextOrder.splice(newIndex, 0, activeId);
+    return nextOrder;
+  }
+  return null;
+};
+
+interface DraggableMealItemProps {
+  id: string;
+  order: Animated.SharedValue<string[]>;
+  heights: Animated.SharedValue<Record<string, number>>;
+  activeId: Animated.SharedValue<string | null>;
+  spacing: number;
+  onDragStart: () => void;
+  onDragEnd: (newOrder: string[]) => void;
+  children: React.ReactNode;
+}
+
+function DraggableMealItem({
+  id,
+  order,
+  heights,
+  activeId,
+  spacing,
+  onDragStart,
+  onDragEnd,
+  children
+}: DraggableMealItemProps) {
+  const dragY = useSharedValue(0);
+  const startY = useSharedValue(0);
+  const isDragging = useSharedValue(false);
+
+  const handleLayout = (e: LayoutChangeEvent) => {
+    const h = e.nativeEvent.layout.height;
+    if (h > 0 && heights.value[id] !== h) {
+      heights.value = {
+        ...heights.value,
+        [id]: h
+      };
+    }
+  };
+
+  const longPressGesture = Gesture.LongPress()
+    .minDuration(350)
+    .maxDist(15)
+    .onStart(() => {
+      isDragging.value = true;
+      activeId.value = id;
+      runOnJS(onDragStart)();
+      
+      const initialY = getTheoreticalY(id, order.value, heights.value, spacing);
+      startY.value = initialY;
+      dragY.value = initialY;
+    });
+
+  const panGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      if (!isDragging.value) return;
+      const currentY = startY.value + event.translationY;
+      dragY.value = currentY;
+
+      const nextOrder = recalculateOrder(id, currentY, order.value, heights.value, spacing);
+      if (nextOrder) {
+        order.value = nextOrder;
+      }
+    })
+    .onEnd(() => {
+      if (!isDragging.value) return;
+      isDragging.value = false;
+      activeId.value = null;
+
+      const finalY = getTheoreticalY(id, order.value, heights.value, spacing);
+      dragY.value = withSpring(finalY, { damping: 15 }, (finished) => {
+        if (finished) {
+          runOnJS(onDragEnd)(order.value);
+        }
+      });
+    });
+
+  const dragGesture = Gesture.Sequence(longPressGesture, panGesture);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const isActive = activeId.value === id;
+    const isAnyDragging = activeId.value !== null;
+
+    if (isActive) {
+      return {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        transform: [{ translateY: dragY.value }],
+        zIndex: 100,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+        elevation: 6,
+      };
+    } else {
+      const targetY = getTheoreticalY(id, order.value, heights.value, spacing);
+      return {
+        position: isAnyDragging ? 'absolute' : 'relative',
+        left: 0,
+        right: 0,
+        top: 0,
+        transform: [{ translateY: isAnyDragging ? withSpring(targetY, { damping: 15 }) : 0 }],
+        zIndex: 1,
+      };
+    }
+  });
+
+  return (
+    <GestureDetector gesture={dragGesture}>
+      <Animated.View 
+        onLayout={handleLayout} 
+        style={animatedStyle}
+      >
+        {children}
+      </Animated.View>
+    </GestureDetector>
+  );
+}
+
 function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
 
-  const [isReordering, setIsReordering] = useState(false);
-  const [tempMeals, setTempMeals] = useState<Meal[]>([]);
-  const [isSaving, setIsSaving] = useState(false);
+  const order = useSharedValue<string[]>([]);
+  const heights = useSharedValue<Record<string, number>>({});
+  const activeId = useSharedValue<string | null>(null);
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
-  const startReorder = React.useCallback(() => {
-    setTempMeals([...meals]);
-    setIsReordering(true);
+  React.useEffect(() => {
+    order.value = meals.map(m => m.id);
   }, [meals]);
 
-  const confirmReorder = async () => {
-    setIsSaving(true);
+  const handleDragEnd = React.useCallback(async (newOrderIds: string[]) => {
+    setScrollEnabled(true);
     try {
-      const orderedIds = tempMeals.map(m => m.id);
-      await MealService.updateMealOrder(orderedIds);
+      await MealService.updateMealOrder(newOrderIds);
     } catch (error) {
-      console.error(error);
-      setIsSaving(false);
+      console.error('Error updating meal order:', error);
     }
-  };
-
-  const cancelReorder = () => {
-    setIsReordering(false);
-  };
-
-  React.useEffect(() => {
-    if (isReordering) {
-      cancelReorder();
-    }
-  }, [selectedDate]);
-
-  React.useEffect(() => {
-    if (isSaving) {
-      const mealsIds = meals.map(m => m.id);
-      const tempIds = tempMeals.map(m => m.id);
-      const isSync = mealsIds.length === tempIds.length && mealsIds.every((id, idx) => id === tempIds[idx]);
-      
-      if (isSync) {
-        setIsReordering(false);
-        setIsSaving(false);
-      }
-    }
-  }, [meals, isSaving, tempMeals]);
+  }, []);
 
   const handleDelete = async () => {
     if (selectedMealId) {
@@ -103,25 +249,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, [], selectedDate);
   };
 
-  const renderItem = React.useCallback(({ item, drag }: { item: Meal; drag: () => void }) => {
-    return (
-      <ScaleDecorator>
-        <View key={item.id} className="pb-6">
-          <MealCard 
-            meal={item} 
-            isReordering={isReordering}
-            drag={drag}
-            onDelete={confirmDelete} 
-          />
-        </View>
-      </ScaleDecorator>
-    );
-  }, [isReordering, confirmDelete]);
-
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
       if (meals.length === 0) {
-        // Automatically create a default meal so there's always at least 1
         await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, [], selectedDate);
       }
     };
@@ -141,6 +271,26 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     migrateOldMeals().then(() => ensureDefaultMeal());
   }, [meals.length, selectedDate]);
 
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    const isAnyDragging = activeId.value !== null;
+    if (!isAnyDragging) {
+      return { height: 'auto' };
+    }
+    
+    let totalHeight = 0;
+    const ids = order.value;
+    const spacing = 16;
+    for (let i = 0; i < ids.length; i++) {
+      totalHeight += (heights.value[ids[i]] || 0) + spacing;
+    }
+    if (ids.length > 0) {
+      totalHeight -= spacing;
+    }
+    return {
+      height: totalHeight,
+    };
+  });
+
   const showSkeleton = !isReady || meals.length === 0;
 
   return (
@@ -149,11 +299,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       isFlatList={false}
       scrollable={false}
       disablePadding={true}
-      headerLeft={
-        <Button accessibilityLabel="Reordenar refeições" variant="ghost" size="icon" onPress={startReorder}>
-          <Icon as={ArrowUpDown} size={24} />
-        </Button>
-      }
+      headerLeft={undefined}
       headerRight={
         <View className="-mr-2 flex-row items-center gap-2">
           <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
@@ -166,56 +312,49 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       }
     >
       <View className="flex-1 bg-background pt-4 flex-col">
-        <GestureHandlerRootView className="flex-1 relative">
-          <DraggableFlatList
-            key={isReordering ? 'meal-reorder-list' : 'meal-normal-list'}
-            data={isReordering ? tempMeals : meals}
-            extraData={isReordering}
-            onDragEnd={({ data }) => {
-              if (isReordering) setTempMeals(data);
-            }}
-            keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-content-bottom pt-4 px-screen-x"
+        <GestureHandlerRootView className="flex-1">
+          <ScrollView
+            scrollEnabled={scrollEnabled}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            activationDistance={isReordering ? 8 : 1000} // Disable drag accidentally when not reordering
-            ListHeaderComponent={
-              <View>
-                <DailyBalance 
-                  protein={dailyMacros.protein}
-                  carbs={dailyMacros.carbs}
-                  fat={dailyMacros.fat}
-                  calories={dailyMacros.calories}
-                />
-              </View>
-            }
-            renderItem={renderItem}
-            ListFooterComponent={
-              !isReordering ? (
-                <View className="mt-4">
-                  <Button variant="outline" onPress={handleAddMeal}>
-                    <Text>Adicionar refeição</Text>
-                  </Button>
-                </View>
-              ) : null
-            }
-          />
-        </GestureHandlerRootView>
-
-        {isReordering && (
-          <Animated.View 
-            entering={FOOTER_ENTER}
-            exiting={FOOTER_EXIT}
-            className="flex-row items-center justify-between px-screen-x py-4"
+            contentContainerStyle={{ paddingBottom: 100, paddingTop: 16, paddingHorizontal: 16 }}
           >
-            <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
-              <Text>Cancelar</Text>
-            </Button>
-            <Button className="flex-1 ml-2" onPress={confirmReorder}>
-              <Text>Confirmar</Text>
-            </Button>
-          </Animated.View>
-        )}
+            <DailyBalance 
+              protein={dailyMacros.protein}
+              carbs={dailyMacros.carbs}
+              fat={dailyMacros.fat}
+              calories={dailyMacros.calories}
+            />
+
+            <Animated.View style={containerAnimatedStyle} className="mt-4 relative">
+              {meals.map((item) => (
+                <DraggableMealItem
+                  key={item.id}
+                  id={item.id}
+                  order={order}
+                  heights={heights}
+                  activeId={activeId}
+                  spacing={16}
+                  onDragStart={() => setScrollEnabled(false)}
+                  onDragEnd={handleDragEnd}
+                >
+                  <MealCard 
+                    meal={item} 
+                    onDelete={confirmDelete} 
+                  />
+                </DraggableMealItem>
+              ))}
+            </Animated.View>
+
+            {meals.length > 0 && (
+              <View className="mt-4">
+                <Button variant="outline" onPress={handleAddMeal}>
+                  <Text>Adicionar refeição</Text>
+                </Button>
+              </View>
+            )}
+          </ScrollView>
+        </GestureHandlerRootView>
       </View>
 
       {showSkeleton && (
@@ -272,14 +411,14 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </View>
       )}
 
-        <ConfirmModal 
-          visible={deleteModalVisible}
-          title="Remover refeição?"
-          description="Esta ação removerá a refeição do seu menu diário."
-          onConfirm={handleDelete}
-          onCancel={() => setDeleteModalVisible(false)}
-          isDestructive
-        />
+      <ConfirmModal 
+        visible={deleteModalVisible}
+        title="Remover refeição?"
+        description="Esta ação removerá a refeição do seu menu diário."
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteModalVisible(false)}
+        isDestructive
+      />
     </MainTabScreen>
   );
 }
