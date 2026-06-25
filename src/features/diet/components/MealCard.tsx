@@ -60,19 +60,34 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
   const [bodyHeight, setBodyHeight] = useState(0);
   const heightVal = useSharedValue(0);
+  const hasMeasured = React.useRef(false);
 
   React.useEffect(() => {
-    heightVal.value = withTiming(isReordering ? 0 : bodyHeight, {
-      duration: 200,
-      easing: Easing.out(Easing.ease),
-    });
+    if (bodyHeight > 0) {
+      if (!hasMeasured.current) {
+        heightVal.value = isReordering ? 0 : bodyHeight;
+        hasMeasured.current = true;
+      } else {
+        heightVal.value = withTiming(isReordering ? 0 : bodyHeight, {
+          duration: 200,
+          easing: Easing.out(Easing.ease),
+        });
+      }
+    }
   }, [isReordering, bodyHeight]);
 
-  const animatedBodyStyle = useAnimatedStyle(() => ({
-    height: heightVal.value,
-    opacity: withTiming(isReordering ? 0 : 1, { duration: 150 }),
-    overflow: 'hidden',
-  }));
+  const animatedBodyStyle = useAnimatedStyle(() => {
+    if (bodyHeight === 0 && !isReordering) {
+      return {
+        opacity: 1,
+      };
+    }
+    return {
+      height: heightVal.value,
+      opacity: withTiming(isReordering ? 0 : 1, { duration: 150 }),
+      overflow: 'hidden',
+    };
+  });
 
   React.useEffect(() => {
     const loadFoods = async () => {
