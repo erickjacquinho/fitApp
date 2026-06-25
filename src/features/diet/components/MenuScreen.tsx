@@ -39,23 +39,25 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
   const [isReordering, setIsReordering] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   const [tempMeals, setTempMeals] = useState<Meal[]>([]);
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
   const startReorder = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setTempMeals([...meals]);
     setIsReordering(true);
   };
 
   const confirmReorder = async () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsReordering(false);
     const orderedIds = tempMeals.map(m => m.id);
     await MealService.updateMealOrder(orderedIds);
   };
 
   const cancelReorder = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsReordering(false);
   };
 
@@ -67,6 +69,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   const handleDelete = async () => {
     if (selectedMealId) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       await deleteMeal(selectedMealId);
       setDeleteModalVisible(false);
       setSelectedMealId(null);
@@ -132,9 +135,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
             data={isReordering ? tempMeals : meals}
-            onDragBegin={() => setIsDragging(true)}
             onDragEnd={({ data }) => {
-              setIsDragging(false);
               if (isReordering) setTempMeals(data);
             }}
             keyExtractor={(item) => item.id}
@@ -162,14 +163,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                 )}
               </View>
             }
-            renderItem={({ item, drag, isActive, getIndex }) => {
-              const index = getIndex() ?? 0;
+            renderItem={({ item, drag, isActive }) => {
               return (
                 <MealCard 
                   meal={item} 
-                  index={index}
                   isReordering={isReordering}
-                  isDragging={isDragging}
                   drag={drag}
                   isActive={isActive}
                   onDelete={() => confirmDelete(item.id)} 
