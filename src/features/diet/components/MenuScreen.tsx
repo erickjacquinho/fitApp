@@ -131,7 +131,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </View>
       }
     >
-      <View className="flex-1 bg-background pt-4">
+      <View className="flex-1 bg-background pt-4 flex-col">
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
             data={isReordering ? tempMeals : meals}
@@ -151,16 +151,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                   fat={dailyMacros.fat}
                   calories={dailyMacros.calories}
                 />
-                {isReordering && (
-                  <View className="flex-row items-center justify-between mb-4">
-                    <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
-                      <Text>Cancelar</Text>
-                    </Button>
-                    <Button className="flex-1 ml-2" onPress={confirmReorder}>
-                      <Text>Confirmar</Text>
-                    </Button>
-                  </View>
-                )}
               </View>
             }
             renderItem={({ item, drag, isActive }) => {
@@ -186,6 +176,17 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
             }
           />
         </GestureHandlerRootView>
+
+        {isReordering && (
+          <View className="flex-row items-center justify-between px-screen-x py-4 bg-surface border-t border-border-subtle">
+            <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
+              <Text>Cancelar</Text>
+            </Button>
+            <Button className="flex-1 ml-2" onPress={confirmReorder}>
+              <Text>Confirmar</Text>
+            </Button>
+          </View>
+        )}
       </View>
 
       {showSkeleton && (
