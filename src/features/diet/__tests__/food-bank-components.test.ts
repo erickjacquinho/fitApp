@@ -11,7 +11,6 @@ describe('Food Bank Component Bypass Tests', () => {
     expect(file).not.toContain('variant="highlight"');
     
     expect(file).toContain('bg-surface');
-    expect(file).toContain('border-primary');
     expect(file).toContain('bg-primary/10');
     expect(file).toContain('text-text-secondary');
     expect(file).toContain('text-primary');

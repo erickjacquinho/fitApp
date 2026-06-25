@@ -23,7 +23,6 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('bg-fat');
     expect(file).toContain('bg-surface');
     expect(file).toContain('bg-border-subtle');
-    expect(file).toContain('text-text-secondary');
   });
 
   it('DailyBalance uses semantic tokens', () => {

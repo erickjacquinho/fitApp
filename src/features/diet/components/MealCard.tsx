@@ -9,10 +9,12 @@ import { FoodEntryCard } from './FoodEntryCard';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
-import { Trash2 } from 'lucide-react-native';
+import { Trash2, GripVertical } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
+import { LongPressable } from '@/components/ui/long-pressable';
+import Animated, { FadeIn, FadeOut, LinearTransition, Easing } from 'react-native-reanimated';
 
 function MacroProportionBar({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
   const p = macros?.protein || 0;
@@ -39,7 +41,17 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   );
 }
 
-function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
+interface MealCardContentProps {
+  meal: Meal;
+  items: MealItem[];
+  onDelete: () => void;
+  onLongPressHeader?: () => void;
+  isReordering?: boolean;
+  drag?: () => void;
+  isActive?: boolean;
+}
+
+function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
@@ -68,19 +80,38 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
   };
 
   return (
-    <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
-      <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
+    <Animated.View 
+      layout={LinearTransition.duration(200)}
+      className={`mb-6 overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
+    >
+      <LongPressable 
+        onLongPress={(e) => {
+          if (isReordering && drag) drag();
+          else if (onLongPressHeader) onLongPressHeader();
+        }}
+        className="px-4 h-control-md flex-row justify-between items-center"
+      >
         <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
-        <View className="flex-row items-center gap-3">
-          <Text variant="label" className="text-text-primary">00:00</Text>
-          <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
-            <Icon as={Trash2} className="text-destructive" size={16} />
-          </Pressable>
-        </View>
-      </View>
-      <MacroProportionBar macros={macros} />
+        
+        {isReordering ? (
+          <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)}>
+            <Icon as={GripVertical} className="text-text-secondary" />
+          </Animated.View>
+        ) : (
+          <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)} className="flex-row items-center gap-3">
+            <Text variant="label" className="text-text-primary">00:00</Text>
+            <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
+              <Icon as={Trash2} className="text-destructive" size={16} />
+            </Pressable>
+          </Animated.View>
+        )}
+      </LongPressable>
       
-      <View className="flex-col">
+      {!isReordering && (
+        <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)}>
+          <MacroProportionBar macros={macros} />
+          
+          <View className="flex-col">
         {foodItems.length > 0 && (
           <View className="gap-0">
             {foodItems.map((item) => (
@@ -103,8 +134,10 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
         >
           <Text variant="label" className="text-text-primary font-medium">+ Adicionar Alimentos</Text>
         </Pressable>
-      </View>
-    </View>
+          </View>
+        </Animated.View>
+      )}
+    </Animated.View>
   );
 }
 
@@ -113,6 +146,6 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-export const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} />;
+export const MealCard = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} drag={drag} isActive={isActive} />;
 });

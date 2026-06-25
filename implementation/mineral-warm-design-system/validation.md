@@ -245,3 +245,77 @@ Ownership: Phase 7 (web scope decision).
 - **Traceability**: All Acceptance Criteria from the parent and 7 child SDDs map correctly to their tasks. Check `traceability.md`.
 
 This concludes the Mineral Warm Design System Migration. The app is ready for production scaling.
+
+---
+
+## Orange Fat Token Refresh (2026-06-24)
+
+### Scope and Impact
+
+- Updated the runtime orange primitive scale to `#F7D5C2`, `#F0AE89`, `#E43F03`, `#C43804`, and `#702A10`.
+- Propagated `orange-500` and `orange-200` to light/dark fat semantics, chart series, and the macro radial chart fallback.
+- Added exact scale and semantic parity assertions to `src/tokens/__tests__/theme.test.ts`.
+- Classification: shared UI styling and TypeScript token configuration. No state, service, data, security, dependency, Expo configuration, or native layer change.
+
+### Pre-change Baseline
+
+| Check | Result |
+|---|---|
+| `npx.cmd tsc --noEmit` | Exit `0` |
+| Focused token/theme tests | 4 suites, 15 tests passed |
+| Full Jest suite | 6 suites failed, 26 passed; 9 tests failed, 77 passed |
+
+The nine full-suite failures predated this token refresh and concern unrelated component contract assertions and a missing `SwipeableCard.tsx` path.
+
+### Final Automated Evidence
+
+| Check | Result |
+|---|---|
+| `git diff --check` | Exit `0` |
+| `npx.cmd tsc --noEmit` | Exit `0` |
+| `npm.cmd run lint` | Exit `0`; 26 existing warnings, 0 errors |
+| Focused token/theme tests | 4 suites, 16 tests passed |
+| Full Jest suite | Same 9 pre-existing failures; 78 tests passed after adding the new assertion |
+| `npx.cmd expo install --check` | Exit `0`; dependencies up to date |
+| `npx.cmd expo-doctor` | Exit `0`; 18/18 checks passed |
+| `npm.cmd audit --audit-level=moderate` | Exit `1`; 37 existing low/moderate findings, no dependency changed by this task |
+| `npx.cmd expo export --platform web --output-dir dist-check` | Exit `1`; existing WatermelonDB decorator failure in `src/db/models/Meal.ts` |
+| Old orange runtime value scan | No matches in `global.css` or `src/` |
+
+Temporary `dist-check/` output was removed.
+
+### Runtime and Native Decision
+
+- No Android development client rebuild is required because the task changes only CSS and TypeScript values.
+- Android emulator validation was explicitly declined by the user.
+- The user will validate the visual result on the mobile APK; runtime visual approval remains pending.
+
+---
+
+## Amber Carbohydrate Token Refresh (2026-06-24)
+
+### Scope and Contrast Decision
+
+- Accepted `#F1AE11` as `amber-500`; its hue remains amber and it provides `8.61:1` contrast with `neutral-900`.
+- White text over `amber-500` remains prohibited at `1.94:1`.
+- Updated the full amber scale to `#FAE9C1`, `#F5D58A`, `#F1AE11`, `#D99B0F`, and `#77550D`.
+- Propagated the scale to CSS primitives, TypeScript primitives, light/dark carbohydrate semantics, chart series, and the macro radial chart fallback.
+- Added exact scale, semantic parity, and contrast assertions.
+
+### Validation Evidence
+
+| Check | Result |
+|---|---|
+| Pre-change TypeScript | Exit `0` |
+| Pre-change focused tests | 2 suites, 11 tests passed |
+| Final TypeScript | Exit `0` |
+| Final lint | Exit `0`; 26 existing warnings, 0 errors |
+| Focused token/theme tests | 4 suites, 19 tests passed |
+| Full Jest suite | Same 9 pre-existing failures; 81 tests passed |
+| `npx.cmd expo install --check` | Exit `0`; dependencies up to date |
+| `npx.cmd expo-doctor` | Exit `0`; 18/18 checks passed after one transient Expo API network failure |
+| `npm.cmd audit --audit-level=moderate` | Exit `1`; same 37 existing low/moderate findings |
+| Web export | Exit `1`; same existing WatermelonDB decorator failure in `src/db/models/Meal.ts` |
+| Old amber runtime value scan | No matches in canonical or runtime files |
+
+Temporary `dist-check/` output was removed. No native dependency or configuration changed, so no APK rebuild is required. Per user direction, visual validation remains assigned to the mobile APK and no emulator was started.

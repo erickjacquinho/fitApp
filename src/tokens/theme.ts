@@ -79,8 +79,8 @@ export const lightTheme: ThemeColors = {
   textInverse: '#FFFFFF',
   primary: '#0800FF',
   protein: '#0800FF',
-  carbohydrate: '#D49300',
-  fat: '#B85A14',
+  carbohydrate: '#F1AE11',
+  fat: '#E43F03',
   info: '#0800FF',
   warning: '#8A6A00',
   success: '#556B4D',
@@ -88,7 +88,7 @@ export const lightTheme: ThemeColors = {
   link: '#1008BA',
   linkVisited: '#5D4055',
   scrim: 'rgba(24, 17, 14, 0.56)',
-  chartSeries: ['#0800FF', '#B85A14', '#7C580C', '#2F6F6A', '#76506F', '#625851'],
+  chartSeries: ['#0800FF', '#E43F03', '#77550D', '#2F6F6A', '#76506F', '#625851'],
 };
 
 export const darkTheme: ThemeColors = {
@@ -107,8 +107,8 @@ export const darkTheme: ThemeColors = {
   textInverse: '#18110E',
   primary: '#9A96FA',
   protein: '#9A96FA',
-  carbohydrate: '#ECD194',
-  fat: '#E1BA9C',
+  carbohydrate: '#F5D58A',
+  fat: '#F0AE89',
   info: '#9A96FA',
   warning: '#CEC094',
   success: '#B9C1B2',
@@ -116,6 +116,5 @@ export const darkTheme: ThemeColors = {
   link: '#9A96FA',
   linkVisited: '#C6B6C0',
   scrim: 'rgba(0, 0, 0, 0.68)',
-  chartSeries: ['#9A96FA', '#E1BA9C', '#ECD194', '#AAC2BE', '#C6B6C0', '#C5BAAE'],
+  chartSeries: ['#9A96FA', '#F0AE89', '#F5D58A', '#AAC2BE', '#C6B6C0', '#C5BAAE'],
 };
-

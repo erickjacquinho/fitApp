@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
 import { Icon } from '@/components/ui/icon';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
+import DraggableFlatList from 'react-native-draggable-flatlist';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LinearTransition } from 'react-native-reanimated';
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
@@ -12,7 +15,7 @@ import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { DailyBalance } from './DailyBalance';
 import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
-import { ReorderMealsModal } from './ReorderMealsModal';
+// (ReorderMealsModal removed)
 
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
@@ -26,13 +29,40 @@ interface MenuScreenProps {
   onSelectDate: (date: string) => void;
 }
 
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
-  const [reorderModalVisible, setReorderModalVisible] = useState(false);
+  const [isReordering, setIsReordering] = useState(false);
+  const [tempMeals, setTempMeals] = useState<Meal[]>([]);
+
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
+
+  const startReorder = () => {
+    setTempMeals([...meals]);
+    setIsReordering(true);
+  };
+
+  const confirmReorder = async () => {
+    setIsReordering(false);
+    const orderedIds = tempMeals.map(m => m.id);
+    await MealService.updateMealOrder(orderedIds);
+  };
+
+  const cancelReorder = () => {
+    setIsReordering(false);
+  };
+
+  React.useEffect(() => {
+    if (isReordering) {
+      cancelReorder();
+    }
+  }, [selectedDate]);
 
   const handleDelete = async () => {
     if (selectedMealId) {
@@ -80,39 +110,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   return (
     <MainTabScreen
       customTitle={<DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />}
-      isFlatList={true}
-      flatListProps={{
-        data: meals,
-        keyExtractor: (item) => item.id,
-        ListHeaderComponent: (
-          <DailyBalance 
-            protein={dailyMacros.protein}
-            carbs={dailyMacros.carbs}
-            fat={dailyMacros.fat}
-            calories={dailyMacros.calories}
-          />
-        ),
-        renderItem: ({ item }) => (
-          <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
-        ),
-        ListFooterComponent: (
-          <View className="mt-4">
-            <Button variant="outline" onPress={handleAddMeal}><Text>Adicionar refeição</Text></Button>
-          </View>
-        )
-      }}
+      isFlatList={false}
+      scrollable={false}
+      disablePadding={true}
       headerLeft={
-        meals.length > 1 ? (
-          <Button
-            accessibilityLabel="Reordenar refeições"
-            variant="ghost"
-            size="icon"
-            className="-ml-2"
-            onPress={() => setReorderModalVisible(true)}
-          >
-            <Icon as={ArrowUpDown} size={24} />
-          </Button>
-        ) : undefined
+        undefined // ArrowUpDown button removed as reorder is now inline via long press
       }
       headerRight={
         <View className="-mr-2 flex-row items-center gap-2">
@@ -125,6 +127,63 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </View>
       }
     >
+      <View className="flex-1 bg-background pt-4">
+        <GestureHandlerRootView className="flex-1 relative">
+          <DraggableFlatList
+            data={isReordering ? tempMeals : meals}
+            onDragEnd={({ data }) => {
+              if (isReordering) setTempMeals(data);
+            }}
+            keyExtractor={(item) => item.id}
+            contentContainerClassName="pb-content-bottom pt-4 px-screen-x"
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            activationDistance={isReordering ? 8 : 1000} // Disable drag accidentally when not reordering
+            ListHeaderComponent={
+              <View>
+                <DailyBalance 
+                  protein={dailyMacros.protein}
+                  carbs={dailyMacros.carbs}
+                  fat={dailyMacros.fat}
+                  calories={dailyMacros.calories}
+                />
+                {isReordering && (
+                  <View className="flex-row items-center justify-between mb-4">
+                    <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
+                      <Text>Cancelar</Text>
+                    </Button>
+                    <Button className="flex-1 ml-2" onPress={confirmReorder}>
+                      <Text>Confirmar</Text>
+                    </Button>
+                  </View>
+                )}
+              </View>
+            }
+            renderItem={({ item, drag, isActive }) => {
+              return (
+                <MealCard 
+                  meal={item} 
+                  isReordering={isReordering}
+                  drag={drag}
+                  isActive={isActive}
+                  onDelete={() => confirmDelete(item.id)} 
+                  onLongPressHeader={startReorder} 
+                />
+              );
+            }}
+            ListFooterComponent={
+              !isReordering ? (
+                <View className="mt-4">
+                  <Button variant="outline" onPress={handleAddMeal}>
+                    <Text>Adicionar refeição</Text>
+                  </Button>
+                </View>
+              ) : null
+            }
+          />
+        </GestureHandlerRootView>
+      </View>
+
       {showSkeleton && (
         <View className="absolute inset-0 bg-background z-10 pt-4 px-screen-x">
           <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-row items-center justify-between py-4 px-card">
@@ -186,12 +245,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           onConfirm={handleDelete}
           onCancel={() => setDeleteModalVisible(false)}
           isDestructive
-        />
-
-        <ReorderMealsModal 
-          visible={reorderModalVisible}
-          meals={meals}
-          onClose={() => setReorderModalVisible(false)}
         />
     </MainTabScreen>
   );

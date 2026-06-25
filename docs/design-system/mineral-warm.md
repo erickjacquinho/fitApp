@@ -16,11 +16,11 @@ Scale semantics: `500` is the base. `50–200` are light variations for backgrou
 
 | Scale | Blue / protein | Amber / carbohydrate | Orange / fat | Moss / success | Tomato / error |
 |---|---|---|---|---|---|
-| `100` | `#C6C3F8` | `#F3E3C0` | `#EDD7C4` | `#D7DBD1` | `#F0D3CB` |
-| `200` | `#9A96FA` | `#ECD194` | `#E1BA9C` | `#B9C1B2` | `#E6B2A8` |
-| `500` | `#0800FF` | `#D49300` | `#B85A14` | `#556B4D` | `#C44732` |
-| `600` | `#0C04DC` | `#BA8104` | `#A25115` | `#4E5F45` | `#AC412E` |
-| `900` | `#160E8C` | `#7C580C` | `#6E3B16` | `#3D4433` | `#743225` |
+| `100` | `#C6C3F8` | `#FAE9C1` | `#F7D5C2` | `#D7DBD1` | `#F0D3CB` |
+| `200` | `#9A96FA` | `#F5D58A` | `#F0AE89` | `#B9C1B2` | `#E6B2A8` |
+| `500` | `#0800FF` | `#F1AE11` | `#E43F03` | `#556B4D` | `#C44732` |
+| `600` | `#0C04DC` | `#D99B0F` | `#C43804` | `#4E5F45` | `#AC412E` |
+| `900` | `#160E8C` | `#77550D` | `#702A10` | `#3D4433` | `#743225` |
 
 ### Auxiliary Families
 
@@ -168,7 +168,8 @@ Components use the same semantic tokens in both themes; only the values change.
 - Do not use weight to compensate for insufficient contrast.
 - Titles use `neutral-900`; blue in titles is reserved for links or selected states.
 - Descriptions never use `neutral-400` except for disabled content.
-- Negative text uses full white over blue, orange, moss, tomato, and chocolate.
+- Negative text uses full white over blue, orange `600–900`, moss, tomato, and chocolate.
+- `orange-500` is reserved for non-text data or large text because neither inverse nor dark neutral text reaches `4.5:1` over it.
 - Do not use white text over amber; use `neutral-900`.
 - Font family: Helvetica Now (files copied in Phase 2), fallback Helvetica → Arial → sans-serif.
 
@@ -263,7 +264,7 @@ Components use the same semantic tokens in both themes; only the values change.
 | Destructive | `tomato-500` | `tomato-600` | `tomato-700` | `#FFFFFF` |
 | Success | `moss-500` | `moss-600` | `moss-700` | `#FFFFFF` |
 | Carbohydrate contextual | `amber-500` | `amber-600` | `amber-700` | `neutral-900` |
-| Fat contextual | `orange-500` | `orange-600` | `orange-700` | `#FFFFFF` |
+| Fat contextual | `orange-600` | `orange-700` | `orange-900` | `#FFFFFF` |
 
 ### Stroke-only Buttons
 
@@ -409,7 +410,7 @@ Always include icon and text message. Never communicate error by color alone.
 **Badge rules:**
 - Generic highlighted badge uses blue.
 - Status badge requires explicit text; do not use colored dot alone.
-- Filled badges use `500` tone with white text; amber uses `neutral-900`.
+- Filled badges use the `500` tone with white text; amber uses `neutral-900`, and orange uses `orange-600` with white text.
 - Use strong fill only for urgency or current selection.
 - In dark theme, use the backgrounds and texts defined in the semantic surface table.
 
@@ -464,8 +465,8 @@ Always include icon and text message. Never communicate error by color alone.
 | Text | Background | Contrast |
 |---|---|---|
 | `neutral-0` | `blue-500` | `8.56:1` |
-| `neutral-900` | `amber-500` | `6.36:1` |
-| `neutral-0` | `orange-500` | `4.66:1` |
+| `neutral-900` | `amber-500` | `8.61:1` |
+| `neutral-0` | `orange-600` | `5.36:1` |
 | `neutral-0` | `moss-500` | `5.84:1` |
 | `neutral-0` | `tomato-500` | `4.89:1` |
 | `neutral-0` | `mustard-500` | `5.07:1` |
@@ -484,7 +485,8 @@ Always include icon and text message. Never communicate error by color alone.
 
 ### Prohibited Text Combinations
 
-- `neutral-0` over `amber-500`: `2.63:1`.
+- `neutral-0` over `amber-500`: `1.94:1`.
+- `neutral-0` over `orange-500`: `4.19:1`; use `orange-600` for filled controls with regular inverse text.
 - `neutral-500` over `neutral-100`: `4.21:1`.
 - `amber-700` over `neutral-50`: `4.24:1`; use `amber-900`.
 - `50–200` tones as text over light surfaces.

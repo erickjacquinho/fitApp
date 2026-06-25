@@ -1,4 +1,5 @@
 import { lightTheme, darkTheme } from '../theme';
+import { primitives } from '../colors';
 
 /**
  * Helper to calculate relative luminance for WCAG contrast.
@@ -50,6 +51,18 @@ const contrastCases = [
     foreground: lightTheme.error,
     background: lightTheme.background,
     minRatio: 3.0,
+  },
+  {
+    name: 'Light: Primary Text on Carbohydrate Fill',
+    foreground: lightTheme.textPrimary,
+    background: primitives.amber[500],
+    minRatio: 4.5,
+  },
+  {
+    name: 'Light: Carbohydrate Text on Soft Carbohydrate Surface',
+    foreground: primitives.amber[900],
+    background: primitives.amber[200],
+    minRatio: 4.5,
   },
   {
     name: 'Dark: Primary Text on Background',

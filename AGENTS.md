@@ -37,6 +37,8 @@
 - Use `camelCase` for functions and variables.
 - Use `kebab-case` for files and directories.
 - Use design tokens from `tailwind.config.js` and `global.css`; avoid hardcoded visual values when a token exists.
+- **Skill Usage Rule:** In 100% of tasks, you must use the best possible skill for the respective task.
+- **Continuous Validation Loop Rule:** At the end of all tasks, execute a validation process of the completed task to ensure it cannot be improved. If it can, enter a loop until it is fully implemented in the cleanest, most modular, and most reliable way possible.
 
 ## Component Creation and Modification Flow
 Follow this sequence for every new or modified UI component:

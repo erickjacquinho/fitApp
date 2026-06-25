@@ -23,8 +23,8 @@ export function MacroRadialChart({
   strokeWidth = 10,
   backgroundColor = '#E5E7EB',
   proteinColor = '#0800FF',
-  carbsColor = '#D49300',
-  fatColor = '#B85A14',
+  carbsColor = '#F1AE11',
+  fatColor = '#E43F03',
   children,
 }: MacroRadialChartProps) {
   const radius = (size - strokeWidth) / 2;
