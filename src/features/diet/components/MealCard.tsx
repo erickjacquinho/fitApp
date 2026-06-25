@@ -9,10 +9,16 @@ import { FoodEntryCard } from './FoodEntryCard';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
-import { Trash2, GripVertical } from 'lucide-react-native';
+import { Edit, EllipsisVertical, GripVertical, Trash2 } from 'lucide-react-native';
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
 import { LongPressable } from '@/components/ui/long-pressable';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 function MacroProportionBar({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
   const p = macros?.protein || 0;
@@ -102,9 +108,30 @@ function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCard
         <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
         <View className="flex-row items-center gap-3">
           <Text variant="label" className="text-text-primary">00:00</Text>
-          <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={() => onDelete(meal.id)} className="p-1">
-            <Icon as={Trash2} className="text-destructive" size={16} />
-          </Pressable>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
+                <Icon as={EllipsisVertical} className="text-text-primary" size={16} />
+              </Pressable>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-32">
+              <DropdownMenuItem 
+                onPress={() => router.push({ pathname: '/diet/edit-meal', params: { mealId: meal.id } })}
+                className="flex-row items-center gap-2"
+              >
+                <Icon as={Edit} size={14} className="text-text-primary" />
+                <Text>Editar</Text>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onPress={() => onDelete(meal.id)}
+                variant="destructive"
+                className="flex-row items-center gap-2"
+              >
+                <Icon as={Trash2} size={14} className="text-error" />
+                <Text className="text-error">Excluir</Text>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </View>
       </LongPressable>
       

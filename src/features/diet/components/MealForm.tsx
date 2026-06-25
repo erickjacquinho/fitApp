@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, Platform , KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Platform, KeyboardAvoidingView, ScrollView, ActivityIndicator } from 'react-native';
 
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
@@ -12,7 +12,11 @@ import { Card } from "@/components/ui/card";
 import { X } from 'lucide-react-native';
 import { SIZES } from '@/tokens/sizes';
 
-export function MealForm() {
+interface MealFormProps {
+  mealId?: string;
+}
+
+export function MealForm({ mealId }: MealFormProps) {
   const {
     form,
     setFormValue,
@@ -22,8 +26,17 @@ export function MealForm() {
     setModalVisible,
     handleSave,
     removeFood,
+    isLoading,
     goBack,
-  } = useMealForm();
+  } = useMealForm(mealId);
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-surface">
+        <ActivityIndicator size="large" className="text-primary" />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView

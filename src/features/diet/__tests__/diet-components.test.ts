@@ -70,4 +70,14 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('border-border-subtle');
     expect(file).toContain('text-text-primary');
   });
+
+  it('MealCard replaces trash icon with ellipsis-vertical dropdown menu', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/MealCard.tsx'), 'utf8');
+    expect(file).not.toContain('<Icon as={Trash2} className="text-destructive" size={16} />');
+    expect(file).toContain('DropdownMenu');
+    expect(file).toContain('DropdownMenuTrigger');
+    expect(file).toContain('DropdownMenuContent');
+    expect(file).toContain('DropdownMenuItem');
+    expect(file).toContain('EllipsisVertical');
+  });
 });
