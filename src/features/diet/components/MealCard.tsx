@@ -47,7 +47,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
 interface MealCardContentProps {
   meal: Meal;
   items: MealItem[];
-  onDelete: () => void;
+  onDelete: (id: string) => void;
   onLongPressHeader?: () => void;
   isReordering?: boolean;
   drag?: () => void;
@@ -57,7 +57,8 @@ interface MealCardContentProps {
 function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
-  const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
+
+  const macros = React.useMemo(() => aggregateMacros(foodItems), [foodItems]);
 
   React.useEffect(() => {
     const loadFoods = async () => {
@@ -69,7 +70,6 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
       })));
       const validData = data.filter((d): d is { id: string; foodId: string; food: Food; quantity: number } => d.food !== null);
       setFoodItems(validData);
-      setMacros(aggregateMacros(validData));
     };
     loadFoods();
   }, [items]);
@@ -102,7 +102,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         ) : (
           <Animated.View entering={ENTER_ANIMATION} exiting={EXIT_ANIMATION} className="flex-row items-center gap-3">
             <Text variant="label" className="text-text-primary">00:00</Text>
-            <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
+            <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={() => onDelete(meal.id)} className="p-1">
               <Icon as={Trash2} className="text-destructive" size={16} />
             </Pressable>
           </Animated.View>

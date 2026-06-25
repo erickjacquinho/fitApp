@@ -76,10 +76,10 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     }
   };
 
-  const confirmDelete = (id: string) => {
+  const confirmDelete = React.useCallback((id: string) => {
     setSelectedMealId(id);
     setDeleteModalVisible(true);
-  };
+  }, []);
 
   const handleAddMeal = async () => {
     const nextNumber = meals.length + 1;
@@ -170,7 +170,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                   isReordering={isReordering}
                   drag={drag}
                   isActive={isActive}
-                  onDelete={() => confirmDelete(item.id)} 
+                  onDelete={confirmDelete} 
                   onLongPressHeader={startReorder} 
                 />
               );
