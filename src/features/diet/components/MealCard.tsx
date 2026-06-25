@@ -143,7 +143,12 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         )}
       </LongPressable>
       
-      <Animated.View style={animatedBodyStyle}>
+      <Animated.View 
+        style={[
+          isReordering ? { height: 0, overflow: 'hidden' } : null,
+          animatedBodyStyle
+        ]}
+      >
         <View 
           onLayout={(e) => {
             const h = e.nativeEvent.layout.height;
