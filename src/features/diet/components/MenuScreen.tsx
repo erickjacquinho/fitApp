@@ -39,6 +39,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
   const [isReordering, setIsReordering] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [tempMeals, setTempMeals] = useState<Meal[]>([]);
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
@@ -131,7 +132,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
             data={isReordering ? tempMeals : meals}
+            onDragBegin={() => setIsDragging(true)}
             onDragEnd={({ data }) => {
+              setIsDragging(false);
               if (isReordering) setTempMeals(data);
             }}
             keyExtractor={(item) => item.id}
@@ -159,11 +162,14 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                 )}
               </View>
             }
-            renderItem={({ item, drag, isActive }) => {
+            renderItem={({ item, drag, isActive, getIndex }) => {
+              const index = getIndex() ?? 0;
               return (
                 <MealCard 
                   meal={item} 
+                  index={index}
                   isReordering={isReordering}
+                  isDragging={isDragging}
                   drag={drag}
                   isActive={isActive}
                   onDelete={() => confirmDelete(item.id)} 

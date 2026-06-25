@@ -47,11 +47,13 @@ interface MealCardContentProps {
   onDelete: () => void;
   onLongPressHeader?: () => void;
   isReordering?: boolean;
+  isDragging?: boolean;
   drag?: () => void;
   isActive?: boolean;
+  index?: number;
 }
 
-function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) {
+function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, isDragging, drag, isActive, index }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
@@ -79,9 +81,13 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
     router.push({ pathname: '/diet/edit-meal-item', params: { mealItemId, foodId } });
   };
 
+  const layoutTransition = isDragging
+    ? LinearTransition.duration(200).easing(Easing.ease)
+    : LinearTransition.duration(200).easing(Easing.ease).delay((index ?? 0) * 40);
+
   return (
     <Animated.View 
-      layout={LinearTransition.duration(200).easing(Easing.ease)}
+      layout={layoutTransition}
       className={`mb-6 overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
     >
       <LongPressable 
@@ -146,6 +152,6 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-export const MealCard = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} drag={drag} isActive={isActive} />;
+export const MealCard = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, isDragging, drag, isActive, index }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} isDragging={isDragging} drag={drag} isActive={isActive} index={index} />;
 });
