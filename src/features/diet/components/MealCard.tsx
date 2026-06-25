@@ -14,9 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
 import { LongPressable } from '@/components/ui/long-pressable';
-import Animated, { FadeIn, FadeOut, LinearTransition, Easing } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, LinearTransition, Easing, useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-const LAYOUT_TRANSITION = LinearTransition.duration(200).easing(Easing.ease);
 const ENTER_ANIMATION = FadeIn.duration(200).easing(Easing.ease);
 const EXIT_ANIMATION = FadeOut.duration(200).easing(Easing.ease);
 
@@ -59,6 +58,21 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
+  const [bodyHeight, setBodyHeight] = useState(0);
+  const heightVal = useSharedValue(0);
+
+  React.useEffect(() => {
+    heightVal.value = withTiming(isReordering ? 0 : bodyHeight, {
+      duration: 200,
+      easing: Easing.out(Easing.ease),
+    });
+  }, [isReordering, bodyHeight]);
+
+  const animatedBodyStyle = useAnimatedStyle(() => ({
+    height: heightVal.value,
+    opacity: withTiming(isReordering ? 0 : 1, { duration: 150 }),
+    overflow: 'hidden',
+  }));
 
   React.useEffect(() => {
     const loadFoods = async () => {
@@ -84,8 +98,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
   };
 
   return (
-    <Animated.View 
-      layout={LAYOUT_TRANSITION}
+    <View 
       className={`mb-6 overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
     >
       <LongPressable 
@@ -111,37 +124,44 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         )}
       </LongPressable>
       
-      {!isReordering && (
-        <Animated.View entering={ENTER_ANIMATION} exiting={EXIT_ANIMATION}>
+      <Animated.View style={animatedBodyStyle}>
+        <View 
+          onLayout={(e) => {
+            const h = e.nativeEvent.layout.height;
+            if (h > 0 && h !== bodyHeight) {
+              setBodyHeight(h);
+            }
+          }}
+        >
           <MacroProportionBar macros={macros} />
           
           <View className="flex-col">
-        {foodItems.length > 0 && (
-          <View className="gap-0">
-            {foodItems.map((item) => (
-              <FoodEntryCard 
-                key={item.id} 
-                food={item.food} 
-                quantity={item.quantity} 
-                onDelete={() => handleDeleteItem(item.id)}
-                onEdit={() => handleEditItem(item.id, item.foodId)}
-              />
-            ))}
+            {foodItems.length > 0 && (
+              <View className="gap-0">
+                {foodItems.map((item) => (
+                  <FoodEntryCard 
+                    key={item.id} 
+                    food={item.food} 
+                    quantity={item.quantity} 
+                    onDelete={() => handleDeleteItem(item.id)}
+                    onEdit={() => handleEditItem(item.id, item.foodId)}
+                  />
+                ))}
+              </View>
+            )}
+            
+            <MealMacrosSummary macros={macros} />
+     
+            <Pressable 
+              className="h-control-md flex-row items-center justify-center w-full"
+              onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}
+            >
+              <Text variant="label" className="text-text-primary font-medium">+ Adicionar Alimentos</Text>
+            </Pressable>
           </View>
-        )}
-        
-        <MealMacrosSummary macros={macros} />
- 
-        <Pressable 
-          className="h-control-md flex-row items-center justify-center w-full"
-          onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}
-        >
-          <Text variant="label" className="text-text-primary font-medium">+ Adicionar Alimentos</Text>
-        </Pressable>
-          </View>
-        </Animated.View>
-      )}
-    </Animated.View>
+        </View>
+      </Animated.View>
+    </View>
   );
 }
 
