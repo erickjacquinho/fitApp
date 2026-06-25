@@ -110,7 +110,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   const renderItem = React.useCallback(({ item, drag, isActive }: { item: Meal; drag: () => void; isActive: boolean }) => {
     return (
-      <View className="pb-6">
+      <View key={item.id} className="pb-6">
         <ScaleDecorator>
           <MealCard 
             meal={item} 

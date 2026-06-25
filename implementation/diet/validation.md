@@ -2,14 +2,15 @@
 
 ## Scope
 - Affected files:
-  - [MealCard.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MealCard.tsx) (Removed wrapper margin-bottom)
-  - [MenuScreen.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MenuScreen.tsx) (Wrapped item inside renderItem in a View with padding-bottom; memoized renderItem with useCallback)
+  - [MealCard.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MealCard.tsx) (Removed wrapper margin-bottom; wrapped export in React.memo with a custom comparison function to ignore transient callback changes like `drag`)
+  - [MenuScreen.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MenuScreen.tsx) (Wrapped item inside renderItem in a View with padding-bottom; memoized renderItem with useCallback; added unique `key={item.id}` to root View of renderItem to prevent React component teardown)
 - Affected layers: Frontend / UI / Layout transitions during FlatList reordering.
 
 ## Pre-Change Baseline
 - When entering reordering mode and dragging items to swap their positions, the target items would jump or flicker visual positions (micro-flick) right at the boundary swap threshold.
 - Reason identified: The `react-native-draggable-flatlist` library does not support `margin` on item layouts, as it corrupts internal absolute offset and translation calculations.
 - Second flicker reason identified: When confirming reordering, the DB write (`updateMealOrder`) is asynchronous. Disabling `isReordering` prematurely caused the data source to temporarily revert to the old `meals` observable before the database write transaction finished, making the list jump back to the original order for ~5ms before finally updating to the new order. A synchronization state and effect were added to hold `tempMeals` until the database observable updates and syncs with the local state.
+- Third flicker reason identified: During drag gestures, list components frequently re-render because callbacks like `drag` change reference on every frame. Without custom memoization, this triggered re-render of the WatermelonDB HOC `withObservables` and the inner components. Additionally, the lack of an explicit `key={item.id}` on the root component returned by `renderItem` caused React to occasionally tear down and reconstruct the card components on swap, leading to a temporary (5ms) blank state where `foodItems` started empty (`[]`) before loading from the DB. Adding a custom `React.memo` comparator and a stable `key` resolved this.
 
 ## Risk Classification
 - UI & Layout: Low risk. Purely visual layout transition modification. No DB schema or data mutation changes.
@@ -38,5 +39,5 @@
 - Expo Web Export (`npx expo export --platform web`) fails globally with a Babel decorators syntax error in `src/db/models/Food.ts` (Definitely assigned fields cannot be initialized here). This is unrelated to the changes in this scope.
 
 ## Verification Timestamp
-- Timestamp: 2026-06-25T01:59:00Z
+- Timestamp: 2026-06-25T02:02:00Z
 - Result: PASS

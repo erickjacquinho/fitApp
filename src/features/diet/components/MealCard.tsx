@@ -190,6 +190,17 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-export const MealCard = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) => {
+const MealCardComponent = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) => {
   return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} drag={drag} isActive={isActive} />;
 });
+
+export const MealCard = React.memo(
+  MealCardComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.meal.id === nextProps.meal.id &&
+      prevProps.isReordering === nextProps.isReordering &&
+      prevProps.isActive === nextProps.isActive
+    );
+  }
+);
