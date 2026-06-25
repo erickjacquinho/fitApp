@@ -178,7 +178,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </GestureHandlerRootView>
 
         {isReordering && (
-          <View className="flex-row items-center justify-between px-screen-x py-4 bg-surface border-t border-border-subtle">
+          <View className="flex-row items-center justify-between px-screen-x py-4">
             <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
               <Text>Cancelar</Text>
             </Button>
