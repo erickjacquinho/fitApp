@@ -8,9 +8,10 @@ import { GestureHandlerRootView, Gesture, GestureDetector } from 'react-native-g
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
-  withSpring, 
-  runOnJS 
+  runOnJS,
+  SharedValue
 } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
@@ -91,9 +92,9 @@ const recalculateOrder = (
 
 interface DraggableMealItemProps {
   id: string;
-  order: Animated.SharedValue<string[]>;
-  heights: Animated.SharedValue<Record<string, number>>;
-  activeId: Animated.SharedValue<string | null>;
+  order: SharedValue<string[]>;
+  heights: SharedValue<Record<string, number>>;
+  activeId: SharedValue<string | null>;
   spacing: number;
   onDragStart: () => void;
   onDragEnd: (newOrder: string[]) => void;
@@ -124,12 +125,20 @@ function DraggableMealItem({
     }
   };
 
+  const triggerHaptics = () => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    } catch {
+      // Ignore if haptics is not available
+    }
+  };
+
   const longPressGesture = Gesture.LongPress()
     .minDuration(350)
-    .maxDist(15)
     .onStart(() => {
       isDragging.value = true;
       activeId.value = id;
+      runOnJS(triggerHaptics)();
       runOnJS(onDragStart)();
       
       const initialY = getTheoreticalY(id, order.value, heights.value, spacing);
@@ -148,20 +157,17 @@ function DraggableMealItem({
         order.value = nextOrder;
       }
     })
-    .onEnd(() => {
+    .onFinalize(() => {
       if (!isDragging.value) return;
       isDragging.value = false;
-      activeId.value = null;
 
       const finalY = getTheoreticalY(id, order.value, heights.value, spacing);
-      dragY.value = withSpring(finalY, { damping: 15 }, (finished) => {
-        if (finished) {
-          runOnJS(onDragEnd)(order.value);
-        }
-      });
+      dragY.value = finalY;
+
+      runOnJS(onDragEnd)(order.value);
     });
 
-  const dragGesture = Gesture.Sequence(longPressGesture, panGesture);
+  const dragGesture = Gesture.Simultaneous(longPressGesture, panGesture);
 
   const animatedStyle = useAnimatedStyle(() => {
     const isActive = activeId.value === id;
@@ -188,7 +194,7 @@ function DraggableMealItem({
         left: 0,
         right: 0,
         top: 0,
-        transform: [{ translateY: isAnyDragging ? withSpring(targetY, { damping: 15 }) : 0 }],
+        transform: [{ translateY: isAnyDragging ? targetY : 0 }],
         zIndex: 1,
       };
     }
@@ -212,6 +218,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
   const [scrollEnabled, setScrollEnabled] = useState(true);
 
+  const [mealOrderIds, setMealOrderIds] = useState<string[]>([]);
+  const [isUpdatingOrder, setIsUpdatingOrder] = useState(false);
+
   const order = useSharedValue<string[]>([]);
   const heights = useSharedValue<Record<string, number>>({});
   const activeId = useSharedValue<string | null>(null);
@@ -219,17 +228,26 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
   React.useEffect(() => {
-    order.value = meals.map(m => m.id);
-  }, [meals]);
+    if (activeId.value === null && !isUpdatingOrder) {
+      const ids = meals.map(m => m.id);
+      setMealOrderIds(ids);
+      order.value = ids;
+    }
+  }, [meals, isUpdatingOrder, activeId, order]);
 
   const handleDragEnd = React.useCallback(async (newOrderIds: string[]) => {
+    setMealOrderIds(newOrderIds);
+    setIsUpdatingOrder(true);
     setScrollEnabled(true);
+    activeId.value = null;
     try {
       await MealService.updateMealOrder(newOrderIds);
     } catch (error) {
       console.error('Error updating meal order:', error);
+    } finally {
+      setIsUpdatingOrder(false);
     }
-  }, []);
+  }, [activeId]);
 
   const handleDelete = async () => {
     if (selectedMealId) {
@@ -270,6 +288,26 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
     migrateOldMeals().then(() => ensureDefaultMeal());
   }, [meals.length, selectedDate]);
+
+  const sortedMeals = React.useMemo(() => {
+    const mealMap = new Map(meals.map(m => [m.id, m]));
+    const sorted: Meal[] = [];
+
+    mealOrderIds.forEach(id => {
+      const meal = mealMap.get(id);
+      if (meal) {
+        sorted.push(meal);
+      }
+    });
+
+    meals.forEach(m => {
+      if (!mealOrderIds.includes(m.id)) {
+        sorted.push(m);
+      }
+    });
+
+    return sorted;
+  }, [meals, mealOrderIds]);
 
   const containerAnimatedStyle = useAnimatedStyle(() => {
     const isAnyDragging = activeId.value !== null;
@@ -327,7 +365,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
             />
 
             <Animated.View style={containerAnimatedStyle} className="mt-4 relative">
-              {meals.map((item) => (
+              {sortedMeals.map((item) => (
                 <DraggableMealItem
                   key={item.id}
                   id={item.id}

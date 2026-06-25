@@ -9,7 +9,7 @@ import { FoodEntryCard } from './FoodEntryCard';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
-import { Trash2, GripVertical } from 'lucide-react-native';
+import { Trash2 } from 'lucide-react-native';
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
 import { LongPressable } from '@/components/ui/long-pressable';
@@ -41,11 +41,9 @@ interface MealCardContentProps {
   meal: Meal;
   items: MealItem[];
   onDelete: (id: string) => void;
-  isReordering?: boolean;
-  drag?: () => void;
 }
 
-function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCardContentProps) {
+function MealCardContent({ meal, items, onDelete }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
 
@@ -72,22 +70,6 @@ function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCard
   const handleEditItem = (mealItemId: string, foodId: string) => {
     router.push({ pathname: '/diet/edit-meal-item', params: { mealItemId, foodId } });
   };
-
-  if (isReordering) {
-    return (
-      <View className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface">
-        <LongPressable
-          onLongPress={() => {
-            if (drag) drag();
-          }}
-          className="px-4 h-control-md flex-row justify-between items-center"
-        >
-          <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
-          <Icon as={GripVertical} className="text-text-secondary" />
-        </LongPressable>
-      </View>
-    );
-  }
 
   return (
     <View 
@@ -145,16 +127,13 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-const MealCardComponent = enhanceMeal(({ meal, items, onDelete, isReordering, drag }: MealCardContentProps) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} isReordering={isReordering} drag={drag} />;
+const MealCardComponent = enhanceMeal(({ meal, items, onDelete }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} />;
 });
 
 export const MealCard = React.memo(
   MealCardComponent,
   (prevProps, nextProps) => {
-    return (
-      prevProps.meal.id === nextProps.meal.id &&
-      prevProps.isReordering === nextProps.isReordering
-    );
+    return prevProps.meal.id === nextProps.meal.id;
   }
 );

@@ -8,11 +8,10 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).not.toContain('color="muted"');
   });
 
-  it('MenuScreen remounts DraggableFlatList when reordering mode changes', () => {
+  it('MenuScreen synchronizes local order list to prevent flickering', () => {
     const file = fs.readFileSync(path.join(__dirname, '../components/MenuScreen.tsx'), 'utf8');
-
-    expect(file).toContain("key={isReordering ? 'meal-reorder-list' : 'meal-normal-list'}");
-    expect(file).toContain('extraData={isReordering}');
+    expect(file).toContain('mealOrderIds');
+    expect(file).toContain('sortedMeals');
   });
 
   it('diet.tsx (tab) does not use raw COLORS', () => {
@@ -30,16 +29,6 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('bg-fat');
     expect(file).toContain('bg-surface');
     expect(file).toContain('bg-border-subtle');
-  });
-
-  it('MealCard renders a separate compact branch while reordering', () => {
-    const file = fs.readFileSync(path.join(__dirname, '../components/MealCard.tsx'), 'utf8');
-    const compactBranchIndex = file.indexOf('if (isReordering)');
-    const bodyRenderIndex = file.indexOf('<MacroProportionBar macros={macros} />');
-
-    expect(compactBranchIndex).toBeGreaterThan(-1);
-    expect(bodyRenderIndex).toBeGreaterThan(compactBranchIndex);
-    expect(file).not.toContain("isReordering ? { height: 0, opacity: 0, overflow: 'hidden' } : null");
   });
 
   it('DailyBalance uses semantic tokens', () => {
