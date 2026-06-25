@@ -6,7 +6,10 @@ import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { LinearTransition } from 'react-native-reanimated';
+import Animated, { LinearTransition, FadeIn, FadeOut, Easing } from 'react-native-reanimated';
+
+const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
+const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
 import withObservables from '@nozbe/with-observables';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
@@ -178,14 +181,18 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </GestureHandlerRootView>
 
         {isReordering && (
-          <View className="flex-row items-center justify-between px-screen-x py-4">
+          <Animated.View 
+            entering={FOOTER_ENTER}
+            exiting={FOOTER_EXIT}
+            className="flex-row items-center justify-between px-screen-x py-4"
+          >
             <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
               <Text>Cancelar</Text>
             </Button>
             <Button className="flex-1 ml-2" onPress={confirmReorder}>
               <Text>Confirmar</Text>
             </Button>
-          </View>
+          </Animated.View>
         )}
       </View>
 
