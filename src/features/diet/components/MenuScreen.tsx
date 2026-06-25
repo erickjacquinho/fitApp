@@ -43,6 +43,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   const [isReordering, setIsReordering] = useState(false);
   const [tempMeals, setTempMeals] = useState<Meal[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
@@ -53,10 +54,14 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   }, [meals]);
 
   const confirmReorder = async () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setIsReordering(false);
-    const orderedIds = tempMeals.map(m => m.id);
-    await MealService.updateMealOrder(orderedIds);
+    setIsSaving(true);
+    try {
+      const orderedIds = tempMeals.map(m => m.id);
+      await MealService.updateMealOrder(orderedIds);
+    } catch (error) {
+      console.error(error);
+      setIsSaving(false);
+    }
   };
 
   const cancelReorder = () => {
@@ -69,6 +74,20 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       cancelReorder();
     }
   }, [selectedDate]);
+
+  React.useEffect(() => {
+    if (isSaving) {
+      const mealsIds = meals.map(m => m.id);
+      const tempIds = tempMeals.map(m => m.id);
+      const isSync = mealsIds.length === tempIds.length && mealsIds.every((id, idx) => id === tempIds[idx]);
+      
+      if (isSync) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setIsReordering(false);
+        setIsSaving(false);
+      }
+    }
+  }, [meals, isSaving, tempMeals]);
 
   const handleDelete = async () => {
     if (selectedMealId) {
