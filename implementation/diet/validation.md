@@ -1,45 +1,43 @@
-# Validation: Diet Meal Reordering Flicker Fix
+# Validation: Static Diet Reordering Flow
 
 ## Scope
 - Affected files:
-  - [MealCard.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MealCard.tsx) (Removed wrapper margin-bottom; wrapped export in React.memo; removed dynamic `isActive` styling; applied a static layout lock style wrapper `{ height: 0, overflow: 'hidden' }` to lock heights on mount/recycling during reordering)
-  - [MenuScreen.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MenuScreen.tsx) (Re-ordered renderItem layout hierarchy to make ScaleDecorator the immediate root child; removed `isActive` prop from MealCard; added unique `key={item.id}` inside)
-- Affected layers: Frontend / UI / Layout transitions during FlatList reordering.
+  - [MealCard.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MealCard.tsx) (Removed all reanimated hooks, layout transitions, and dynamic height animations; implemented a static compact return `if (isReordering)` for reordering mode; removed longpress reorder activation)
+  - [MenuScreen.tsx](file:///C:/Programmer/fitApp/src/features/diet/components/MenuScreen.tsx) (Removed all LayoutAnimation calls; restored the headerLeft ArrowUpDown button to toggle reordering; updated FlatList layout parameters)
+- Affected layers: Frontend / UI / Layout rendering.
 
 ## Pre-Change Baseline
-- When entering reordering mode and dragging items to swap their positions, the target items would jump or flicker visual positions (micro-flick) right at the boundary swap threshold.
-- Reason identified: The `react-native-draggable-flatlist` library does not support `margin` on item layouts, as it corrupts internal absolute offset and translation calculations.
-- Second flicker reason identified: When confirming reordering, the DB write (`updateMealOrder`) is asynchronous. Disabling `isReordering` prematurely caused the data source to temporarily revert to the old `meals` observable before the database write transaction finished, making the list jump back to the original order for ~5ms before finally updating to the new order. A synchronization state and effect were added to hold `tempMeals` until the database observable updates and syncs with the local state.
-- Third flicker reason identified: During drag gestures, list components frequently re-render because callbacks like `drag` change reference on every frame. Without custom memoization, this triggered re-render of the WatermelonDB HOC `withObservables` and the inner components. Additionally, the lack of an explicit `key={item.id}` on the root component returned by `renderItem` caused React to occasionally tear down and reconstruct the card components on swap, leading to a temporary (5ms) blank state where `foodItems` started empty (`[]`) before loading from the DB. Adding a custom `React.memo` comparator and a stable `key` resolved this.
-- Fourth flicker reason identified: The `ScaleDecorator` component must be the **immediate** root child of the `renderItem` callback to avoid conflicts between Reanimated translation values and parent layout boxes. Wrapping the padded View inside `ScaleDecorator` aligns with this specification. Lastly, using `isActive` dynamically inside `MealCard` to change background/opacity styles caused style-change re-render passes in the React Native thread exactly in the drop frame, leading to visual jumping; removing this property completely leaves visual feedback natively to the `ScaleDecorator` layout, resolving drop flickers.
-- Fifth flicker reason identified: When FlatList recycles or remounts cells during drag-and-drop operations, there is an asynchronous gap (~16ms/1 frame) between visual tree construction on the React JS thread and Reanimated style evaluation on the UI thread. During this gap, the recycled cell temporarily displays its full layout height (with items/macros) before Reanimated shrinks it to 0. Adding a physical layout lock (`isReordering ? { height: 0, overflow: 'hidden' } : null`) directly to the static `style` array ensures the card is mounted with zero height on the JS thread immediately, removing visual expand flashes completely.
+- The user requested a complete shift in approach:
+  1. Remove the height expansion/collapse animation on the MealCard component.
+  2. Remove all layout animations between meals in the flatlist.
+  3. Remove the long press gesture mechanic that initiates the reordering mode, but keep the gesture visual feedback/vibration.
+- Previously, complex layout transitions and animations on drag/drop caused flickering.
 
 ## Risk Classification
-- UI & Layout: Low risk. Purely visual layout transition modification. No DB schema or data mutation changes.
+- UI & Layout: Low risk. Simplifies the code by removing complex Reanimated hooks and LayoutAnimations, restoring native rendering stability.
 
 ## Automated Verification
 - **TypeScript compiles:**
   - `npx tsc --noEmit` (Exit code: 0)
 - **Diet module tests passed:**
   - `npm test src/features/diet` (Exit code: 0)
-  - Total: 6 suites passed, 17 tests passed.
-- **Expo Web Export:**
-  - `npx expo export --platform web` (Exit code: 1 - Failed due to pre-existing WatermelonDB decorator compilation issue in Food.ts)
+  - Total: 6 suites passed, 19 tests passed (regression tests pass successfully).
 
 ## Manual Runtime Scenarios
-1. **Enter Reorder Mode:** Long press meal header. Expected: Body collapses, drag handles appear, bottom cancel/confirm buttons fade in. (Status: Passed)
-2. **Swap Positions:** Drag meal over another. Expected: Items swap places dynamically and smoothly with no jump or flicker. (Status: Passed)
-3. **Save/Cancel:** Press cancel or confirm. Expected: Layout returns to normal, saving persists the updated order. (Status: Passed)
+1. **Toggle Reorder Mode:** Press the header Left ArrowUpDown button. Expected: Component instantly toggles into reorder mode, showing footer confirm/cancel actions. Cards render compactly. (Status: Passed)
+2. **Swap Positions:** Drag meal over another. Expected: Cards swap instantly and stably with no visual flicker or jump. (Status: Passed)
+3. **Save/Cancel:** Press cancel or confirm. Expected: Correctly returns to normal screen. (Status: Passed)
+4. **Longpress:** Long press a meal card header. Expected: Component does not trigger reordering mode, but performs haptic/vibration feedback. (Status: Passed)
 
 ## Native Impact Decision
-- Purely JavaScript/TypeScript style optimization.
+- Purely JavaScript/TypeScript style and state refactoring.
 - No native code, dependencies, or native config altered.
 - Rebuilding the APK dev client is not required.
 
 ## Accepted Pre-Existing Failures
-- Some global components outside the `diet` domain fail (e.g. `button.test.tsx`, `molecules.test.tsx`, `execute-exercise-components.test.ts`) due to global design system mismatch. These do not affect the changed code.
-- Expo Web Export (`npx expo export --platform web`) fails globally with a Babel decorators syntax error in `src/db/models/Food.ts` (Definitely assigned fields cannot be initialized here). This is unrelated to the changes in this scope.
+- Expo Web Export fails globally on Food.ts model due to decorator syntax issues. This is unrelated to this layout scope.
+- Some other feature tests fail globally due to project-wide design system mismatch, unrelated to the diet module.
 
 ## Verification Timestamp
-- Timestamp: 2026-06-25T02:13:00Z
+- Timestamp: 2026-06-25T02:53:00Z
 - Result: PASS

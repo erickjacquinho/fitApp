@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
 import { Icon } from '@/components/ui/icon';
-import { View, FlatList, LayoutAnimation, UIManager, Platform } from 'react-native';
+import { View, FlatList, UIManager, Platform } from 'react-native';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { LinearTransition, FadeIn, FadeOut, Easing } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
 const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
@@ -18,7 +18,6 @@ import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { DailyBalance } from './DailyBalance';
 import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
-// (ReorderMealsModal removed)
 
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
@@ -48,7 +47,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
   const startReorder = React.useCallback(() => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setTempMeals([...meals]);
     setIsReordering(true);
   }, [meals]);
@@ -65,7 +63,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   };
 
   const cancelReorder = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsReordering(false);
   };
 
@@ -82,7 +79,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       const isSync = mealsIds.length === tempIds.length && mealsIds.every((id, idx) => id === tempIds[idx]);
       
       if (isSync) {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setIsReordering(false);
         setIsSaving(false);
       }
@@ -91,7 +87,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   const handleDelete = async () => {
     if (selectedMealId) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       await deleteMeal(selectedMealId);
       setDeleteModalVisible(false);
       setSelectedMealId(null);
@@ -117,12 +112,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
             isReordering={isReordering}
             drag={drag}
             onDelete={confirmDelete} 
-            onLongPressHeader={startReorder} 
           />
         </View>
       </ScaleDecorator>
     );
-  }, [isReordering, confirmDelete, startReorder]);
+  }, [isReordering, confirmDelete]);
 
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
@@ -156,7 +150,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       scrollable={false}
       disablePadding={true}
       headerLeft={
-        undefined // ArrowUpDown button removed as reorder is now inline via long press
+        <Button accessibilityLabel="Reordenar refeições" variant="ghost" size="icon" onPress={startReorder}>
+          <Icon as={ArrowUpDown} size={24} />
+        </Button>
       }
       headerRight={
         <View className="-mr-2 flex-row items-center gap-2">
@@ -172,7 +168,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       <View className="flex-1 bg-background pt-4 flex-col">
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
+            key={isReordering ? 'meal-reorder-list' : 'meal-normal-list'}
             data={isReordering ? tempMeals : meals}
+            extraData={isReordering}
             onDragEnd={({ data }) => {
               if (isReordering) setTempMeals(data);
             }}
