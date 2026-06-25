@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
 import { LongPressable } from '@/components/ui/long-pressable';
-import Animated, { FadeIn, FadeOut, LinearTransition, Easing } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, LinearTransition, Easing, useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const ENTER_ANIMATION = FadeIn.duration(200).easing(Easing.ease);
 const EXIT_ANIMATION = FadeOut.duration(200).easing(Easing.ease);
@@ -57,8 +57,43 @@ interface MealCardContentProps {
 function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
+  const [bodyHeight, setBodyHeight] = useState(0);
+  const heightVal = useSharedValue(0);
+  const opacityVal = useSharedValue(1);
+  const hasMeasured = React.useRef(false);
 
   const macros = React.useMemo(() => aggregateMacros(foodItems), [foodItems]);
+
+  React.useEffect(() => {
+    if (bodyHeight > 0) {
+      if (!hasMeasured.current) {
+        heightVal.value = isReordering ? 0 : bodyHeight;
+        opacityVal.value = isReordering ? 0 : 1;
+        hasMeasured.current = true;
+      } else {
+        heightVal.value = withTiming(isReordering ? 0 : bodyHeight, {
+          duration: 200,
+          easing: Easing.out(Easing.ease),
+        });
+        opacityVal.value = withTiming(isReordering ? 0 : 1, {
+          duration: 150,
+        });
+      }
+    }
+  }, [isReordering, bodyHeight]);
+
+  const animatedBodyStyle = useAnimatedStyle(() => {
+    if (bodyHeight === 0 && !isReordering) {
+      return {
+        opacity: 1,
+      };
+    }
+    return {
+      height: heightVal.value,
+      opacity: opacityVal.value,
+      overflow: 'hidden',
+    };
+  });
 
   React.useEffect(() => {
     const loadFoods = async () => {
@@ -109,8 +144,15 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         )}
       </LongPressable>
       
-      {!isReordering && (
-        <View>
+      <Animated.View style={animatedBodyStyle}>
+        <View 
+          onLayout={(e) => {
+            const h = e.nativeEvent.layout.height;
+            if (h > 0 && h !== bodyHeight) {
+              setBodyHeight(h);
+            }
+          }}
+        >
           <MacroProportionBar macros={macros} />
           
           <View className="flex-col">
@@ -138,7 +180,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
             </Pressable>
           </View>
         </View>
-      )}
+      </Animated.View>
     </View>
   );
 }
