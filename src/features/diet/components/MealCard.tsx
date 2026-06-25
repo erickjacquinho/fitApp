@@ -60,17 +60,22 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
   const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
   const [bodyHeight, setBodyHeight] = useState(0);
   const heightVal = useSharedValue(0);
+  const opacityVal = useSharedValue(1);
   const hasMeasured = React.useRef(false);
 
   React.useEffect(() => {
     if (bodyHeight > 0) {
       if (!hasMeasured.current) {
         heightVal.value = isReordering ? 0 : bodyHeight;
+        opacityVal.value = isReordering ? 0 : 1;
         hasMeasured.current = true;
       } else {
         heightVal.value = withTiming(isReordering ? 0 : bodyHeight, {
           duration: 200,
           easing: Easing.out(Easing.ease),
+        });
+        opacityVal.value = withTiming(isReordering ? 0 : 1, {
+          duration: 150,
         });
       }
     }
@@ -84,7 +89,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
     }
     return {
       height: heightVal.value,
-      opacity: withTiming(isReordering ? 0 : 1, { duration: 150 }),
+      opacity: opacityVal.value,
       overflow: 'hidden',
     };
   });
