@@ -89,6 +89,23 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, [], selectedDate);
   };
 
+  const renderItem = React.useCallback(({ item, drag, isActive }: { item: Meal; drag: () => void; isActive: boolean }) => {
+    return (
+      <View className="pb-6">
+        <ScaleDecorator>
+          <MealCard 
+            meal={item} 
+            isReordering={isReordering}
+            drag={drag}
+            isActive={isActive}
+            onDelete={confirmDelete} 
+            onLongPressHeader={startReorder} 
+          />
+        </ScaleDecorator>
+      </View>
+    );
+  }, [isReordering, confirmDelete, startReorder]);
+
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
       if (meals.length === 0) {
@@ -156,20 +173,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                 />
               </View>
             }
-            renderItem={({ item, drag, isActive }) => {
-              return (
-                <ScaleDecorator>
-                  <MealCard 
-                    meal={item} 
-                    isReordering={isReordering}
-                    drag={drag}
-                    isActive={isActive}
-                    onDelete={confirmDelete} 
-                    onLongPressHeader={startReorder} 
-                  />
-                </ScaleDecorator>
-              );
-            }}
+            renderItem={renderItem}
             ListFooterComponent={
               !isReordering ? (
                 <View className="mt-4">

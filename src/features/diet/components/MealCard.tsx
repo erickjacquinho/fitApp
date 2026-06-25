@@ -119,7 +119,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
 
   return (
     <View 
-      className={`mb-6 overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
+      className={`overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
     >
       <LongPressable 
         onLongPress={(e) => {
