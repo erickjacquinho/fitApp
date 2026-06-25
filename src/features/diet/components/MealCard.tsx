@@ -51,10 +51,9 @@ interface MealCardContentProps {
   onLongPressHeader?: () => void;
   isReordering?: boolean;
   drag?: () => void;
-  isActive?: boolean;
 }
 
-function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) {
+function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReordering, drag }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
   const [bodyHeight, setBodyHeight] = useState(0);
@@ -119,7 +118,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
 
   return (
     <View 
-      className={`overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
+      className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface"
     >
       <LongPressable 
         onLongPress={(e) => {
@@ -190,8 +189,8 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-const MealCardComponent = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag, isActive }: MealCardContentProps) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} drag={drag} isActive={isActive} />;
+const MealCardComponent = enhanceMeal(({ meal, items, onDelete, onLongPressHeader, isReordering, drag }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onLongPressHeader={onLongPressHeader} isReordering={isReordering} drag={drag} />;
 });
 
 export const MealCard = React.memo(
@@ -199,8 +198,7 @@ export const MealCard = React.memo(
   (prevProps, nextProps) => {
     return (
       prevProps.meal.id === nextProps.meal.id &&
-      prevProps.isReordering === nextProps.isReordering &&
-      prevProps.isActive === nextProps.isActive
+      prevProps.isReordering === nextProps.isReordering
     );
   }
 );

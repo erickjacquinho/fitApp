@@ -108,20 +108,19 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, [], selectedDate);
   };
 
-  const renderItem = React.useCallback(({ item, drag, isActive }: { item: Meal; drag: () => void; isActive: boolean }) => {
+  const renderItem = React.useCallback(({ item, drag }: { item: Meal; drag: () => void }) => {
     return (
-      <View key={item.id} className="pb-6">
-        <ScaleDecorator>
+      <ScaleDecorator>
+        <View key={item.id} className="pb-6">
           <MealCard 
             meal={item} 
             isReordering={isReordering}
             drag={drag}
-            isActive={isActive}
             onDelete={confirmDelete} 
             onLongPressHeader={startReorder} 
           />
-        </ScaleDecorator>
-      </View>
+        </View>
+      </ScaleDecorator>
     );
   }, [isReordering, confirmDelete, startReorder]);
 
