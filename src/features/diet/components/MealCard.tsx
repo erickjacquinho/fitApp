@@ -81,7 +81,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
 
   return (
     <Animated.View 
-      layout={LinearTransition.duration(200)}
+      layout={LinearTransition.duration(200).easing(Easing.ease)}
       className={`mb-6 overflow-hidden border border-border-subtle rounded-lg flex-col ${isActive ? 'bg-surface-elevated opacity-85' : 'bg-surface opacity-100'}`}
     >
       <LongPressable 
@@ -94,11 +94,11 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
         
         {isReordering ? (
-          <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)}>
+          <Animated.View entering={FadeIn.duration(200).easing(Easing.ease)} exiting={FadeOut.duration(200).easing(Easing.ease)}>
             <Icon as={GripVertical} className="text-text-secondary" />
           </Animated.View>
         ) : (
-          <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)} className="flex-row items-center gap-3">
+          <Animated.View entering={FadeIn.duration(200).easing(Easing.ease)} exiting={FadeOut.duration(200).easing(Easing.ease)} className="flex-row items-center gap-3">
             <Text variant="label" className="text-text-primary">00:00</Text>
             <Pressable accessibilityLabel={`Excluir ${meal.name}`} onPress={onDelete} className="p-1">
               <Icon as={Trash2} className="text-destructive" size={16} />
@@ -108,7 +108,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
       </LongPressable>
       
       {!isReordering && (
-        <Animated.View entering={FadeIn.duration(400).easing(Easing.ease)} exiting={FadeOut.duration(400).easing(Easing.ease)}>
+        <Animated.View entering={FadeIn.duration(200).easing(Easing.ease)} exiting={FadeOut.duration(200).easing(Easing.ease)}>
           <MacroProportionBar macros={macros} />
           
           <View className="flex-col">
@@ -127,7 +127,7 @@ function MealCardContent({ meal, items, onDelete, onLongPressHeader, isReorderin
         )}
         
         <MealMacrosSummary macros={macros} />
-
+ 
         <Pressable 
           className="h-control-md flex-row items-center justify-center w-full"
           onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}
