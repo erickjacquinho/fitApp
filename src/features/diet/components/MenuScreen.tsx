@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { View, FlatList, LayoutAnimation, UIManager, Platform } from 'react-native';
 import { useMenu } from '../hooks/useMenu';
 import { useRouter } from 'expo-router';
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { LinearTransition, FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 
@@ -46,11 +46,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
-  const startReorder = () => {
+  const startReorder = React.useCallback(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setTempMeals([...meals]);
     setIsReordering(true);
-  };
+  }, [meals]);
 
   const confirmReorder = async () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -158,14 +158,16 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
             }
             renderItem={({ item, drag, isActive }) => {
               return (
-                <MealCard 
-                  meal={item} 
-                  isReordering={isReordering}
-                  drag={drag}
-                  isActive={isActive}
-                  onDelete={confirmDelete} 
-                  onLongPressHeader={startReorder} 
-                />
+                <ScaleDecorator>
+                  <MealCard 
+                    meal={item} 
+                    isReordering={isReordering}
+                    drag={drag}
+                    isActive={isActive}
+                    onDelete={confirmDelete} 
+                    onLongPressHeader={startReorder} 
+                  />
+                </ScaleDecorator>
               );
             }}
             ListFooterComponent={
