@@ -91,7 +91,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       }
     }
 
-    if (clean.length > 2) {
+    if (clean.length >= 2) {
       return `${hours}:${minutes}`;
     }
     return hours;
