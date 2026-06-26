@@ -76,7 +76,7 @@ export function KeyboardShift({
   }
 
   return (
-    <Animated.View style={animatedStyle}>
+    <Animated.View style={[animatedStyle, { width: '100%', alignItems: 'center' }]}>
       {children}
     </Animated.View>
   );
