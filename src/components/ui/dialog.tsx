@@ -1,4 +1,5 @@
 import { Icon } from '@/components/ui/icon';
+import { KeyboardShift } from '@/components/ui/keyboard-shift';
 import { NativeOnlyAnimatedView } from '@/components/ui/native-only-animated-view';
 import { cn } from '@/lib/utils';
 import * as DialogPrimitive from '@rn-primitives/dialog';
@@ -49,9 +50,11 @@ function DialogOverlay({
         onPress={Platform.select({ web: onOverlayPress, native: onPress })}
         asChild={Platform.OS !== 'web'}>
         <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
-          <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
-            <>{children}</>
-          </NativeOnlyAnimatedView>
+          <KeyboardShift>
+            <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
+              <>{children}</>
+            </NativeOnlyAnimatedView>
+          </KeyboardShift>
         </NativeOnlyAnimatedView>
       </DialogPrimitive.Overlay>
     </FullWindowOverlay>

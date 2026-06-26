@@ -6,10 +6,10 @@ import {
   ScrollViewProps,
   View,
 } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import {
   Edge,
   SafeAreaView,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { cn } from '@/lib/utils';
 // import { Header } from '@/components/molecules/Header'; // Assuming we have this, but I should check
@@ -22,7 +22,7 @@ export interface ScreenProps {
   withPadding?: boolean; // default: true
 
   // Safe Area
-  safeAreaEdges?: Edge[]; // default: ['top', 'bottom']
+  safeAreaEdges?: Edge[]; // default: [] if header present, ['top'] if header absent
 
   // Header Options (Optional)
   headerTitle?: string;
@@ -36,6 +36,9 @@ export interface ScreenProps {
   className?: string;
   contentClassName?: string;
 
+  // Overlay
+  overlayActive?: boolean;
+
   // ScrollView Specific
   scrollViewProps?: Omit<ScrollViewProps, 'children'>;
 }
@@ -44,17 +47,19 @@ export function Screen({
   children,
   scrollable = true,
   withPadding = true,
-  safeAreaEdges = ['top', 'bottom'],
+  safeAreaEdges,
   header,
   className,
   contentClassName,
   scrollViewProps,
+  overlayActive = false,
 }: ScreenProps) {
-  const insets = useSafeAreaInsets();
+  // Resolve the safe area edges dynamically
+  const resolvedEdges = safeAreaEdges ?? (header ? [] : ['top']);
 
   // If there are no safe area edges requested, we can just use a normal View.
   // SafeAreaView handles edges automatically based on its props.
-  const Wrapper = safeAreaEdges.length > 0 ? SafeAreaView : View;
+  const Wrapper = resolvedEdges.length > 0 ? SafeAreaView : View;
   
   const content = (
     <View
@@ -70,7 +75,7 @@ export function Screen({
 
   return (
     <Wrapper
-      edges={safeAreaEdges.length > 0 ? safeAreaEdges : undefined}
+      edges={resolvedEdges.length > 0 ? resolvedEdges : undefined}
       className={cn('flex-1 bg-background', className)}
     >
       <KeyboardAvoidingView
@@ -91,6 +96,15 @@ export function Screen({
           </ScrollView>
         ) : (
           content
+        )}
+
+        {overlayActive && (
+          <Animated.View
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+            className="absolute inset-0 bg-black/60 z-40"
+            pointerEvents="none"
+          />
         )}
       </KeyboardAvoidingView>
     </Wrapper>
