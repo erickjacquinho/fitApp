@@ -70,6 +70,42 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     }
   };
 
+  const formatTimeInput = (text: string): string => {
+    const clean = text.replace(/\D/g, '');
+    if (clean.length === 0) return '';
+
+    let hours = clean.slice(0, 2);
+    let minutes = clean.slice(2, 4);
+
+    if (hours.length === 2) {
+      const hVal = parseInt(hours, 10);
+      if (hVal > 23) {
+        hours = '23';
+      }
+    }
+
+    if (minutes.length === 2) {
+      const mVal = parseInt(minutes, 10);
+      if (mVal > 59) {
+        minutes = '59';
+      }
+    }
+
+    if (clean.length > 2) {
+      return `${hours}:${minutes}`;
+    }
+    return hours;
+  };
+
+  const handleTimeChange = (text: string) => {
+    if (editTime.endsWith(':') && text.length === editTime.length - 1) {
+      setEditTime(text.slice(0, -1));
+      return;
+    }
+    const formatted = formatTimeInput(text);
+    setEditTime(formatted);
+  };
+
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
   const startReorder = React.useCallback(() => {
@@ -325,8 +361,10 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
                 <Text variant="caption" className="text-text-secondary">Horário</Text>
                 <Input 
                   value={editTime}
-                  onChangeText={setEditTime}
+                  onChangeText={handleTimeChange}
                   placeholder="Ex.: 12:00"
+                  keyboardType="numeric"
+                  maxLength={5}
                 />
               </View>
             </View>

@@ -101,4 +101,13 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('<Text className="text-text-primary">Cancelar</Text>');
     expect(file).toContain('<Text className="text-text-inverse">Salvar</Text>');
   });
+
+  it('MenuScreen implements time input formatting mask helpers and constraints', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/MenuScreen.tsx'), 'utf8');
+    expect(file).toContain('const formatTimeInput = (text: string): string => {');
+    expect(file).toContain("text.replace(/\\D/g, '')");
+    expect(file).toContain('keyboardType="numeric"');
+    expect(file).toContain('maxLength={5}');
+    expect(file).toContain('onChangeText={handleTimeChange}');
+  });
 });
