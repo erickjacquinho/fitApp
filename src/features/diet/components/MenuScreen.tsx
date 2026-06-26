@@ -8,7 +8,8 @@ import withObservables from '@nozbe/with-observables';
 import { Q } from '@nozbe/watermelondb';
 import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
 
-import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
+import { Screen } from '@/components/ui/screen';
+import { Header } from '../../../components/molecules/Header';
 import { Icon } from '@/components/ui/icon';
 import { useMenu } from '../hooks/useMenu';
 import { database } from '../../../db';
@@ -20,8 +21,10 @@ import { MealService } from '../services/meal-service';
 import { DateSelector } from '../../../components/molecules/DateSelector';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LongPressable } from '@/components/ui/long-pressable';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
 const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
@@ -44,6 +47,28 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const [isReordering, setIsReordering] = useState(false);
   const [tempMeals, setTempMeals] = useState<Meal[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+
+  const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editTime, setEditTime] = useState('00:00');
+
+  React.useEffect(() => {
+    if (editingMeal) {
+      setEditName(editingMeal.name);
+      setEditTime(editingMeal.preparationState || '00:00');
+    }
+  }, [editingMeal]);
+
+  const handleSaveEdit = async () => {
+    if (editingMeal && editName.trim()) {
+      try {
+        await MealService.updateBasicInfo(editingMeal.id, editName, editTime);
+        setEditingMeal(null);
+      } catch (err) {
+        console.error('Failed to update meal info in popup:', err);
+      }
+    }
+  };
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
@@ -113,11 +138,12 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
             isReordering={isReordering}
             drag={drag}
             onDelete={confirmDelete} 
+            onEdit={setEditingMeal}
           />
         </View>
       </ScaleDecorator>
     );
-  }, [isReordering, confirmDelete]);
+  }, [isReordering, confirmDelete, setEditingMeal]);
 
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
@@ -145,32 +171,36 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const showSkeleton = !isReady || meals.length === 0;
 
   return (
-    <MainTabScreen
-      customTitle={
-        <LongPressable onLongPress={startReorder}>
-          <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
-        </LongPressable>
+    <Screen
+      overlayActive={!!editingMeal}
+      header={
+        <Header
+          customTitle={
+            <LongPressable onLongPress={startReorder}>
+              <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
+            </LongPressable>
+          }
+          headerLeft={
+            <Button accessibilityLabel="Reordenar refeições" variant="ghost" size="icon" onPress={startReorder}>
+              <Icon as={ArrowUpDown} size={24} />
+            </Button>
+          }
+          headerRight={
+            <View className="-mr-2 flex-row items-center gap-2">
+              <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
+                <Icon as={CalendarDays} size={24} />
+              </Button>
+              <Button accessibilityLabel="Abrir banco de alimentos" variant="ghost" size="icon" onPress={() => router.push('/diet/food-bank')}>
+                <Icon as={Apple} size={24} />
+              </Button>
+            </View>
+          }
+        />
       }
-      isFlatList={false}
       scrollable={false}
-      disablePadding={true}
-      headerLeft={
-        <Button accessibilityLabel="Reordenar refeições" variant="ghost" size="icon" onPress={startReorder}>
-          <Icon as={ArrowUpDown} size={24} />
-        </Button>
-      }
-      headerRight={
-        <View className="-mr-2 flex-row items-center gap-2">
-          <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
-            <Icon as={CalendarDays} size={24} />
-          </Button>
-          <Button accessibilityLabel="Abrir banco de alimentos" variant="ghost" size="icon" onPress={() => router.push('/diet/food-bank')}>
-            <Icon as={Apple} size={24} />
-          </Button>
-        </View>
-      }
+      withPadding={false}
     >
-      <View className="flex-1 bg-background pt-4 flex-col">
+      <View className="flex-1 pt-4 flex-col">
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
             key={isReordering ? 'meal-reorder-list' : 'meal-normal-list'}
@@ -277,6 +307,48 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
         </View>
       )}
 
+        <Dialog open={!!editingMeal} onOpenChange={(open) => !open && setEditingMeal(null)}>
+          <DialogContent className="w-4/5 max-w-[400px]">
+            <DialogHeader>
+              <DialogTitle>Editar refeição</DialogTitle>
+            </DialogHeader>
+            <View className="gap-4 py-2">
+              <View className="gap-2">
+                <Text variant="caption" className="text-text-secondary">Nome da refeição</Text>
+                <Input 
+                  value={editName}
+                  onChangeText={setEditName}
+                  placeholder="Ex.: Almoço"
+                />
+              </View>
+              <View className="gap-2">
+                <Text variant="caption" className="text-text-secondary">Horário</Text>
+                <Input 
+                  value={editTime}
+                  onChangeText={setEditTime}
+                  placeholder="Ex.: 12:00"
+                />
+              </View>
+            </View>
+            <DialogFooter className="flex-row gap-2 mt-4">
+              <Button 
+                variant="outline" 
+                className="flex-1" 
+                onPress={() => setEditingMeal(null)}
+              >
+                <Text className="text-text-primary">Cancelar</Text>
+              </Button>
+              <Button 
+                className="flex-1" 
+                disabled={!editName.trim()}
+                onPress={handleSaveEdit}
+              >
+                <Text className="text-text-inverse">Salvar</Text>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <ConfirmModal 
           visible={deleteModalVisible}
           title="Remover refeição?"
@@ -285,7 +357,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           onCancel={() => setDeleteModalVisible(false)}
           isDestructive
         />
-    </MainTabScreen>
+    </Screen>
   );
 }
 

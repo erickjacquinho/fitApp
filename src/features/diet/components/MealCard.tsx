@@ -47,11 +47,12 @@ interface MealCardContentProps {
   meal: Meal;
   items: MealItem[];
   onDelete: (id: string) => void;
+  onEdit: (meal: Meal) => void;
   isReordering?: boolean;
   drag?: () => void;
 }
 
-function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCardContentProps) {
+function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
 
@@ -107,7 +108,7 @@ function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCard
       >
         <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
         <View className="flex-row items-center gap-3">
-          <Text variant="label" className="text-text-primary">00:00</Text>
+          <Text variant="label" className="text-text-primary">{meal.preparationState || '00:00'}</Text>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
@@ -116,7 +117,7 @@ function MealCardContent({ meal, items, onDelete, isReordering, drag }: MealCard
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-32">
               <DropdownMenuItem 
-                onPress={() => router.push({ pathname: '/diet/edit-meal', params: { mealId: meal.id } })}
+                onPress={() => onEdit(meal)}
                 className="flex-row items-center gap-2"
               >
                 <Icon as={Edit} size={14} className="text-text-primary" />
@@ -172,8 +173,8 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-const MealCardComponent = enhanceMeal(({ meal, items, onDelete, isReordering, drag }: MealCardContentProps) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} isReordering={isReordering} drag={drag} />;
+const MealCardComponent = enhanceMeal(({ meal, items, onDelete, onEdit, isReordering, drag }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onEdit={onEdit} isReordering={isReordering} drag={drag} />;
 });
 
 export const MealCard = React.memo(
@@ -181,7 +182,8 @@ export const MealCard = React.memo(
   (prevProps, nextProps) => {
     return (
       prevProps.meal.id === nextProps.meal.id &&
-      prevProps.isReordering === nextProps.isReordering
+      prevProps.isReordering === nextProps.isReordering &&
+      prevProps.onEdit === nextProps.onEdit
     );
   }
 );

@@ -51,6 +51,9 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('border-border-subtle');
     expect(file).toContain('text-text-secondary');
     expect(file).toContain('text-text-primary');
+    expect(file).toContain('className="text-text-secondary font-medium">Prot</Text>');
+    expect(file).toContain('className="text-text-secondary font-medium">Carb</Text>');
+    expect(file).toContain('className="text-text-secondary font-medium">Gord</Text>');
   });
 
   it('MacroBadge uses semantic macro tokens directly', () => {
@@ -79,5 +82,23 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain('DropdownMenuContent');
     expect(file).toContain('DropdownMenuItem');
     expect(file).toContain('EllipsisVertical');
+  });
+
+  it('MealCard implements the local edit popup trigger contracts', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/MealCard.tsx'), 'utf8');
+    expect(file).toContain('onEdit: (meal: Meal) => void');
+    expect(file).toContain('onPress={() => onEdit(meal)}');
+    expect(file).toContain("meal.preparationState || '00:00'");
+  });
+
+  it('MenuScreen implements edit popup modal and conditional background darkening', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/MenuScreen.tsx'), 'utf8');
+    expect(file).toContain('const [editingMeal, setEditingMeal] = useState<Meal | null>(null);');
+    expect(file).toContain('<Dialog open={!!editingMeal}');
+    expect(file).toContain('overlayActive={!!editingMeal}');
+    expect(file).toContain('MealService.updateBasicInfo');
+    expect(file).toContain('className="w-4/5 max-w-[400px]"');
+    expect(file).toContain('<Text className="text-text-primary">Cancelar</Text>');
+    expect(file).toContain('<Text className="text-text-inverse">Salvar</Text>');
   });
 });

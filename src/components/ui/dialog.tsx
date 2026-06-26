@@ -48,8 +48,8 @@ function DialogOverlay({
         {...props}
         onPress={Platform.select({ web: onOverlayPress, native: onPress })}
         asChild={Platform.OS !== 'web'}>
-        <NativeOnlyAnimatedView entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
-          <NativeOnlyAnimatedView entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
+        <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+          <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
             <>{children}</>
           </NativeOnlyAnimatedView>
         </NativeOnlyAnimatedView>
@@ -65,12 +65,17 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   portalHost?: string;
 }) {
+  const hasCustomWidth = className?.includes('w-');
+  const hasCustomMaxWidth = className?.includes('max-w-');
+
   return (
     <DialogPortal hostName={portalHost}>
       <DialogOverlay>
         <DialogPrimitive.Content
           className={cn(
-            'z-50 flex w-full max-w-sm flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none',
+            'z-50 flex flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none',
+            !hasCustomWidth && 'w-full',
+            !hasCustomMaxWidth && 'max-w-sm',
             Platform.select({
               web: 'animate-in fade-in-0 zoom-in-95 duration-200',
             }),
