@@ -1,12 +1,15 @@
-import { View } from 'react-native';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
 import { CalendarSummaryScreen } from '../../src/features/diet/components/CalendarSummaryScreen';
 
 export default function CalendarSummaryRoute() {
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Histórico" showBackButton />
+    <Screen
+      header={<Header title="Histórico" showBackButton />}
+      scrollable={false}
+      withPadding={true}
+    >
       <CalendarSummaryScreen />
-    </View>
+    </Screen>
   );
 }

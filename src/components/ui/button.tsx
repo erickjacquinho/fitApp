@@ -8,7 +8,7 @@ const buttonVariants = cva(
   cn(
     'group shrink-0 flex-row items-center justify-center gap-2 rounded-sm shadow-none',
     Platform.select({
-      web: "focus-visible:border-accent-main focus-visible:ring-accent-main/30 aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      web: "focus-visible:border-border-control focus-visible:ring-border-subtle/50 aria-invalid:ring-error/20 aria-invalid:border-error whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     })
   ),
   {

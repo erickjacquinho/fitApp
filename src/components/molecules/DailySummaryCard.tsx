@@ -1,6 +1,5 @@
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View } from 'react-native';
 import { ListItem } from './ListItem';
 import { Macros } from '../../features/diet/utils/macro-utils';
 
@@ -22,6 +21,8 @@ export const DailySummaryCard = ({ date, macros, onPress }: DailySummaryCardProp
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`Ver resumo de ${displayDate}`}
+      className="rounded-lg border border-border-subtle overflow-hidden"
+      showDivider={false}
     />
   );
 };

@@ -1,4 +1,5 @@
 import { database } from '../../../db';
+import { Q } from '@nozbe/watermelondb';
 import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import Exercise from '../../../db/models/Exercise';
@@ -80,6 +81,32 @@ export class WorkoutService {
 
   static async getProgram(id: string): Promise<Program> {
     return await this.programsCollection.find(id);
+  }
+
+  static async toggleProgramPin(id: string, isPinned: boolean): Promise<Program> {
+    return await database.write(async () => {
+      const program = await this.programsCollection.find(id);
+      
+      const batches = [];
+      
+      if (isPinned) {
+        const currentlyPinned = await this.programsCollection.query(Q.where('is_pinned', true)).fetch();
+        for (const p of currentlyPinned) {
+          if (p.id !== id) {
+            batches.push(p.prepareUpdate((record) => {
+              record.isPinned = false;
+            }));
+          }
+        }
+      }
+      
+      batches.push(program.prepareUpdate((p) => {
+        p.isPinned = isPinned;
+      }));
+      
+      await database.batch(...batches);
+      return program;
+    });
   }
 
   static async deleteProgram(id: string): Promise<void> {

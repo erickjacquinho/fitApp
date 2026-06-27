@@ -61,7 +61,7 @@ export function DailyBalance({ protein, carbs, fat, calories }: DailyBalanceProp
       <View className="items-center justify-center">
         <Text variant="caption" className={`${fat > 0 ? 'text-fat' : 'text-text-disabled'} font-bold`}>{fPct}%</Text>
         <Text variant="text" className="text-text-primary font-bold">{Math.round(fat)} g</Text>
-        <Text variant="caption" className="text-text-secondary font-medium">Fat</Text>
+        <Text variant="caption" className="text-text-secondary font-medium">Gord</Text>
       </View>
     </View>
   );

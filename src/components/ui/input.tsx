@@ -66,7 +66,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
         {Platform.OS !== 'web' && frame.width > 0 && (
           <Animated.View 
             style={ringStyle}
-            className="absolute border-primary/30 bg-transparent"
+            className="absolute border-border-subtle bg-transparent"
             pointerEvents="none"
           />
         )}
@@ -80,7 +80,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
           aria-invalid={ariaInvalid}
           className={cn(
             'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-border-strong bg-surface px-4 py-2 font-sans text-text leading-body text-text-primary shadow-none transition-colors duration-base',
-            'focus:border-thin focus:border-border-focus',
+            'focus:border-thin focus:border-border-control',
             props.editable === false &&
               cn(
                 'opacity-50',
@@ -90,7 +90,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
             Platform.select({
               web: cn(
                 'placeholder:text-text-secondary selection:bg-primary selection:text-text-inverse outline-none',
-                'focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-primary/30',
+                'focus-visible:border-border-control focus-visible:ring-2 focus-visible:ring-border-subtle',
                 'aria-invalid:ring-error/20 aria-invalid:border-error'
               ),
               native: 'placeholder:text-text-secondary',

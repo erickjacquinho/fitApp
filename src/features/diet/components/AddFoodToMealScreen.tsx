@@ -38,7 +38,7 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
   };
 
   return (
-    <View className="flex-1 bg-surface pt-6 gap-6">
+    <View className="gap-6 pt-6 pb-content-bottom">
       <Card>
         <Text variant="title">{food.name}</Text>
         

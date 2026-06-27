@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
 import { AddFoodToMealScreen } from '../../src/features/diet/components/AddFoodToMealScreen';
 
@@ -11,9 +11,12 @@ export default function AddFoodToMealRoute() {
   }
 
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Quantidade" showBackButton />
+    <Screen
+      header={<Header title="Quantidade" showBackButton />}
+      scrollable={true}
+      withPadding={true}
+    >
       <AddFoodToMealScreen mealId={mealId} foodId={foodId} />
-    </View>
+    </Screen>
   );
 }

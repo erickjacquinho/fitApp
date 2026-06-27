@@ -1,22 +1,22 @@
-import { View } from 'react-native';
-import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
+import { Screen } from '@/components/ui/screen';
+import { Header } from '@/components/molecules/Header';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function StatisticsPage() {
   return (
-    <MainTabScreen
-      title="Estatísticas"
+    <Screen
+      header={<Header title="Estatísticas" />}
+      scrollable={true}
+      withPadding={true}
     >
-      <View className="gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Resumo semanal</CardTitle>
-            <CardDescription>
-              Aqui entram os gráficos e comparativos principais.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </View>
-    </MainTabScreen>
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle>Resumo semanal</CardTitle>
+          <CardDescription>
+            Aqui entram os gráficos e comparativos principais.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </Screen>
   );
 }

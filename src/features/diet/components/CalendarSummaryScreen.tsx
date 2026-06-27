@@ -12,14 +12,14 @@ export const CalendarSummaryScreen = () => {
 
   if (loading) {
     return (
-      <View className="flex-1 justify-center items-center bg-surface">
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" className="text-primary" />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-surface">
+    <View className="flex-1">
       <FlatList keyboardShouldPersistTaps="handled"
         data={summaries}
         keyExtractor={(item) => item.date}

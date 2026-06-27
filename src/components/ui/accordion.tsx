@@ -87,7 +87,7 @@ function AccordionTrigger({
             className={cn(
               'min-h-touch-target flex-row items-center justify-between gap-4 rounded-sm px-4 py-3 active:bg-surface-elevated disabled:opacity-50',
               Platform.select({
-                web: 'flex flex-1 outline-none transition-all focus-visible:border-border-focus focus-visible:ring-2 focus-visible:ring-primary/30 disabled:pointer-events-none',
+                web: 'flex flex-1 outline-none transition-all focus-visible:border-border-control focus-visible:ring-2 focus-visible:ring-border-subtle/50 disabled:pointer-events-none',
               }),
               className
             )}>

@@ -70,59 +70,57 @@ export function WorkoutSessionScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-surface">
-      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
-        {block && (
-          <Text variant="title" className="mb-2 font-bold">
-            Treino {block.name}
-          </Text>
-        )}
-
-        <TrainingProgressBar
-          completed={getCompletedExercisesCount()}
-          total={exercises.length}
-        />
-
-        <Text variant="label" className="mb-3 text-text-secondary">
-          Exercícios
+    <View className="py-4 pb-content-bottom">
+      {block && (
+        <Text variant="title" className="mb-2 font-bold">
+          Treino {block.name}
         </Text>
+      )}
 
-        {exercises.map((exercise) => {
-          const exExecs = getExerciseExecutions(exercise.id);
-          const completed = isExerciseCompleted(exercise.id, exercise.sets);
-          
-          return (
-            <ExerciseListItem
-              key={exercise.id}
-              name={exercise.name}
-              setsCount={exExecs.length}
-              targetSets={exercise.sets}
-              repsMin={exercise.repsMin}
-              repsMax={exercise.repsMax}
-              advancedTechnique={exercise.advancedTechnique || undefined}
-              isCompleted={completed}
-              onPress={() => handleOpenExerciseModal(exercise)}
-            />
-          );
-        })}
+      <TrainingProgressBar
+        completed={getCompletedExercisesCount()}
+        total={exercises.length}
+      />
 
-        {exercises.length === 0 && (
-          <Card className="my-8 items-center justify-center py-10 border-dashed">
-            <Text variant="text" className="text-text-secondary text-center">
-              Nenhum exercício neste bloco de treino.
-            </Text>
-          </Card>
-        )}
+      <Text variant="label" className="mb-3 text-text-secondary">
+        Exercícios
+      </Text>
 
-        <Button onPress={handleAttemptFinish} className="my-6 min-h-[var(--size-control-lg)] bg-success"><Text>Finalizar treino</Text></Button>
-      </ScrollView>
+      {exercises.map((exercise) => {
+        const exExecs = getExerciseExecutions(exercise.id);
+        const completed = isExerciseCompleted(exercise.id, exercise.sets);
+        
+        return (
+          <ExerciseListItem
+            key={exercise.id}
+            name={exercise.name}
+            setsCount={exExecs.length}
+            targetSets={exercise.sets}
+            repsMin={exercise.repsMin}
+            repsMax={exercise.repsMax}
+            advancedTechnique={exercise.advancedTechnique || undefined}
+            isCompleted={completed}
+            onPress={() => handleOpenExerciseModal(exercise)}
+          />
+        );
+      })}
+
+      {exercises.length === 0 && (
+        <Card className="my-8 items-center justify-center py-10 border-dashed">
+          <Text variant="text" className="text-text-secondary text-center">
+            Nenhum exercício neste bloco de treino.
+          </Text>
+        </Card>
+      )}
+
+      <Button onPress={handleAttemptFinish} className="my-6 min-h-[var(--size-control-lg)] bg-success"><Text>Finalizar treino</Text></Button>
 
       {activeExercise && (
         <ExecuteExerciseModal

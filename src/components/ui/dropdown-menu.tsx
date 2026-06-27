@@ -44,7 +44,7 @@ function DropdownMenuSubTrigger({
   return (
     <TextClassContext.Provider
       value={cn(
-        'text-sm select-none group-active:text-text-primary',
+        'text-base select-none group-active:text-text-primary',
         open && 'text-text-primary'
       )}>
       <DropdownMenuPrimitive.SubTrigger
@@ -69,7 +69,9 @@ function DropdownMenuSubContent({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+}: Omit<React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>, 'children'> & {
+  children?: React.ReactNode;
+}) {
   const { open } = DropdownMenuPrimitive.useSubContext();
 
   return (
@@ -107,11 +109,12 @@ function DropdownMenuContent({
   portalHost,
   children,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
-    overlayStyle?: StyleProp<ViewStyle>;
-    overlayClassName?: string;
-    portalHost?: string;
-  }) {
+}: Omit<React.ComponentProps<typeof DropdownMenuPrimitive.Content>, 'children'> & {
+  children?: React.ReactNode;
+  portalHost?: string;
+  overlayClassName?: string;
+  overlayStyle?: StyleProp<ViewStyle>;
+}) {
   const { open, onOpenChange } = DropdownMenuPrimitive.useRootContext();
   const insets = useSafeAreaInsets();
 
@@ -185,7 +188,7 @@ function DropdownMenuItem({
   return (
     <TextClassContext.Provider
       value={cn(
-        'select-none text-sm text-text-primary group-active:text-text-primary',
+        'select-none text-base text-text-primary group-active:text-text-primary',
         variant === 'destructive' && 'text-error group-active:text-error'
       )}>
       <DropdownMenuPrimitive.Item
@@ -216,7 +219,7 @@ function DropdownMenuCheckboxItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-text-primary select-none group-active:text-text-primary">
+    <TextClassContext.Provider value="text-base text-text-primary select-none group-active:text-text-primary">
       <DropdownMenuPrimitive.CheckboxItem
         className={cn(
           'active:bg-surface-disabled group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -252,7 +255,7 @@ function DropdownMenuRadioItem({
     children?: React.ReactNode;
   }) {
   return (
-    <TextClassContext.Provider value="text-sm text-text-primary select-none group-active:text-text-primary">
+    <TextClassContext.Provider value="text-base text-text-primary select-none group-active:text-text-primary">
       <DropdownMenuPrimitive.RadioItem
         className={cn(
           'active:bg-surface-disabled group relative flex flex-row items-center gap-2 rounded-sm py-2 pl-8 pr-2 sm:py-1.5',
@@ -285,7 +288,7 @@ function DropdownMenuLabel({
   return (
     <DropdownMenuPrimitive.Label
       className={cn(
-        'text-text-primary px-2 py-2 text-sm font-medium sm:py-1.5',
+        'text-text-primary px-2 py-2 text-base font-medium sm:py-1.5',
         inset && 'pl-8',
         className
       )}

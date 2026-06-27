@@ -9,8 +9,13 @@ import { Text } from "@/components/ui/text";
 import { useColorScheme } from 'nativewind';
 import { lightTheme, darkTheme } from '@/tokens/theme';
 
-export function DashboardScreen() {
-  const { metrics, isLoading, refetch } = useDashboardMetrics();
+interface DashboardScreenProps {
+  metrics: any;
+  isLoading: boolean;
+  refetch: () => void;
+}
+
+export function DashboardScreen({ metrics, isLoading, refetch }: DashboardScreenProps) {
   const { colorScheme } = useColorScheme();
   const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
 
@@ -22,7 +27,7 @@ export function DashboardScreen() {
 
   if (isLoading && !metrics) {
     return (
-      <View className="flex-1 items-center justify-center bg-background">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
@@ -36,12 +41,7 @@ export function DashboardScreen() {
   });
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled"
-      className="flex-1 bg-background p-4"
-      refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[colors.primary]} />
-      }
-    >
+    <View className="gap-4 pt-4 pb-content-bottom">
       {/* Welcome Banner */}
       <View className="mb-4">
         <Text variant="caption" className="text-text-secondary uppercase font-bold tracking-wide">
@@ -89,6 +89,6 @@ export function DashboardScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }

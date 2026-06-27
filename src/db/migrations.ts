@@ -143,5 +143,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 7,
+      steps: [
+        addColumns({
+          table: 'programs',
+          columns: [
+            { name: 'is_pinned', type: 'boolean', isOptional: true },
+          ],
+        }),
+      ],
+    },
   ],
 });

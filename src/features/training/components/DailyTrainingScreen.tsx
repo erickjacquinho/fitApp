@@ -35,10 +35,10 @@ function DailyTrainingScreenComponent({ selectedDate, onSelectDate, sessions }: 
   }, []);
 
   return (
-    <View className="flex-1 bg-surface">
+    <View className="flex-1">
       <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
       
-      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 p-4">
+      <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 py-4">
         {sessions.length > 0 ? (
           <View className="gap-4">
             <Text variant="title" className="mb-2">Treinos do dia</Text>

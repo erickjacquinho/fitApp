@@ -41,7 +41,7 @@ export function SessionDetailsScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color={primary} />
       </View>
     );
@@ -49,7 +49,7 @@ export function SessionDetailsScreen() {
 
   if (!session) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface p-4">
+      <View className="flex-1 items-center justify-center p-4">
         <Text variant="subtitle" className="mb-4">
           Detalhes da sessão não encontrados
         </Text>
@@ -59,7 +59,7 @@ export function SessionDetailsScreen() {
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface p-4">
+    <View className="py-4 pb-content-bottom">
       {/* Trophy / Congrats Header */}
       <View className="mb-4 items-center justify-center rounded-md bg-success bg-opacity-10 p-5 border border-success border-opacity-20">
         <View className="mb-2 h-12 w-12 items-center justify-center rounded-full bg-success">
@@ -136,6 +136,6 @@ export function SessionDetailsScreen() {
       ))}
 
       <Button onPress={() => router.replace('/training')} className="my-6 min-h-[var(--size-control-lg)]"><Text>Voltar para programas</Text></Button>
-    </ScrollView>
+    </View>
   );
 }

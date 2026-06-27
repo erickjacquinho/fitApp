@@ -1,16 +1,18 @@
-import { FoodBankScreen } from '../../src/features/diet/components/FoodBankScreen';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
-import { View } from 'react-native';
-
+import { FoodBankScreen } from '../../src/features/diet/components/FoodBankScreen';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function FoodBankRoute() {
   const { mealId } = useLocalSearchParams<{ mealId?: string }>();
   
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Banco de alimentos" showBackButton />
+    <Screen
+      header={<Header title="Banco de alimentos" showBackButton />}
+      scrollable={false}
+      withPadding={true}
+    >
       <FoodBankScreen mealId={mealId} />
-    </View>
+    </Screen>
   );
 }

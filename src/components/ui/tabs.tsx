@@ -41,7 +41,7 @@ function TabsTrigger({
         className={cn(
           'min-h-touch-target flex flex-1 flex-row items-center justify-center gap-2 rounded-sm border border-transparent px-3 py-2',
           Platform.select({
-            web: 'inline-flex cursor-default whitespace-nowrap transition-colors focus-visible:border-accent-main focus-visible:ring-2 focus-visible:ring-accent-main/30 disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0',
+            web: 'inline-flex cursor-default whitespace-nowrap transition-colors focus-visible:border-border-control focus-visible:ring-2 focus-visible:ring-border-subtle/50 disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0',
           }),
           props.disabled && 'opacity-50',
           props.value === value && 'border-border-subtle bg-surface',

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, FlatList, Pressable } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { SwipeableRow } from '../../../components/molecules/SwipeableRow';
-import { ListItem } from '../../../components/molecules/ListItem';
+import { FoodBankCard } from './FoodBankCard';
 import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -59,7 +58,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   };
 
   return (
-    <View className="flex-1 bg-surface">
+    <View className="flex-1">
       <View className="py-compact gap-4">
         <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         
@@ -86,21 +85,16 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         renderItem={({ item }) => {
           const isSelected = bulkSelections.has(item.id);
           return (
-            <SwipeableRow 
+            <FoodBankCard
+              food={item}
+              isSelected={isSelected}
               onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
-            >
-              <ListItem
-                title={item.name}
-                subtitle={`${item.protein}P • ${item.carbohydrates}C • ${item.fat}G`}
-                rightAccessory={<Text className="font-bold text-primary">{item.calories} kcal</Text>}
-                onPress={() => {
-                  if (isSelectionMode) toggleBulkSelection(item.id);
-                  else if (mealId) handleAddFoodToMeal(item.id);
-                  else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
-                }}
-                className={isSelected ? 'bg-primary/10' : ''}
-              />
-            </SwipeableRow>
+              onPress={() => {
+                if (isSelectionMode) toggleBulkSelection(item.id);
+                else if (mealId) handleAddFoodToMeal(item.id);
+                else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
+              }}
+            />
           );
         }}
         ListEmptyComponent={

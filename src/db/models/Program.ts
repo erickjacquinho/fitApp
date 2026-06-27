@@ -1,5 +1,5 @@
 import { Model, Query } from '@nozbe/watermelondb';
-import { text, children, readonly, date } from '@nozbe/watermelondb/decorators';
+import { text, children, readonly, date, field } from '@nozbe/watermelondb/decorators';
 import TrainingBlock from './TrainingBlock';
 
 export default class Program extends Model {
@@ -9,6 +9,7 @@ export default class Program extends Model {
   } as const;
 
   @text('name') name!: string;
+  @field('is_pinned') isPinned!: boolean;
 
   @children('training_blocks') trainingBlocks!: Query<TrainingBlock>;
 

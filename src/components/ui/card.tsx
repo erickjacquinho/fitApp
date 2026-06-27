@@ -57,7 +57,7 @@ function CardDescription({
   className,
   ...props
 }: React.ComponentProps<typeof Text> & React.RefAttributes<typeof Text>) {
-  return <Text variant="caption" color="muted" className={className} {...props} />;
+  return <Text variant="caption" className={cn('text-text-secondary', className)} {...props} />;
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {

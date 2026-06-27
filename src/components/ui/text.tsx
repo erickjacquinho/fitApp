@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { Platform, Text as RNText, type Role } from 'react-native';
 
-const textVariants = cva(
+export const textVariants = cva(
   cn(
     'text-foreground text-base',
     Platform.select({
@@ -14,7 +14,7 @@ const textVariants = cva(
   {
     variants: {
       variant: {
-        default: '',
+        default: 'text-text text-text-primary',
         h1: cn(
           'text-center text-4xl font-extrabold tracking-tight',
           Platform.select({ web: 'scroll-m-20 text-balance' })
@@ -34,6 +34,17 @@ const textVariants = cva(
         large: 'text-lg font-semibold',
         small: 'text-sm font-medium leading-none',
         muted: 'text-muted-foreground text-sm',
+        // FitApp custom variants
+        display: 'text-display',
+        title: 'text-title',
+        subtitle: 'text-subtitle',
+        text: 'text-text',
+        highlight: 'text-highlight',
+        label: 'text-label',
+        caption: 'text-caption',
+      },
+      color: {
+        error: 'text-error',
       },
     },
     defaultVariants: {
@@ -68,6 +79,7 @@ function Text({
   className,
   asChild = false,
   variant = 'default',
+  color,
   ...props
 }: React.ComponentProps<typeof RNText> &
   React.RefAttributes<typeof RNText> &
@@ -78,7 +90,7 @@ function Text({
   const Component = asChild ? Slot : RNText;
   return (
     <Component
-      className={cn(textVariants({ variant }), textClass, className)}
+      className={cn(textVariants({ variant, color }), textClass, className)}
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}
       {...props}

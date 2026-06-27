@@ -1,13 +1,32 @@
+import { Screen } from '@/components/ui/screen';
+import { Header } from '@/components/molecules/Header';
 import { DashboardScreen } from '../../src/features/dashboard/components/DashboardScreen';
-import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
+import { useDashboardMetrics } from '../../src/features/dashboard/hooks/useDashboardMetrics';
+import { RefreshControl } from 'react-native';
+import { useColorScheme } from 'nativewind';
+import { lightTheme, darkTheme } from '@/tokens/theme';
 
 export default function DashboardPage() {
+  const { metrics, isLoading, refetch } = useDashboardMetrics();
+  const { colorScheme } = useColorScheme();
+  const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
+
   return (
-    <MainTabScreen
-      title="Dashboard"
-      scrollable={false}
+    <Screen
+      header={<Header title="Dashboard" />}
+      scrollable={true}
+      withPadding={true}
+      scrollViewProps={{
+        refreshControl: (
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refetch}
+            colors={[colors.primary]}
+          />
+        )
+      }}
     >
-      <DashboardScreen />
-    </MainTabScreen>
+      <DashboardScreen metrics={metrics} isLoading={isLoading} refetch={refetch} />
+    </Screen>
   );
 }

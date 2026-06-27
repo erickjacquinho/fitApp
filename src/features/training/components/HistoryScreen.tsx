@@ -90,14 +90,14 @@ export function HistoryScreen() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled" className="flex-1 bg-surface p-4">
+    <View className="py-4 pb-content-bottom">
       <Text variant="title" className="mb-4 font-bold">
         Histórico de treinos
       </Text>
@@ -119,6 +119,6 @@ export function HistoryScreen() {
           </Text>
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 }

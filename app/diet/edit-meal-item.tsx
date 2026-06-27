@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
 import { EditMealItemScreen } from '../../src/features/diet/components/EditMealItemScreen';
 
@@ -11,9 +11,12 @@ export default function EditMealItemRoute() {
   }
 
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Editar quantidade" showBackButton />
+    <Screen
+      header={<Header title="Editar quantidade" showBackButton />}
+      scrollable={true}
+      withPadding={true}
+    >
       <EditMealItemScreen mealItemId={mealItemId} foodId={foodId} />
-    </View>
+    </Screen>
   );
 }

@@ -13,7 +13,8 @@ export interface ProgramWithBlocks {
 }
 
 export function useProgramList() {
-  const [programsData, setProgramsData] = useState<ProgramWithBlocks[]>([]);
+  const [pinnedPrograms, setPinnedPrograms] = useState<ProgramWithBlocks[]>([]);
+  const [otherPrograms, setOtherPrograms] = useState<ProgramWithBlocks[]>([]);
   const [activeSession, setActiveSession] = useState<WorkoutSession | null>(null);
   const { date } = useLocalSearchParams<{ date?: string }>();
   const [isLoading, setIsLoading] = useState(true);
@@ -28,14 +29,20 @@ export function useProgramList() {
       setActiveSession(active);
 
       const allPrograms = await WorkoutService.getAllPrograms();
-      const loaded: ProgramWithBlocks[] = [];
+      const pinned: ProgramWithBlocks[] = [];
+      const others: ProgramWithBlocks[] = [];
 
       for (const p of allPrograms) {
         const blocks = await p.trainingBlocks.fetch();
-        loaded.push({ program: p, blocks });
+        if (p.isPinned) {
+          pinned.push({ program: p, blocks });
+        } else {
+          others.push({ program: p, blocks });
+        }
       }
 
-      setProgramsData(loaded);
+      setPinnedPrograms(pinned);
+      setOtherPrograms(others);
     } catch (error) {
       console.error('Error loading programs:', error);
     } finally {
@@ -67,13 +74,25 @@ export function useProgramList() {
     }
   };
 
+  const togglePin = async (id: string, isPinned: boolean) => {
+    try {
+      await WorkoutService.toggleProgramPin(id, isPinned);
+      await loadData();
+    } catch (err) {
+      console.error('Error toggling pin:', err);
+      setFeedback({ type: 'error', title: 'Erro', message: 'Não foi possível fixar o programa.' });
+    }
+  };
+
   return {
-    programsData,
+    pinnedPrograms,
+    otherPrograms,
     activeSession,
     isLoading,
     loadData,
     deleteProgram,
     startSession,
+    togglePin,
     feedback,
     setFeedback,
     clearFeedback,

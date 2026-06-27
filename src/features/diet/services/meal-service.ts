@@ -90,6 +90,19 @@ export class MealService {
     });
   }
 
+  static async updateBasicInfo(mealId: string, name: string, preparationState: string): Promise<Meal> {
+    if (!name || name.trim() === '') {
+      throw new Error('ValidationError: Meal name is required');
+    }
+    const meal = await this.mealsCollection.find(mealId);
+    return await database.write(async () => {
+      return await meal.update((m) => {
+        m.name = name.trim();
+        m.preparationState = preparationState.trim();
+      });
+    });
+  }
+
   static async addItemToMeal(mealId: string, foodId: string, quantity: number = 100): Promise<void> {
     await database.write(async () => {
       await this.mealItemsCollection.create((mealItem) => {
