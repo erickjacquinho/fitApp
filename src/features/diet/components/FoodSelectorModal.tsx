@@ -11,6 +11,8 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { SIZES } from '@/tokens/sizes';
 
+import { FoodCardBase } from './FoodCardBase';
+
 interface FoodSelectorModalProps {
   visible: boolean;
   onClose: () => void;
@@ -84,27 +86,32 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="on-drag"
           renderItem={({ item }) => (
-            <View className="flex-row items-center py-3 border-b border-border-subtle">
-              <View className="flex-1 mr-3">
-                <Text variant="subtitle">{item.name}</Text>
-                <Text variant="caption" className="text-text-secondary">
-                  {item.calories} kcal / 100g
-                </Text>
-              </View>
-
-              {selections[item.id] !== undefined ? (
-                <View className="w-24">
-                  <Input 
-                    placeholder="Qtd. (g)"
-                    keyboardType="numeric" 
-                    value={selections[item.id].toString()}
-                    onChangeText={(val) => updateQuantity(item.id, val)}
-                  />
-                </View>
-              ) : (
-                <Button variant="secondary" size="sm" onPress={() => toggleSelection(item.id)}><Text>Adicionar</Text></Button>
-              )}
-            </View>
+            <FoodCardBase
+              title={item.name}
+              subtitle={`${item.preparationWeight} g`}
+              calories={item.calories}
+              protein={item.protein}
+              carbs={item.carbohydrates}
+              fat={item.fat}
+              className="py-3 bg-transparent"
+              showDivider={true}
+              actionSlot={
+                selections[item.id] !== undefined ? (
+                  <View className="w-24">
+                    <Input 
+                      placeholder="Qtd. (g)"
+                      keyboardType="numeric" 
+                      value={selections[item.id].toString()}
+                      onChangeText={(val) => updateQuantity(item.id, val)}
+                    />
+                  </View>
+                ) : (
+                  <Button variant="secondary" size="sm" onPress={() => toggleSelection(item.id)}>
+                    <Text>Adicionar</Text>
+                  </Button>
+                )
+              }
+            />
           )}
           />
         </KeyboardAvoidingView>

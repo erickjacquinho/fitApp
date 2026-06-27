@@ -5,6 +5,9 @@ import { SwipeableRow } from '../../../components/molecules/SwipeableRow';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
+import { ColoredMacros } from '../../../components/molecules/ColoredMacros';
+import { CaloriesText } from '../../../components/molecules/CaloriesText';
+
 export interface FoodCardBaseProps {
   title: string;
   subtitle: string;
@@ -17,6 +20,7 @@ export interface FoodCardBaseProps {
   isSelected?: boolean;
   className?: string;
   showDivider?: boolean;
+  actionSlot?: React.ReactNode;
 }
 
 export function FoodCardBase({
@@ -31,6 +35,7 @@ export function FoodCardBase({
   isSelected,
   className,
   showDivider = false,
+  actionSlot,
 }: FoodCardBaseProps) {
   return (
     <SwipeableRow onDelete={onDelete}>
@@ -50,17 +55,14 @@ export function FoodCardBase({
             </Text>
           </View>
           <View className="items-end justify-center gap-1">
-            <Text variant="label" className="font-semibold text-text-primary" numberOfLines={1}>
-              {calories} Kcal
-            </Text>
-            <Text variant="caption" numberOfLines={1}>
-              <Text variant="caption" className="text-protein">P: {protein}</Text>
-              {'   '}
-              <Text variant="caption" className="text-carbohydrate">C: {carbs}</Text>
-              {'   '}
-              <Text variant="caption" className="text-fat">G: {fat}</Text>
-            </Text>
+            <CaloriesText calories={calories} />
+            <ColoredMacros protein={protein} carbs={carbs} fat={fat} />
           </View>
+          {actionSlot && (
+            <View className="ml-3">
+              {actionSlot}
+            </View>
+          )}
         </Pressable>
         {showDivider && <Separator />}
       </View>

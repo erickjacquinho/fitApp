@@ -23,12 +23,17 @@ export const CalendarSummaryScreen = () => {
       <FlatList keyboardShouldPersistTaps="handled"
         data={summaries}
         keyExtractor={(item) => item.date}
-        contentContainerClassName="py-compact gap-3"
-        renderItem={({ item }) => {
+        contentContainerClassName="py-compact"
+        renderItem={({ item, index }) => {
+          const isFirst = index === 0;
+          const isLast = index === summaries.length - 1;
+
           return (
             <DailySummaryCard
               date={item.date}
               macros={item.macros}
+              isFirst={isFirst}
+              isLast={isLast}
               onPress={() => router.push({ pathname: '/(tabs)/diet', params: { date: item.date } })}
             />
           );

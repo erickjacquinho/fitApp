@@ -21,8 +21,8 @@ export function FoodBankCard({ food, onDelete, onPress, isSelected }: FoodBankCa
       onDelete={onDelete}
       onPress={onPress}
       isSelected={isSelected}
-      className="px-4 py-3 bg-surface"
-      showDivider={true}
+      className="h-food-card px-4 bg-transparent border-b border-border-subtle"
+      showDivider={false}
     />
   );
 }
