@@ -32,6 +32,7 @@ export const CalendarSummaryScreen = () => {
             <DailySummaryCard
               date={item.date}
               macros={item.macros}
+              mealCount={item.mealCount}
               isFirst={isFirst}
               isLast={isLast}
               onPress={() => router.push({ pathname: '/(tabs)/diet', params: { date: item.date } })}

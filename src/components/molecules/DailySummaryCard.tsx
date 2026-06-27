@@ -10,16 +10,18 @@ import { ColoredMacros } from './ColoredMacros';
 import { CaloriesText } from './CaloriesText';
 import { SwipeableRow } from './SwipeableRow';
 import { Pressable, View } from 'react-native';
+import { PluralText } from '@/components/ui/plural-text';
 
 interface DailySummaryCardProps {
   date: string; // YYYY-MM-DD
   macros: Macros;
+  mealCount: number;
   onPress: () => void;
   isFirst?: boolean;
   isLast?: boolean;
 }
 
-export const DailySummaryCard = ({ date, macros, onPress, isFirst = false, isLast = false }: DailySummaryCardProps) => {
+export const DailySummaryCard = ({ date, macros, mealCount, onPress, isFirst = false, isLast = false }: DailySummaryCardProps) => {
   const [yyyy, mm, dd] = date.split('-');
   const targetDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
   const today = new Date();
@@ -59,6 +61,14 @@ export const DailySummaryCard = ({ date, macros, onPress, isFirst = false, isLas
       >
         <View className="flex-1 mr-3 justify-center gap-1">
           <Text variant="subtitle" className="text-text-primary" numberOfLines={1}>{displayDate}</Text>
+          <PluralText 
+            count={mealCount} 
+            singular="refeição" 
+            plural="refeições" 
+            zero="Nenhuma refeição"
+            variant="caption" 
+            className="text-text-secondary" 
+          />
         </View>
         <View className="items-end justify-center gap-1">
           <CaloriesText calories={Math.round(macros.calories)} />
