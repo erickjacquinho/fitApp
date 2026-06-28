@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody } from '@/components/ui/dialog';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
 const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
@@ -318,11 +318,11 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
       )}
 
         <Dialog open={!!editingMeal} onOpenChange={(open) => !open && setEditingMeal(null)}>
-          <DialogContent className="w-4/5 max-w-[400px]">
+          <DialogContent>
             <DialogHeader>
               <DialogTitle>Editar refeição</DialogTitle>
             </DialogHeader>
-            <View className="gap-4 py-2">
+            <DialogBody className="gap-4 py-2">
               <View className="gap-2">
                 <Text variant="caption" className="text-text-secondary">Nome da refeição</Text>
                 <Input 
@@ -341,8 +341,8 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
                   maxLength={5}
                 />
               </View>
-            </View>
-            <DialogFooter className="flex-row gap-2 mt-4">
+            </DialogBody>
+            <DialogFooter>
               <Button 
                 variant="outline" 
                 className="flex-1" 
