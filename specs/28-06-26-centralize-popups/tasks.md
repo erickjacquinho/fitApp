@@ -1,6 +1,6 @@
 # Tasks: Centralize Popups to Dialog
 
-## Validation Command
+**Final Validation Command:**
 `npx tsc --noEmit && npx expo-doctor`
 
 ## 1. Mapeamento de Popups (Skill: codebase-audit)
@@ -35,3 +35,4 @@
 - **Action:** Deletar `PopupModal.tsx` e remover seus testes.
 - [ ] Deletar `src/components/organisms/PopupModal.tsx`
 - [ ] Remover bloco de teste do `PopupModal` em `organisms.test.tsx`
+
