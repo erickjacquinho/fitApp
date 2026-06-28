@@ -26,6 +26,7 @@
 
 ## Working Rules
 - Read relevant docs before implementing: `docs/`, `.agents/rules/`, and `.agents/workflows/`.
+- **Task Comprehension Rule:** Antes de fazer QUALQUER task, entenda exatamente o que deve ser feito na tarefa e siga arrisca TUDO o que foi pedido. Para entender o que está na tarefa, leia todos os arquivos que precisar, entenda tudo de ponta a ponta pesquisando no projeto e sempre siga as rules do projeto em `/.agents/rules/` e onde mais precisar para ter referências do que foi pedido.
 - **Universal Validation Rule:** Every future implementation MUST follow `.agents/rules/full-validation-gate.md`. Its per-task validation, regression policy, Android runtime proof, and final Full Gate are blocking completion requirements.
 - **Component Source Rule:** `@react-native-reusables` (Shadcn UI for React Native) is the primary source for components. Before creating any custom component, ALWAYS analyze if there is an existing component in this library that fulfills the requirement. Use `npx @react-native-reusables/cli@latest add <component>` to add it.
 - **Component Styling Rule:** Whenever a new component is added (especially via `@react-native-reusables` CLI) or modified, you MUST review its Tailwind classes. Ensure all generic colors and sizes (`bg-primary`, `bg-destructive`, `bg-background`, etc.) are explicitly replaced with our exact semantic tokens from `tailwind.config.js` (e.g., `bg-primary-main`, `bg-tomato-main`, `bg-surface-app`, `h-control-md`).
