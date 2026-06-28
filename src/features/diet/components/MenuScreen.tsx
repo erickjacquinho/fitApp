@@ -44,63 +44,9 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
   const [isSaving, setIsSaving] = useState(false);
 
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
-  const [editName, setEditName] = useState('');
-  const [editTime, setEditTime] = useState('00:00');
-
   React.useEffect(() => {
-    if (editingMeal) {
-      setEditName(editingMeal.name);
-      setEditTime(editingMeal.preparationState || '00:00');
-    }
     onEditingChange?.(!!editingMeal);
   }, [editingMeal, onEditingChange]);
-
-  const handleSaveEdit = async () => {
-    if (editingMeal && editName.trim()) {
-      try {
-        await MealService.updateBasicInfo(editingMeal.id, editName, editTime);
-        setEditingMeal(null);
-      } catch (err) {
-        console.error('Failed to update meal info in popup:', err);
-      }
-    }
-  };
-
-  const formatTimeInput = (text: string): string => {
-    const clean = text.replace(/\D/g, '');
-    if (clean.length === 0) return '';
-
-    let hours = clean.slice(0, 2);
-    let minutes = clean.slice(2, 4);
-
-    if (hours.length === 2) {
-      const hVal = parseInt(hours, 10);
-      if (hVal > 23) {
-        hours = '23';
-      }
-    }
-
-    if (minutes.length === 2) {
-      const mVal = parseInt(minutes, 10);
-      if (mVal > 59) {
-        minutes = '59';
-      }
-    }
-
-    if (clean.length >= 2) {
-      return `${hours}:${minutes}`;
-    }
-    return hours;
-  };
-
-  const handleTimeChange = (text: string) => {
-    if (editTime.endsWith(':') && text.length === editTime.length - 1) {
-      setEditTime(text.slice(0, -1));
-      return;
-    }
-    const formatted = formatTimeInput(text);
-    setEditTime(formatted);
-  };
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
