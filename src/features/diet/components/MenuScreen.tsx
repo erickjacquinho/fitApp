@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogBody } from '@/components/ui/dialog';
+import { EditMealModal } from './EditMealModal';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
 const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
@@ -317,49 +317,19 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
         </View>
       )}
 
-        <Dialog open={!!editingMeal} onOpenChange={(open) => !open && setEditingMeal(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Editar refeição</DialogTitle>
-            </DialogHeader>
-            <DialogBody className="gap-4 py-2">
-              <View className="gap-2">
-                <Text variant="caption" className="text-text-secondary">Nome da refeição</Text>
-                <Input 
-                  value={editName}
-                  onChangeText={setEditName}
-                  placeholder="Ex.: Almoço"
-                />
-              </View>
-              <View className="gap-2">
-                <Text variant="caption" className="text-text-secondary">Horário</Text>
-                <Input 
-                  value={editTime}
-                  onChangeText={handleTimeChange}
-                  placeholder="Ex.: 12:00"
-                  keyboardType="numeric"
-                  maxLength={5}
-                />
-              </View>
-            </DialogBody>
-            <DialogFooter>
-              <Button 
-                variant="outline" 
-                className="flex-1" 
-                onPress={() => setEditingMeal(null)}
-              >
-                <Text className="text-text-primary">Cancelar</Text>
-              </Button>
-              <Button 
-                className="flex-1" 
-                disabled={!editName.trim()}
-                onPress={handleSaveEdit}
-              >
-                <Text className="text-text-inverse">Salvar</Text>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <EditMealModal
+          visible={!!editingMeal}
+          onClose={() => setEditingMeal(null)}
+          meal={editingMeal}
+          onSave={async (mealId, name, time) => {
+            try {
+              await MealService.updateBasicInfo(mealId, name, time);
+              setEditingMeal(null);
+            } catch (err) {
+              console.error('Failed to update meal info:', err);
+            }
+          }}
+        />
 
         <ConfirmModal 
           visible={deleteModalVisible}
