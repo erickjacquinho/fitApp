@@ -1,18 +1,17 @@
 import React, { useCallback } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
-import { Plus, Trash2, Dumbbell, History, Play, Pin, PinOff } from 'lucide-react-native';
+import { Trash2, Dumbbell, Play, Pin, PinOff } from 'lucide-react-native';
 import { useProgramList } from '../hooks/useProgramList';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
+import { Separator } from '@/components/ui/separator';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { PopupModal } from '@/components/organisms/PopupModal';
-import { Screen } from '@/components/ui/screen';
-import { Header } from '@/components/molecules/Header';
 
 export function TrainingHomeScreen() {
   const {
@@ -116,26 +115,7 @@ export function TrainingHomeScreen() {
   );
 
   return (
-    <Screen
-      header={
-        <Header 
-          title="Planos de Treino" 
-          headerLeft={
-            <Button variant="ghost" size="icon" onPress={() => router.push('/training/history')}>
-              <Icon as={History} size={24} />
-            </Button>
-          }
-          headerRight={
-            <Button variant="ghost" size="icon" onPress={() => router.push('/training/create-program')}>
-              <Icon as={Plus} size={24} />
-            </Button>
-          }
-        />
-      }
-      scrollable={true}
-      withPadding={true}
-    >
-      <View className="py-4 pb-content-bottom">
+    <View className="py-4 pb-content-bottom">
         {/* Quick Action Banner */}
         {activeSession ? (
           <Card className="mb-4 border-primary bg-primary-soft p-4 flex-row items-center justify-between">
@@ -172,10 +152,16 @@ export function TrainingHomeScreen() {
           <Text>Treino Rápido</Text>
         </Button>
 
+        {otherPrograms.length > 0 && (
+          <Separator className="my-2 mb-8" />
+        )}
+
         {/* Other Programs List */}
-        <Text variant="label" className="mb-3 text-text-secondary">
-          Outros planos de treino
-        </Text>
+        {otherPrograms.length > 0 && (
+          <Text variant="label" className="mb-3 text-text-secondary">
+            Outros planos de treino
+          </Text>
+        )}
 
         {otherPrograms.map(({ program, blocks }) => renderProgramCard(program, blocks, false))}
 
@@ -253,7 +239,6 @@ export function TrainingHomeScreen() {
             ))}
           </View>
         </PopupModal>
-      </View>
-    </Screen>
+    </View>
   );
 }
