@@ -6,7 +6,7 @@ import { SIZES } from '@/tokens/sizes';
 
 const buttonVariants = cva(
   cn(
-    'group shrink-0 flex-row items-center justify-center gap-2 rounded-sm shadow-none',
+    'group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none',
     Platform.select({
       web: "focus-visible:border-border-control focus-visible:ring-border-subtle/50 aria-invalid:ring-error/20 aria-invalid:border-error whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     })
@@ -58,8 +58,8 @@ const buttonVariants = cva(
       },
       size: {
         default: cn('h-control-md px-4 py-2', Platform.select({ web: 'has-[>svg]:px-3' })),
-        sm: cn('h-control-sm gap-2 rounded-sm px-3', Platform.select({ web: 'has-[>svg]:px-2' })),
-        lg: cn('h-control-lg rounded-sm px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
+        sm: cn('h-control-sm gap-2 rounded-md px-3', Platform.select({ web: 'has-[>svg]:px-2' })),
+        lg: cn('h-control-lg rounded-md px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
         icon: 'h-control-md w-control-md',
       },
     },

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Platform , KeyboardAvoidingView, FlatList } from 'react-native';
 
-import { PopupModal } from '../../../components/organisms/PopupModal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
@@ -64,62 +64,65 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
   const selectedCount = Object.keys(selections).length;
 
   return (
-    <PopupModal 
-      visible={visible} 
-      onClose={onClose} 
-      title="Selecionar alimentos"
-    >
-      <View className="flex-1 bg-surface">
-        <View className="py-compact">
-          <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
-        </View>
+    <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="flex-1 max-h-[85vh]">
+        <DialogHeader>
+          <DialogTitle>Selecionar alimentos</DialogTitle>
+        </DialogHeader>
+        <DialogBody className="flex-1 mt-0">
+          <View className="flex-1 bg-surface">
+            <View className="py-compact">
+              <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
+            </View>
 
-        <KeyboardAvoidingView
-          className="flex-1"
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetSheetIos : SIZES.keyboardOffsetSheetAndroid}
-        >
-          <FlatList
-            data={foods}
-            keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-overlay-action"
-            keyboardShouldPersistTaps="handled"
-            keyboardDismissMode="on-drag"
-          renderItem={({ item }) => (
-            <FoodCardBase
-              title={item.name}
-              subtitle={`${item.preparationWeight} g`}
-              calories={item.calories}
-              protein={item.protein}
-              carbs={item.carbohydrates}
-              fat={item.fat}
-              className="py-3 bg-transparent"
-              showDivider={true}
-              actionSlot={
-                selections[item.id] !== undefined ? (
-                  <View className="w-24">
-                    <Input 
-                      placeholder="Qtd. (g)"
-                      keyboardType="numeric" 
-                      value={selections[item.id].toString()}
-                      onChangeText={(val) => updateQuantity(item.id, val)}
-                    />
-                  </View>
-                ) : (
-                  <Button variant="secondary" size="sm" onPress={() => toggleSelection(item.id)}>
-                    <Text>Adicionar</Text>
-                  </Button>
-                )
-              }
-            />
-          )}
-          />
-        </KeyboardAvoidingView>
+            <KeyboardAvoidingView
+              className="flex-1"
+              behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetSheetIos : SIZES.keyboardOffsetSheetAndroid}
+            >
+              <FlatList
+                data={foods}
+                keyExtractor={(item) => item.id}
+                contentContainerClassName="pb-overlay-action"
+                keyboardShouldPersistTaps="handled"
+                keyboardDismissMode="on-drag"
+              renderItem={({ item }) => (
+                <FoodCardBase
+                  title={item.name}
+                  subtitle={`${item.preparationWeight} g`}
+                  calories={item.calories}
+                  protein={item.protein}
+                  carbs={item.carbohydrates}
+                  fat={item.fat}
+                  className="py-3 bg-transparent"
+                  showDivider={true}
+                  actionSlot={
+                    selections[item.id] !== undefined ? (
+                      <View className="w-24">
+                        <Input 
+                          placeholder="Qtd. (g)"
+                          keyboardType="numeric" 
+                          value={selections[item.id].toString()}
+                          onChangeText={(val) => updateQuantity(item.id, val)}
+                        />
+                      </View>
+                    ) : (
+                      <Button variant="secondary" size="sm" onPress={() => toggleSelection(item.id)}>
+                        <Text>Adicionar</Text>
+                      </Button>
+                    )
+                  }
+                />
+              )}
+              />
+            </KeyboardAvoidingView>
 
-        <View className="absolute bottom-0 left-0 right-0 bg-surface border-t border-border-subtle pt-4 mt-auto">
-          <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
-        </View>
-      </View>
-    </PopupModal>
+            <View className="bg-surface border-t border-border-subtle pt-4 mt-auto">
+              <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
+            </View>
+          </View>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }

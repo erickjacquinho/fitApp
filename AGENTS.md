@@ -39,7 +39,7 @@
 - Use design tokens from `tailwind.config.js` and `global.css`; avoid hardcoded visual values when a token exists.
 - **Skill Usage Rule:** In 100% of tasks, you must use the best possible skill for the respective task.
 - **Continuous Validation Loop Rule:** At the end of all tasks, execute a validation process of the completed task to ensure it cannot be improved. If it can, enter a loop until it is fully implemented in the cleanest, most modular, and most reliable way possible.
-- **Screen Primitive Rule:** Whenever creating or modifying a full-screen page or route, you MUST use the `Screen` component (`src/components/ui/screen.tsx`) as the root wrapper. Do not manually use `SafeAreaView`, `KeyboardAvoidingView`, or root `ScrollView` wrappers. Pass headers via the `header` prop. Use `scrollable={false}` when using `FlatList`.
+- **Screen Primitive Rule:** Whenever creating or modifying a full-screen page or route, you MUST use the `Screen` component (`src/components/ui/screen.tsx`) as the root wrapper at the **route level** (in `app/`). **Never** render `<Screen>` or `<Header>` inside feature components (`src/features/`). Pass headers via the `header` prop. Do not duplicate screen titles as Text inside the page content. Use `scrollable={false}` when using `FlatList`.
 
 ## Component Creation and Modification Flow
 Follow this sequence for every new or modified UI component:

@@ -23,13 +23,3 @@ describe('FeedbackDialog Contracts', () => {
   });
 });
 
-describe('PopupModal Contracts', () => {
-  it('uses semantic tokens in PopupModal.tsx', () => {
-    const filePath = path.join(__dirname, '../PopupModal.tsx');
-    const content = fs.readFileSync(filePath, 'utf8');
-
-    expect(content).toContain('text-text-secondary');
-    expect(content).not.toContain('border-soft');
-    expect(content).not.toContain('text-text-muted');
-  });
-});

@@ -57,7 +57,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
         top: frame.y - ringWidth,
         width: frame.width + ringWidth * 2,
         height: frame.height + ringWidth * 2,
-        borderRadius: 4 + ringWidth,
+        borderRadius: 8 + ringWidth,
       };
     });
 
@@ -79,7 +79,7 @@ const Input = React.forwardRef<TextInput, InputProps>(
           onBlur={handleBlur}
           aria-invalid={ariaInvalid}
           className={cn(
-            'flex h-input-md w-full min-w-0 flex-row items-center rounded-sm border border-border-strong bg-surface px-4 py-2 font-sans text-text leading-body text-text-primary shadow-none transition-colors duration-base',
+            'flex h-input-md w-full min-w-0 flex-row items-center rounded-md border border-border-strong bg-surface px-4 py-2 font-sans text-text leading-body text-text-primary shadow-none transition-colors duration-base',
             'focus:border-thin focus:border-border-control',
             props.editable === false &&
               cn(

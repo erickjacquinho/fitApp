@@ -6,10 +6,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 import withObservables from '@nozbe/with-observables';
 import { Q } from '@nozbe/watermelondb';
-import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
-
-import { Screen } from '@/components/ui/screen';
-import { Header } from '../../../components/molecules/Header';
 import { Icon } from '@/components/ui/icon';
 import { useMenu } from '../hooks/useMenu';
 import { database } from '../../../db';
@@ -18,12 +14,10 @@ import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { DailyBalance } from './DailyBalance';
 import { MealCard } from './MealCard';
 import { MealService } from '../services/meal-service';
-import { DateSelector } from '../../../components/molecules/DateSelector';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import { LongPressable } from '@/components/ui/long-pressable';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
@@ -33,14 +27,15 @@ interface MenuScreenProps {
   meals: Meal[];
   selectedDate: string;
   onSelectDate: (date: string) => void;
+  menuRef?: React.MutableRefObject<{ startReorder: () => void } | null>;
+  onEditingChange?: (active: boolean) => void;
 }
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenProps) {
-  const router = useRouter();
+function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEditingChange }: MenuScreenProps) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
@@ -57,7 +52,8 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
       setEditName(editingMeal.name);
       setEditTime(editingMeal.preparationState || '00:00');
     }
-  }, [editingMeal]);
+    onEditingChange?.(!!editingMeal);
+  }, [editingMeal, onEditingChange]);
 
   const handleSaveEdit = async () => {
     if (editingMeal && editName.trim()) {
@@ -112,6 +108,12 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     setTempMeals([...meals]);
     setIsReordering(true);
   }, [meals]);
+
+  React.useEffect(() => {
+    if (menuRef) {
+      menuRef.current = { startReorder };
+    }
+  }, [menuRef, startReorder]);
 
   const confirmReorder = async () => {
     setIsSaving(true);
@@ -207,35 +209,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
   const showSkeleton = !isReady || meals.length === 0;
 
   return (
-    <Screen
-      overlayActive={!!editingMeal}
-      header={
-        <Header
-          customTitle={
-            <LongPressable onLongPress={startReorder}>
-              <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
-            </LongPressable>
-          }
-          headerLeft={
-            <Button accessibilityLabel="Reordenar refeições" variant="ghost" size="icon" onPress={startReorder}>
-              <Icon as={ArrowUpDown} size={24} />
-            </Button>
-          }
-          headerRight={
-            <View className="-mr-2 flex-row items-center gap-2">
-              <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
-                <Icon as={CalendarDays} size={24} />
-              </Button>
-              <Button accessibilityLabel="Abrir banco de alimentos" variant="ghost" size="icon" onPress={() => router.push('/diet/food-bank')}>
-                <Icon as={Apple} size={24} />
-              </Button>
-            </View>
-          }
-        />
-      }
-      scrollable={false}
-      withPadding={false}
-    >
+    <>
       <View className="flex-1 pt-4 flex-col">
         <GestureHandlerRootView className="flex-1 relative">
           <DraggableFlatList
@@ -395,7 +369,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
           onCancel={() => setDeleteModalVisible(false)}
           isDestructive
         />
-    </Screen>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import withObservables from '@nozbe/with-observables';
 import Meal from '../../../db/models/Meal';
 import MealItem from '../../../db/models/MealItem';
 import Food from '../../../db/models/Food';
+import { MealHeader } from './MealHeader';
 import { FoodEntryCard } from './FoodEntryCard';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
@@ -27,7 +28,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const total = p + c + f;
 
   if (!total || total <= 0 || isNaN(total)) {
-    return <View className="h-1 w-full bg-border-subtle" />;
+    return <View className="h-[1px] w-full bg-border-subtle" />;
   }
 
   const cPct = Math.round((c / total) * 100);
@@ -83,15 +84,14 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
   if (isReordering) {
     return (
       <View className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface">
-        <LongPressable
+        <MealHeader
+          name={meal.name}
           onLongPress={() => {
             if (drag) drag();
           }}
-          className="px-4 h-control-md flex-row justify-between items-center"
         >
-          <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
           <Icon as={GripVertical} className="text-text-secondary" />
-        </LongPressable>
+        </MealHeader>
       </View>
     );
   }
@@ -100,41 +100,38 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
     <View 
       className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface"
     >
-      <LongPressable 
+      <MealHeader
+        name={meal.name}
+        time={meal.preparationState || '00:00'}
         onLongPress={() => {
           // No action on normal mode longpress
         }}
-        className="px-4 h-control-md flex-row justify-between items-center"
       >
-        <Text variant="subtitle" className="text-text-primary">{meal.name}</Text>
-        <View className="flex-row items-center gap-3">
-          <Text variant="label" className="text-text-primary">{meal.preparationState || '00:00'}</Text>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
-                <Icon as={EllipsisVertical} className="text-text-primary" size={16} />
-              </Pressable>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-32">
-              <DropdownMenuItem 
-                onPress={() => onEdit(meal)}
-                className="flex-row items-center gap-2"
-              >
-                <Icon as={Edit} size={14} className="text-text-primary" />
-                <Text>Editar</Text>
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                onPress={() => onDelete(meal.id)}
-                variant="destructive"
-                className="flex-row items-center gap-2"
-              >
-                <Icon as={Trash2} size={14} className="text-error" />
-                <Text className="text-error">Excluir</Text>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </View>
-      </LongPressable>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
+              <Icon as={EllipsisVertical} className="text-text-primary" size={16} />
+            </Pressable>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-32">
+            <DropdownMenuItem 
+              onPress={() => onEdit(meal)}
+              className="flex-row items-center gap-2"
+            >
+              <Icon as={Edit} size={14} className="text-text-primary" />
+              <Text>Editar</Text>
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              onPress={() => onDelete(meal.id)}
+              variant="destructive"
+              className="flex-row items-center gap-2"
+            >
+              <Icon as={Trash2} size={14} className="text-error" />
+              <Text className="text-error">Excluir</Text>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </MealHeader>
       
       <View className="flex-col">
         <MacroProportionBar macros={macros} />

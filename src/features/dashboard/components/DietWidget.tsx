@@ -3,6 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
+import { Separator } from '@/components/ui/separator';
 import { ProgressCircle } from '../../../components/atoms/ProgressCircle';
 import { MacroTrackerCard } from './MacroTrackerCard';
 import { Card } from "@/components/ui/card";
@@ -40,7 +41,7 @@ export function DietWidget({
 
   return (
     <Card>
-      <View className="flex-row items-center justify-between border-b border-border-subtle pb-3 mb-3">
+      <View className="flex-row items-center justify-between pb-3 mb-3">
         <Text variant="subtitle" className="font-bold">
           Dieta e nutrição
         </Text>
@@ -56,6 +57,7 @@ export function DietWidget({
           </Text>
         </Button>
       </View>
+      <Separator className="mb-3" />
 
       {/* Calories Circle/Prog */}
       <View className="flex-row items-center justify-between mb-4">
@@ -104,10 +106,11 @@ export function DietWidget({
         />
       </View>
 
+      <Separator className="mt-4" />
       <Button
         variant="ghost"
         onPress={() => router.push('/diet')}
-        className="mt-4 border-t border-border-subtle"
+        className="pt-4"
       >
         <Text variant="caption">
           Ver detalhes da dieta

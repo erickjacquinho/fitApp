@@ -98,9 +98,6 @@ export function HistoryScreen() {
 
   return (
     <View className="py-4 pb-content-bottom">
-      <Text variant="title" className="mb-4 font-bold">
-        Histórico de treinos
-      </Text>
 
       {history.map((session) => (
         <HistorySessionItem key={session.id} session={session} />

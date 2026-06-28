@@ -35,12 +35,12 @@ export default function RootLayout() {
       <DatabaseProvider database={database}>
         <SafeAreaProvider>
           <StatusBar style="auto" />
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="diet/create-food" options={{ headerShown: false }} />
-            <Stack.Screen name="diet/create-meal" options={{ headerShown: false }} />
-            <Stack.Screen name="diet/food-bank" options={{ headerShown: false }} />
-            <Stack.Screen name="style-guide" options={{ title: 'Design System' }} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="diet/create-food" />
+            <Stack.Screen name="diet/create-meal" />
+            <Stack.Screen name="diet/food-bank" />
+            <Stack.Screen name="style-guide" options={{ title: 'Design System', headerShown: true }} />
           </Stack>
           <PortalHost />
         </SafeAreaProvider>

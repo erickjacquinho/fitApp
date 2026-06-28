@@ -11,7 +11,7 @@ import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
-import { PopupModal } from '@/components/organisms/PopupModal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
 
 export function TrainingHomeScreen() {
   const {
@@ -215,30 +215,33 @@ export function TrainingHomeScreen() {
           cancelLabel="Cancelar"
         />
 
-        <PopupModal
-          visible={blockSelectVisible}
-          onClose={() => setBlockSelectVisible(false)}
-          title="Iniciar treino"
-        >
-          <View className="pb-4">
-            <Text variant="caption" className="text-text-secondary mb-4">
-              Escolha um bloco do programa &quot;{selectedProgram?.name}&quot;:
-            </Text>
-            {selectedProgram?.blocks.map((block) => (
-              <Button
-                key={block.id}
-                variant="outline"
-                className="mb-2"
-                onPress={async () => {
-                  setBlockSelectVisible(false);
-                  await startSession(selectedProgram.id, block.id);
-                }}
-              >
-                <Text>{block.name}</Text>
-              </Button>
-            ))}
-          </View>
-        </PopupModal>
+        <Dialog open={blockSelectVisible} onOpenChange={(open) => !open && setBlockSelectVisible(false)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Iniciar treino</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <View className="pb-4">
+                <Text variant="caption" className="text-text-secondary mb-4">
+                  Escolha um bloco do programa &quot;{selectedProgram?.name}&quot;:
+                </Text>
+                {selectedProgram?.blocks.map((block) => (
+                  <Button
+                    key={block.id}
+                    variant="outline"
+                    className="mb-2"
+                    onPress={async () => {
+                      setBlockSelectVisible(false);
+                      await startSession(selectedProgram.id, block.id);
+                    }}
+                  >
+                    <Text>{block.name}</Text>
+                  </Button>
+                ))}
+              </View>
+            </DialogBody>
+          </DialogContent>
+        </Dialog>
     </View>
   );
 }

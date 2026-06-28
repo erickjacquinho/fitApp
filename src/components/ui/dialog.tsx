@@ -144,8 +144,13 @@ function DialogDescription({
   );
 }
 
+function DialogBody({ className, ...props }: ViewProps) {
+  return <View className={cn('mt-4 flex-shrink', className)} {...props} />;
+}
+
 export {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,

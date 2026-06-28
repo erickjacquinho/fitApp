@@ -3,6 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 import { Play, CheckCircle2, Dumbbell, Calendar, Plus } from 'lucide-react-native';
+import { Separator } from '@/components/ui/separator';
 import { Card } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -27,7 +28,7 @@ export function TrainingWidget({
 
   return (
     <Card>
-      <View className="flex-row items-center justify-between border-b border-border-subtle pb-3 mb-3">
+      <View className="flex-row items-center justify-between pb-3 mb-3">
         <Text variant="subtitle" className="font-bold">
           Plano de treino
         </Text>
@@ -45,6 +46,7 @@ export function TrainingWidget({
           </Button>
         )}
       </View>
+      <Separator className="mb-3" />
 
       {programName ? (
         <View>
@@ -103,10 +105,11 @@ export function TrainingWidget({
         </View>
       )}
 
+      <Separator className="mt-4" />
       <Button
         variant="ghost"
         onPress={() => router.push('/training')}
-        className="mt-4 border-t border-border-subtle"
+        className="pt-4"
       >
         <Text variant="caption">
           Ver programas
