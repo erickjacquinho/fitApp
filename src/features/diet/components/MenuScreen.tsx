@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { EditMealModal } from './EditMealModal';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
 const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
@@ -44,63 +44,10 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
   const [isSaving, setIsSaving] = useState(false);
 
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
-  const [editName, setEditName] = useState('');
-  const [editTime, setEditTime] = useState('00:00');
 
   React.useEffect(() => {
-    if (editingMeal) {
-      setEditName(editingMeal.name);
-      setEditTime(editingMeal.preparationState || '00:00');
-    }
     onEditingChange?.(!!editingMeal);
   }, [editingMeal, onEditingChange]);
-
-  const handleSaveEdit = async () => {
-    if (editingMeal && editName.trim()) {
-      try {
-        await MealService.updateBasicInfo(editingMeal.id, editName, editTime);
-        setEditingMeal(null);
-      } catch (err) {
-        console.error('Failed to update meal info in popup:', err);
-      }
-    }
-  };
-
-  const formatTimeInput = (text: string): string => {
-    const clean = text.replace(/\D/g, '');
-    if (clean.length === 0) return '';
-
-    let hours = clean.slice(0, 2);
-    let minutes = clean.slice(2, 4);
-
-    if (hours.length === 2) {
-      const hVal = parseInt(hours, 10);
-      if (hVal > 23) {
-        hours = '23';
-      }
-    }
-
-    if (minutes.length === 2) {
-      const mVal = parseInt(minutes, 10);
-      if (mVal > 59) {
-        minutes = '59';
-      }
-    }
-
-    if (clean.length >= 2) {
-      return `${hours}:${minutes}`;
-    }
-    return hours;
-  };
-
-  const handleTimeChange = (text: string) => {
-    if (editTime.endsWith(':') && text.length === editTime.length - 1) {
-      setEditTime(text.slice(0, -1));
-      return;
-    }
-    const formatted = formatTimeInput(text);
-    setEditTime(formatted);
-  };
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 
@@ -317,49 +264,19 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
         </View>
       )}
 
-        <Dialog open={!!editingMeal} onOpenChange={(open) => !open && setEditingMeal(null)}>
-          <DialogContent className="w-4/5 max-w-[400px]">
-            <DialogHeader>
-              <DialogTitle>Editar refeição</DialogTitle>
-            </DialogHeader>
-            <View className="gap-4 py-2">
-              <View className="gap-2">
-                <Text variant="caption" className="text-text-secondary">Nome da refeição</Text>
-                <Input 
-                  value={editName}
-                  onChangeText={setEditName}
-                  placeholder="Ex.: Almoço"
-                />
-              </View>
-              <View className="gap-2">
-                <Text variant="caption" className="text-text-secondary">Horário</Text>
-                <Input 
-                  value={editTime}
-                  onChangeText={handleTimeChange}
-                  placeholder="Ex.: 12:00"
-                  keyboardType="numeric"
-                  maxLength={5}
-                />
-              </View>
-            </View>
-            <DialogFooter className="flex-row gap-2 mt-4">
-              <Button 
-                variant="outline" 
-                className="flex-1" 
-                onPress={() => setEditingMeal(null)}
-              >
-                <Text className="text-text-primary">Cancelar</Text>
-              </Button>
-              <Button 
-                className="flex-1" 
-                disabled={!editName.trim()}
-                onPress={handleSaveEdit}
-              >
-                <Text className="text-text-inverse">Salvar</Text>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <EditMealModal
+          visible={!!editingMeal}
+          onClose={() => setEditingMeal(null)}
+          meal={editingMeal}
+          onSave={async (mealId, name, time) => {
+            try {
+              await MealService.updateBasicInfo(mealId, name, time);
+              setEditingMeal(null);
+            } catch (err) {
+              console.error('Failed to update meal info:', err);
+            }
+          }}
+        />
 
         <ConfirmModal 
           visible={deleteModalVisible}
