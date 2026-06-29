@@ -8,7 +8,6 @@ import { ptBR } from 'date-fns/locale';
 
 import { ColoredMacros } from './ColoredMacros';
 import { CaloriesText } from './CaloriesText';
-import { SwipeableRow } from './SwipeableRow';
 import { Pressable, View } from 'react-native';
 import { PluralText } from '@/components/ui/plural-text';
 

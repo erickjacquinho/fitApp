@@ -13,7 +13,6 @@ import { MealService } from '../services/meal-service';
 import { Edit, EllipsisVertical, GripVertical, Trash2 } from 'lucide-react-native';
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
-import { LongPressable } from '@/components/ui/long-pressable';
 import {
   DropdownMenu,
   DropdownMenuContent,

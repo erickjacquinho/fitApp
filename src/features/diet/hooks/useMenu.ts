@@ -33,7 +33,7 @@ export function useMenu(meals: Meal[], selectedDate: string) {
           try {
             const food = await item.food.fetch();
             return { food, quantity: item.quantity };
-          } catch (e) {
+          } catch {
             return { food: null, quantity: 0 };
           }
         }));

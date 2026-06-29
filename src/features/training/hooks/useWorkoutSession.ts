@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { router } from 'expo-router';
-import { Alert } from 'react-native';
 import { SessionService } from '../services/session-service';
 import WorkoutSession from '../../../db/models/WorkoutSession';
 import TrainingBlock from '../../../db/models/TrainingBlock';

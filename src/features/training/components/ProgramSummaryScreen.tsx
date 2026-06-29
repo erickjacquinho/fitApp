@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { Text } from '../../../components/ui/text';
 import { Button } from '../../../components/ui/button';
-import { useProgramSummary } from '../hooks/useProgramSummary';
+import { useProgramSummary, BlockWithSets } from '../hooks/useProgramSummary';
 import { WorkoutListItem } from './WorkoutListItem';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
-import TrainingBlock from '../../../db/models/TrainingBlock';
-import { BlockWithSets } from '../hooks/useProgramSummary';
 import { Edit2, ArrowDownUp, Check } from 'lucide-react-native';
 
 interface ProgramSummaryScreenProps {

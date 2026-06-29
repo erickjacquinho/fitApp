@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Trash2, Dumbbell, Play, Pin, PinOff } from 'lucide-react-native';
 import { useProgramList } from '../hooks/useProgramList';
@@ -12,7 +12,6 @@ import { Separator } from '@/components/ui/separator';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
-import { Pressable } from 'react-native';
 
 export function TrainingHomeScreen() {
   const {

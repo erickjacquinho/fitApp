@@ -1,9 +1,9 @@
 import { Text } from '@/components/ui/text';
 import React, { useState, useEffect } from 'react';
-import { View, Modal, Pressable, FlatList, Platform } from 'react-native';
+import { View, Pressable, FlatList, Platform } from 'react-native';
 import { ExerciseDictionaryService } from '../services/exercise-dictionary-service';
 import ExerciseDefinition from '../../../db/models/ExerciseDefinition';
-import { X, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchBar } from '@/components/molecules/SearchBar';

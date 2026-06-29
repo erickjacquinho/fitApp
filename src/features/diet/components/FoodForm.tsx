@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform , KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 import { useFoodForm } from '../hooks/useFoodForm';
 import { useLocalSearchParams } from 'expo-router';
@@ -8,7 +8,6 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { FeedbackDialog } from "@/components/organisms/FeedbackDialog";
-import { SIZES } from '@/tokens/sizes';
 
 export function FoodForm() {
   const { id } = useLocalSearchParams<{ id: string }>();

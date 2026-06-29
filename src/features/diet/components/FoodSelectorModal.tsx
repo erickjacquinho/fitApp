@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Platform , KeyboardAvoidingView, FlatList } from 'react-native';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from '@/components/ui/dialog';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
@@ -23,18 +22,17 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
   const [foods, setFoods] = useState<Food[]>([]);
   const [search, setSearch] = useState('');
   const [selections, setSelections] = useState<Record<string, number>>({});
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (visible) {
       loadFoods();
     }
-  }, [visible, search]);
+  }, [visible, search, loadFoods]);
 
-  const loadFoods = async () => {
+  const loadFoods = useCallback(async () => {
     const results = search ? await FoodService.search(search) : await FoodService.getAll();
     setFoods(results);
-  };
+  }, [search]);
 
   const toggleSelection = (foodId: string) => {
     setSelections(prev => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
 import { Text } from '../../../components/ui/text';
-import TrainingBlock from '../../../db/models/TrainingBlock';
 import { GripVertical } from 'lucide-react-native';
 import { cn } from '@/lib/utils';
 

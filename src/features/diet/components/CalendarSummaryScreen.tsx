@@ -1,6 +1,6 @@
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { View, FlatList, Pressable, ActivityIndicator } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import { DailySummaryCard } from '../../../components/molecules/DailySummaryCard';
 import { useCalendarSummary } from '../hooks/useCalendarSummary';
 import { useRouter } from 'expo-router';

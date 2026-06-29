@@ -1,6 +1,6 @@
 import { Text } from '@/components/ui/text';
 import React, { useState, useCallback } from 'react';
-import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';

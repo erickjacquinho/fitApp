@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { View, UIManager, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
 import withObservables from '@nozbe/with-observables';
 import { Q } from '@nozbe/watermelondb';
-import { Icon } from '@/components/ui/icon';
 import { useMenu } from '../hooks/useMenu';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
@@ -17,7 +15,6 @@ import { MealService } from '../services/meal-service';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { Input } from '@/components/ui/input';
 import { EditMealModal } from './EditMealModal';
 
 const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
@@ -76,7 +73,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: Men
     if (isReordering) {
       cancelReorder();
     }
-  }, [selectedDate]);
+  }, [selectedDate, isReordering]);
 
   React.useEffect(() => {
     if (isSaving) {

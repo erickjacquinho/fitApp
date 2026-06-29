@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View,
   ScrollView,
 } from 'react-native';
 import { Plus } from 'lucide-react-native';

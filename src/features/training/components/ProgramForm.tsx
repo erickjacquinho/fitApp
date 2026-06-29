@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Platform , KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View } from 'react-native';
 
 import { Plus, Trash2, Layers } from 'lucide-react-native';
 import { EmptyState } from '../../../components/molecules/EmptyState';
 import { useProgramForm } from '../hooks/useProgramForm';
-import { BlockDTO, ExerciseDTO } from '../types';
 import { ExerciseSelect } from './ExerciseSelect';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -12,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Icon } from '@/components/ui/icon';
 import { Label } from '@/components/ui/label';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
-import { SIZES } from '@/tokens/sizes';
 import { router } from 'expo-router';
 
 export function ProgramForm() {

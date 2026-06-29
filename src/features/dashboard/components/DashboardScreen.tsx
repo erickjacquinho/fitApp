@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import { View, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { DietWidget } from './DietWidget';
 import { TrainingWidget } from './TrainingWidget';
-import { useDashboardMetrics } from '../hooks/useDashboardMetrics';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useColorScheme } from 'nativewind';

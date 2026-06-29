@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Calendar, Clock, Dumbbell, Trophy } from 'lucide-react-native';
-import { useWorkoutDetails, ExerciseSummary } from '../hooks/useWorkoutDetails';
+import { useWorkoutDetails } from '../hooks/useWorkoutDetails';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";

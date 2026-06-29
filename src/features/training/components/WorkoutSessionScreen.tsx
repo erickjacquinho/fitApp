@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams, router } from 'expo-router';
+import { View, ActivityIndicator } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { TrainingProgressBar } from './TrainingProgressBar';
 import { ExecuteExerciseModal } from './ExecuteExerciseModal';
 import { ExerciseListItem } from './ExerciseListItem';
@@ -59,7 +59,7 @@ export function WorkoutSessionScreen() {
     try {
       setConfirmFinishVisible(false);
       await handleFinishWorkout();
-    } catch (error) {
+    } catch {
       setFeedback({
         type: 'error',
         title: 'Erro ao finalizar',

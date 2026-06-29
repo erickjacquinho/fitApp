@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { router } from 'expo-router';
 import { WorkoutService } from '../services/workout-service';
 import { BlockDTO, ExerciseDTO, PresentationFeedback } from '../types';
 

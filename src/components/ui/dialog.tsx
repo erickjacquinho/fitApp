@@ -71,7 +71,6 @@ function DialogContent({
   portalHost?: string;
 }) {
   const hasCustomWidth = className?.includes('w-');
-  const hasCustomMaxWidth = className?.includes('max-w-');
 
   return (
     <DialogPortal hostName={portalHost}>

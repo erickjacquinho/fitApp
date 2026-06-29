@@ -9,7 +9,6 @@ import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
