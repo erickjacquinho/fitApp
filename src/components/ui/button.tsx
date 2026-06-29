@@ -41,9 +41,9 @@ const buttonVariants = cva(
           Platform.select({ web: 'hover:opacity-90' })
         ),
         outline: cn(
-          'border border-border-control bg-transparent active:bg-surface',
+          'border border-border-control bg-transparent active:opacity-80',
           Platform.select({
-            web: 'hover:bg-surface',
+            web: 'hover:opacity-90',
           })
         ),
         secondary: cn(
@@ -51,8 +51,8 @@ const buttonVariants = cva(
           Platform.select({ web: 'hover:opacity-90' })
         ),
         ghost: cn(
-          'bg-transparent active:bg-surface-elevated',
-          Platform.select({ web: 'hover:bg-surface-elevated' })
+          'bg-transparent active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         link: 'bg-transparent',
       },

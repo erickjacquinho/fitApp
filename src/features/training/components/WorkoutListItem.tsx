@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Pressable } from 'react-native';
 import { Text } from '../../../components/ui/text';
 import { GripVertical } from 'lucide-react-native';
+import { Icon } from '@/components/ui/icon';
 import { cn } from '@/lib/utils';
 
 import { BlockWithSets } from '../hooks/useProgramSummary';
@@ -45,7 +46,7 @@ export const WorkoutListItem = ({
       <View className="flex-row items-center flex-1">
         {isReordering && (
           <Pressable onPressIn={drag} className="p-1 mr-2">
-            <GripVertical size={20} color="#71717A" /> 
+            <Icon as={GripVertical} size={20} className="text-text-secondary" /> 
           </Pressable>
         )}
         <View className="flex-1 mr-3 justify-center gap-1">

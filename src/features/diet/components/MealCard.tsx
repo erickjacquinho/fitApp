@@ -27,7 +27,7 @@ function MacroProportionBar({ macros }: { macros: { protein: number; carbs: numb
   const total = p + c + f;
 
   if (!total || total <= 0 || isNaN(total)) {
-    return <View className="h-[1px] w-full bg-border-subtle" />;
+    return <View className="h-px w-full bg-border-subtle" />;
   }
 
   const cPct = Math.round((c / total) * 100);

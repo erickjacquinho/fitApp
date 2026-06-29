@@ -6,7 +6,8 @@ import { useProgramSummary, BlockWithSets } from '../hooks/useProgramSummary';
 import { WorkoutListItem } from './WorkoutListItem';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { Edit2, ArrowDownUp, Check } from 'lucide-react-native';
-
+import { useThemeColors } from '../../../hooks/use-theme-colors';
+import { Icon } from '@/components/ui/icon';
 interface ProgramSummaryScreenProps {
   programId: string;
   onEditProgram: () => void;
@@ -20,11 +21,12 @@ export const ProgramSummaryScreen = ({
 }: ProgramSummaryScreenProps) => {
   const { program, blocks, isLoading, error, updateBlocksOrder } = useProgramSummary(programId);
   const [isReordering, setIsReordering] = useState(false);
+  const { primary } = useThemeColors();
 
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#FF3B30" />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
@@ -73,12 +75,12 @@ export const ProgramSummaryScreen = ({
               size="sm"
               onPress={() => setIsReordering(!isReordering)}
             >
-              {isReordering ? <Check size={18} color="#FFFFFF" /> : <ArrowDownUp size={18} color="#000000" />}
+              {isReordering ? <Icon as={Check} size={18} className="text-text-inverse" /> : <Icon as={ArrowDownUp} size={18} className="text-text-primary" />}
             </Button>
           )}
           {!isReordering && (
             <Button variant="outline" size="sm" onPress={onEditProgram}>
-              <Edit2 size={18} color="#000000" />
+              <Icon as={Edit2} size={18} className="text-text-primary" />
             </Button>
           )}
         </View>

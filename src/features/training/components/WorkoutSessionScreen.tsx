@@ -120,7 +120,7 @@ export function WorkoutSessionScreen() {
         </Card>
       )}
 
-      <Button onPress={handleAttemptFinish} className="my-6 min-h-[var(--size-control-lg)] bg-success"><Text>Finalizar treino</Text></Button>
+      <Button onPress={handleAttemptFinish} className="my-6 min-h-control-lg bg-success"><Text>Finalizar treino</Text></Button>
 
       {activeExercise && (
         <ExecuteExerciseModal

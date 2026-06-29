@@ -4,7 +4,7 @@
 - **Canonical Primitives**: Must live in `src/components/ui/` and originate from `@react-native-reusables`.
 - **Card vs View**: Use `Card` (nested cards are forbidden) to group independent content. Use `View` for structural layout, padding, and background coloration without elevation.
 - **Popups**: NEVER use native `Modal` directly. Use `AlertDialog` (blocking decisions), `Dialog` (supplementary content), or `BottomSheetModal` (non-blocking).
-- **Icons (Lucide)**: Use `as` prop. Sizes: `icon-sm` (16px), `icon-md` (20px), `icon-lg` (24px). Primary action icons use `blue-500`.
+- **Icons (Lucide)**: Use `as` prop. Sizes: `icon-sm` (16px), `icon-md` (20px), `icon-lg` (24px). Primary action icons use `blue-500`. Ícones isolados ou em botões transparentes (ghost/outline) **NUNCA** devem ter background color, nem mesmo em estados de press/hover; utilize apenas variação de opacidade (ex: `active:opacity-80`).
 
 ## 2. Forms
 - **Structure**: Single-column only. Order: 1. Label, 2. Input, 3. Helper/Error.

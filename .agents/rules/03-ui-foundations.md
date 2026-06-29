@@ -18,5 +18,7 @@ FitApp uses the Mineral Warm palette with a strict **blue-first** rule. Olive to
 - **Class Order**: 1. Layout, 2. Box Model, 3. Display, 4. Typography, 5. Visuals, 6. States.
 
 ## 3. Governance
+- **Prioridade Semântica Absoluta**: Use SEMPRE tokens semânticos contextualizados (`bg-surface`, `text-error`). É expressamente proibido usar utilitários puros do Tailwind (como `bg-blue-500` ou `text-red-400`).
+- **Criação sobre Improviso**: Se um token semântico não existir para o seu caso de uso, você DEVE criá-lo no `theme.ts` e `tailwind.config.js` em vez de improvisar com Tailwind puro.
 - Legacy tokens (`accent-*`, `primary-*` olive, `secondary-*` olive) are **deprecated**. Do not use them in new or migrated code.
 - If repeated utilities are used 3+ times, create a shared Atom instead of copying classes.

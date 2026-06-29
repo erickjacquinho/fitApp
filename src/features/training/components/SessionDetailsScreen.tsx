@@ -135,7 +135,7 @@ export function SessionDetailsScreen() {
         </Card>
       ))}
 
-      <Button onPress={() => router.replace('/training')} className="my-6 min-h-[var(--size-control-lg)]"><Text>Voltar para programas</Text></Button>
+      <Button onPress={() => router.replace('/training')} className="my-6 min-h-control-lg"><Text>Voltar para programas</Text></Button>
     </View>
   );
 }
