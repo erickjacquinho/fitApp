@@ -26,7 +26,7 @@ export function FoodForm() {
   } = useFoodForm(id);
 
   return (
-    <View className="gap-6 py-6 pb-form-bottom">
+    <View className="flex-1 bg-surface gap-6 py-6 pb-form-bottom">
       <Card className="gap-4">
         <Text variant="subtitle">Informações básicas</Text>
         <View className="gap-3">

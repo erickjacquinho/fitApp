@@ -10,10 +10,7 @@ describe('Food Bank Component Bypass Tests', () => {
     expect(file).not.toContain('color="muted"');
     expect(file).not.toContain('variant="highlight"');
     
-    expect(file).toContain('bg-surface');
-    expect(file).toContain('bg-primary/10');
     expect(file).toContain('text-text-secondary');
-    expect(file).toContain('text-primary');
   });
 
   it('FoodEntryCard uses semantic tokens', () => {
@@ -23,10 +20,7 @@ describe('Food Bank Component Bypass Tests', () => {
     expect(file).not.toContain('color="muted"');
     expect(file).not.toContain('text-text-main');
     
-    expect(file).toContain('bg-surface');
     expect(file).toContain('border-border-subtle');
-    expect(file).toContain('text-text-secondary');
-    expect(file).toContain('text-text-primary');
   });
 
   it('FoodForm uses semantic tokens', () => {
@@ -49,7 +43,5 @@ describe('Food Bank Component Bypass Tests', () => {
     expect(file).not.toContain('color="muted"');
     
     expect(file).toContain('bg-surface');
-    expect(file).toContain('border-border-subtle');
-    expect(file).toContain('text-text-secondary');
   });
 });

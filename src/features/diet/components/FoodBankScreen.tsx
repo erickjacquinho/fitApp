@@ -82,12 +82,17 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         data={filteredFoods}
         keyExtractor={(item) => item.id}
         contentContainerClassName="pb-content-bottom"
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const isSelected = bulkSelections.has(item.id);
+          const isFirst = index === 0;
+          const isLast = index === filteredFoods.length - 1;
+
           return (
             <FoodBankCard
               food={item}
               isSelected={isSelected}
+              isFirst={isFirst}
+              isLast={isLast}
               onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);

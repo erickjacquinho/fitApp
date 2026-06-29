@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
@@ -53,20 +53,26 @@ export function EditMealModal({ visible, onClose, meal, onSave }: EditMealModalP
     setEditTime(formatTimeInput(text));
   };
 
+  const handleSafeClose = () => {
+    setTimeout(() => {
+      onClose();
+    }, 150);
+  };
+
   const handleSaveEdit = async () => {
     if (meal && editName.trim()) {
       await onSave(meal.id, editName, editTime);
-      onClose();
+      handleSafeClose();
     }
   };
 
   return (
-    <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={visible} onOpenChange={(open) => !open && handleSafeClose()}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Editar refeição</DialogTitle>
         </DialogHeader>
-        <DialogBody className="gap-4 py-2">
+        <DialogBody>
           <View className="gap-2">
             <Text variant="caption" className="text-text-secondary">Nome da refeição</Text>
             <Input 
@@ -86,14 +92,15 @@ export function EditMealModal({ visible, onClose, meal, onSave }: EditMealModalP
             />
           </View>
         </DialogBody>
-        <View className="mt-2 border-t border-border-subtle pt-3 flex-row gap-2">
-          <Button 
-            variant="outline" 
-            className="flex-1" 
-            onPress={onClose}
-          >
-            <Text className="text-text-primary">Cancelar</Text>
-          </Button>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button 
+              variant="outline" 
+              className="flex-1" 
+            >
+              <Text className="text-text-primary">Cancelar</Text>
+            </Button>
+          </DialogClose>
           <Button 
             className="flex-1" 
             disabled={!editName.trim()}
@@ -101,7 +108,7 @@ export function EditMealModal({ visible, onClose, meal, onSave }: EditMealModalP
           >
             <Text className="text-text-inverse">Salvar</Text>
           </Button>
-        </View>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

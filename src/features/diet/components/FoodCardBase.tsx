@@ -19,8 +19,10 @@ export interface FoodCardBaseProps {
   onPress?: () => void;
   isSelected?: boolean;
   className?: string;
-  showDivider?: boolean;
+  showDivider?: boolean; // @deprecated use isFirst/isLast
   actionSlot?: React.ReactNode;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 export function FoodCardBase({
@@ -36,6 +38,8 @@ export function FoodCardBase({
   className,
   showDivider = false,
   actionSlot,
+  isFirst = false,
+  isLast = false,
 }: FoodCardBaseProps) {
   return (
     <SwipeableRow onDelete={onDelete}>
@@ -43,8 +47,13 @@ export function FoodCardBase({
         <Pressable 
           onPress={onPress}
           className={cn(
-            'flex-row justify-between items-center active:bg-surface-elevated',
-            isSelected && 'bg-primary/10',
+            'flex-row justify-between items-center active:bg-surface-elevated px-4 py-3 bg-surface',
+            'border-border-subtle',
+            'border-x border-b',
+            isFirst && 'rounded-t-lg border-t',
+            isLast && 'rounded-b-lg',
+            !isFirst && !isLast && 'rounded-none',
+            isSelected && 'bg-primary-soft',
             className
           )}
         >

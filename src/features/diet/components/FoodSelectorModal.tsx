@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Platform , KeyboardAvoidingView, FlatList } from 'react-native';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from '@/components/ui/dialog';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodService } from '../services/food-service';
 import { Food } from '../../../db';
@@ -65,11 +65,11 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
 
   return (
     <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="flex-1 max-h-[85vh]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Selecionar alimentos</DialogTitle>
         </DialogHeader>
-        <DialogBody className="flex-1 mt-0">
+        <DialogBody>
           <View className="flex-1 bg-surface">
             <View className="py-compact">
               <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
@@ -86,7 +86,7 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
                 contentContainerClassName="pb-overlay-action"
                 keyboardShouldPersistTaps="handled"
                 keyboardDismissMode="on-drag"
-              renderItem={({ item }) => (
+              renderItem={({ item, index }) => (
                 <FoodCardBase
                   title={item.name}
                   subtitle={`${item.preparationWeight} g`}
@@ -94,8 +94,8 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
                   protein={item.protein}
                   carbs={item.carbohydrates}
                   fat={item.fat}
-                  className="py-3 bg-transparent"
-                  showDivider={true}
+                  isFirst={index === 0}
+                  isLast={index === foods.length - 1}
                   actionSlot={
                     selections[item.id] !== undefined ? (
                       <View className="w-24">
@@ -117,9 +117,9 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
               />
             </KeyboardAvoidingView>
 
-            <View className="bg-surface border-t border-border-subtle pt-4 mt-auto">
-              <Button disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
-            </View>
+            <DialogFooter>
+              <Button className="flex-1" disabled={selectedCount === 0} onPress={handleConfirm}><Text>{`Confirmar ${selectedCount > 0 ? `(${selectedCount})` : ''}`}</Text></Button>
+            </DialogFooter>
           </View>
         </DialogBody>
       </DialogContent>

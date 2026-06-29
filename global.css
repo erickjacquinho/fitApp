@@ -99,6 +99,7 @@
     --color-data-5: var(--color-plum-500);
     --color-data-6: var(--color-neutral-600);
     --color-text-inverse: var(--color-neutral-0);
+    --color-scrim: rgba(24, 17, 14, 0.56);
     --font-size-subtitle: 18px;
     --font-size-body: 16px;
     --font-size-label: 14px;
@@ -207,6 +208,7 @@
       --color-text-secondary: #C9BFB5;
       --color-text-disabled: #82776F;
       --color-text-inverse: #18110E;
+      --color-scrim: rgba(0, 0, 0, 0.68);
 
       --color-primary: var(--color-blue-200);
       --color-protein: var(--color-blue-200);

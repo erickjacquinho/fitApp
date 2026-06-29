@@ -91,19 +91,18 @@ describe('Diet Component Bypass Tests', () => {
     expect(file).toContain("meal.preparationState || '00:00'");
   });
 
-  it('MenuScreen implements edit popup modal and conditional background darkening', () => {
-    const file = fs.readFileSync(path.join(__dirname, '../components/MenuScreen.tsx'), 'utf8');
-    expect(file).toContain('const [editingMeal, setEditingMeal] = useState<Meal | null>(null);');
-    expect(file).toContain('<Dialog open={!!editingMeal}');
-    expect(file).toContain('overlayActive={!!editingMeal}');
-    expect(file).toContain('MealService.updateBasicInfo');
-    expect(file).toContain('className="w-4/5 max-w-[400px]"');
+  it('EditMealModal implements edit popup modal with built-in backdrop', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/EditMealModal.tsx'), 'utf8');
+    expect(file).toContain('const [editName, setEditName] = useState');
+    expect(file).toContain('<Dialog open={visible}');
+    expect(file).toContain('handleSafeClose');
+    expect(file).toContain('<DialogClose');
     expect(file).toContain('<Text className="text-text-primary">Cancelar</Text>');
     expect(file).toContain('<Text className="text-text-inverse">Salvar</Text>');
   });
 
-  it('MenuScreen implements time input formatting mask helpers and constraints', () => {
-    const file = fs.readFileSync(path.join(__dirname, '../components/MenuScreen.tsx'), 'utf8');
+  it('EditMealModal implements time input formatting mask helpers and constraints', () => {
+    const file = fs.readFileSync(path.join(__dirname, '../components/EditMealModal.tsx'), 'utf8');
     expect(file).toContain('const formatTimeInput = (text: string): string => {');
     expect(file).toContain("text.replace(/\\D/g, '')");
     expect(file).toContain('keyboardType="numeric"');

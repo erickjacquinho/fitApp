@@ -24,7 +24,6 @@ export interface MenuScreenRef {
 export default function DietTab() {
   const { date } = useLocalSearchParams<{ date?: string }>();
   const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
-  const [isOverlayActive, setIsOverlayActive] = useState(false);
   const menuRef = useRef<MenuScreenRef | null>(null);
   const router = useRouter();
 
@@ -40,7 +39,6 @@ export default function DietTab() {
 
   return (
     <Screen
-      overlayActive={isOverlayActive}
       header={
         <Header
           customTitle={
@@ -72,7 +70,6 @@ export default function DietTab() {
         selectedDate={selectedDate} 
         onSelectDate={setSelectedDate} 
         menuRef={menuRef} 
-        onEditingChange={setIsOverlayActive}
       />
     </Screen>
   );

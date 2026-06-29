@@ -8,7 +8,7 @@ describe('Screen Contracts', () => {
 
     expect(content).toContain('overlayActive?: boolean;');
     expect(content).toContain('overlayActive = false');
-    expect(content).toContain('bg-black-main/20');
+    expect(content).toContain('bg-scrim');
     expect(content).toContain('z-40');
   });
 });

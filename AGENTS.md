@@ -33,7 +33,7 @@ FitApp is a mobile application built with a modern React Native stack.
 **Task Comprehension (CRITICAL):**
 - **Read First:** Before executing ANY task, you MUST read all relevant files, `.agents/rules/`, and `.agents/workflows/`.
 - **Deep Understanding:** Antes de fazer QUALQUER task, entenda exatamente o que deve ser feito na tarefa e siga arrisca TUDO o que foi pedido. Para entender o que está na tarefa, leia todos os arquivos que precisar, entenda tudo de ponta a ponta pesquisando no projeto e sempre siga as rules do projeto em `/.agents/rules/` e onde mais precisar para ter referências do que foi pedido.
-- **Skill Usage:** In 100% of tasks, you MUST invoke the best possible installed skill for the context.
+- **Skill Usage:** In 100% of tasks, you MUST invoke the best possible installed skill for the context. ALWAYS explicitly state which skill you used.
 - **SDD Skill:** Execute everything exactly as the `sdd` skill describes when applicable.
 
 **UI & Styling Constraints:**

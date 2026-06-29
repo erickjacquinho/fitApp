@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
+import { Pressable } from 'react-native';
 
 export function TrainingHomeScreen() {
   const {
@@ -68,49 +69,56 @@ export function TrainingHomeScreen() {
   };
 
   const renderProgramCard = (program: any, blocks: TrainingBlock[], isPinned: boolean) => (
-    <Card key={program.id} className="mb-4 p-4">
-      <View className="flex-row items-start justify-between">
-        <View className="flex-1 pr-2">
-          <Text variant="subtitle" className="font-bold">
-            {program.name}
-          </Text>
-          <Text variant="caption" className="text-text-secondary mt-1">
-            {blocks.length} blocos ({blocks.map((b) => b.name).join(', ') || 'sem treinos'})
-          </Text>
+    <Card key={program.id} className="mb-4">
+      <Pressable 
+        className="p-4 active:bg-surface-elevated"
+        onPress={() => {
+          router.push(`/training/program/${program.id}`);
+        }}
+      >
+        <View className="flex-row items-start justify-between">
+          <View className="flex-1 pr-2">
+            <Text variant="subtitle" className="font-bold">
+              {program.name}
+            </Text>
+            <Text variant="caption" className="text-text-secondary mt-1">
+              {blocks.length} blocos ({blocks.map((b) => b.name).join(', ') || 'sem treinos'})
+            </Text>
+          </View>
+
+          <View className="flex-row gap-2">
+            <Button
+              accessibilityLabel={isPinned ? `Desativar ${program.name}` : `Ativar ${program.name}`}
+              variant="ghost"
+              size="icon"
+              onPress={() => togglePin(program.id, !isPinned)}
+            >
+              <Icon as={isPinned ? PinOff : Pin} size={16} className="text-text-secondary" />
+            </Button>
+            <Button
+              accessibilityLabel={`Excluir ${program.name}`}
+              variant="ghost"
+              size="icon"
+              onPress={() => handleDeleteAttempt(program.id, program.name)}
+            >
+              <Icon as={Trash2} size={16} className="text-error" />
+            </Button>
+          </View>
         </View>
 
-        <View className="flex-row gap-2">
+        {blocks.length > 0 && (
           <Button
-            accessibilityLabel={isPinned ? `Desativar ${program.name}` : `Ativar ${program.name}`}
-            variant="ghost"
-            size="icon"
-            onPress={() => togglePin(program.id, !isPinned)}
+            variant="outline"
+            onPress={() => handleStartSession(program.id, program.name, blocks)}
+            className="mt-4"
           >
-            <Icon as={isPinned ? PinOff : Pin} size={16} className="text-text-secondary" />
+            <Icon as={Play} size={16} fill="currentColor" />
+            <Text variant="label">
+              Iniciar treino
+            </Text>
           </Button>
-          <Button
-            accessibilityLabel={`Excluir ${program.name}`}
-            variant="ghost"
-            size="icon"
-            onPress={() => handleDeleteAttempt(program.id, program.name)}
-          >
-            <Icon as={Trash2} size={16} className="text-error" />
-          </Button>
-        </View>
-      </View>
-
-      {blocks.length > 0 && (
-        <Button
-          variant="outline"
-          onPress={() => handleStartSession(program.id, program.name, blocks)}
-          className="mt-4"
-        >
-          <Icon as={Play} size={16} fill="currentColor" />
-          <Text variant="label">
-            Iniciar treino
-          </Text>
-        </Button>
-      )}
+        )}
+      </Pressable>
     </Card>
   );
 

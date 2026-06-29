@@ -102,7 +102,7 @@ export function Screen({
           <Animated.View
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
-            className="absolute inset-0 bg-black/30 z-40"
+            className="absolute inset-0 bg-scrim z-40"
             pointerEvents="none"
           />
         )}

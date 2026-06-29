@@ -6,6 +6,7 @@ import { useProgramSummary } from '../hooks/useProgramSummary';
 import { WorkoutListItem } from './WorkoutListItem';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import TrainingBlock from '../../../db/models/TrainingBlock';
+import { BlockWithSets } from '../hooks/useProgramSummary';
 import { Edit2, ArrowDownUp, Check } from 'lucide-react-native';
 
 interface ProgramSummaryScreenProps {
@@ -40,14 +41,20 @@ export const ProgramSummaryScreen = ({
     );
   }
 
-  const renderItem = ({ item, drag, isActive }: RenderItemParams<TrainingBlock>) => {
+  const renderItem = ({ item, drag, isActive, getIndex }: RenderItemParams<BlockWithSets>) => {
+    const index = getIndex();
+    const isFirst = index === 0;
+    const isLast = index === blocks.length - 1;
+
     return (
       <WorkoutListItem
-        block={item}
+        item={item}
         isReordering={isReordering}
         drag={drag}
         isActive={isActive}
-        onPress={() => !isReordering && onWorkoutPress(item.id)}
+        isFirst={isFirst}
+        isLast={isLast}
+        onPress={() => !isReordering && onWorkoutPress(item.block.id)}
       />
     );
   };
@@ -56,11 +63,8 @@ export const ProgramSummaryScreen = ({
     <View className="flex-1 px-4">
       <View className="flex-row items-center justify-between mb-6">
         <View className="flex-1">
-          <Text className="text-typography-primary font-bold text-heading-md">
+          <Text variant="subtitle" className="font-bold">
             {program.name}
-          </Text>
-          <Text className="text-typography-secondary text-body-sm mt-1">
-            {blocks.length} workouts
           </Text>
         </View>
         
@@ -94,8 +98,8 @@ export const ProgramSummaryScreen = ({
       ) : (
         <DraggableFlatList
           data={blocks}
-          onDragEnd={({ data }) => updateBlocksOrder(data)}
-          keyExtractor={(item) => item.id}
+          onDragEnd={({ data }) => updateBlocksOrder(data.map(d => d.block))}
+          keyExtractor={(item) => item.block.id}
           renderItem={renderItem}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ paddingBottom: 24 }}

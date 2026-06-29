@@ -39,21 +39,21 @@ function DialogOverlay({
     <FullWindowOverlay>
       <DialogPrimitive.Overlay
         className={cn(
-          'absolute inset-0 z-50 flex items-center justify-center bg-black-main/50 p-screen-x',
+          'absolute inset-0 z-50 bg-scrim p-screen-x',
           Platform.select({
-            web: 'animate-in fade-in-0 fixed cursor-default [&>*]:cursor-auto',
+            web: 'flex items-center justify-center animate-in fade-in-0 fixed cursor-default [&>*]:cursor-auto',
           }),
           className
         )}
         {...props}
         onPress={Platform.select({ web: onOverlayPress, native: onPress })}
         asChild={Platform.OS !== 'web'}>
-        <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+        <NativeOnlyAnimatedView entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{ width: '100%', alignItems: 'center' }}
+            style={{ width: '100%', flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
-            <NativeOnlyAnimatedView className="w-full items-center justify-center" entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
+            <NativeOnlyAnimatedView entering={FadeIn.delay(50)} exiting={FadeOut.duration(150)}>
               <>{children}</>
             </NativeOnlyAnimatedView>
           </KeyboardAvoidingView>
@@ -78,9 +78,8 @@ function DialogContent({
       <DialogOverlay>
         <DialogPrimitive.Content
           className={cn(
-            'z-50 flex flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none',
-            !hasCustomWidth && 'w-full',
-            !hasCustomMaxWidth && 'max-w-sm',
+            'z-50 flex flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none max-h-[85vh]',
+            !hasCustomWidth && 'w-[80vw]',
             Platform.select({
               web: 'animate-in fade-in-0 zoom-in-95 duration-200',
             }),
@@ -117,7 +116,7 @@ function DialogHeader({ className, ...props }: ViewProps) {
 function DialogFooter({ className, ...props }: ViewProps) {
   return (
     <View
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
+      className={cn('flex-row gap-2 pt-3 border-t border-border-subtle mt-auto', className)}
       {...props}
     />
   );
@@ -145,7 +144,7 @@ function DialogDescription({
 }
 
 function DialogBody({ className, ...props }: ViewProps) {
-  return <View className={cn('mt-4 flex-shrink', className)} {...props} />;
+  return <View className={cn('flex-shrink gap-4', className)} {...props} />;
 }
 
 export {

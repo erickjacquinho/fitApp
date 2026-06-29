@@ -58,9 +58,8 @@ export function ConfirmModal({
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="flex-row">
+        <AlertDialogFooter>
           <AlertDialogCancel
-            className="flex-1"
             onPress={() => {
               actionHandledRef.current = true;
               handleSafeAction(onCancel);
@@ -69,7 +68,6 @@ export function ConfirmModal({
             <Text>{cancelLabel}</Text>
           </AlertDialogCancel>
           <AlertDialogAction
-            className="flex-1"
             variant={isDestructive ? 'destructive' : 'default'}
             onPress={() => {
               actionHandledRef.current = true;

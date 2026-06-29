@@ -19,7 +19,7 @@ export const CalendarSummaryScreen = () => {
   }
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-surface">
       <FlatList keyboardShouldPersistTaps="handled"
         data={summaries}
         keyExtractor={(item) => item.date}

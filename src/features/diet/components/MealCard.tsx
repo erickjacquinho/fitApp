@@ -139,11 +139,13 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
         <View className="flex-col">
           {foodItems.length > 0 && (
             <View className="gap-0">
-              {foodItems.map((item) => (
+              {foodItems.map((item, index) => (
                 <FoodEntryCard 
                   key={item.id} 
                   food={item.food} 
                   quantity={item.quantity} 
+                  isFirst={index === 0}
+                  isLast={index === foodItems.length - 1}
                   onDelete={() => handleDeleteItem(item.id)}
                   onEdit={() => handleEditItem(item.id, item.foodId)}
                 />

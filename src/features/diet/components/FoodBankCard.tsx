@@ -7,9 +7,11 @@ interface FoodBankCardProps {
   onDelete?: () => void;
   onPress?: () => void;
   isSelected?: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
-export function FoodBankCard({ food, onDelete, onPress, isSelected }: FoodBankCardProps) {
+export function FoodBankCard({ food, onDelete, onPress, isSelected, isFirst, isLast }: FoodBankCardProps) {
   return (
     <FoodCardBase
       title={food.name}
@@ -21,8 +23,9 @@ export function FoodBankCard({ food, onDelete, onPress, isSelected }: FoodBankCa
       onDelete={onDelete}
       onPress={onPress}
       isSelected={isSelected}
-      className="h-food-card px-4 bg-transparent border-b border-border-subtle"
-      showDivider={false}
+      className="h-food-card"
+      isFirst={isFirst}
+      isLast={isLast}
     />
   );
 }

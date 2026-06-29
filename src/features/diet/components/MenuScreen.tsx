@@ -28,14 +28,13 @@ interface MenuScreenProps {
   selectedDate: string;
   onSelectDate: (date: string) => void;
   menuRef?: React.MutableRefObject<{ startReorder: () => void } | null>;
-  onEditingChange?: (active: boolean) => void;
 }
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEditingChange }: MenuScreenProps) {
+function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: MenuScreenProps) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
@@ -44,10 +43,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef, onEdi
   const [isSaving, setIsSaving] = useState(false);
 
   const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
-
-  React.useEffect(() => {
-    onEditingChange?.(!!editingMeal);
-  }, [editingMeal, onEditingChange]);
 
   const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
 

@@ -8,6 +8,16 @@ Data UI must be scannable, compact, and honest about missing data.
 - Keep row labels short.
 - Put the most important value on the right or in the strongest visual position.
 
+### Grouped Lists Pattern
+- **Standardized Box Pattern:** ALL list components (e.g. historical data, workouts, food items) MUST use the grouped box pattern.
+- This pattern joins all items into a single visual block by applying:
+  - `isFirst`: `rounded-t-lg border-t`
+  - `isLast`: `rounded-b-lg`
+  - Middle items: `rounded-none`
+  - All items: `border-x border-b border-border-subtle bg-surface`
+- Components rendering the list must calculate `isFirst` (`index === 0`) and `isLast` (`index === items.length - 1`) and pass them to the list item component.
+- The item container should use `cn` to concatenate these dynamic classes.
+
 ## Workout Cards
 - Show date, workout name/type, key volume/progression metric, and status.
 - Avoid overloading cards with full exercise details.

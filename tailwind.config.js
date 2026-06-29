@@ -58,6 +58,7 @@ module.exports = {
           DEFAULT: 'var(--color-link)',
           visited: 'var(--color-link-visited)',
         },
+        scrim: 'var(--color-scrim)',
         data: {
           1: 'var(--color-data-1)',
           2: 'var(--color-data-2)',

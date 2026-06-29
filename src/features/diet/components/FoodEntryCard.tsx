@@ -8,9 +8,11 @@ interface FoodEntryCardProps {
   quantity: number;
   onDelete?: () => void;
   onEdit?: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
-export function FoodEntryCard({ food, quantity, onDelete, onEdit }: FoodEntryCardProps) {
+export function FoodEntryCard({ food, quantity, onDelete, onEdit, isFirst, isLast }: FoodEntryCardProps) {
   const macros = calculateMacros(food, quantity);
 
   return (
@@ -23,7 +25,9 @@ export function FoodEntryCard({ food, quantity, onDelete, onEdit }: FoodEntryCar
       fat={Math.round(macros.fat)}
       onDelete={onDelete}
       onPress={onEdit}
-      className="h-food-card px-4 bg-transparent border-b border-border-subtle"
+      className="h-food-card"
+      isFirst={isFirst}
+      isLast={isLast}
     />
   );
 }
