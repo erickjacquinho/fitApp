@@ -68,13 +68,14 @@ export function TrainingHomeScreen() {
   };
 
   const renderProgramCard = (program: any, blocks: TrainingBlock[], isPinned: boolean) => (
-    <Card key={program.id} className="mb-4">
-      <Pressable 
-        className="p-4 active:bg-surface-elevated"
-        onPress={() => {
-          router.push(`/training/program/${program.id}`);
-        }}
-      >
+    <Pressable
+      key={program.id}
+      onPress={() => {
+        router.push(`/training/program/${program.id}`);
+      }}
+      className="mb-4 active:opacity-70"
+    >
+      <Card>
         <View className="flex-row items-start justify-between">
           <View className="flex-1 pr-2">
             <Text variant="subtitle" className="font-bold">
@@ -109,7 +110,6 @@ export function TrainingHomeScreen() {
           <Button
             variant="outline"
             onPress={() => handleStartSession(program.id, program.name, blocks)}
-            className="mt-4"
           >
             <Icon as={Play} size={16} fill="currentColor" />
             <Text variant="label">
@@ -117,8 +117,8 @@ export function TrainingHomeScreen() {
             </Text>
           </Button>
         )}
-      </Pressable>
-    </Card>
+      </Card>
+    </Pressable>
   );
 
   return (
@@ -141,8 +141,8 @@ export function TrainingHomeScreen() {
         {/* Pinned Programs List */}
         {pinnedPrograms.length > 0 && (
           <View className="mb-6">
-            <Text variant="label" className="mb-3 text-text-secondary">
-              Programas ativos
+            <Text variant="title" className="mb-4 text-text-primary">
+              Programas Ativos
             </Text>
             {pinnedPrograms.map(({ program, blocks }) => renderProgramCard(program, blocks, true))}
           </View>
@@ -165,8 +165,8 @@ export function TrainingHomeScreen() {
 
         {/* Other Programs List */}
         {otherPrograms.length > 0 && (
-          <Text variant="label" className="mb-3 text-text-secondary">
-            Outros planos de treino
+          <Text variant="subtitle" className="mb-4 font-bold text-text-primary">
+            Outros Planos
           </Text>
         )}
 

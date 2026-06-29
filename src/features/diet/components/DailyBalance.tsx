@@ -45,22 +45,22 @@ export function DailyBalance({ protein, carbs, fat, calories }: DailyBalanceProp
 
       {/* Proteína */}
       <View className="items-center justify-center">
-        <Text variant="caption" className={`${protein > 0 ? 'text-protein' : 'text-text-disabled'} font-bold`}>{pPct}%</Text>
-        <Text variant="text" className="text-text-primary font-bold">{Math.round(protein)} g</Text>
+        <Text variant="caption" className={protein > 0 ? 'text-protein' : 'text-text-disabled'} style={{ fontFamily: 'HelveticaNowText-Medium' }}>{pPct}%</Text>
+        <Text variant="text" className="text-text-primary" style={{ fontFamily: 'HelveticaNowText-Medium' }}>{Math.round(protein)} g</Text>
         <Text variant="caption" className="text-text-secondary font-medium">Prot</Text>
       </View>
 
       {/* Carboidrato */}
       <View className="items-center justify-center">
-        <Text variant="caption" className={`${carbs > 0 ? 'text-carbohydrate' : 'text-text-disabled'} font-bold`}>{cPct}%</Text>
-        <Text variant="text" className="text-text-primary font-bold">{Math.round(carbs)} g</Text>
+        <Text variant="caption" className={carbs > 0 ? 'text-carbohydrate' : 'text-text-disabled'} style={{ fontFamily: 'HelveticaNowText-Medium' }}>{cPct}%</Text>
+        <Text variant="text" className="text-text-primary" style={{ fontFamily: 'HelveticaNowText-Medium' }}>{Math.round(carbs)} g</Text>
         <Text variant="caption" className="text-text-secondary font-medium">Carb</Text>
       </View>
 
       {/* Gordura */}
       <View className="items-center justify-center">
-        <Text variant="caption" className={`${fat > 0 ? 'text-fat' : 'text-text-disabled'} font-bold`}>{fPct}%</Text>
-        <Text variant="text" className="text-text-primary font-bold">{Math.round(fat)} g</Text>
+        <Text variant="caption" className={fat > 0 ? 'text-fat' : 'text-text-disabled'} style={{ fontFamily: 'HelveticaNowText-Medium' }}>{fPct}%</Text>
+        <Text variant="text" className="text-text-primary" style={{ fontFamily: 'HelveticaNowText-Medium' }}>{Math.round(fat)} g</Text>
         <Text variant="caption" className="text-text-secondary font-medium">Gord</Text>
       </View>
     </View>

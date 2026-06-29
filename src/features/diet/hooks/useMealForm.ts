@@ -4,7 +4,7 @@ import { MealService } from '../services/meal-service';
 import Food from '../../../db/models/Food';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
-
+import { capitalizeWords } from '../../../lib/utils';
 export function useMealForm(mealId?: string) {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,8 +56,9 @@ export function useMealForm(mealId?: string) {
   };
 
   const handleSave = async () => {
+    const formattedName = capitalizeWords(form.name);
     const mealData = {
-      name: form.name,
+      name: formattedName,
       quantity: parseFloat(form.quantity) || 1,
       preparationState: form.preparationState,
     };

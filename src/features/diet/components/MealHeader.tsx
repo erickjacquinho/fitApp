@@ -16,11 +16,11 @@ export function MealHeader({ name, time, onLongPress = () => {}, children }: Mea
       onLongPress={onLongPress}
       className="px-4 h-control-md flex-row justify-between items-center"
     >
-      <Text variant="subtitle" className="text-text-primary">{name}</Text>
+      <Text variant="subtitle" className="text-text-primary font-bold">{name}</Text>
       {(time !== undefined || children) && (
         <View className="flex-row items-center gap-3">
           {time !== undefined && (
-            <Text variant="label" className="text-text-primary">{time}</Text>
+            <Text variant="label" className="text-text-primary font-bold">{time}</Text>
           )}
           {children}
         </View>

@@ -42,3 +42,12 @@ const customTwMerge = extendTailwindMerge({
 export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
 }
+
+export function capitalizeWords(str: string): string {
+  if (!str) return str;
+  return str
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}

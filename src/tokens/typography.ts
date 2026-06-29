@@ -1,11 +1,11 @@
 export const TYPOGRAPHY = {
   display: {
-    fontFamily: 'HelveticaNowDisplay-Bold',
+    fontFamily: 'HelveticaNowDisplay-Black',
     fontSize: 32,
     lineHeight: 38,
   },
   title: {
-    fontFamily: 'HelveticaNowText-Bold',
+    fontFamily: 'HelveticaNowDisplay-ExtraBold',
     fontSize: 24,
     lineHeight: 32,
   },

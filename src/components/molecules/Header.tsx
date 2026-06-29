@@ -43,7 +43,7 @@ export function Header({ title, showBackButton, headerLeft, headerRight, customT
           {customTitle ? (
             customTitle
           ) : (
-            <Text variant="label" className="text-center">
+            <Text variant="subtitle" className="text-center font-bold">
               {title}
             </Text>
           )}

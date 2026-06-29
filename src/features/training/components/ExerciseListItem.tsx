@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { CheckCircle2, Circle } from 'lucide-react-native';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
+import { BaseCardList } from '../../../components/molecules/BaseCardList';
 
 interface ExerciseListItemProps {
   name: string;
@@ -15,6 +15,8 @@ interface ExerciseListItemProps {
   advancedTechnique?: string;
   isCompleted: boolean;
   onPress: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 export function ExerciseListItem({
@@ -26,12 +28,16 @@ export function ExerciseListItem({
   advancedTechnique,
   isCompleted,
   onPress,
+  isFirst = false,
+  isLast = false,
 }: ExerciseListItemProps) {
   return (
-    <Card
-      className={`mb-3 p-4 flex-row items-center border ${
-        isCompleted ? 'border-success border-opacity-30 bg-success bg-opacity-5' : 'border-border-subtle'
-      }`}
+    <BaseCardList
+      isFirst={isFirst}
+      isLast={isLast}
+      className={
+        isCompleted ? 'border-success border-opacity-30 bg-success bg-opacity-5' : ''
+      }
     >
       <View className="mr-3">
         {isCompleted ? (
@@ -58,6 +64,6 @@ export function ExerciseListItem({
       </View>
 
       <Button variant={isCompleted ? 'outline' : 'default'} size="sm" onPress={onPress}><Text>{setsCount > 0 ? 'Editar' : 'Iniciar'}</Text></Button>
-    </Card>
+    </BaseCardList>
   );
 }

@@ -1,6 +1,6 @@
 import { database } from '../../../db';
 import ExerciseDefinition from '../../../db/models/ExerciseDefinition';
-
+import { capitalizeWords } from '../../../lib/utils';
 export class ExerciseDictionaryService {
   private static collection = database.get<ExerciseDefinition>('exercise_definitions');
 
@@ -14,7 +14,7 @@ export class ExerciseDictionaryService {
     
     return await database.write(async () => {
       return await this.collection.create((ex) => {
-        ex.name = trimmedName;
+        ex.name = capitalizeWords(name);
       });
     });
   }

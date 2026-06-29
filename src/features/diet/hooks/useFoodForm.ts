@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 
 import { FoodService } from '../services/food-service';
-
+import { capitalizeWords } from '../../../lib/utils';
 interface FoodFormState {
   name: string;
   preparationWeight: string;
@@ -86,8 +86,9 @@ export function useFoodForm(id?: string) {
 
     setIsSaving(true);
     try {
+      const formattedName = capitalizeWords(form.name);
       const data = {
-        name: form.name,
+        name: formattedName,
         preparationWeight: parseFloat(form.preparationWeight) || 0,
         description: form.description,
         protein: parseFloat(form.protein) || 0,

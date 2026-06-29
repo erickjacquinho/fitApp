@@ -10,7 +10,7 @@ import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { SIZES } from '@/tokens/sizes';
 
-import { FoodCardBase } from './FoodCardBase';
+import { FoodCardList } from './FoodCardList';
 
 interface FoodSelectorModalProps {
   visible: boolean;
@@ -23,16 +23,16 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
   const [search, setSearch] = useState('');
   const [selections, setSelections] = useState<Record<string, number>>({});
 
+  const loadFoods = useCallback(async () => {
+    const results = search ? await FoodService.search(search) : await FoodService.getAll();
+    setFoods(results);
+  }, [search]);
+
   useEffect(() => {
     if (visible) {
       loadFoods();
     }
   }, [visible, search, loadFoods]);
-
-  const loadFoods = useCallback(async () => {
-    const results = search ? await FoodService.search(search) : await FoodService.getAll();
-    setFoods(results);
-  }, [search]);
 
   const toggleSelection = (foodId: string) => {
     setSelections(prev => {
@@ -85,13 +85,8 @@ export function FoodSelectorModal({ visible, onClose, onConfirm }: FoodSelectorM
                 keyboardShouldPersistTaps="handled"
                 keyboardDismissMode="on-drag"
               renderItem={({ item, index }) => (
-                <FoodCardBase
-                  title={item.name}
-                  subtitle={`${item.preparationWeight} g`}
-                  calories={item.calories}
-                  protein={item.protein}
-                  carbs={item.carbohydrates}
-                  fat={item.fat}
+                <FoodCardList
+                  food={item}
                   isFirst={index === 0}
                   isLast={index === foods.length - 1}
                   actionSlot={

@@ -4,7 +4,7 @@ import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import Exercise from '../../../db/models/Exercise';
 import { ProgramDTO, BlockDTO, ExerciseDTO } from '../types';
-
+import { capitalizeWords } from '../../../lib/utils';
 export class WorkoutService {
   private static programsCollection = database.get<Program>('programs');
   private static trainingBlocksCollection = database.get<TrainingBlock>('training_blocks');
@@ -17,7 +17,7 @@ export class WorkoutService {
     
     return await database.write(async () => {
       const newProgram = this.programsCollection.prepareCreate((program) => {
-        program.name = programData.name.trim();
+        program.name = capitalizeWords(programData.name);
       });
 
       const blockRecords: TrainingBlock[] = [];
@@ -26,7 +26,7 @@ export class WorkoutService {
       for (const blockData of blocksData) {
         const newBlock = this.trainingBlocksCollection.prepareCreate((block) => {
           block.programId = newProgram.id;
-          block.name = blockData.name.trim();
+          block.name = capitalizeWords(blockData.name);
           block.order = blockData.order;
         });
         blockRecords.push(newBlock);
@@ -35,7 +35,7 @@ export class WorkoutService {
           for (const exerciseData of blockData.exercises) {
             const newExercise = this.exercisesCollection.prepareCreate((exercise) => {
               exercise.blockId = newBlock.id;
-              exercise.name = exerciseData.name.trim();
+              exercise.name = capitalizeWords(exerciseData.name);
               exercise.sets = exerciseData.sets;
               exercise.repsMin = exerciseData.repsMin;
               exercise.repsMax = exerciseData.repsMax;
@@ -65,7 +65,7 @@ export class WorkoutService {
 
       return await this.exercisesCollection.create((exercise) => {
         exercise.blockId = block.id;
-        exercise.name = exerciseData.name.trim();
+        exercise.name = capitalizeWords(exerciseData.name);
         exercise.sets = exerciseData.sets;
         exercise.repsMin = exerciseData.repsMin;
         exercise.repsMax = exerciseData.repsMax;

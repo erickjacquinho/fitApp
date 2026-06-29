@@ -6,13 +6,13 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)', fontWeight: '900' }],
-        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)', fontWeight: '700' }],
-        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)', fontWeight: '600' }],
-        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: '400' }],
-        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: '600' }],
-        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', fontWeight: '700', textTransform: 'uppercase' }],
-        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)', fontWeight: '400' }],
+        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)' }],
+        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)' }],
+        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)' }],
+        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)' }],
+        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)' }],
+        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', textTransform: 'uppercase' }],
+        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)' }],
       },
       colors: {
         background: 'var(--color-background)',

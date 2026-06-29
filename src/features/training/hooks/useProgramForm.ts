@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { WorkoutService } from '../services/workout-service';
-import { BlockDTO, ExerciseDTO, PresentationFeedback } from '../types';
+import { ProgramDTO, BlockDTO, ExerciseDTO, PresentationFeedback } from '../types';
+import { capitalizeWords } from '../../../lib/utils';
 
 export interface ExerciseInput extends ExerciseDTO {
   id: string;
@@ -143,14 +144,17 @@ export function useProgramForm() {
     if (!validate()) return;
 
     setIsSaving(true);
+    
+    const formattedProgramName = capitalizeWords(programName);
+
     try {
       await WorkoutService.createProgram(
-        { name: programName },
-        blocks.map((b) => ({
-          name: b.name,
-          order: b.order,
+        { name: formattedProgramName },
+        blocks.map((b, bIdx) => ({
+          name: capitalizeWords(b.name),
+          order: bIdx + 1,
           exercises: b.exercises.map((e) => ({
-            name: e.name,
+            name: capitalizeWords(e.name),
             sets: e.sets,
             repsMin: e.repsMin,
             repsMax: e.repsMax,

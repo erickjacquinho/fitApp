@@ -50,7 +50,7 @@ export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) 
         className="w-date-selector items-center justify-center" 
         onLongPress={() => router.push('/diet/calendar-summary')}
       >
-        <Text variant="title" className="text-center">{formatDateLabel(selectedDate)}</Text>
+        <Text variant="subtitle" className="text-center font-bold">{formatDateLabel(selectedDate)}</Text>
       </LongPressable>
       <Button accessibilityLabel="Próximo dia" variant="ghost" size="icon" onPress={() => changeDate(1)}>
         <Icon as={ChevronRight} size={24} />

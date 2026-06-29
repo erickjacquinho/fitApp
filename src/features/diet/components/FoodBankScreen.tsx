@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { FoodBankCard } from './FoodBankCard';
+import { FoodCardList } from './FoodCardList';
 import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -87,7 +87,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
           const isLast = index === filteredFoods.length - 1;
 
           return (
-            <FoodBankCard
+            <FoodCardList
               food={item}
               isSelected={isSelected}
               isFirst={isFirst}
@@ -98,6 +98,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
                 else if (mealId) handleAddFoodToMeal(item.id);
                 else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
               }}
+              className="h-food-card"
             />
           );
         }}

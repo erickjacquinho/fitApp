@@ -14,10 +14,15 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
+    'HelveticaNowDisplay-Black': require('../assets/fonts/HelveticaNowDisplay-Black.otf'),
+    'HelveticaNowDisplay-ExtraBold': require('../assets/fonts/HelveticaNowDisplay-ExtraBold.otf'),
     'HelveticaNowDisplay-Bold': require('../assets/fonts/helvetica-now-display-bold.otf'),
     'HelveticaNowText-Regular': require('../assets/fonts/helvetica-now-text-regular.otf'),
     'HelveticaNowText-Medium': require('../assets/fonts/helvetica-now-text-medium.otf'),
     'HelveticaNowText-Bold': require('../assets/fonts/helvetica-now-text-bold.otf'),
+    'HelveticaNowText-BoldItalic': require('../assets/fonts/HelveticaNowText-BoldItalic.otf'),
+    'HelveticaNowText-MediumItalic': require('../assets/fonts/HelveticaNowText-MediumItalic.otf'),
+    'HelveticaNowText-RegIta': require('../assets/fonts/HelveticaNowText-RegIta.otf'),
   });
 
   useEffect(() => {

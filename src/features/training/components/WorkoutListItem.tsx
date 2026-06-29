@@ -3,7 +3,7 @@ import { View, Pressable } from 'react-native';
 import { Text } from '../../../components/ui/text';
 import { GripVertical } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
-import { cn } from '@/lib/utils';
+import { BaseCardList } from '../../../components/molecules/BaseCardList';
 
 import { BlockWithSets } from '../hooks/useProgramSummary';
 
@@ -29,19 +29,13 @@ export const WorkoutListItem = ({
   const { block, validSets, totalSets } = item;
 
   return (
-    <Pressable
+    <BaseCardList
       onPress={onPress}
       onLongPress={isReordering ? drag : undefined}
       disabled={isReordering && !drag}
-      className={cn(
-        'flex-row justify-between items-center active:bg-surface-elevated px-4 py-3 bg-surface',
-        'border-border-subtle',
-        'border-x border-b',
-        isFirst && 'rounded-t-lg border-t',
-        isLast && 'rounded-b-lg',
-        !isFirst && !isLast && 'rounded-none',
-        isActive && 'bg-surface-elevated opacity-70'
-      )}
+      isFirst={isFirst}
+      isLast={isLast}
+      isActive={isActive}
     >
       <View className="flex-row items-center flex-1">
         {isReordering && (
@@ -58,6 +52,6 @@ export const WorkoutListItem = ({
           </Text>
         </View>
       </View>
-    </Pressable>
+    </BaseCardList>
   );
 };

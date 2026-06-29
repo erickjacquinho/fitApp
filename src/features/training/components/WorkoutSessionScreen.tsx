@@ -93,7 +93,7 @@ export function WorkoutSessionScreen() {
         Exercícios
       </Text>
 
-      {exercises.map((exercise) => {
+      {exercises.map((exercise, index) => {
         const exExecs = getExerciseExecutions(exercise.id);
         const completed = isExerciseCompleted(exercise.id, exercise.sets);
         
@@ -108,6 +108,8 @@ export function WorkoutSessionScreen() {
             advancedTechnique={exercise.advancedTechnique || undefined}
             isCompleted={completed}
             onPress={() => handleOpenExerciseModal(exercise)}
+            isFirst={index === 0}
+            isLast={index === exercises.length - 1}
           />
         );
       })}

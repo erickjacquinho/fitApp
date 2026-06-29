@@ -6,7 +6,7 @@ import Meal from '../../../db/models/Meal';
 import MealItem from '../../../db/models/MealItem';
 import Food from '../../../db/models/Food';
 import { MealHeader } from './MealHeader';
-import { FoodEntryCard } from './FoodEntryCard';
+import { FoodCardMeal } from './FoodCardMeal';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
@@ -139,7 +139,7 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
           {foodItems.length > 0 && (
             <View className="gap-0">
               {foodItems.map((item, index) => (
-                <FoodEntryCard 
+                <FoodCardMeal 
                   key={item.id} 
                   food={item.food} 
                   quantity={item.quantity} 

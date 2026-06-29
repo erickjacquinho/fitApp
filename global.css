@@ -80,6 +80,8 @@
 
     --color-text-primary: var(--color-neutral-900);
     --color-text-secondary: var(--color-neutral-600);
+    --color-text-secondary-surface: var(--color-neutral-600);
+    --color-text-secondary-background: var(--color-neutral-500);
     --color-text-disabled: var(--color-neutral-400);
 
     --color-primary: var(--color-blue-500);
@@ -100,6 +102,8 @@
     --color-data-6: var(--color-neutral-600);
     --color-text-inverse: var(--color-neutral-0);
     --color-scrim: rgba(24, 17, 14, 0.56);
+    --font-size-display: 32px;
+    --font-size-title: 24px;
     --font-size-subtitle: 18px;
     --font-size-body: 16px;
     --font-size-label: 14px;
@@ -206,6 +210,8 @@
 
       --color-text-primary: #F8F3EB;
       --color-text-secondary: #C9BFB5;
+      --color-text-secondary-surface: #C9BFB5;
+      --color-text-secondary-background: #82776F;
       --color-text-disabled: #82776F;
       --color-text-inverse: #18110E;
       --color-scrim: rgba(0, 0, 0, 0.68);

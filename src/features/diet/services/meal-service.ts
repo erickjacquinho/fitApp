@@ -2,7 +2,7 @@ import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
 import MealItem from '../../../db/models/MealItem';
 import { MealDTO, ItemDTO } from '../types';
-
+import { capitalizeWords } from '../../../lib/utils';
 export class MealService {
   private static mealsCollection = database.get<Meal>('meals');
   private static mealItemsCollection = database.get<MealItem>('meal_items');
@@ -13,7 +13,7 @@ export class MealService {
     }
     return await database.write(async () => {
       const newMeal = this.mealsCollection.prepareCreate((meal) => {
-        meal.name = mealData.name.trim();
+        meal.name = capitalizeWords(mealData.name);
         meal.quantity = mealData.quantity;
         meal.preparationState = mealData.preparationState;
         meal.orderIndex = Date.now(); // default ordering
@@ -43,7 +43,7 @@ export class MealService {
 
     return await database.write(async () => {
       const mealUpdate = meal.prepareUpdate((m) => {
-        m.name = mealData.name.trim();
+        m.name = capitalizeWords(mealData.name);
         m.quantity = mealData.quantity;
         m.preparationState = mealData.preparationState;
       });
@@ -97,7 +97,7 @@ export class MealService {
     const meal = await this.mealsCollection.find(mealId);
     return await database.write(async () => {
       return await meal.update((m) => {
-        m.name = name.trim();
+        m.name = capitalizeWords(name);
         m.preparationState = preparationState.trim();
       });
     });
