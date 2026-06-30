@@ -70,6 +70,12 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Helvetica", "Arial", "sans-serif"],
+        display: ["HelveticaNowDisplay-Black", "sans-serif"],
+        title: ["HelveticaNowDisplay-ExtraBold", "sans-serif"],
+        subtitle: ["HelveticaNowText-Medium", "sans-serif"],
+        body: ["HelveticaNowText-Regular", "sans-serif"],
+        label: ["HelveticaNowText-Bold", "sans-serif"],
+        caption: ["HelveticaNowText-Regular", "sans-serif"],
       },
       fontWeight: {
         regular: "400",

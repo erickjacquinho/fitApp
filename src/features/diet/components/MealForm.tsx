@@ -32,7 +32,7 @@ export function MealForm({ mealId }: MealFormProps) {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" className="text-primary" />
       </View>
     );
@@ -45,7 +45,7 @@ export function MealForm({ mealId }: MealFormProps) {
       keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
       <ScrollView
-        className="flex-1 bg-surface"
+        className="flex-1"
         contentContainerClassName="py-screen-y gap-6 pb-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"

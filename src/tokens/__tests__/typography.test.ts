@@ -7,6 +7,6 @@ describe('Typography Map Regression Tests', () => {
     expect(TYPOGRAPHY.caption).toBeDefined();
     
     // Check that display has expected semantic properties rather than just raw size
-    expect(TYPOGRAPHY.display.fontFamily).toBe('HelveticaNowDisplay-Bold');
+    expect(TYPOGRAPHY.display.fontFamily).toBe('HelveticaNowDisplay-Black');
   });
 });

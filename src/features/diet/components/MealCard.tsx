@@ -143,8 +143,6 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
                   key={item.id} 
                   food={item.food} 
                   quantity={item.quantity} 
-                  isFirst={index === 0}
-                  isLast={index === foodItems.length - 1}
                   onDelete={() => handleDeleteItem(item.id)}
                   onEdit={() => handleEditItem(item.id, item.foodId)}
                 />

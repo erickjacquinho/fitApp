@@ -82,7 +82,8 @@ export function TrainingHomeScreen() {
               {program.name}
             </Text>
             <Text variant="caption" className="text-text-secondary mt-1">
-              {blocks.length} blocos ({blocks.map((b) => b.name).join(', ') || 'sem treinos'})
+              {blocks.length === 1 ? '1 bloco' : `${blocks.length} blocos`}
+              {blocks.length > 0 ? ` (${blocks.map((b) => b.name).join(', ')})` : ' (sem treinos)'}
             </Text>
           </View>
 
@@ -138,7 +139,6 @@ export function TrainingHomeScreen() {
           </Card>
         ) : null}
 
-        {/* Pinned Programs List */}
         {pinnedPrograms.length > 0 && (
           <View className="mb-6">
             <Text variant="title" className="mb-4 text-text-primary">
