@@ -56,16 +56,18 @@ export function WorkoutSessionScreen() {
   };
 
   const onConfirmFinish = async () => {
-    try {
-      setConfirmFinishVisible(false);
-      await handleFinishWorkout();
-    } catch {
-      setFeedback({
-        type: 'error',
-        title: 'Erro ao finalizar',
-        message: 'Não foi possível salvar a sessão. Tente novamente.',
-      });
-    }
+    setConfirmFinishVisible(false);
+    setTimeout(async () => {
+      try {
+        await handleFinishWorkout();
+      } catch {
+        setFeedback({
+          type: 'error',
+          title: 'Erro ao finalizar',
+          message: 'Não foi possível salvar a sessão. Tente novamente.',
+        });
+      }
+    }, 200);
   };
 
   if (isLoading) {

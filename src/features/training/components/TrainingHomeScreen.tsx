@@ -214,7 +214,9 @@ export function TrainingHomeScreen() {
           onCancel={() => setActiveSessionConfirmVisible(false)}
           onConfirm={() => {
             setActiveSessionConfirmVisible(false);
-            router.push('/training/active');
+            setTimeout(() => {
+              router.push('/training/active');
+            }, 200);
           }}
           title="Treino em andamento"
           description="Você já possui uma sessão em andamento. Retome ou finalize o treino primeiro."
@@ -237,9 +239,11 @@ export function TrainingHomeScreen() {
                     key={block.id}
                     variant="outline"
                     className="mb-2"
-                    onPress={async () => {
+                    onPress={() => {
                       setBlockSelectVisible(false);
-                      await startSession(selectedProgram.id, block.id);
+                      setTimeout(async () => {
+                        await startSession(selectedProgram.id, block.id);
+                      }, 200);
                     }}
                   >
                     <Text>{block.name}</Text>
