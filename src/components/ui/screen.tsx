@@ -79,7 +79,7 @@ export function Screen({
       className={cn('flex-1 bg-background', className)}
     >
       <KeyboardAvoidingView
-        className="flex-1"
+        className="flex-1 bg-background"
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         {header && <View className="z-10">{header}</View>}
