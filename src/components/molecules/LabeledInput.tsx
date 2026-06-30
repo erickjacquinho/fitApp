@@ -21,18 +21,19 @@ export const LabeledInput = forwardRef<TextInput, LabeledInputProps>(
 
     return (
       <View className={twMerge(clsx('flex-col gap-2', containerClassName))}>
-        <Label nativeID={labelId} className={hasError ? 'text-tomato-main' : undefined}>
+        <Label nativeID={labelId} className={hasError ? 'text-error' : undefined}>
           {label}
         </Label>
         <Input
           ref={ref}
           aria-labelledby={labelId}
           aria-invalid={hasError}
+          hasError={hasError}
           {...props}
-          className={twMerge(className, hasError && 'border-tomato-main')}
+          className={className}
         />
         {errorText ? (
-          <Text variant="caption" color="error">
+          <Text variant="caption" className="text-error">
             {errorText}
           </Text>
         ) : null}

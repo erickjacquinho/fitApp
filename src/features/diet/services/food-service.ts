@@ -3,6 +3,7 @@ import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import MealItem from '../../../db/models/MealItem';
 import { FoodDTO } from '../types';
+import { capitalizeWords } from '../../../lib/utils';
 
 export class FoodService {
   private static collection = database.get<Food>('foods');
@@ -16,7 +17,7 @@ export class FoodService {
     }
     return await database.write(async () => {
       return await this.collection.create((food) => {
-        food.name = data.name.trim();
+        food.name = capitalizeWords(data.name);
         food.preparationWeight = data.preparationWeight;
         food.description = data.description?.trim() || null;
         food.protein = data.protein;
@@ -31,7 +32,7 @@ export class FoodService {
     const food = await this.collection.find(id);
     return await database.write(async () => {
       return await food.update((f) => {
-        if (data.name !== undefined) f.name = data.name;
+        if (data.name !== undefined) f.name = capitalizeWords(data.name);
         if (data.preparationWeight !== undefined) f.preparationWeight = data.preparationWeight;
         if (data.description !== undefined) f.description = data.description.trim() || null;
         if (data.protein !== undefined) f.protein = data.protein;

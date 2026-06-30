@@ -1,12 +1,15 @@
-import { FoodForm } from '../../src/features/diet/components/FoodForm';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
-import { View } from 'react-native';
+import { FoodForm } from '../../src/features/diet/components/FoodForm';
 
 export default function CreateFoodRoute() {
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Novo alimento" showBackButton />
+    <Screen
+      header={<Header title="Novo alimento" showBackButton />}
+      scrollable={true}
+      withPadding={true}
+    >
       <FoodForm />
-    </View>
+    </Screen>
   );
 }

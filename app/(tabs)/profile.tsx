@@ -1,20 +1,22 @@
-import { Text } from '@/components/ui/text';
-import { View } from 'react-native';
-import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
+import { Screen } from '@/components/ui/screen';
+import { Header } from '@/components/molecules/Header';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function ProfilePage() {
   return (
-    <MainTabScreen
-      title="Perfil"
+    <Screen
+      header={<Header title="Perfil" />}
+      scrollable={true}
+      withPadding={true}
     >
-      <View className="gap-3">
-        <View className="rounded-md border border-soft bg-component-card-bg p-4">
-          <Text variant="subtitle">Configurações principais</Text>
-          <Text variant="text" color="muted">
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle>Configurações principais</CardTitle>
+          <CardDescription>
             Base pronta para perfil, metas e ajustes de uso.
-          </Text>
-        </View>
-      </View>
-    </MainTabScreen>
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </Screen>
   );
 }

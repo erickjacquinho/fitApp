@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "scheme": "fitapp",
     "splash": {
@@ -29,6 +29,17 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "assets/fonts/helvetica-now-display-bold.otf",
+            "assets/fonts/helvetica-now-text-regular.otf",
+            "assets/fonts/helvetica-now-text-medium.otf",
+            "assets/fonts/helvetica-now-text-bold.otf"
+          ]
+        }
+      ],
       "expo-router",
       "expo-dev-client",
       "@morrowdigital/watermelondb-expo-plugin",

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View,
   ScrollView,
 } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { BottomSheetModal } from '../../../components/organisms/BottomSheetModal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody, DialogFooter } from '@/components/ui/dialog';
 import { SetInputRow } from './SetInputRow';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -131,44 +130,49 @@ export function ExecuteExerciseModal({
   };
 
   return (
-    <BottomSheetModal 
-      visible={visible} 
-      onClose={onClose} 
-      title={exerciseName}
-      subtitle={`Meta: ${targetSets} séries x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
-    >
-      {/* Sets List */}
-      <ScrollView keyboardShouldPersistTaps="handled" className="mt-2 flex-shrink">
-        {sets.map((item, index) => (
-          <SetInputRow
-            key={item.setNumber}
-            setNumber={item.setNumber}
-            weight={item.weight}
-            reps={item.reps}
-            isSaved={item.isSaved}
-            onInputChange={(field, val) => handleInputChange(index, field, val)}
-            onSave={() => handleSaveSet(index)}
-            onRemove={sets.length > 1 ? () => handleRemoveSet(index) : undefined}
-          />
-        ))}
-      </ScrollView>
+    <Dialog open={visible} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{exerciseName}</DialogTitle>
+          <Text variant="caption" className="mt-1 text-text-secondary">
+            {`Meta: ${targetSets} séries x ${repsMin}-${repsMax} reps ${repsReserve !== undefined ? `(RIR: @${repsReserve})` : ''}`}
+          </Text>
+        </DialogHeader>
+        <DialogBody>
+          {/* Sets List */}
+          <ScrollView keyboardShouldPersistTaps="handled" className="mt-2 flex-shrink">
+            {sets.map((item, index) => (
+              <SetInputRow
+                key={item.setNumber}
+                setNumber={item.setNumber}
+                weight={item.weight}
+                reps={item.reps}
+                isSaved={item.isSaved}
+                onInputChange={(field, val) => handleInputChange(index, field, val)}
+                onSave={() => handleSaveSet(index)}
+                onRemove={sets.length > 1 ? () => handleRemoveSet(index) : undefined}
+              />
+            ))}
+          </ScrollView>
 
-      {/* Add set button */}
-      <Button
-        variant="outline"
-        onPress={handleAddSet}
-        className="my-3 border-dashed"
-      >
-        <Icon as={Plus} size={16} className="text-accent-main" />
-        <Text variant="label" color="accent">
-          Adicionar série
-        </Text>
-      </Button>
+          {/* Add set button */}
+          <Button
+            variant="outline"
+            onPress={handleAddSet}
+            className="my-3 border-dashed"
+          >
+            <Icon as={Plus} size={16} />
+            <Text variant="label">
+              Adicionar série
+            </Text>
+          </Button>
 
-      {/* Actions */}
-      <View className="mt-2 border-t border-soft pt-3 flex-row gap-2">
-        <Button variant="outline" className="flex-1" onPress={onClose}><Text>Fechar</Text></Button>
-      </View>
-    </BottomSheetModal>
+          {/* Actions */}
+          <DialogFooter>
+            <Button variant="outline" className="flex-1" onPress={onClose}><Text>Fechar</Text></Button>
+          </DialogFooter>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { router } from 'expo-router';
-import { Alert } from 'react-native';
 import { SessionService } from '../services/session-service';
 import WorkoutSession from '../../../db/models/WorkoutSession';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import Exercise from '../../../db/models/Exercise';
 import ExerciseExecution from '../../../db/models/ExerciseExecution';
+import { PresentationFeedback } from '../types';
 
 export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
@@ -13,6 +13,9 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [executions, setExecutions] = useState<ExerciseExecution[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState<PresentationFeedback | null>(null);
+
+  const clearFeedback = () => setFeedback(null);
 
   const loadWorkoutData = useCallback(async () => {
     try {
@@ -66,7 +69,7 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
       }
     } catch (error) {
       console.error('Error loading session data:', error);
-      Alert.alert('Error', 'Failed to load workout details');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -98,31 +101,13 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     setExecutions(updatedExecs);
   };
 
-  const handleFinishWorkout = () => {
+  const handleFinishWorkout = async () => {
     if (!session) return;
-
-    Alert.alert(
-      'Finish Session',
-      'Are you sure you want to finish your workout session?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes, Finish',
-          onPress: async () => {
-            try {
-              const completedSession = await SessionService.finishSession(session.id);
-              router.replace({
-                pathname: `/training/details/[id]`,
-                params: { id: completedSession.id },
-              });
-            } catch (err) {
-              console.error('Error finishing session:', err);
-              Alert.alert('Error', 'Failed to finish session');
-            }
-          },
-        },
-      ]
-    );
+    const completedSession = await SessionService.finishSession(session.id);
+    router.replace({
+      pathname: `/training/details/[id]`,
+      params: { id: completedSession.id },
+    });
   };
 
   const getExerciseExecutions = (exerciseId: string) => {
@@ -150,5 +135,8 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     getExerciseExecutions,
     isExerciseCompleted,
     getCompletedExercisesCount,
+    feedback,
+    setFeedback,
+    clearFeedback,
   };
 }

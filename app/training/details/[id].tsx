@@ -1,12 +1,15 @@
+import { Screen } from '@/components/ui/screen';
 import { SessionDetailsScreen } from '../../../src/features/training/components/SessionDetailsScreen';
 import { Header } from '../../../src/components/molecules/Header';
-import { View } from 'react-native';
 
 export default function SessionDetailsRoute() {
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Resumo do treino" showBackButton />
+    <Screen
+      header={<Header title="Resumo do treino" showBackButton />}
+      scrollable={true}
+      withPadding={true}
+    >
       <SessionDetailsScreen />
-    </View>
+    </Screen>
   );
 }

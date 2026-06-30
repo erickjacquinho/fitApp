@@ -38,12 +38,12 @@ function EditMealItemScreenComponent({ food, mealItem }: EditMealItemScreenProps
   };
 
   return (
-    <View className="flex-1 bg-surface-app px-screen-x pt-6 gap-6">
+    <View className="gap-6 pt-6 pb-content-bottom">
       <Card>
         <Text variant="title">{food.name}</Text>
         
-        <View className="flex-row items-center justify-between border-b border-soft pb-4">
-          <Text variant="text" color="muted">Quantidade (g)</Text>
+        <View className="flex-row items-center justify-between border-b border-border-subtle pb-4">
+          <Text variant="text" className="text-text-secondary">Quantidade (g)</Text>
           <Input
             className="w-24 text-right font-semibold"
             keyboardType="numeric"
@@ -56,20 +56,20 @@ function EditMealItemScreenComponent({ food, mealItem }: EditMealItemScreenProps
         <View className="gap-2">
           <Text variant="subtitle" className="mb-1">Valores nutricionais</Text>
           <View className="flex-row justify-between">
-            <Text variant="text" color="muted">Proteínas</Text>
-            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.protein)}g</Text>
+            <Text variant="text" className="text-text-secondary">Proteínas</Text>
+            <Text variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.protein)}g</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text variant="text" color="muted">Carboidratos</Text>
-            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.carbs)}g</Text>
+            <Text variant="text" className="text-text-secondary">Carboidratos</Text>
+            <Text variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.carbs)}g</Text>
           </View>
           <View className="flex-row justify-between">
-            <Text variant="text" color="muted">Gorduras</Text>
-            <Text variant="text" className="font-semibold text-text-main">{Math.round(calculatedMacros.fat)}g</Text>
+            <Text variant="text" className="text-text-secondary">Gorduras</Text>
+            <Text variant="text" className="font-semibold text-text-primary">{Math.round(calculatedMacros.fat)}g</Text>
           </View>
-          <View className="flex-row justify-between pt-2 mt-2 border-t border-soft">
-            <Text variant="text" className="font-bold text-text-main">Calorias</Text>
-            <Text variant="text" className="font-bold text-accent-main">{Math.round(calculatedMacros.calories)} kcal</Text>
+          <View className="flex-row justify-between pt-2 mt-2 border-t border-border-subtle">
+            <Text variant="text" className="font-bold text-text-primary">Calorias</Text>
+            <Text variant="text" className="font-bold text-primary">{Math.round(calculatedMacros.calories)} kcal</Text>
           </View>
         </View>
       </Card>

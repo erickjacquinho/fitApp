@@ -33,18 +33,17 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
   const handleAdd = async () => {
     if (quantity > 0) {
       await MealService.addItemToMeal(mealId, food.id, quantity);
-      // Dismisses this screen and the Food Bank screen to return to the Menu
-      router.dismiss(2);
+      router.navigate('/(tabs)/diet');
     }
   };
 
   return (
-    <View className="flex-1 bg-surface-app px-screen-x pt-6 gap-6">
+    <View className="gap-6 pt-6 pb-content-bottom">
       <Card>
         <Text variant="title">{food.name}</Text>
         
-        <View className="flex-row items-center justify-between border-b border-soft pb-4">
-          <Text variant="text" color="muted">Quantidade (g)</Text>
+        <View className="flex-row items-center justify-between border-b border-border-subtle pb-4">
+          <Text variant="text" className="text-text-secondary">Quantidade (g)</Text>
           <Input
             className="w-24 text-right font-semibold"
             keyboardType="numeric"

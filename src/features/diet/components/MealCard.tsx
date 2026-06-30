@@ -1,24 +1,62 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
 import Meal from '../../../db/models/Meal';
 import MealItem from '../../../db/models/MealItem';
 import Food from '../../../db/models/Food';
-import { FoodEntryCard } from './FoodEntryCard';
+import { MealHeader } from './MealHeader';
+import { FoodCardMeal } from './FoodCardMeal';
 import { MealMacrosSummary } from './MealMacrosSummary';
 import { aggregateMacros } from '../utils/macro-utils';
 import { MealService } from '../services/meal-service';
-import { Trash2 } from 'lucide-react-native';
-import { Button } from "@/components/ui/button";
+import { Edit, EllipsisVertical, GripVertical, Trash2 } from 'lucide-react-native';
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
-import { Card } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) {
+function MacroProportionBar({ macros }: { macros: { protein: number; carbs: number; fat: number } }) {
+  const p = macros?.protein || 0;
+  const c = macros?.carbs || 0;
+  const f = macros?.fat || 0;
+  const total = p + c + f;
+
+  if (!total || total <= 0 || isNaN(total)) {
+    return <View className="h-px w-full bg-border-subtle" />;
+  }
+
+  const cPct = Math.round((c / total) * 100);
+  const pPct = Math.round((p / total) * 100);
+  const fPct = 100 - cPct - pPct;
+
+  return (
+    <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
+      {cPct > 0 && <View style={{ width: `${cPct}%` }} className="bg-carbohydrate h-full" />}
+      {pPct > 0 && <View style={{ width: `${pPct}%` }} className="bg-protein h-full" />}
+      {fPct > 0 && <View style={{ width: `${fPct}%` }} className="bg-fat h-full" />}
+    </View>
+  );
+}
+
+interface MealCardContentProps {
+  meal: Meal;
+  items: MealItem[];
+  onDelete: (id: string) => void;
+  onEdit: (meal: Meal) => void;
+  isReordering?: boolean;
+  drag?: () => void;
+}
+
+function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: MealCardContentProps) {
   const router = useRouter();
   const [foodItems, setFoodItems] = useState<{ id: string; foodId: string; food: Food; quantity: number }[]>([]);
-  const [macros, setMacros] = useState({ protein: 0, carbs: 0, fat: 0, calories: 0 });
+
+  const macros = React.useMemo(() => aggregateMacros(foodItems), [foodItems]);
 
   React.useEffect(() => {
     const loadFoods = async () => {
@@ -30,7 +68,6 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
       })));
       const validData = data.filter((d): d is { id: string; foodId: string; food: Food; quantity: number } => d.food !== null);
       setFoodItems(validData);
-      setMacros(aggregateMacros(validData));
     };
     loadFoods();
   }, [items]);
@@ -43,34 +80,87 @@ function MealCardContent({ meal, items, onDelete }: { meal: Meal; items: MealIte
     router.push({ pathname: '/diet/edit-meal-item', params: { mealItemId, foodId } });
   };
 
+  if (isReordering) {
+    return (
+      <View className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface">
+        <MealHeader
+          name={meal.name}
+          onLongPress={() => {
+            if (drag) drag();
+          }}
+        >
+          <Icon as={GripVertical} className="text-text-secondary" />
+        </MealHeader>
+      </View>
+    );
+  }
+
   return (
-    <Card className="mb-6 overflow-hidden p-0">
-      <View className="px-4 py-3 bg-surface-app border-b border-soft flex-row justify-between items-center">
-        <View>
-          <Text variant="subtitle">{meal.name}</Text>
-          {meal.preparationState ? <Text variant="caption" color="muted">{meal.preparationState}</Text> : null}
-        </View>
-        <Button accessibilityLabel={`Excluir ${meal.name}`} variant="ghost" size="icon" onPress={onDelete}>
-          <Icon as={Trash2} className="text-tomato-main" />
-        </Button>
-      </View>
+    <View 
+      className="overflow-hidden border border-border-subtle rounded-lg flex-col bg-surface"
+    >
+      <MealHeader
+        name={meal.name}
+        time={meal.preparationState || '00:00'}
+        onLongPress={() => {
+          // No action on normal mode longpress
+        }}
+      >
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
+              <Icon as={EllipsisVertical} className="text-text-primary" size={16} />
+            </Pressable>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-32">
+            <DropdownMenuItem 
+              onPress={() => onEdit(meal)}
+              className="flex-row items-center gap-2"
+            >
+              <Icon as={Edit} size={14} className="text-text-primary" />
+              <Text>Editar</Text>
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              onPress={() => onDelete(meal.id)}
+              variant="destructive"
+              className="flex-row items-center gap-2"
+            >
+              <Icon as={Trash2} size={14} className="text-error" />
+              <Text className="text-error">Excluir</Text>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </MealHeader>
       
-      <View className="p-4 gap-3">
-        {foodItems.map((item, index) => (
-          <FoodEntryCard 
-            key={index} 
-            food={item.food} 
-            quantity={item.quantity} 
-            onDelete={() => handleDeleteItem(item.id)}
-            onEdit={() => handleEditItem(item.id, item.foodId)}
-          />
-        ))}
+      <View className="flex-col">
+        <MacroProportionBar macros={macros} />
         
-        <Button variant="secondary" onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}><Text>Adicionar alimento</Text></Button>
-        
-        {foodItems.length > 0 && <MealMacrosSummary macros={macros} />}
+        <View className="flex-col">
+          {foodItems.length > 0 && (
+            <View className="gap-0">
+              {foodItems.map((item, index) => (
+                <FoodCardMeal 
+                  key={item.id} 
+                  food={item.food} 
+                  quantity={item.quantity} 
+                  onDelete={() => handleDeleteItem(item.id)}
+                  onEdit={() => handleEditItem(item.id, item.foodId)}
+                />
+              ))}
+            </View>
+          )}
+          
+          <MealMacrosSummary macros={macros} />
+   
+          <Pressable 
+            className="h-control-md flex-row items-center justify-center w-full"
+            onPress={() => router.push({ pathname: '/diet/food-bank', params: { mealId: meal.id } })}
+          >
+            <Text variant="label" className="text-text-primary font-medium">+ Adicionar Alimentos</Text>
+          </Pressable>
+        </View>
       </View>
-    </Card>
+    </View>
   );
 }
 
@@ -79,6 +169,17 @@ const enhanceMeal = withObservables(['meal'], ({ meal }: { meal: Meal }) => ({
   items: meal.items.observeWithColumns(['quantity']),
 }));
 
-export const MealCard = enhanceMeal(({ meal, items, onDelete }: { meal: Meal; items: MealItem[]; onDelete: () => void }) => {
-  return <MealCardContent meal={meal} items={items} onDelete={onDelete} />;
+const MealCardComponent = enhanceMeal(({ meal, items, onDelete, onEdit, isReordering, drag }: MealCardContentProps) => {
+  return <MealCardContent meal={meal} items={items} onDelete={onDelete} onEdit={onEdit} isReordering={isReordering} drag={drag} />;
 });
+
+export const MealCard = React.memo(
+  MealCardComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.meal.id === nextProps.meal.id &&
+      prevProps.isReordering === nextProps.isReordering &&
+      prevProps.onEdit === nextProps.onEdit
+    );
+  }
+);

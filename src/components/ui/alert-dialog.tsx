@@ -4,7 +4,7 @@ import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import * as AlertDialogPrimitive from '@rn-primitives/alert-dialog';
 import * as React from 'react';
-import { Platform, View, type ViewProps } from 'react-native';
+import { Platform, View, type ViewProps, KeyboardAvoidingView } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
 
@@ -27,17 +27,23 @@ function AlertDialogOverlay({
     <FullWindowOverlay>
       <AlertDialogPrimitive.Overlay
         className={cn(
-          'absolute inset-0 z-50 flex items-center justify-center bg-black-main/50 p-screen-x',
+          'absolute inset-0 z-50 bg-scrim p-screen-x',
           Platform.select({
-            web: 'animate-in fade-in-0 fixed',
+            web: 'flex items-center justify-center animate-in fade-in-0 fixed',
           }),
           className
         )}
-        {...props}>
+        {...props}
+        asChild={Platform.OS !== 'web'}>
         <NativeOnlyAnimatedView
           entering={FadeIn.duration(200).delay(50)}
           exiting={FadeOut.duration(150)}>
-          <>{children}</>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ width: '100%', flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <>{children}</>
+          </KeyboardAvoidingView>
         </NativeOnlyAnimatedView>
       </AlertDialogPrimitive.Overlay>
     </FullWindowOverlay>
@@ -56,7 +62,7 @@ function AlertDialogContent({
       <AlertDialogOverlay>
         <AlertDialogPrimitive.Content
           className={cn(
-            'z-50 flex w-full max-w-sm flex-col gap-4 rounded-lg border border-border-strong bg-surface-app p-card shadow-none',
+            'z-50 flex w-[80vw] flex-col gap-4 rounded-lg border border-border-subtle bg-surface p-card shadow-none max-h-[85vh]',
             Platform.select({
               web: 'animate-in fade-in-0 zoom-in-95 duration-200',
             }),
@@ -80,7 +86,7 @@ function AlertDialogHeader({ className, ...props }: ViewProps) {
 function AlertDialogFooter({ className, ...props }: ViewProps) {
   return (
     <View
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
+      className={cn('flex-row gap-2 pt-3 border-t border-border-subtle mt-auto', className)}
       {...props}
     />
   );
@@ -92,7 +98,7 @@ function AlertDialogTitle({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
   return (
     <AlertDialogPrimitive.Title
-      className={cn('text-title font-bold leading-title text-text-main', className)}
+      className={cn('text-title font-bold leading-title text-text-primary', className)}
       {...props}
     />
   );
@@ -104,7 +110,7 @@ function AlertDialogDescription({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {
   return (
     <AlertDialogPrimitive.Description
-      className={cn('text-text font-regular leading-body text-text-muted', className)}
+      className={cn('text-text font-regular leading-body text-text-secondary', className)}
       {...props}
     />
   );
@@ -120,7 +126,7 @@ function AlertDialogAction({
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant })}>
       <AlertDialogPrimitive.Action
-        className={cn(buttonVariants({ variant }), className)}
+        className={cn(buttonVariants({ variant }), 'flex-1', className)}
         {...props}
       />
     </TextClassContext.Provider>
@@ -134,7 +140,7 @@ function AlertDialogCancel({
   return (
     <TextClassContext.Provider value={buttonTextVariants({ className, variant: 'outline' })}>
       <AlertDialogPrimitive.Cancel
-        className={cn(buttonVariants({ variant: 'outline' }), className)}
+        className={cn(buttonVariants({ variant: 'outline' }), 'flex-1', className)}
         {...props}
       />
     </TextClassContext.Provider>

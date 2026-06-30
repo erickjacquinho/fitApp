@@ -6,44 +6,60 @@ import { SIZES } from '@/tokens/sizes';
 
 const buttonVariants = cva(
   cn(
-    'group shrink-0 flex-row items-center justify-center gap-2 rounded-sm shadow-none',
+    'group shrink-0 flex-row items-center justify-center gap-2 rounded-md shadow-none',
     Platform.select({
-      web: "focus-visible:border-accent-main focus-visible:ring-accent-main/30 aria-invalid:ring-tomato-main/20 aria-invalid:border-tomato-main whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+      web: "focus-visible:border-border-control focus-visible:ring-border-subtle/50 aria-invalid:ring-error/20 aria-invalid:border-error whitespace-nowrap outline-none transition-all focus-visible:ring-2 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
     })
   ),
   {
     variants: {
       variant: {
         default: cn(
-          'bg-component-button-primary-bg active:bg-component-button-primary-pressed',
-          Platform.select({ web: 'hover:bg-component-button-primary-pressed' })
+          'bg-primary active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         destructive: cn(
-          'bg-tomato-main active:bg-tomato-dark',
+          'bg-error active:opacity-80',
           Platform.select({
-            web: 'hover:bg-tomato-dark focus-visible:ring-tomato-main/20',
+            web: 'hover:opacity-90 focus-visible:ring-error/20',
           })
         ),
+        warning: cn(
+          'bg-warning active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        success: cn(
+          'bg-success active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        carbohydrate: cn(
+          'bg-carbohydrate active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
+        fat: cn(
+          'bg-fat active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
+        ),
         outline: cn(
-          'border border-border-strong bg-surface-app active:bg-surface-muted',
+          'border border-border-control bg-transparent active:opacity-80',
           Platform.select({
-            web: 'hover:bg-surface-muted',
+            web: 'hover:opacity-90',
           })
         ),
         secondary: cn(
-          'bg-surface-muted active:bg-surface-strong',
-          Platform.select({ web: 'hover:bg-surface-strong' })
+          'bg-text-primary active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
         ghost: cn(
-          'active:bg-surface-muted',
-          Platform.select({ web: 'hover:bg-surface-muted' })
+          'bg-transparent active:opacity-80',
+          Platform.select({ web: 'hover:opacity-90' })
         ),
-        link: '',
+        link: 'bg-transparent',
       },
       size: {
         default: cn('h-control-md px-4 py-2', Platform.select({ web: 'has-[>svg]:px-3' })),
-        sm: cn('h-control-sm gap-2 rounded-sm px-3', Platform.select({ web: 'has-[>svg]:px-2' })),
-        lg: cn('h-control-lg rounded-sm px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
+        sm: cn('h-control-sm gap-2 rounded-md px-3', Platform.select({ web: 'has-[>svg]:px-2' })),
+        lg: cn('h-control-lg rounded-md px-6', Platform.select({ web: 'has-[>svg]:px-4' })),
         icon: 'h-control-md w-control-md',
       },
     },
@@ -56,7 +72,7 @@ const buttonVariants = cva(
 
 const buttonTextVariants = cva(
   cn(
-    'text-text-main font-bold font-sans',
+    'font-bold font-sans',
     Platform.select({ web: 'pointer-events-none transition-colors' })
   ),
   {
@@ -64,17 +80,21 @@ const buttonTextVariants = cva(
       variant: {
         default: 'text-text-inverse',
         destructive: 'text-text-inverse',
+        warning: 'text-text-inverse',
+        success: 'text-text-inverse',
+        carbohydrate: 'text-text-primary',
+        fat: 'text-text-inverse',
         outline: cn(
-          'text-accent-main group-active:text-accent-dark',
-          Platform.select({ web: 'group-hover:text-accent-dark' })
+          'text-text-primary group-active:text-text-primary',
+          Platform.select({ web: 'group-hover:text-text-primary' })
         ),
-        secondary: 'text-text-main group-active:text-text-main',
+        secondary: 'text-text-inverse group-active:text-text-inverse',
         ghost: cn(
-          'text-accent-main group-active:text-accent-dark',
-          Platform.select({ web: 'group-hover:text-accent-dark' })
+          'text-text-primary group-active:text-text-primary',
+          Platform.select({ web: 'group-hover:text-text-primary' })
         ),
         link: cn(
-          'text-accent-main group-active:underline',
+          'text-link group-active:underline',
           Platform.select({ web: 'underline-offset-4 hover:underline group-hover:underline' })
         ),
       },

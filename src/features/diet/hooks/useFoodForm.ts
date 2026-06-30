@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
-import { Alert } from 'react-native';
-import { FoodService } from '../services/food-service';
 
+import { FoodService } from '../services/food-service';
+import { capitalizeWords } from '../../../lib/utils';
 interface FoodFormState {
   name: string;
   preparationWeight: string;
@@ -20,13 +20,17 @@ export function useFoodForm(id?: string) {
     name: '',
     preparationWeight: '100',
     description: '',
-    protein: '0',
-    carbohydrates: '0',
-    fat: '0',
-    calories: '0',
+    protein: '',
+    carbohydrates: '',
+    fat: '',
+    calories: '',
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string, preparationWeight?: string }>({});
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error', title: string, message?: string } | null>(null);
+
+  const clearFeedback = () => setFeedback(null);
 
   useEffect(() => {
     if (id) {
@@ -37,10 +41,10 @@ export function useFoodForm(id?: string) {
             name: food.name,
             preparationWeight: food.preparationWeight.toString(),
             description: food.description || '',
-            protein: food.protein.toString(),
-            carbohydrates: food.carbohydrates.toString(),
-            fat: food.fat.toString(),
-            calories: food.calories.toString(),
+            protein: food.protein ? food.protein.toString() : '',
+            carbohydrates: food.carbohydrates ? food.carbohydrates.toString() : '',
+            fat: food.fat ? food.fat.toString() : '',
+            calories: food.calories ? food.calories.toString() : '',
           });
         } catch (error) {
           console.error('Error loading food:', error);
@@ -65,10 +69,26 @@ export function useFoodForm(id?: string) {
   const handleSave = async () => {
     if (isSaving) return;
 
+    let isValid = true;
+    const newErrors: typeof errors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+      isValid = false;
+    }
+    if (!form.preparationWeight || parseFloat(form.preparationWeight) <= 0) {
+      newErrors.preparationWeight = 'Peso de preparo inválido';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    if (!isValid) return;
+
     setIsSaving(true);
     try {
+      const formattedName = capitalizeWords(form.name);
       const data = {
-        name: form.name,
+        name: formattedName,
         preparationWeight: parseFloat(form.preparationWeight) || 0,
         description: form.description,
         protein: parseFloat(form.protein) || 0,
@@ -85,7 +105,7 @@ export function useFoodForm(id?: string) {
       router.back();
     } catch (err) {
       console.error('Error saving food:', err);
-      Alert.alert('Error', 'Unable to save food. Review the fields and try again.');
+      setFeedback({ type: 'error', title: 'Erro', message: 'Não foi possível salvar o alimento. Verifique os campos e tente novamente.' });
     } finally {
       setIsSaving(false);
     }
@@ -97,6 +117,9 @@ export function useFoodForm(id?: string) {
     calculateCalories,
     handleSave,
     isSaving,
+    errors,
+    feedback,
+    clearFeedback,
     goBack: () => router.back(),
   };
 }

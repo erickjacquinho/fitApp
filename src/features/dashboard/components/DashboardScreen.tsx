@@ -1,15 +1,22 @@
 import React, { useCallback } from 'react';
-import { View, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
 import { DietWidget } from './DietWidget';
 import { TrainingWidget } from './TrainingWidget';
-import { useDashboardMetrics } from '../hooks/useDashboardMetrics';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { COLORS } from '@/tokens/colors';
+import { useColorScheme } from 'nativewind';
+import { lightTheme, darkTheme } from '@/tokens/theme';
 
-export function DashboardScreen() {
-  const { metrics, isLoading, refetch } = useDashboardMetrics();
+interface DashboardScreenProps {
+  metrics: any;
+  isLoading: boolean;
+  refetch: () => void;
+}
+
+export function DashboardScreen({ metrics, isLoading, refetch }: DashboardScreenProps) {
+  const { colorScheme } = useColorScheme();
+  const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
 
   useFocusEffect(
     useCallback(() => {
@@ -19,8 +26,8 @@ export function DashboardScreen() {
 
   if (isLoading && !metrics) {
     return (
-      <View className="flex-1 items-center justify-center bg-surface-app">
-        <ActivityIndicator size="large" color={COLORS.primary} />
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -33,15 +40,10 @@ export function DashboardScreen() {
   });
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled"
-      className="flex-1 bg-surface-app p-4"
-      refreshControl={
-        <RefreshControl refreshing={isLoading} onRefresh={refetch} colors={[COLORS.primary]} />
-      }
-    >
+    <View className="gap-4 pt-4 pb-content-bottom">
       {/* Welcome Banner */}
       <View className="mb-4">
-        <Text variant="caption" color="muted" className="uppercase font-bold tracking-wide">
+        <Text variant="caption" className="text-text-secondary uppercase font-bold tracking-wide">
           {dateStr}
         </Text>
         <Text variant="title" className="font-bold mt-1">
@@ -86,6 +88,6 @@ export function DashboardScreen() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }

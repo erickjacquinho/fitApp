@@ -1,12 +1,15 @@
-import { MealForm } from '../../src/features/diet/components/MealForm';
+import { Screen } from '@/components/ui/screen';
 import { Header } from '../../src/components/molecules/Header';
-import { View } from 'react-native';
+import { MealForm } from '../../src/features/diet/components/MealForm';
 
 export default function CreateMealRoute() {
   return (
-    <View className="flex-1 bg-surface-app">
-      <Header title="Nova refeição" showBackButton />
+    <Screen
+      header={<Header title="Nova refeição" showBackButton />}
+      scrollable={true}
+      withPadding={true}
+    >
       <MealForm />
-    </View>
+    </Screen>
   );
 }

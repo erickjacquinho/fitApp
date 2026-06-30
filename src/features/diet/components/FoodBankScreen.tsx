@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, FlatList, Pressable } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
-import { SwipeableCard } from '../../../components/molecules/SwipeableCard';
+import { FoodCardList } from './FoodCardList';
 import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -9,7 +9,6 @@ import { database } from '../../../db';
 import Food from '../../../db/models/Food';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { MealService } from '../services/meal-service';
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 
@@ -58,8 +57,8 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   };
 
   return (
-    <View className="flex-1 bg-surface-app">
-      <View className="px-screen-x py-compact gap-4">
+    <View className="flex-1">
+      <View className="py-compact gap-4">
         <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
         
         <View className="flex-row gap-3">
@@ -81,39 +80,31 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
       <FlatList keyboardShouldPersistTaps="handled"
         data={filteredFoods}
         keyExtractor={(item) => item.id}
-        contentContainerClassName="px-screen-x pb-content-bottom"
-        renderItem={({ item }) => {
+        contentContainerClassName="pb-content-bottom"
+        renderItem={({ item, index }) => {
           const isSelected = bulkSelections.has(item.id);
+          const isFirst = index === 0;
+          const isLast = index === filteredFoods.length - 1;
+
           return (
-            <Pressable 
-              accessibilityRole="button"
-              accessibilityLabel={`Selecionar ${item.name}`}
+            <FoodCardList
+              food={item}
+              isSelected={isSelected}
+              isFirst={isFirst}
+              isLast={isLast}
+              onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);
                 else if (mealId) handleAddFoodToMeal(item.id);
+                else router.push({ pathname: '/diet/create-food', params: { id: item.id } });
               }}
-            >
-              <SwipeableCard 
-                className={`mb-3 ${isSelected ? 'border-accent-main bg-accent-soft/10' : ''}`}
-                onEdit={isSelectionMode ? undefined : () => router.push({ pathname: '/diet/create-food', params: { id: item.id } })}
-                onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
-              >
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-1">
-                    <Text variant="subtitle">{item.name}</Text>
-                    <Text variant="caption" color="muted">
-                      {item.protein}P • {item.carbohydrates}C • {item.fat}G
-                    </Text>
-                  </View>
-                  <Text variant="highlight">{item.calories} kcal</Text>
-                </View>
-              </SwipeableCard>
-            </Pressable>
+              className="h-food-card"
+            />
           );
         }}
         ListEmptyComponent={
           <View className="items-center py-20">
-            <Text color="muted">Nenhum alimento encontrado.</Text>
+            <Text className="text-text-secondary">Nenhum alimento encontrado.</Text>
           </View>
         }
       />

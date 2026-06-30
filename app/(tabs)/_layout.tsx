@@ -2,15 +2,15 @@ import { withLayoutContext } from 'expo-router';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/ui/icon';
-import { COLORS } from '../../src/tokens/colors';
+import { useColorScheme } from 'nativewind';
+import { lightTheme, darkTheme } from '@/tokens/theme';
+import { TYPOGRAPHY } from '@/tokens/typography';
 import { ChartLine, Dumbbell, House, Utensils, User, type LucideIcon } from 'lucide-react-native';
 import { Platform } from 'react-native';
 import { SIZES } from '@/tokens/sizes';
 import { SPACING } from '@/tokens/spacing';
 import { ROUNDED } from '@/tokens/rounded';
 import { BORDER_WIDTH } from '@/tokens/border';
-import { FONT_SIZE } from '@/tokens/typography';
-import { FONT_WEIGHT } from '@/tokens/font-weight';
 
 const { Navigator } = createMaterialTopTabNavigator();
 const SwipeTabs = withLayoutContext(Navigator);
@@ -28,19 +28,21 @@ function TabIcon({ color, focused, icon }: TabIconProps) {
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
   const tabBarHeight = SIZES.tabBar + Math.max(insets.bottom, SPACING.small);
+  const { colorScheme } = useColorScheme();
+  const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
 
   return (
     <SwipeTabs
       tabBarPosition="bottom"
       screenOptions={{
         swipeEnabled: true,
-        tabBarActiveTintColor: COLORS.tabActive,
-        tabBarInactiveTintColor: COLORS.iconMuted,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondarySurface,
         tabBarShowLabel: true,
         tabBarIndicatorStyle: { height: 0 }, // Esconde a linha indicadora
         tabBarStyle: {
-          backgroundColor: COLORS.surfaceRaised,
-          borderTopColor: COLORS.borderSoft,
+          backgroundColor: colors.surfaceElevated,
+          borderTopColor: colors.borderSubtle,
           borderTopWidth: BORDER_WIDTH.small,
           height: tabBarHeight,
           paddingBottom: Platform.OS === 'ios' ? insets.bottom : SPACING.small,
@@ -58,8 +60,8 @@ export default function TabsLayout() {
           alignItems: 'center',
         },
         tabBarLabelStyle: {
-          fontSize: FONT_SIZE.default,
-          fontWeight: FONT_WEIGHT.xlarge,
+          fontFamily: TYPOGRAPHY.label.fontFamily,
+          fontSize: TYPOGRAPHY.label.fontSize,
           letterSpacing: 0,
           textTransform: 'none', // Previne letras maiúsculas automáticas
           marginTop: SPACING.xsmall,

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Pressable, Platform } from 'react-native';
-import { KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, Platform, KeyboardAvoidingView, ScrollView, ActivityIndicator } from 'react-native';
+
 import { useMealForm } from '../hooks/useMealForm';
 import { FoodSelectorModal } from './FoodSelectorModal';
 import { PreviewMacros } from './PreviewMacros';
@@ -12,7 +12,11 @@ import { Card } from "@/components/ui/card";
 import { X } from 'lucide-react-native';
 import { SIZES } from '@/tokens/sizes';
 
-export function MealForm() {
+interface MealFormProps {
+  mealId?: string;
+}
+
+export function MealForm({ mealId }: MealFormProps) {
   const {
     form,
     setFormValue,
@@ -22,8 +26,17 @@ export function MealForm() {
     setModalVisible,
     handleSave,
     removeFood,
+    isLoading,
     goBack,
-  } = useMealForm();
+  } = useMealForm(mealId);
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" className="text-primary" />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -32,8 +45,8 @@ export function MealForm() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? SIZES.keyboardOffsetScreenIos : SIZES.keyboardOffsetScreenAndroid}
     >
       <ScrollView
-        className="flex-1 bg-surface-app"
-        contentContainerClassName="p-screen-x gap-6 pb-form-bottom"
+        className="flex-1"
+        contentContainerClassName="py-screen-y gap-6 pb-form-bottom"
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
@@ -68,7 +81,7 @@ export function MealForm() {
                 <Card key={item.food.id} className="flex-row items-center justify-between py-3">
                   <View className="flex-1">
                     <Text variant="subtitle">{item.food.name}</Text>
-                    <Text variant="caption" color="muted">{item.quantity}g</Text>
+                    <Text variant="caption" className="text-text-secondary">{item.quantity}g</Text>
                   </View>
                   <Button
                     accessibilityLabel={`Remover ${item.food.name}`}
@@ -76,19 +89,19 @@ export function MealForm() {
                     size="icon"
                     onPress={() => removeFood(item.food.id)}
                   >
-                    <Icon as={X} className="text-tomato-main" />
+                    <Icon as={X} className="text-error" />
                   </Button>
                 </Card>
               ))}
               
-              <View className="mt-2 p-4 bg-surface-raised rounded-md border border-soft">
+              <Card className="mt-2">
                 <Text variant="caption" className="mb-2">Macros totais</Text>
                 <PreviewMacros items={selectedItems} />
-              </View>
+              </Card>
             </View>
           ) : (
             <Card className="items-center py-10 border-dashed">
-              <Text color="muted">Nenhum alimento adicionado.</Text>
+              <Text className="text-text-secondary">Nenhum alimento adicionado.</Text>
             </Card>
           )}
         </View>

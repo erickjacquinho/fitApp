@@ -1,13 +1,74 @@
-// Semantic color values for React Native props that cannot use NativeWind classes.
-export const COLORS = {
-  placeholder: '#6F6254',
-  iconMuted: '#6F6254',
-  tabActive: '#556B2F',
-  borderSoft: '#E3D6C4',
-  surfaceRaised: '#EFE6D6',
-  primary: '#556B2F',
-  secondary: '#8FBC8F',
-  error: '#FF6347',
-  success: '#228B22',
-  textMain: '#1F1B16',
-} as const;
+import { PrimitiveColors } from './theme';
+
+export const primitives: PrimitiveColors = {
+  neutral: {
+    0: '#FFFFFF',
+    50: '#FCFAF6',
+    100: '#F3EFE7',
+    200: '#DED8CF',
+    300: '#C5BAAE',
+    400: '#A3988F',
+    500: '#7A7069',
+    600: '#625851',
+    700: '#4B413B',
+    800: '#352B26',
+    900: '#241C18',
+    950: '#18110E',
+  },
+  blue: {
+    100: '#C6C3F8',
+    200: '#9A96FA',
+    500: '#0800FF',
+    600: '#0C04DC',
+    900: '#160E8C',
+  },
+  amber: {
+    100: '#FAE9C1',
+    200: '#F5D58A',
+    500: '#F1AE11',
+    600: '#D99B0F',
+    900: '#77550D',
+  },
+  orange: {
+    100: '#F7D5C2',
+    200: '#F0AE89',
+    500: '#E43F03',
+    600: '#C43804',
+    900: '#702A10',
+  },
+  moss: {
+    100: '#D7DBD1',
+    200: '#B9C1B2',
+    500: '#556B4D',
+    600: '#4E5F45',
+    900: '#3D4433',
+  },
+  tomato: {
+    100: '#F0D3CB',
+    200: '#E6B2A8',
+    500: '#C44732',
+    600: '#AC412E',
+    900: '#743225',
+  },
+  mustard: {
+    100: '#E3DAC0',
+    200: '#CEC094',
+    500: '#8A6A00',
+    600: '#7B5E04',
+    900: '#57430C',
+  },
+  teal: {
+    100: '#CFDBD7',
+    200: '#AAC2BE',
+    500: '#2F6F6A',
+    600: '#2D635E',
+    900: '#2A4641',
+  },
+  plum: {
+    100: '#DFD5D8',
+    200: '#C6B6C0',
+    500: '#76506F',
+    600: '#6A4862',
+    900: '#4D3644',
+  },
+};

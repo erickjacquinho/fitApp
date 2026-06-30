@@ -1,115 +1,81 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
       fontSize: {
-        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)', fontWeight: '900' }],
-        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)', fontWeight: '700' }],
-        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)', fontWeight: '600' }],
-        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: '400' }],
-        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)', fontWeight: '600' }],
-        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', fontWeight: '700', textTransform: 'uppercase' }],
-        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)', fontWeight: '400' }],
+        display: ['var(--font-size-display)', { lineHeight: 'var(--line-height-display)' }],
+        title: ['var(--font-size-title)', { lineHeight: 'var(--line-height-title)' }],
+        subtitle: ['var(--font-size-subtitle)', { lineHeight: 'var(--line-height-subtitle)' }],
+        text: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)' }],
+        highlight: ['var(--font-size-body)', { lineHeight: 'var(--line-height-body)' }],
+        label: ['var(--font-size-label)', { lineHeight: 'var(--line-height-label)', textTransform: 'uppercase' }],
+        caption: ['var(--font-size-caption)', { lineHeight: 'var(--line-height-caption)' }],
       },
       colors: {
+        background: 'var(--color-background)',
         surface: {
-          app: 'var(--color-offwhite)',
-          raised: 'var(--color-cream)',
-          muted: 'var(--color-cream)',
-          subtle: 'var(--color-beige)',
-          strong: 'var(--color-sand)',
-        },
-        text: {
-          main: 'var(--color-text-main)',
-          muted: 'var(--color-text-muted)',
-          inverse: 'var(--color-white-pure)',
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+          disabled: 'var(--color-surface-disabled)',
         },
         border: {
-          soft: 'var(--color-border-soft)',
+          subtle: 'var(--color-border-subtle)',
           strong: 'var(--color-border-strong)',
+          control: 'var(--color-border-control)',
+          'control-hover': 'var(--color-border-control-hover)',
+          focus: 'var(--color-border-focus)',
         },
-        accent: {
-          main: 'var(--color-accent-main)',
-          light: 'var(--color-accent-light)',
-          soft: 'var(--color-accent-soft)',
-          dark: 'var(--color-accent-dark)',
-        },
-        tomato: {
-          main: 'var(--color-tomato-main)',
-          light: 'var(--color-tomato-light)',
-          soft: 'var(--color-tomato-soft)',
-          dark: 'var(--color-tomato-dark)',
-        },
-        success: {
-          main: 'var(--color-success-main)',
-          soft: 'var(--color-success-soft)',
-          dark: 'var(--color-success-dark)',
-        },
-        info: {
-          main: 'var(--color-info-main)',
-          soft: 'var(--color-info-soft)',
-          dark: 'var(--color-info-dark)',
-        },
-        warning: {
-          main: 'var(--color-warning-main)',
-          soft: 'var(--color-warning-soft)',
-          dark: 'var(--color-warning-dark)',
-        },
-        component: {
-          button: {
-            primary: {
-              bg: 'var(--component-button-primary-bg)',
-              pressed: 'var(--component-button-primary-bg-pressed)',
-              text: 'var(--component-button-primary-text)',
-            },
-            danger: {
-              bg: 'var(--component-button-danger-bg)',
-              pressed: 'var(--component-button-danger-bg-pressed)',
-            },
+        text: {
+          primary: 'var(--color-text-primary)',
+          secondary: {
+            surface: 'var(--color-text-secondary-surface)',
+            background: 'var(--color-text-secondary-background)',
+            DEFAULT: 'var(--color-text-secondary-surface)',
           },
-          input: {
-            bg: 'var(--component-input-bg)',
-            border: 'var(--component-input-border)',
-            focus: 'var(--component-input-border-focus)',
-          },
-          card: {
-            bg: 'var(--component-card-bg)',
-            border: 'var(--component-card-border)',
-          },
+          disabled: 'var(--color-text-disabled)',
+          inverse: 'var(--color-text-inverse)',
         },
         primary: {
-          main: 'var(--color-primary-main)',
-          light: 'var(--color-primary-light)',
-          soft: 'var(--color-primary-soft)',
-          dark: 'var(--color-primary-dark)',
+          DEFAULT: 'var(--color-primary)',
         },
-        secondary: {
-          main: 'var(--color-secondary-main)',
-          light: 'var(--color-secondary-light)',
-          soft: 'var(--color-secondary-soft)',
-          dark: 'var(--color-secondary-dark)',
+        protein: 'var(--color-protein)',
+        carbohydrate: 'var(--color-carbohydrate)',
+        fat: 'var(--color-fat)',
+        info: {
+          DEFAULT: 'var(--color-info)',
         },
-        white: {
-          pure: 'var(--color-white-pure)',
-          base: 'var(--color-white-base)',
-          soft: 'var(--color-white-soft)',
+        warning: {
+          DEFAULT: 'var(--color-warning)',
         },
-        black: {
-          main: 'var(--color-black-main)',
-          soft: 'var(--color-black-soft)',
-          light: 'var(--color-black-light)',
+        success: {
+          DEFAULT: 'var(--color-success)',
         },
-        gray: {
-          300: 'var(--color-gray-300)',
-          400: 'var(--color-gray-400)',
-          500: 'var(--color-gray-500)',
-          700: 'var(--color-gray-700)',
-        }
+        error: 'var(--color-error)',
+        link: {
+          DEFAULT: 'var(--color-link)',
+          visited: 'var(--color-link-visited)',
+        },
+        scrim: 'var(--color-scrim)',
+        data: {
+          1: 'var(--color-data-1)',
+          2: 'var(--color-data-2)',
+          3: 'var(--color-data-3)',
+          4: 'var(--color-data-4)',
+          5: 'var(--color-data-5)',
+          6: 'var(--color-data-6)',
+        },
       },
       fontFamily: {
         sans: ["Helvetica", "Arial", "sans-serif"],
+        display: ["HelveticaNowDisplay-Black", "sans-serif"],
+        title: ["HelveticaNowDisplay-ExtraBold", "sans-serif"],
+        subtitle: ["HelveticaNowText-Medium", "sans-serif"],
+        body: ["HelveticaNowText-Regular", "sans-serif"],
+        label: ["HelveticaNowText-Bold", "sans-serif"],
+        caption: ["HelveticaNowText-Regular", "sans-serif"],
       },
       fontWeight: {
         regular: "400",
@@ -194,6 +160,7 @@ module.exports = {
         "avatar-md": "var(--size-avatar-md)",
         "avatar-lg": "var(--size-avatar-lg)",
         "sheet-handle": "var(--size-bottom-sheet-handle-width)",
+        "date-selector": "var(--size-date-selector)",
       },
       height: {
         "icon-sm": "var(--size-icon-sm)",
@@ -211,6 +178,7 @@ module.exports = {
         "sheet-handle": "var(--size-bottom-sheet-handle-height)",
         "selection-sheet": "var(--size-selection-sheet-height)",
         "color-swatch": "var(--size-color-swatch-height)",
+        "food-card": "var(--size-food-card)",
       },
       minHeight: {
         "touch-target": "var(--size-touch-target)",

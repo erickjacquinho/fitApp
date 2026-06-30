@@ -1,12 +1,13 @@
 import { Text } from '@/components/ui/text';
 import React, { useState, useEffect } from 'react';
-import { View, Modal, Pressable, FlatList, Platform } from 'react-native';
+import { View, Pressable, FlatList, Platform } from 'react-native';
 import { ExerciseDictionaryService } from '../services/exercise-dictionary-service';
 import ExerciseDefinition from '../../../db/models/ExerciseDefinition';
-import { X, Plus } from 'lucide-react-native';
+import { Plus } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { SearchBar } from '@/components/molecules/SearchBar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogBody } from '@/components/ui/dialog';
 
 interface Props {
   value: string;
@@ -51,67 +52,65 @@ export function ExerciseSelect({ value, onChange }: Props) {
         onPress={() => setModalVisible(true)}
         className="flex-1 justify-start"
       >
-        <Text variant="text" color={value ? 'default' : 'muted'}>
+        <Text variant="text" className={value ? 'text-text-primary' : 'text-text-secondary'}>
           {value || 'Selecionar exercício'}
         </Text>
       </Button>
 
-      <Modal visible={modalVisible} animationType="slide" transparent>
-        <View className="flex-1 justify-end bg-black-main/50">
-          <View className="h-selection-sheet rounded-t-lg bg-surface-app p-4">
-            <View className="flex-row justify-between items-center mb-4">
-              <Text variant="title">Selecionar exercício</Text>
-              <Button accessibilityLabel="Fechar" variant="ghost" size="icon" onPress={() => setModalVisible(false)}>
-                <Icon as={X} size={24} className="text-text-muted" />
-              </Button>
-            </View>
+      <Dialog open={modalVisible} onOpenChange={(open) => !open && setModalVisible(false)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Selecionar exercício</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <View className="h-selection-sheet pt-2">
+              <SearchBar
+                value={search}
+                onChangeText={setSearch}
+                onClear={() => setSearch('')}
+                placeholder="Buscar ou criar exercício..."
+                autoFocus={Platform.OS === 'ios'}
+                containerClassName="mb-4"
+              />
 
-            <SearchBar
-              value={search}
-              onChangeText={setSearch}
-              onClear={() => setSearch('')}
-              placeholder="Buscar ou criar exercício..."
-              autoFocus={Platform.OS === 'ios'}
-              containerClassName="mb-4"
-            />
+              <FlatList 
+                data={filtered}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Selecionar ${item.name}`}
+                    className="py-3 border-b border-border-subtle"
+                    onPress={() => {
+                      onChange(item.name);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text variant="text" className="font-bold text-text-main">{item.name}</Text>
+                  </Pressable>
+                )}
+                ListEmptyComponent={() => (
+                  <View className="py-8 items-center">
+                    <Text variant="text" className="text-text-secondary">Nenhum exercício encontrado.</Text>
+                  </View>
+                )}
+              />
 
-            <FlatList 
-              data={filtered}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={`Selecionar ${item.name}`}
-                  className="py-3 border-b border-soft"
-                  onPress={() => {
-                    onChange(item.name);
-                    setModalVisible(false);
-                  }}
+              {search.trim().length > 0 && !exactMatch && (
+                <Button
+                  className="mt-4"
+                  onPress={handleCreate}
                 >
-                  <Text variant="text" className="font-bold text-text-main">{item.name}</Text>
-                </Pressable>
+                  <Icon as={Plus} className="text-text-inverse" />
+                  <Text>
+                    Criar &quot;{search.trim()}&quot;
+                  </Text>
+                </Button>
               )}
-              ListEmptyComponent={() => (
-                <View className="py-8 items-center">
-                  <Text variant="text" color="muted">Nenhum exercício encontrado.</Text>
-                </View>
-              )}
-            />
-
-            {search.trim().length > 0 && !exactMatch && (
-              <Button
-                className="mt-4"
-                onPress={handleCreate}
-              >
-                <Icon as={Plus} className="text-text-inverse" />
-                <Text>
-                  Criar "{search.trim()}"
-                </Text>
-              </Button>
-            )}
-          </View>
-        </View>
-      </Modal>
+            </View>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

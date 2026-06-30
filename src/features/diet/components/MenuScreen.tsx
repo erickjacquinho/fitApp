@@ -1,37 +1,92 @@
-import React, { useState } from 'react';
-import { MainTabScreen } from '../../../components/organisms/main-tab-screen';
-import { Icon } from '@/components/ui/icon';
-import { View, FlatList } from 'react-native';
-import { useMenu } from '../hooks/useMenu';
-import { useRouter } from 'expo-router';
+import { Button } from "@/components/ui/button";
+import { Skeleton } from '@/components/ui/skeleton';
+import { Text } from "@/components/ui/text";
+import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
+import React, { useState } from 'react';
+import { Platform, UIManager, View } from 'react-native';
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
+import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
-import { Q } from '@nozbe/watermelondb';
-import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { DailyBalance } from './DailyBalance';
-import { MealCard } from './MealCard';
+import { useMenu } from '../hooks/useMenu';
 import { MealService } from '../services/meal-service';
-import { ReorderMealsModal } from './ReorderMealsModal';
+import { DailyBalance } from './DailyBalance';
+import { EditMealModal } from './EditMealModal';
+import { MealCard } from './MealCard';
 
-import { DateSelector } from '../../../components/molecules/DateSelector';
-import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
-import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
+const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
 
 interface MenuScreenProps {
   meals: Meal[];
   selectedDate: string;
   onSelectDate: (date: string) => void;
+  menuRef?: React.MutableRefObject<{ startReorder: () => void } | null>;
 }
 
-function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenProps) {
-  const router = useRouter();
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: MenuScreenProps) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
-  const [reorderModalVisible, setReorderModalVisible] = useState(false);
-  const { dailyMacros, deleteMeal } = useMenu(meals);
+  const [isReordering, setIsReordering] = useState(false);
+  const [tempMeals, setTempMeals] = useState<Meal[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const [editingMeal, setEditingMeal] = useState<Meal | null>(null);
+
+  const { dailyMacros, deleteMeal, isReady } = useMenu(meals, selectedDate);
+
+  const startReorder = React.useCallback(() => {
+    setTempMeals([...meals]);
+    setIsReordering(true);
+  }, [meals]);
+
+  React.useEffect(() => {
+    if (menuRef) {
+      menuRef.current = { startReorder };
+    }
+  }, [menuRef, startReorder]);
+
+  const confirmReorder = async () => {
+    setIsSaving(true);
+    try {
+      const orderedIds = tempMeals.map(m => m.id);
+      await MealService.updateMealOrder(orderedIds);
+    } catch (error) {
+      console.error(error);
+      setIsSaving(false);
+    }
+  };
+
+  const cancelReorder = () => {
+    setIsReordering(false);
+  };
+
+  React.useEffect(() => {
+    if (isReordering) {
+      cancelReorder();
+    }
+  }, [selectedDate, isReordering]);
+
+  React.useEffect(() => {
+    if (isSaving) {
+      const mealsIds = meals.map(m => m.id);
+      const tempIds = tempMeals.map(m => m.id);
+      const isSync = mealsIds.length === tempIds.length && mealsIds.every((id, idx) => id === tempIds[idx]);
+      
+      if (isSync) {
+        setIsReordering(false);
+        setIsSaving(false);
+      }
+    }
+  }, [meals, isSaving, tempMeals]);
 
   const handleDelete = async () => {
     if (selectedMealId) {
@@ -41,15 +96,31 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     }
   };
 
-  const confirmDelete = (id: string) => {
+  const confirmDelete = React.useCallback((id: string) => {
     setSelectedMealId(id);
     setDeleteModalVisible(true);
-  };
+  }, []);
 
   const handleAddMeal = async () => {
     const nextNumber = meals.length + 1;
     await MealService.createWithItems({ name: `Refeição ${nextNumber}`, quantity: 1, preparationState: '' }, [], selectedDate);
   };
+
+  const renderItem = React.useCallback(({ item, drag }: { item: Meal; drag: () => void }) => {
+    return (
+      <ScaleDecorator>
+        <View key={item.id} className="pb-6">
+          <MealCard 
+            meal={item} 
+            isReordering={isReordering}
+            drag={drag}
+            onDelete={confirmDelete} 
+            onEdit={setEditingMeal}
+          />
+        </View>
+      </ScaleDecorator>
+    );
+  }, [isReordering, confirmDelete, setEditingMeal]);
 
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
@@ -74,73 +145,140 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate }: MenuScreenPr
     migrateOldMeals().then(() => ensureDefaultMeal());
   }, [meals.length, selectedDate]);
 
+  const showSkeleton = !isReady || meals.length === 0;
+
   return (
-    <MainTabScreen
-      title="Minha dieta"
-      scrollable={false}
-      headerLeft={
-        meals.length > 1 ? (
-          <Button
-            accessibilityLabel="Reordenar refeições"
-            variant="ghost"
-            size="icon"
-            className="-ml-2"
-            onPress={() => setReorderModalVisible(true)}
+    <>
+      <View className="flex-1 pt-4 flex-col">
+        <GestureHandlerRootView className="flex-1 relative">
+          <DraggableFlatList
+            key={isReordering ? 'meal-reorder-list' : 'meal-normal-list'}
+            data={isReordering ? tempMeals : meals}
+            extraData={isReordering}
+            onDragEnd={({ data }) => {
+              if (isReordering) setTempMeals(data);
+            }}
+            keyExtractor={(item) => item.id}
+            contentContainerClassName="pb-content-bottom pt-4 px-screen-x"
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            activationDistance={isReordering ? 8 : 1000} // Disable drag accidentally when not reordering
+            ListHeaderComponent={
+              <View>
+                <DailyBalance 
+                  protein={dailyMacros.protein}
+                  carbs={dailyMacros.carbs}
+                  fat={dailyMacros.fat}
+                  calories={dailyMacros.calories}
+                />
+              </View>
+            }
+            renderItem={renderItem}
+            ListFooterComponent={
+              !isReordering ? (
+                <View className="mt-4">
+                  <Button variant="outline" onPress={handleAddMeal}>
+                    <Text>Adicionar refeição</Text>
+                  </Button>
+                </View>
+              ) : null
+            }
+          />
+        </GestureHandlerRootView>
+
+        {isReordering && (
+          <Animated.View 
+            entering={FOOTER_ENTER}
+            exiting={FOOTER_EXIT}
+            className="flex-row items-center justify-between px-screen-x py-4"
           >
-            <Icon as={ArrowUpDown} size={24} />
-          </Button>
-        ) : undefined
-      }
-      headerRight={
-        <View className="-mr-2 flex-row items-center gap-2">
-          <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
-            <Icon as={CalendarDays} size={24} />
-          </Button>
-          <Button accessibilityLabel="Abrir banco de alimentos" variant="ghost" size="icon" onPress={() => router.push('/diet/food-bank')}>
-            <Icon as={Apple} size={24} />
-          </Button>
+            <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
+              <Text>Cancelar</Text>
+            </Button>
+            <Button className="flex-1 ml-2" onPress={confirmReorder}>
+              <Text>Confirmar</Text>
+            </Button>
+          </Animated.View>
+        )}
+      </View>
+
+      {showSkeleton && (
+        <View className="absolute inset-0 bg-background z-10 pt-4 px-screen-x">
+          <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-row items-center justify-between py-4 px-card">
+            <View className="flex-row items-center justify-between w-full">
+              <View className="flex-1 items-center">
+                <Skeleton className="size-24 rounded-full" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </View>
+              <View className="flex-1 items-center gap-2">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-3 w-12" />
+                <Skeleton className="h-3 w-10" />
+              </View>
+            </View>
+          </View>
+          
+          <View className="gap-0">
+            {[1, 2, 3].map((i) => (
+              <View key={i} className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
+                <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-4 w-12" />
+                </View>
+                <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
+                  <Skeleton className="h-1 w-full" />
+                </View>
+                <View className="flex-col">
+                  <View className="gap-0">
+                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
+                  </View>
+                  <View className="px-4 h-control-md flex-row justify-between items-center bg-surface border-b border-border-subtle">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-4 w-40" />
+                  </View>
+                  <View className="h-control-md flex-row items-center justify-center w-full">
+                    <Skeleton className="h-4 w-40" />
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
-      }
-    >
-      <View className="flex-1">
-        <DateSelector selectedDate={selectedDate} onSelectDate={onSelectDate} />
-        <DailyBalance 
-          protein={dailyMacros.protein}
-          carbs={dailyMacros.carbs}
-          fat={dailyMacros.fat}
-          calories={dailyMacros.calories}
+      )}
+
+        <EditMealModal
+          visible={!!editingMeal}
+          onClose={() => setEditingMeal(null)}
+          meal={editingMeal}
+          onSave={async (mealId, name, time) => {
+            try {
+              await MealService.updateBasicInfo(mealId, name, time);
+              setEditingMeal(null);
+            } catch (err) {
+              console.error('Failed to update meal info:', err);
+            }
+          }}
         />
 
-        <FlatList keyboardShouldPersistTaps="handled"
-          data={meals}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="px-screen-x pb-content-bottom pt-4"
-          renderItem={({ item }) => (
-            <MealCard meal={item} onDelete={() => confirmDelete(item.id)} />
-          )}
-        ListFooterComponent={
-          <View className="mt-4">
-            <Button variant="outline" onPress={handleAddMeal}><Text>Adicionar refeição</Text></Button>
-          </View>
-        }
-      />
-
-      <ConfirmModal 
-        visible={deleteModalVisible}
-        title="Remover refeição?"
-        description="Esta ação removerá a refeição do seu menu diário."
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteModalVisible(false)}
-        isDestructive
-      />
-
-      <ReorderMealsModal 
-        visible={reorderModalVisible}
-        meals={meals}
-        onClose={() => setReorderModalVisible(false)}
-      />
-      </View>
-    </MainTabScreen>
+        <ConfirmModal 
+          visible={deleteModalVisible}
+          title="Remover refeição?"
+          description="Esta ação removerá a refeição do seu menu diário."
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteModalVisible(false)}
+          isDestructive
+        />
+    </>
   );
 }
 

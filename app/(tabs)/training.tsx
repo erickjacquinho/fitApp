@@ -1,23 +1,33 @@
-import { useState } from 'react';
-import { MainTabScreen } from '../../src/components/organisms/main-tab-screen';
-import { DailyTrainingScreen } from '../../src/features/training/components/DailyTrainingScreen';
-
-const formatDate = (date: Date) => {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-};
+import { router } from 'expo-router';
+import { TrainingHomeScreen } from '../../src/features/training/components/TrainingHomeScreen';
+import { Screen } from '@/components/ui/screen';
+import { Header } from '@/components/molecules/Header';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
+import { Plus, History } from 'lucide-react-native';
 
 export default function TrainingTab() {
-  const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
-
   return (
-    <MainTabScreen
-      title="Treino"
-      scrollable={false}
+    <Screen
+      header={
+        <Header 
+          title="Planos de Treino" 
+          headerLeft={
+            <Button variant="ghost" size="icon" onPress={() => router.push('/training/history')}>
+              <Icon as={History} size={24} />
+            </Button>
+          }
+          headerRight={
+            <Button variant="ghost" size="icon" onPress={() => router.push('/training/create-program')}>
+              <Icon as={Plus} size={24} />
+            </Button>
+          }
+        />
+      }
+      scrollable={true}
+      withPadding={true}
     >
-      <DailyTrainingScreen selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-    </MainTabScreen>
+      <TrainingHomeScreen />
+    </Screen>
   );
 }

@@ -8,9 +8,9 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-component-card-bg border border-component-card-border',
-        elevated: 'border-0 bg-surface-raised shadow-floating',
-        outline: 'bg-transparent border border-border-soft',
+        default: 'bg-surface border border-border-subtle',
+        elevated: 'border-0 bg-surface-elevated shadow-floating',
+        outline: 'bg-transparent border border-border-subtle',
       },
     },
     defaultVariants: {
@@ -57,7 +57,7 @@ function CardDescription({
   className,
   ...props
 }: React.ComponentProps<typeof Text> & React.RefAttributes<typeof Text>) {
-  return <Text variant="caption" color="muted" className={className} {...props} />;
+  return <Text variant="caption" className={cn('text-text-secondary', className)} {...props} />;
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<typeof View> & React.RefAttributes<View>) {
@@ -68,4 +68,4 @@ function CardFooter({ className, ...props }: React.ComponentProps<typeof View> &
   return <View className={cn('flex flex-row items-center px-6', className)} {...props} />;
 }
 
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle };
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, cardVariants };

@@ -11,11 +11,11 @@ function Switch({
     <SwitchPrimitives.Root
       hitSlop={props.hitSlop ?? (SIZES.touchTarget - SIZES.iconLarge) / 2}
       className={cn(
-        'flex h-6 w-10 shrink-0 flex-row items-center rounded-lg border border-border-soft',
+        'flex h-6 w-10 shrink-0 flex-row items-center rounded-lg border border-border-strong',
         Platform.select({
-          web: 'peer inline-flex outline-none transition-all focus-visible:border-accent-main focus-visible:ring-2 focus-visible:ring-accent-main/30 disabled:cursor-not-allowed',
+          web: 'peer inline-flex outline-none transition-all focus-visible:border-border-control focus-visible:ring-2 focus-visible:ring-border-subtle/50 disabled:cursor-not-allowed',
         }),
-        props.checked ? 'bg-accent-main' : 'bg-surface-strong',
+        props.checked ? 'bg-primary' : 'bg-surface-disabled',
         props.disabled && 'opacity-50',
         className
       )}

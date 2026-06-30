@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SessionService } from '../services/session-service';
 import WorkoutSession from '../../../db/models/WorkoutSession';
-import Food from '../../../db/models/Food';
 
 export interface ExerciseSummary {
   exerciseId: string;

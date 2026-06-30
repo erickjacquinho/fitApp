@@ -1,101 +1,101 @@
-# Componentes de Aplicação
+# Application Components
 
 > Reference only. This file is a broad reminder list for possible components and is not an implementation rule. FitApp implementation rules live in `.agents/rules/`, especially `designsystem-guide.md` and the focused design system guideline files.
 
-## Componentes Básicos (Todo App)
+## Core Components (Every App)
 
-### Navegação
-- **Navbar** — Barra de navegação principal com logo, links e ações
-- **Sidebar** — Menu lateral colapsável para navegação entre páginas
-- **BottomNav** — Navegação inferior para apps mobile
+### Navigation
+- **Navbar** — Main navigation bar with logo, links, and actions
+- **Sidebar** — Collapsible side menu for page navigation
+- **BottomNav** — Bottom navigation for mobile apps
 
 ### Layout
-- **Container** — Wrapper centralizado com largura máxima
-- **Card** — Container com bordas, sombra e padding para conteúdo
-- **Divider** — Linha separadora visual
-- **Header** — Cabeçalho de página/sessão
-- **Footer** — Rodapé da página/aplicativo
+- **Container** — Centered wrapper with maximum width
+- **Card** — Container with borders, shadow, and padding for content
+- **Divider** — Visual separator line
+- **Header** — Page/section header
+- **Footer** — Page/application footer
 
-### Formulários
-- **Input** — Campo de texto básico
-- **Textarea** — Campo de texto multilinha
-- **Select/Dropdown** — Lista suspensa de opções
-- **Checkbox** — Caixa de seleção
-- **Radio** — Seleção única em grupo
-- **Switch/Toggle** — Botão de alternância on/off
-- **Button** — Botão de ação (primário, secundário, ghost)
-- **Form** — Wrapper para agrupar campos com validação
+### Forms
+- **Input** — Basic text field
+- **Textarea** — Multi-line text field
+- **Select/Dropdown** — Dropdown option list
+- **Checkbox** — Selection checkbox
+- **Radio** — Single selection within a group
+- **Switch/Toggle** — On/off toggle button
+- **Button** — Action button (primary, secondary, ghost)
+- **Form** — Wrapper to group fields with validation
 
 ### Feedback
-- **Alert/Toast** — Mensagem informativa de feedback rápido
-- **Badge** — Indicador numérico ou texto em destaque
-- **Spinner/Loader** — Indicador de carregamento
-- **ProgressBar** — Barra de progresso
+- **Alert/Toast** — Quick informative feedback message
+- **Badge** — Numeric or text highlight indicator
+- **Spinner/Loader** — Loading indicator
+- **ProgressBar** — Progress bar
 
-### Mídia
-- **Avatar** — Foto de perfil do usuário
-- **Image** — Exibição de imagem com suporte a lazy load
-- **Icon** — Ícone individual
-- **IconButton** — Botão com ícone apenas
+### Media
+- **Avatar** — User profile picture
+- **Image** — Image display with lazy load support
+- **Icon** — Individual icon
+- **IconButton** — Icon-only button
 
-### Dados
-- **Table** — Tabela de dados com ordenação e paginação
-- **List** — Lista de itens renderizados
-- **Pagination** — Controle de paginação
+### Data
+- **Table** — Data table with sorting and pagination
+- **List** — Rendered item list
+- **Pagination** — Pagination control
 
 ---
 
-## Componentes Situacionais (Quando Necessário)
+## Situational Components (When Needed)
 
-### Autenticação
-- **LoginForm** — Formulário de login
-- **RegisterForm** — Formulário de cadastro
-- **ForgotPasswordForm** — Recuperação de senha
-- **PasswordInput** — Campo de senha com toggle de visibilidade
+### Authentication
+- **LoginForm** — Login form
+- **RegisterForm** — Registration form
+- **ForgotPasswordForm** — Password recovery
+- **PasswordInput** — Password field with visibility toggle
 
-### Usuário
-- **ProfileCard** — Card com informações do perfil
-- **UserMenu** — Menu dropdown com ações do usuário
-- **AvatarUploader** — Upload de foto de perfil
+### User
+- **ProfileCard** — Card with profile information
+- **UserMenu** — Dropdown menu with user actions
+- **AvatarUploader** — Profile picture upload
 
-### Dados Complexos
-- **DataTable** — Tabela avançada com filtros e ações
-- **Chart** — Gráfico para visualização de dados
-- **Modal** — Dialog overlay para ações detalhadas
-- **Drawer** — Painel lateral deslizante
-- **TreeView** — Hierarquia navegável
+### Complex Data
+- **DataTable** — Advanced table with filters and actions
+- **Chart** — Chart for data visualization
+- **Modal** — Overlay dialog for detailed actions
+- **Drawer** — Sliding side panel
+- **TreeView** — Navigable hierarchy
 
-### Busca e Filtros
-- **SearchInput** — Campo de busca com ícone
-- **FilterBar** — Barra com filtros aplicáveis
-- **DatePicker** — Seleção de data
-- **RangeSlider** — Seletor de faixa de valores
+### Search & Filters
+- **SearchInput** — Search field with icon
+- **FilterBar** — Bar with applicable filters
+- **DatePicker** — Date selection
+- **RangeSlider** — Value range selector
 
-### Conteúdo
-- **Modal** — Dialog para ações/confirmações
-- **ConfirmDialog** — Confirmação de ação destrutiva
-- **Tooltip** — Dica contextual ao passar o mouse
-- **Popover** — Conteúdo flutuante ancorado
+### Content
+- **Modal** — Dialog for actions/confirmations
+- **ConfirmDialog** — Destructive action confirmation
+- **Tooltip** — Contextual hint on hover
+- **Popover** — Anchored floating content
 
-### Estados Especiais
-- **EmptyState** — Estado quando não há dados
-- **ErrorState** — Estado de erro com mensagem
-- **LoadingState** — Estado de carregamento
-- **404Page** — Página não encontrada
-- **OfflineBanner** — Indicador de conexão offline
+### Special States
+- **EmptyState** — State when there is no data
+- **ErrorState** — Error state with message
+- **LoadingState** — Loading state
+- **404Page** — Page not found
+- **OfflineBanner** — Offline connection indicator
 
-### E-commerce (se aplicável)
-- **ProductCard** — Card de produto
-- **Cart** — Carrinho de compras
-- **CheckoutForm** — Formulário de finalização
-- **PriceDisplay** — Exibição de preço
+### E-commerce (if applicable)
+- **ProductCard** — Product card
+- **Cart** — Shopping cart
+- **CheckoutForm** — Checkout form
+- **PriceDisplay** — Price display
 
-### Chat/Mensagens (se aplicável)
-- **ChatBubble** — Bolha de mensagem
-- **ChatList** — Lista de conversas
-- **MessageInput** — Campo de envio de mensagem
+### Chat/Messages (if applicable)
+- **ChatBubble** — Message bubble
+- **ChatList** — Conversation list
+- **MessageInput** — Message input field
 
-### Notificações
-- **NotificationBell** — Ícone de notificações com badge
-- **NotificationPanel** — Painel de lista de notificações
-- **PushPrompt** — Solicitar permissão de push
+### Notifications
+- **NotificationBell** — Notification icon with badge
+- **NotificationPanel** — Notification list panel
+- **PushPrompt** — Request push permission

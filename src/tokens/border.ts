@@ -1,8 +1,7 @@
 export const BORDER_WIDTH = {
-  xsmall: 0.5,
+  none: 0,
+  hairline: 0.5,
   small: 1,
-  default: 1.5,
-  large: 2,
-  xlarge: 2.5,
-  xxlarge: 3,
+  medium: 2,
+  large: 4,
 } as const;

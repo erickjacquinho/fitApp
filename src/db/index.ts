@@ -1,8 +1,6 @@
 import { Database } from '@nozbe/watermelondb';
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
+import { adapter } from './adapter';
 
-import schema from './schema';
-import migrations from './migrations';
 import Food from './models/Food';
 import Meal from './models/Meal';
 import MealItem from './models/MealItem';
@@ -13,15 +11,7 @@ import WorkoutSession from './models/WorkoutSession';
 import ExerciseExecution from './models/ExerciseExecution';
 import ExerciseDefinition from './models/ExerciseDefinition';
 
-const adapter = new SQLiteAdapter({
-  schema,
-  migrations,
-  dbName: 'fitapp_db_v3',
-  jsi: true, // Habilitado para Dev Build
-  onSetUpError: (error) => {
-    console.error('WatermelonDB setup error', error);
-  },
-});
+
 
 export const database = new Database({
   adapter,

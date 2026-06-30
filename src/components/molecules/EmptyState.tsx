@@ -22,14 +22,14 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <View className="flex-1 items-center justify-center py-10 px-6 gap-2">
-      <View className="items-center justify-center h-16 w-16 rounded-full bg-surface-muted mb-2">
-        <Icon as={IconComponent} size={32} className="text-text-muted" />
+      <View className="mb-2 h-16 w-16 items-center justify-center rounded-full bg-surface-sunken">
+        <Icon as={IconComponent} size={32} className="text-text-secondary" />
       </View>
       <Text variant="title" className="text-center">
         {title}
       </Text>
       {subtitle && (
-        <Text variant="text" color="muted" className="text-center mt-1">
+        <Text variant="text" className="mt-1 text-center text-text-secondary">
           {subtitle}
         </Text>
       )}

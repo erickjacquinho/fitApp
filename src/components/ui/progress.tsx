@@ -19,7 +19,7 @@ function Progress({
 }) {
   return (
     <ProgressPrimitive.Root
-      className={cn('relative h-2 w-full overflow-hidden rounded-sm bg-accent-soft', className)}
+      className={cn('relative h-2 w-full overflow-hidden rounded-sm bg-surface-elevated', className)}
       {...props}>
       <Indicator value={value} className={indicatorClassName} />
     </ProgressPrimitive.Root>
@@ -46,7 +46,7 @@ function WebIndicator({ value, className }: IndicatorProps) {
 
   return (
     <View
-      className={cn('h-full w-full flex-1 bg-accent-main transition-all', className)}
+      className={cn('h-full w-full flex-1 bg-primary transition-all', className)}
       style={{ transform: `translateX(-${100 - (value ?? 0)}%)` }}>
       <ProgressPrimitive.Indicator className={cn('h-full w-full', className)} />
     </View>
@@ -71,7 +71,7 @@ function NativeIndicator({ value, className }: IndicatorProps) {
 
   return (
     <ProgressPrimitive.Indicator asChild>
-      <Animated.View style={indicator} className={cn('h-full bg-accent-main', className)} />
+      <Animated.View style={indicator} className={cn('h-full bg-primary', className)} />
     </ProgressPrimitive.Indicator>
   );
 }
