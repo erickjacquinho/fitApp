@@ -25,7 +25,7 @@ export default function ProgramSummaryRoute() {
         }}
         onWorkoutPress={(blockId) => {
           // Navigate to workout details
-          router.push(`/training/details/${blockId}`);
+          router.push(`/training/block/${blockId}`);
         }}
       />
     </Screen>

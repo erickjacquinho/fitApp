@@ -15,6 +15,7 @@ export default class Exercise extends Model {
   @field('reps_max') repsMax!: number;
   @text('advanced_technique') advancedTechnique!: string | null;
   @field('reps_reserve') repsReserve!: number | null;
+  @field('order') order!: number;
 
   @relation('training_blocks', 'block_id') trainingBlock!: Relation<TrainingBlock>;
 

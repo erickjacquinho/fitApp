@@ -6,6 +6,7 @@ import { useProgramSummary, BlockWithSets } from '../hooks/useProgramSummary';
 import { WorkoutListItem } from './WorkoutListItem';
 import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 import { Edit2, ArrowDownUp, Check } from 'lucide-react-native';
+import { ProgramKanbanEditor } from './ProgramKanbanEditor';
 import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { Icon } from '@/components/ui/icon';
 interface ProgramSummaryScreenProps {
@@ -21,6 +22,7 @@ export const ProgramSummaryScreen = ({
 }: ProgramSummaryScreenProps) => {
   const { program, blocks, isLoading, error, updateBlocksOrder } = useProgramSummary(programId);
   const [isReordering, setIsReordering] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const { primary } = useThemeColors();
 
   if (isLoading) {
@@ -79,8 +81,8 @@ export const ProgramSummaryScreen = ({
             </Button>
           )}
           {!isReordering && (
-            <Button variant="outline" size="sm" onPress={onEditProgram}>
-              <Icon as={Edit2} size={18} className="text-text-primary" />
+            <Button variant="outline" size="sm" onPress={() => setIsEditMode(!isEditMode)}>
+              <Icon as={isEditMode ? Check : Edit2} size={18} className="text-text-primary" />
             </Button>
           )}
         </View>
@@ -95,6 +97,8 @@ export const ProgramSummaryScreen = ({
             <Text>Add Workout</Text>
           </Button>
         </View>
+      ) : isEditMode ? (
+        <ProgramKanbanEditor blocks={blocks.map(b => b.block)} />
       ) : (
         <DraggableFlatList
           data={blocks}

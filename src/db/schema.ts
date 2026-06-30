@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 7,
+  version: 8,
   tables: [
     tableSchema({
       name: 'foods',
@@ -68,6 +68,7 @@ export default appSchema({
         { name: 'reps_max', type: 'number' },
         { name: 'advanced_technique', type: 'string', isOptional: true },
         { name: 'reps_reserve', type: 'number', isOptional: true },
+        { name: 'order', type: 'number' },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

@@ -154,5 +154,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 8,
+      steps: [
+        addColumns({
+          table: 'exercises',
+          columns: [
+            { name: 'order', type: 'number' },
+          ],
+        }),
+      ],
+    },
   ],
 });
