@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Pressable } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodCardList } from './FoodCardList';
 import { MealCard } from './MealCard';
@@ -13,8 +13,10 @@ import Food from '../../../db/models/Food';
 import Meal from '../../../db/models/Meal';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { MealService } from '../services/meal-service';
+import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { cn } from '@/lib/utils';
 
 import { Text } from "@/components/ui/text";
 
@@ -24,6 +26,12 @@ interface FoodBankScreenProps {
   mealId?: string;
 }
 
+const TABS = [
+  { id: 'todos', label: 'Todos' },
+  { id: 'refeicoes', label: 'Refeições' },
+  { id: 'favoritos', label: 'Favoritos' },
+];
+
 function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -31,6 +39,23 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
   const [mealSelectorVisible, setMealSelectorVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('todos');
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  const activeIndex = TABS.findIndex(t => t.id === activeTab);
+  const tabWidth = containerWidth > 0 ? (containerWidth - 8) / 3 : 0;
+
+  const animatedIndicatorStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{
+        translateX: withSpring(activeIndex * tabWidth, {
+          mass: 1,
+          damping: 25,
+          stiffness: 250,
+        })
+      }],
+      width: tabWidth,
+    };
+  }, [activeIndex, tabWidth]);
 
   const {
     search,
@@ -105,11 +130,28 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
       </View>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1">
-        <TabsList className="mb-4 rounded-xl">
-          <TabsTrigger value="todos" className="rounded-lg"><Text>Todos</Text></TabsTrigger>
-          <TabsTrigger value="refeicoes" className="rounded-lg"><Text>Refeições</Text></TabsTrigger>
-          <TabsTrigger value="favoritos" className="rounded-lg"><Text>Favoritos</Text></TabsTrigger>
-        </TabsList>
+        <View 
+          className="my-4 flex-row items-center rounded-xl bg-surface-elevated p-1"
+          onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+        >
+          {containerWidth > 0 && (
+            <Animated.View 
+              className="absolute top-1 bottom-1 rounded-lg bg-surface border border-border-subtle"
+              style={[{ left: 4 }, animatedIndicatorStyle]}
+            />
+          )}
+          {TABS.map((tab) => (
+            <Pressable
+              key={tab.id}
+              className="flex-1 items-center justify-center py-2 min-h-touch-target"
+              onPress={() => setActiveTab(tab.id)}
+            >
+              <Text className={cn("font-bold text-label", activeTab === tab.id ? "text-text-primary" : "text-text-secondary")}>
+                {tab.label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
 
         <TabsContent value="todos" className="flex-1">
           <FlatList keyboardShouldPersistTaps="handled"
