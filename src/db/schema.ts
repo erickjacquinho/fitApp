@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb/Schema';
 
 export default appSchema({
-  version: 8,
+  version: 9,
   tables: [
     tableSchema({
       name: 'foods',
@@ -13,6 +13,7 @@ export default appSchema({
         { name: 'carbohydrates', type: 'number' },
         { name: 'fat', type: 'number' },
         { name: 'calories', type: 'number' },
+        { name: 'is_favorite', type: 'boolean', isOptional: true },
         { name: 'created_at', type: 'number' },
         { name: 'updated_at', type: 'number' },
       ],

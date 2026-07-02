@@ -6,8 +6,8 @@ export default function CreateProgramRoute() {
   return (
     <Screen
       header={<Header title="Novo programa" showBackButton />}
-      scrollable={true}
-      withPadding={true}
+      scrollable={false}
+      withPadding={false}
     >
       <ProgramForm />
     </Screen>

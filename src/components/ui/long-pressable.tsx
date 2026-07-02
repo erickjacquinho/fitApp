@@ -3,7 +3,7 @@ import { Pressable, PressableProps, ViewStyle, StyleProp, GestureResponderEvent 
 import * as Haptics from 'expo-haptics';
 
 export interface LongPressableProps extends PressableProps {
-  onLongPress: (event: GestureResponderEvent) => void;
+  onLongPress?: (event: GestureResponderEvent) => void;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   className?: string;

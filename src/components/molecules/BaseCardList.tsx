@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Pressable } from 'react-native';
+import { View } from 'react-native';
+import { LongPressable } from '@/components/ui/long-pressable';
 import { cn } from '@/lib/utils';
 
 export interface BaseCardListProps {
@@ -28,7 +29,7 @@ export function BaseCardList({
   testID,
 }: BaseCardListProps) {
   return (
-    <Pressable
+    <LongPressable
       testID={testID}
       onPress={onPress}
       onLongPress={onLongPress}
@@ -40,11 +41,11 @@ export function BaseCardList({
         isFirst && 'border-t rounded-t-xl',
         isLast && 'rounded-b-xl',
         isActive && 'bg-surface-elevated opacity-70',
-        isSelected && 'bg-primary-soft',
+        isSelected && 'bg-primary/10',
         className
       )}
     >
       {children}
-    </Pressable>
+    </LongPressable>
   );
 }

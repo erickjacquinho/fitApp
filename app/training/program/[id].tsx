@@ -20,8 +20,7 @@ export default function ProgramSummaryRoute() {
       <ProgramSummaryScreen 
         programId={id} 
         onEditProgram={() => {
-          // Navigate to edit program screen (if it exists or just console log for now)
-          console.log('Edit program', id);
+          router.push(`/training/edit-program/${id}`);
         }}
         onWorkoutPress={(blockId) => {
           // Navigate to workout details

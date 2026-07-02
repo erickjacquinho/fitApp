@@ -11,6 +11,7 @@ export default class Food extends Model {
   @field('carbohydrates') carbohydrates!: number;
   @field('fat') fat!: number;
   @field('calories') calories!: number;
+  @field('is_favorite') isFavorite!: boolean;
   
   @readonly @date('created_at') createdAt!: Date;
   @readonly @date('updated_at') updatedAt!: Date;

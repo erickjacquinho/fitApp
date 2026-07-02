@@ -165,5 +165,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 9,
+      steps: [
+        addColumns({
+          table: 'foods',
+          columns: [
+            { name: 'is_favorite', type: 'boolean', isOptional: true },
+          ],
+        }),
+      ],
+    },
   ],
 });

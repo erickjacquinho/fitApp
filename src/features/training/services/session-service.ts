@@ -15,9 +15,23 @@ export class SessionService {
         .query(Q.where('status', 'active'))
         .fetch();
 
-      // If there are active sessions, mark them completed/cancelled or just return the current active one
+      // If there are active sessions, return the current active one
       if (activeSessions.length > 0) {
         return activeSessions[0];
+      }
+
+      // Check if there is a paused session for this program
+      const pausedSessions = await this.sessionsCollection
+        .query(
+          Q.where('status', 'paused'),
+          Q.where('program_id', programId)
+        )
+        .fetch();
+
+      if (pausedSessions.length > 0) {
+        return await pausedSessions[0].update((record) => {
+          record.status = 'active';
+        });
       }
 
       return await this.sessionsCollection.create((session) => {
@@ -25,6 +39,30 @@ export class SessionService {
         session.startDate = Date.now();
         session.status = 'active';
         session.targetDate = targetDate;
+      });
+    });
+  }
+
+  static async pauseSession(sessionId: string): Promise<WorkoutSession> {
+    return await database.write(async () => {
+      const session = await this.sessionsCollection.find(sessionId);
+      if (!session) {
+        throw new Error('Workout session not found');
+      }
+      return await session.update((record) => {
+        record.status = 'paused';
+      });
+    });
+  }
+
+  static async resumeSession(sessionId: string): Promise<WorkoutSession> {
+    return await database.write(async () => {
+      const session = await this.sessionsCollection.find(sessionId);
+      if (!session) {
+        throw new Error('Workout session not found');
+      }
+      return await session.update((record) => {
+        record.status = 'active';
       });
     });
   }

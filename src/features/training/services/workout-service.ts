@@ -52,6 +52,132 @@ export class WorkoutService {
     });
   }
 
+  static async updateProgram(
+    programId: string,
+    programData: { name: string },
+    blocksData: {
+      id?: string;
+      name: string;
+      order: number;
+      exercises: {
+        id?: string;
+        name: string;
+        sets: number;
+        repsMin: number;
+        repsMax: number;
+        advancedTechnique?: string;
+        repsReserve?: number;
+      }[];
+    }[]
+  ): Promise<Program> {
+    if (!programData.name || programData.name.trim() === '') {
+      throw new Error('ValidationError: Program name is required');
+    }
+
+    return await database.write(async () => {
+      const program = await this.programsCollection.find(programId);
+      
+      const batches: any[] = [];
+
+      // Update program name
+      batches.push(
+        program.prepareUpdate((p) => {
+          p.name = capitalizeWords(programData.name);
+        })
+      );
+
+      // Fetch current blocks
+      const existingBlocks = await program.trainingBlocks.fetch();
+      const existingBlocksMap = new Map(existingBlocks.map(b => [b.id, b]));
+
+      const inputBlockIds = new Set(blocksData.map(b => b.id).filter(Boolean));
+
+      // Mark removed blocks (and their exercises) as deleted
+      for (const block of existingBlocks) {
+        if (!inputBlockIds.has(block.id)) {
+          batches.push(block.prepareMarkAsDeleted());
+          const blockExercises = await block.exercises.fetch();
+          for (const ex of blockExercises) {
+            batches.push(ex.prepareMarkAsDeleted());
+          }
+        }
+      }
+
+      for (const blockData of blocksData) {
+        let blockRecord: TrainingBlock;
+
+        if (blockData.id && existingBlocksMap.has(blockData.id)) {
+          // Update existing block
+          blockRecord = existingBlocksMap.get(blockData.id)!;
+          batches.push(
+            blockRecord.prepareUpdate((b) => {
+              b.name = capitalizeWords(blockData.name);
+              b.order = blockData.order;
+            })
+          );
+        } else {
+          // Create new block
+          blockRecord = this.trainingBlocksCollection.prepareCreate((b) => {
+            b.programId = program.id;
+            b.name = capitalizeWords(blockData.name);
+            b.order = blockData.order;
+          });
+          batches.push(blockRecord);
+        }
+
+        // Handle exercises for this block
+        const existingExercises = blockData.id && existingBlocksMap.has(blockData.id) 
+          ? await blockRecord.exercises.fetch() 
+          : [];
+        const existingExercisesMap = new Map(existingExercises.map(e => [e.id, e]));
+
+        const inputExerciseIds = new Set(blockData.exercises.map(e => e.id).filter(Boolean));
+
+        // Mark removed exercises as deleted
+        for (const ex of existingExercises) {
+          if (!inputExerciseIds.has(ex.id)) {
+            batches.push(ex.prepareMarkAsDeleted());
+          }
+        }
+
+        // Create or update exercises
+        let exOrder = 0;
+        for (const exData of blockData.exercises) {
+          if (exData.id && existingExercisesMap.has(exData.id)) {
+            const exRecord = existingExercisesMap.get(exData.id)!;
+            batches.push(
+              exRecord.prepareUpdate((e) => {
+                e.name = capitalizeWords(exData.name);
+                e.sets = exData.sets;
+                e.repsMin = exData.repsMin;
+                e.repsMax = exData.repsMax;
+                e.advancedTechnique = exData.advancedTechnique?.trim() || null;
+                e.repsReserve = exData.repsReserve ?? null;
+                e.order = exOrder++;
+                e.blockId = blockRecord.id;
+              })
+            );
+          } else {
+            const newExercise = this.exercisesCollection.prepareCreate((e) => {
+              e.name = capitalizeWords(exData.name);
+              e.sets = exData.sets;
+              e.repsMin = exData.repsMin;
+              e.repsMax = exData.repsMax;
+              e.advancedTechnique = exData.advancedTechnique?.trim() || null;
+              e.repsReserve = exData.repsReserve ?? null;
+              e.order = exOrder++;
+              e.blockId = blockRecord.id;
+            });
+            batches.push(newExercise);
+          }
+        }
+      }
+
+      await database.batch(...batches);
+      return program;
+    });
+  }
+
   static async addExerciseToBlock(blockId: string, exerciseData: ExerciseDTO): Promise<Exercise> {
     if (!exerciseData.name || exerciseData.name.trim() === '') {
       throw new Error('ValidationError: Exercise name is required');

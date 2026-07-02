@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FoodService } from '../services/food-service';
 import Food from '../../../db/models/Food';
 
@@ -11,14 +11,29 @@ export function useFoodBank(foods: Food[]) {
     f.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  useEffect(() => {
+    if (isSelectionMode && bulkSelections.size === 0) {
+      setIsSelectionMode(false);
+    }
+  }, [bulkSelections.size, isSelectionMode]);
+
   const deleteFood = async (id: string) => {
     await FoodService.delete(id);
   };
 
-  const deleteSelectedFoods = async () => {
-    await Promise.all(Array.from(bulkSelections).map((id) => FoodService.delete(id)));
+  const clearSelection = () => {
     setBulkSelections(new Set());
     setIsSelectionMode(false);
+  };
+
+  const deleteSelectedFoods = async () => {
+    await Promise.all(Array.from(bulkSelections).map((id) => FoodService.delete(id)));
+    clearSelection();
+  };
+
+  const favoriteSelectedFoods = async () => {
+    await FoodService.toggleFavorites(Array.from(bulkSelections), true);
+    clearSelection();
   };
 
   const toggleBulkSelection = (id: string) => {
@@ -37,8 +52,10 @@ export function useFoodBank(foods: Food[]) {
     setIsSelectionMode,
     bulkSelections,
     toggleBulkSelection,
+    clearSelection,
     filteredFoods,
     deleteFood,
     deleteSelectedFoods,
+    favoriteSelectedFoods,
   };
 }

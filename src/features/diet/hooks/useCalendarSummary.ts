@@ -5,14 +5,17 @@ import { DietRawQueriesService } from '../services/diet-raw-queries.service';
 export function useCalendarSummary() {
   const [summaries, setSummaries] = useState<DailySummary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const fetchSummaries = async () => {
       try {
+        setError(null);
         const result = await DietRawQueriesService.fetchDailySummaries();
         setSummaries(result);
-      } catch (error) {
-        console.error('Error fetching calendar summaries:', error);
+      } catch (err: any) {
+        console.error('Error fetching calendar summaries:', err);
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -21,5 +24,5 @@ export function useCalendarSummary() {
     fetchSummaries();
   }, []);
 
-  return { summaries, loading };
+  return { summaries, loading, error };
 }

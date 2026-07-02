@@ -13,6 +13,8 @@ import { MealService } from '../services/meal-service';
 import { Edit, EllipsisVertical, GripVertical, Trash2 } from 'lucide-react-native';
 import { Text } from "@/components/ui/text";
 import { Icon } from '@/components/ui/icon';
+import { database } from '../../../db';
+import { Q } from '@nozbe/watermelondb';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,14 +62,31 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
 
   React.useEffect(() => {
     const loadFoods = async () => {
-      const data = await Promise.all(items.map(async (item) => ({
-        id: item.id,
-        foodId: item.food.id,
-        food: await item.food.fetch(),
-        quantity: item.quantity
-      })));
-      const validData = data.filter((d): d is { id: string; foodId: string; food: Food; quantity: number } => d.food !== null);
-      setFoodItems(validData);
+      const uniqueFoodIds = Array.from(new Set(items.map(i => i.foodId).filter(Boolean)));
+      if (uniqueFoodIds.length === 0) {
+        setFoodItems([]);
+        return;
+      }
+      try {
+        const foods = await database.get<Food>('foods').query(
+          Q.where('id', Q.oneOf(uniqueFoodIds))
+        ).fetch();
+        const foodMap = new Map(foods.map(f => [f.id, f]));
+        const validData = items
+          .map(item => {
+            const food = foodMap.get(item.foodId);
+            return food ? {
+              id: item.id,
+              foodId: item.foodId,
+              food,
+              quantity: item.quantity
+            } : null;
+          })
+          .filter((d): d is { id: string; foodId: string; food: Food; quantity: number } => d !== null);
+        setFoodItems(validData);
+      } catch (err) {
+        console.error('Failed to batch fetch foods in MealCard:', err);
+      }
     };
     loadFoods();
   }, [items]);

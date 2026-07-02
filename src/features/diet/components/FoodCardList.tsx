@@ -8,10 +8,13 @@ import { CaloriesText } from '../../../components/molecules/CaloriesText';
 import Food from '../../../db/models/Food';
 import withObservables from '@nozbe/with-observables';
 
+import { cn } from '@/lib/utils';
+
 export interface FoodCardListProps {
   food: Food;
   onDelete?: () => void;
   onPress?: () => void;
+  onLongPress?: () => void;
   isSelected?: boolean;
   isFirst?: boolean;
   isLast?: boolean;
@@ -23,6 +26,7 @@ function FoodCardListComponent({
   food,
   onDelete,
   onPress,
+  onLongPress,
   isSelected,
   isFirst = false,
   isLast = false,
@@ -38,13 +42,14 @@ function FoodCardListComponent({
     <SwipeableRow onDelete={onDelete}>
       <BaseCardList
         onPress={onPress}
+        onLongPress={onLongPress}
         isFirst={isFirst}
         isLast={isLast}
         isSelected={isSelected}
         className={className}
       >
         <View className="flex-1 mr-3 justify-center gap-1">
-          <Text variant="subtitle" className="text-text-primary" numberOfLines={1}>{food.name}</Text>
+          <Text variant="subtitle" className={cn("text-text-primary", isSelected && "text-primary")} numberOfLines={1}>{food.name}</Text>
           <Text variant="caption" className="text-text-secondary" numberOfLines={1}>
             {food.preparationWeight} g
           </Text>

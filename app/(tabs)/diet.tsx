@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { MenuScreen } from "../../src/features/diet/components/MenuScreen";
@@ -10,12 +10,7 @@ import { Apple, ArrowUpDown, CalendarDays } from 'lucide-react-native';
 import { DateSelector } from '@/components/molecules/DateSelector';
 import { LongPressable } from '@/components/ui/long-pressable';
 
-const formatDate = (date: Date) => {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-};
+import { useAppStore } from '../../src/store';
 
 export interface MenuScreenRef {
   startReorder: () => void;
@@ -23,15 +18,16 @@ export interface MenuScreenRef {
 
 export default function DietTab() {
   const { date } = useLocalSearchParams<{ date?: string }>();
-  const [selectedDate, setSelectedDate] = useState(() => formatDate(new Date()));
+  const { selectedDate, setSelectedDate } = useAppStore();
   const menuRef = useRef<MenuScreenRef | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (date) {
       setSelectedDate(date);
+      router.setParams({ date: undefined } as any);
     }
-  }, [date]);
+  }, [date, setSelectedDate, router]);
 
   const startReorder = () => {
     menuRef.current?.startReorder();

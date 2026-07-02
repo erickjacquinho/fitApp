@@ -10,13 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import * as Haptics from 'expo-haptics';
 
 interface AddFoodToMealScreenProps {
   food: Food;
   mealId: string;
+  onAdded?: () => void;
 }
 
-function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps) {
+function AddFoodToMealScreenComponent({ food, mealId, onAdded }: AddFoodToMealScreenProps) {
   const router = useRouter();
   const [quantityStr, setQuantityStr] = useState('100');
 
@@ -32,8 +34,13 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
 
   const handleAdd = async () => {
     if (quantity > 0) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       await MealService.addItemToMeal(mealId, food.id, quantity);
-      router.navigate('/(tabs)/diet');
+      if (onAdded) {
+        onAdded();
+      } else {
+        router.navigate('/(tabs)/diet');
+      }
     }
   };
 
@@ -50,6 +57,7 @@ function AddFoodToMealScreenComponent({ food, mealId }: AddFoodToMealScreenProps
             value={quantityStr}
             onChangeText={setQuantityStr}
             placeholder="0"
+            autoFocus
           />
         </View>
 

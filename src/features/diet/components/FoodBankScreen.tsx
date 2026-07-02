@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodCardList } from './FoodCardList';
+import { BulkSelectionMenu } from './BulkSelectionMenu';
+import { MealSelectorModal } from './MealSelectorModal';
 import { useFoodBank } from '../hooks/useFoodBank';
 import { useRouter } from 'expo-router';
 import withObservables from '@nozbe/with-observables';
@@ -20,6 +22,8 @@ interface FoodBankScreenProps {
 function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [bulkDeleteModalVisible, setBulkDeleteModalVisible] = useState(false);
+  const [mealSelectorVisible, setMealSelectorVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
 
   const {
@@ -29,9 +33,11 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
     setIsSelectionMode,
     bulkSelections,
     toggleBulkSelection,
+    clearSelection,
     filteredFoods,
     deleteFood,
     deleteSelectedFoods,
+    favoriteSelectedFoods,
   } = useFoodBank(foods);
 
   const handleAddFoodToMeal = (foodId: string) => {
@@ -49,6 +55,7 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
 
   const handleBulkDelete = async () => {
     await deleteSelectedFoods();
+    setBulkDeleteModalVisible(false);
   };
 
   const confirmDelete = (id: string) => {
@@ -63,17 +70,10 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         
         <View className="flex-row gap-3">
           <View className="flex-1">
-            <Button variant={isSelectionMode ? "outline" : "default"} onPress={() => isSelectionMode ? setIsSelectionMode(false) : router.push('/diet/create-food')}><Text>{isSelectionMode ? 'Cancelar' : 'Criar alimento'}</Text></Button>
+            <Button variant="default" onPress={() => router.push('/diet/create-food')}>
+              <Text>Criar alimento</Text>
+            </Button>
           </View>
-          {isSelectionMode ? (
-            <View className="flex-1">
-              <Button variant="destructive" disabled={bulkSelections.size === 0} onPress={handleBulkDelete}><Text>{`Excluir (${bulkSelections.size})`}</Text></Button>
-            </View>
-          ) : (
-            <View className="flex-1">
-              <Button variant="secondary" onPress={() => setIsSelectionMode(true)}><Text>Selecionar</Text></Button>
-            </View>
-          )}
         </View>
       </View>
 
@@ -93,6 +93,10 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
               isFirst={isFirst}
               isLast={isLast}
               onDelete={isSelectionMode ? undefined : () => confirmDelete(item.id)}
+              onLongPress={() => {
+                setIsSelectionMode(true);
+                toggleBulkSelection(item.id);
+              }}
               onPress={() => {
                 if (isSelectionMode) toggleBulkSelection(item.id);
                 else if (mealId) handleAddFoodToMeal(item.id);
@@ -116,6 +120,43 @@ function FoodBankScreenComponent({ foods, mealId }: FoodBankScreenProps) {
         onConfirm={handleDelete}
         onCancel={() => setDeleteModalVisible(false)}
         isDestructive
+      />
+
+      <ConfirmModal 
+        visible={bulkDeleteModalVisible}
+        title="Excluir alimentos?"
+        description={`Tem certeza que deseja excluir ${bulkSelections.size} alimentos do seu banco?`}
+        onConfirm={handleBulkDelete}
+        onCancel={() => setBulkDeleteModalVisible(false)}
+        isDestructive
+      />
+
+      {isSelectionMode && (
+        <BulkSelectionMenu
+          selectedCount={bulkSelections.size}
+          onFavorite={favoriteSelectedFoods}
+          onAdd={() => {
+            if (mealId) {
+              const foodIds = Array.from(bulkSelections).join(',');
+              router.push({ pathname: '/diet/bulk-add-food-to-meal', params: { mealId, foodIds } });
+              clearSelection();
+            } else {
+              setMealSelectorVisible(true);
+            }
+          }}
+          onDelete={() => setBulkDeleteModalVisible(true)}
+        />
+      )}
+
+      <MealSelectorModal
+        visible={mealSelectorVisible}
+        onClose={() => setMealSelectorVisible(false)}
+        onSelect={(selectedMealId) => {
+          setMealSelectorVisible(false);
+          const foodIds = Array.from(bulkSelections).join(',');
+          router.push({ pathname: '/diet/bulk-add-food-to-meal', params: { mealId: selectedMealId, foodIds } });
+          clearSelection();
+        }}
       />
     </View>
   );

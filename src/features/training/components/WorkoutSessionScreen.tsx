@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Pressable } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { TrainingProgressBar } from './TrainingProgressBar';
 import { ExecuteExerciseModal } from './ExecuteExerciseModal';
 import { ExerciseListItem } from './ExerciseListItem';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import Exercise from '../../../db/models/Exercise';
-import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
 import { useThemeColors } from '../../../hooks/use-theme-colors';
-import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS, Easing } from 'react-native-reanimated';
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
   const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [confirmFinishVisible, setConfirmFinishVisible] = useState(false);
   const { primary } = useThemeColors();
 
   const {
@@ -51,23 +49,42 @@ export function WorkoutSessionScreen() {
     await handleDeleteSet(activeExercise.id, setNumber);
   };
 
-  const handleAttemptFinish = () => {
-    setConfirmFinishVisible(true);
-  };
+  const progress = useSharedValue(0);
+
+  const animatedProgressStyle = useAnimatedStyle(() => {
+    return {
+      width: `${progress.value * 100}%`,
+    };
+  });
 
   const onConfirmFinish = async () => {
-    setConfirmFinishVisible(false);
-    setTimeout(async () => {
-      try {
-        await handleFinishWorkout();
-      } catch {
-        setFeedback({
-          type: 'error',
-          title: 'Erro ao finalizar',
-          message: 'Não foi possível salvar a sessão. Tente novamente.',
-        });
+    try {
+      await handleFinishWorkout();
+    } catch {
+      setFeedback({
+        type: 'error',
+        title: 'Erro ao finalizar',
+        message: 'Não foi possível salvar a sessão. Tente novamente.',
+      });
+    }
+  };
+
+  const handleHoldStart = () => {
+    progress.value = withTiming(1, {
+      duration: 1500,
+      easing: Easing.linear,
+    }, (finished) => {
+      if (finished) {
+        progress.value = 0; // reset
+        runOnJS(onConfirmFinish)();
       }
-    }, 200);
+    });
+  };
+
+  const handleHoldEnd = () => {
+    if (progress.value < 1) {
+      progress.value = withTiming(0, { duration: 200 });
+    }
   };
 
   if (isLoading) {
@@ -124,7 +141,19 @@ export function WorkoutSessionScreen() {
         </Card>
       )}
 
-      <Button onPress={handleAttemptFinish} className="my-6 min-h-control-lg bg-success"><Text>Finalizar treino</Text></Button>
+      <Pressable
+        onPressIn={handleHoldStart}
+        onPressOut={handleHoldEnd}
+        className="my-6 min-h-control-lg bg-success rounded-md overflow-hidden justify-center items-center relative active:opacity-90"
+      >
+        <Animated.View 
+          className="absolute left-0 top-0 bottom-0 bg-text-inverse opacity-35" 
+          style={animatedProgressStyle} 
+        />
+        <Text variant="label" className="text-text-inverse font-bold z-10">
+          Segure para finalizar treino
+        </Text>
+      </Pressable>
 
       {activeExercise && (
         <ExecuteExerciseModal
@@ -149,16 +178,6 @@ export function WorkoutSessionScreen() {
           onDeleteSet={handleDeleteSetCallback}
         />
       )}
-
-      <ConfirmModal
-        visible={confirmFinishVisible}
-        onCancel={() => setConfirmFinishVisible(false)}
-        onConfirm={onConfirmFinish}
-        title="Finalizar Treino"
-        description="Tem certeza que deseja finalizar esta sessão de treino?"
-        confirmLabel="Sim, Finalizar"
-        cancelLabel="Cancelar"
-      />
 
       <FeedbackDialog
         visible={!!feedback}

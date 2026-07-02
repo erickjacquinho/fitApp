@@ -1,6 +1,13 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Pressable } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming, 
+  Easing 
+} from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 interface MacroRadialChartProps {
   protein: number;
@@ -45,62 +52,90 @@ export function MacroRadialChart({
   const pRot = -90 + (cPct * 360);
   const fRot = -90 + ((cPct + pPct) * 360);
 
+  const rotation = useSharedValue(0);
+  const targetRotation = useRef(0);
+
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    
+    // Aleatório entre 300 e 720 graus
+    const addRotation = 300 + Math.random() * 420;
+    targetRotation.current += addRotation;
+    
+    rotation.value = withTiming(targetRotation.current, {
+      duration: 1000,
+      easing: Easing.out(Easing.cubic),
+    });
+  };
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotate: `${rotation.value}deg` }],
+    };
+  });
+
   return (
-    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
-      <Svg width={size} height={size} style={{ position: 'absolute' }}>
-        <Circle
-          stroke={backgroundColor}
-          fill="none"
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          strokeWidth={strokeWidth}
-        />
-        {total > 0 && (
-          <>
-            {cPct > 0 && (
-              <Circle
-                stroke={carbsColor}
-                fill="none"
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                strokeWidth={strokeWidth}
-                strokeDasharray={`${circumference} ${circumference}`}
-                strokeDashoffset={cOffset}
-                transform={`rotate(${cRot}, ${size / 2}, ${size / 2})`}
-              />
-            )}
-            {pPct > 0 && (
-              <Circle
-                stroke={proteinColor}
-                fill="none"
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                strokeWidth={strokeWidth}
-                strokeDasharray={`${circumference} ${circumference}`}
-                strokeDashoffset={pOffset}
-                transform={`rotate(${pRot}, ${size / 2}, ${size / 2})`}
-              />
-            )}
-            {fPct > 0 && (
-              <Circle
-                stroke={fatColor}
-                fill="none"
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                strokeWidth={strokeWidth}
-                strokeDasharray={`${circumference} ${circumference}`}
-                strokeDashoffset={fOffset}
-                transform={`rotate(${fRot}, ${size / 2}, ${size / 2})`}
-              />
-            )}
-          </>
-        )}
-      </Svg>
+    <Pressable 
+      onPress={handlePress}
+      style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
+      <Animated.View style={[{ position: 'absolute' }, animatedStyle]}>
+        <Svg width={size} height={size}>
+          <Circle
+            stroke={backgroundColor}
+            fill="none"
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            strokeWidth={strokeWidth}
+          />
+          {total > 0 && (
+            <>
+              {cPct > 0 && (
+                <Circle
+                  stroke={carbsColor}
+                  fill="none"
+                  cx={size / 2}
+                  cy={size / 2}
+                  r={radius}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={`${circumference} ${circumference}`}
+                  strokeDashoffset={cOffset}
+                  transform={`rotate(${cRot}, ${size / 2}, ${size / 2})`}
+                />
+              )}
+              {pPct > 0 && (
+                <Circle
+                  stroke={proteinColor}
+                  fill="none"
+                  cx={size / 2}
+                  cy={size / 2}
+                  r={radius}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={`${circumference} ${circumference}`}
+                  strokeDashoffset={pOffset}
+                  transform={`rotate(${pRot}, ${size / 2}, ${size / 2})`}
+                />
+              )}
+              {fPct > 0 && (
+                <Circle
+                  stroke={fatColor}
+                  fill="none"
+                  cx={size / 2}
+                  cy={size / 2}
+                  r={radius}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={`${circumference} ${circumference}`}
+                  strokeDashoffset={fOffset}
+                  transform={`rotate(${fRot}, ${size / 2}, ${size / 2})`}
+                />
+              )}
+            </>
+          )}
+        </Svg>
+      </Animated.View>
       {children}
-    </View>
+    </Pressable>
   );
 }

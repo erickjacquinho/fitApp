@@ -56,6 +56,19 @@ export class FoodService {
     });
   }
 
+  static async toggleFavorites(ids: string[], isFavorite: boolean): Promise<void> {
+    const foodsToUpdate = await this.collection.query(Q.where('id', Q.oneOf(ids))).fetch();
+    await database.write(async () => {
+      await database.batch(
+        ...foodsToUpdate.map(food => 
+          food.prepareUpdate(f => {
+            f.isFavorite = isFavorite;
+          })
+        )
+      );
+    });
+  }
+
   static async getById(id: string): Promise<Food> {
     return await this.collection.find(id);
   }
