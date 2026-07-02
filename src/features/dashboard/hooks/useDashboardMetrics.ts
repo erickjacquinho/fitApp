@@ -4,6 +4,7 @@ import Meal from '../../../db/models/Meal';
 import Program from '../../../db/models/Program';
 import WorkoutSession from '../../../db/models/WorkoutSession';
 import { Q } from '@nozbe/watermelondb';
+import { getDietGoal } from '../../diet/utils/diet-goal-config';
 
 export interface DashboardMetrics {
   caloriesConsumed: number;
@@ -108,7 +109,7 @@ export function useDashboardMetrics() {
 
       setMetrics({
         caloriesConsumed: Math.round(calories),
-        caloriesGoal: 2200,
+        caloriesGoal: getDietGoal().caloriesGoal,
         proteinConsumed: Math.round(protein),
         proteinGoal: 150,
         carbsConsumed: Math.round(carbs),

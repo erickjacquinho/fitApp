@@ -10,6 +10,7 @@ import { Icon } from '@/components/ui/icon';
 import { Flame, Target } from 'lucide-react-native';
 import { cn } from '@/lib/utils';
 import { DailySummary } from '../types';
+import { getDietGoal } from '../utils/diet-goal-config';
 
 interface SectionData {
   key: string;
@@ -50,7 +51,7 @@ export const CalendarSummaryScreen = () => {
       grouped[sectionKey].push(item);
     });
 
-    const goal = 2200;
+    const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
 
     return Object.keys(grouped).map((key) => {
       const items = grouped[key];
@@ -63,7 +64,7 @@ export const CalendarSummaryScreen = () => {
       const totalCalories = items.reduce((acc, curr) => acc + curr.calories, 0);
       const avgCalories = Math.round(totalCalories / items.length);
 
-      const metCount = items.filter((curr) => Math.abs(curr.calories - goal) <= 100).length;
+      const metCount = items.filter((curr) => Math.abs(curr.calories - goal) <= margin).length;
       const adherenceRate = Math.round((metCount / items.length) * 100);
 
       return {
@@ -117,81 +118,85 @@ export const CalendarSummaryScreen = () => {
     );
   }
 
-  const HeatmapCard = () => (
-    <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4">
-      <View className="flex-row justify-between items-center mb-3">
-        <Text variant="caption" className="font-bold uppercase tracking-wider text-text-secondary">
-          Consistência Mensal
-        </Text>
-        <Text variant="caption" className="font-mono text-primary text-[11px]">
-          Meta: 2200 kcal
-        </Text>
-      </View>
-      
-      {/* Weekday headers */}
-      <View className="flex-row justify-between mb-1.5 px-0.5">
-        {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((day, idx) => (
-          <View key={idx} className="w-8 items-center">
-            <Text variant="caption" className="text-[10px] font-bold text-text-disabled">
-              {day}
-            </Text>
-          </View>
-        ))}
-      </View>
+  const HeatmapCard = () => {
+    const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
 
-      {/* Heatmap Grid */}
-      <View className="flex-row flex-wrap justify-between gap-y-2">
-        {heatmapDays.map((day, idx) => {
-          let dotColor = 'bg-surface/30 border-border-subtle';
-          let textColor = 'text-text-disabled';
-          if (day.summary) {
-            const diff = day.summary.calories - 2200;
-            if (Math.abs(diff) <= 100) {
-              dotColor = 'bg-diet-success border-diet-success/20';
-              textColor = 'text-text-inverse';
-            } else if (diff < -100) {
-              dotColor = 'bg-diet-warning border-diet-warning/20';
-              textColor = 'text-text-inverse';
-            } else {
-              dotColor = 'bg-diet-error border-diet-error/20';
-              textColor = 'text-text-inverse';
-            }
-          }
-          return (
-            <View 
-              key={idx} 
-              className={cn('w-8 h-8 rounded-lg items-center justify-center border', dotColor)}
-              accessibilityLabel={`${format(day.date, "d 'de' MMMM", { locale: ptBR })}: ${day.summary ? `${day.summary.calories} kcal` : 'sem registro'}`}
-            >
-              <Text variant="caption" className={cn('text-[10px] font-bold', textColor)}>
-                {day.dayOfMonth}
+    return (
+      <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4">
+        <View className="flex-row justify-between items-center mb-3">
+          <Text variant="caption" className="font-bold uppercase tracking-wider text-text-secondary">
+            Consistência Mensal
+          </Text>
+          <Text variant="caption" className="font-mono text-primary text-[11px]">
+            Meta: {goal} kcal
+          </Text>
+        </View>
+        
+        {/* Weekday headers */}
+        <View className="flex-row justify-between mb-1.5 px-0.5">
+          {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((day, idx) => (
+            <View key={idx} className="w-8 items-center">
+              <Text variant="caption" className="text-[10px] font-bold text-text-disabled">
+                {day}
               </Text>
             </View>
-          );
-        })}
-      </View>
+          ))}
+        </View>
 
-      {/* Legend */}
-      <View className="flex-row justify-between mt-3 pt-3 border-t border-border-subtle">
-        <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-diet-success" />
-          <Text variant="caption" className="text-[10px] text-text-secondary">Meta</Text>
+        {/* Heatmap Grid */}
+        <View className="flex-row flex-wrap justify-between gap-y-2">
+          {heatmapDays.map((day, idx) => {
+            let dotColor = 'bg-surface/30 border-border-subtle';
+            let textColor = 'text-text-disabled';
+            if (day.summary) {
+              const diff = day.summary.calories - goal;
+              if (Math.abs(diff) <= margin) {
+                dotColor = 'bg-diet-success border-diet-success/20';
+                textColor = 'text-text-inverse';
+              } else if (diff < -margin) {
+                dotColor = 'bg-diet-warning border-diet-warning/20';
+                textColor = 'text-text-inverse';
+              } else {
+                dotColor = 'bg-diet-error border-diet-error/20';
+                textColor = 'text-text-inverse';
+              }
+            }
+            return (
+              <View 
+                key={idx} 
+                className={cn('w-8 h-8 rounded-lg items-center justify-center border', dotColor)}
+                accessibilityLabel={`${format(day.date, "d 'de' MMMM", { locale: ptBR })}: ${day.summary ? `${day.summary.calories} kcal` : 'sem registro'}`}
+              >
+                <Text variant="caption" className={cn('text-[10px] font-bold', textColor)}>
+                  {day.dayOfMonth}
+                </Text>
+              </View>
+            );
+          })}
         </View>
-        <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-diet-warning" />
-          <Text variant="caption" className="text-[10px] text-text-secondary">Próximo</Text>
-        </View>
-        <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-diet-error" />
-          <Text variant="caption" className="text-[10px] text-text-secondary">Desvio</Text>
-        </View>
-        <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-surface-elevated border border-border-subtle" />
-          <Text variant="caption" className="text-[10px] text-text-secondary">Sem registro</Text>
+
+        {/* Legend */}
+        <View className="flex-row justify-between mt-3 pt-3 border-t border-border-subtle">
+          <View className="flex-row items-center gap-1.5">
+            <View className="w-2.5 h-2.5 rounded-full bg-diet-success" />
+            <Text variant="caption" className="text-[10px] text-text-secondary">Meta</Text>
+          </View>
+          <View className="flex-row items-center gap-1.5">
+            <View className="w-2.5 h-2.5 rounded-full bg-diet-warning" />
+            <Text variant="caption" className="text-[10px] text-text-secondary">Próximo</Text>
+          </View>
+          <View className="flex-row items-center gap-1.5">
+            <View className="w-2.5 h-2.5 rounded-full bg-diet-error" />
+            <Text variant="caption" className="text-[10px] text-text-secondary">Desvio</Text>
+          </View>
+          <View className="flex-row items-center gap-1.5">
+            <View className="w-2.5 h-2.5 rounded-full bg-surface-elevated border border-border-subtle" />
+            <Text variant="caption" className="text-[10px] text-text-secondary">Sem registro</Text>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View className="flex-1">

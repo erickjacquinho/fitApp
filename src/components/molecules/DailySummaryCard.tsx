@@ -9,6 +9,7 @@ import { ColoredMacros } from './ColoredMacros';
 import { Pressable, View } from 'react-native';
 import { PluralText } from '@/components/ui/plural-text';
 import { Progress } from '@/components/ui/progress';
+import { getDietGoal } from '../../features/diet/utils/diet-goal-config';
 
 interface DailySummaryCardProps {
   date: string; // YYYY-MM-DD
@@ -33,20 +34,12 @@ export const DailySummaryCard = ({
   isFirst = false,
   isLast = false
 }: DailySummaryCardProps) => {
-  const [yyyy, mm, dd] = date.split('-');
-  const targetDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
   const today = new Date();
-  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  
-  const diffTime = targetDate.getTime() - todayMidnight.getTime();
-  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
   let displayDate = '';
-  if (diffDays === 0) displayDate = 'Hoje';
-  else if (diffDays === 1) displayDate = 'Amanhã';
-  else if (diffDays === -1) displayDate = 'Ontem';
-  else if (diffDays === -2) displayDate = 'Anteontem';
-  else {
+  
+  if (date) {
+    const [year, month, day] = date.split('-').map(Number);
+    const targetDate = new Date(year, month - 1, day);
     const formatted = format(targetDate, "EEEE, d 'de' MMMM", { locale: ptBR }).replace('-feira', '');
     displayDate = formatted.charAt(0).toUpperCase() + formatted.slice(1);
     
@@ -55,7 +48,7 @@ export const DailySummaryCard = ({
     }
   }
 
-  const goal = 2200;
+  const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
   const percentage = Math.min(Math.round((calories / goal) * 100), 100);
   const diff = calories - goal;
 
@@ -63,12 +56,12 @@ export const DailySummaryCard = ({
   let statusBadgeStyle = '';
   let fillStyle = 'bg-diet-error';
   let accessibilityStatusText = '';
-  if (Math.abs(diff) <= 100) {
+  if (Math.abs(diff) <= margin) {
     statusText = 'Meta Batida';
     statusBadgeStyle = 'text-diet-success bg-diet-success/10 border-diet-success/30';
     fillStyle = 'bg-diet-success';
     accessibilityStatusText = 'Meta de calorias atingida';
-  } else if (diff < -100) {
+  } else if (diff < -margin) {
     statusText = 'Próximo';
     statusBadgeStyle = 'text-diet-warning bg-diet-warning/10 border-diet-warning/30';
     fillStyle = 'bg-diet-warning';
