@@ -6,6 +6,7 @@ export function useFoodBank(foods: Food[]) {
   const [search, setSearch] = useState('');
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [bulkSelections, setBulkSelections] = useState<Set<string>>(new Set());
+  const [selectionVersion, setSelectionVersion] = useState(0);
 
   const filteredFoods = foods.filter((f) =>
     f.name.toLowerCase().includes(search.toLowerCase())
@@ -33,7 +34,12 @@ export function useFoodBank(foods: Food[]) {
 
   const favoriteSelectedFoods = async () => {
     await FoodService.toggleFavorites(Array.from(bulkSelections), true);
-    clearSelection();
+    setSelectionVersion((v) => v + 1);
+  };
+
+  const unfavoriteSelectedFoods = async () => {
+    await FoodService.toggleFavorites(Array.from(bulkSelections), false);
+    setSelectionVersion((v) => v + 1);
   };
 
   const toggleBulkSelection = (id: string) => {
@@ -57,5 +63,7 @@ export function useFoodBank(foods: Food[]) {
     deleteFood,
     deleteSelectedFoods,
     favoriteSelectedFoods,
+    unfavoriteSelectedFoods,
+    selectionVersion,
   };
 }

@@ -36,6 +36,7 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
   const router = useRouter();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [bulkDeleteModalVisible, setBulkDeleteModalVisible] = useState(false);
+  const [bulkUnfavoriteModalVisible, setBulkUnfavoriteModalVisible] = useState(false);
   const [mealSelectorVisible, setMealSelectorVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('todos');
@@ -69,6 +70,8 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
     deleteFood,
     deleteSelectedFoods,
     favoriteSelectedFoods,
+    unfavoriteSelectedFoods,
+    selectionVersion,
   } = useFoodBank(foods);
 
   const handleAddFoodToMeal = (foodId: string) => {
@@ -89,6 +92,11 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
     setBulkDeleteModalVisible(false);
   };
 
+  const handleBulkUnfavorite = async () => {
+    await unfavoriteSelectedFoods();
+    setBulkUnfavoriteModalVisible(false);
+  };
+
   const confirmDelete = (id: string) => {
     setSelectedFoodId(id);
     setDeleteModalVisible(true);
@@ -96,6 +104,14 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
 
   const favoriteFoods = useMemo(() => filteredFoods.filter(f => f.isFavorite), [filteredFoods]);
   const filteredMeals = useMemo(() => meals.filter(m => m.name.toLowerCase().includes(search.toLowerCase())), [meals, search]);
+
+  const isAllFavorites = useMemo(() => {
+    if (bulkSelections.size === 0) return false;
+    return Array.from(bulkSelections).every(id => {
+      const food = foods.find(f => f.id === id);
+      return food?.isFavorite;
+    });
+  }, [bulkSelections, foods, selectionVersion]);
 
   const renderFoodItem = ({ item, index }: { item: Food, index: number }) => {
     const isSelected = bulkSelections.has(item.id);
@@ -144,7 +160,12 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
             <Pressable
               key={tab.id}
               className="flex-1 items-center justify-center py-2 min-h-touch-target"
-              onPress={() => setActiveTab(tab.id)}
+              onPress={() => {
+                if (activeTab !== tab.id) {
+                  clearSelection();
+                  setActiveTab(tab.id);
+                }
+              }}
             >
               <Text className={cn("font-bold text-label", activeTab === tab.id ? "text-text-primary" : "text-text-secondary")}>
                 {tab.label}
@@ -220,10 +241,21 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
         isDestructive
       />
 
+      <ConfirmModal 
+        visible={bulkUnfavoriteModalVisible}
+        title="Remover dos favoritos?"
+        description={`Tem certeza que deseja desfavoritar ${bulkSelections.size} alimentos?`}
+        onConfirm={handleBulkUnfavorite}
+        onCancel={() => setBulkUnfavoriteModalVisible(false)}
+        isDestructive
+      />
+
       {isSelectionMode && (
         <BulkSelectionMenu
           selectedCount={bulkSelections.size}
+          isAllFavorites={isAllFavorites}
           onFavorite={favoriteSelectedFoods}
+          onUnfavorite={() => setBulkUnfavoriteModalVisible(true)}
           onAdd={() => {
             if (mealId) {
               const foodIds = Array.from(bulkSelections).join(',');

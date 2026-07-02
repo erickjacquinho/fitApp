@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
-import { Star, Plus, Trash2 } from 'lucide-react-native';
+import { Star, StarOff, Plus, Trash2 } from 'lucide-react-native';
 import Animated, { 
   FadeInDown,
   FadeOutDown
@@ -12,6 +12,8 @@ import { lightTheme, darkTheme } from '@/tokens/theme';
 export interface BulkSelectionMenuProps {
   selectedCount: number;
   onFavorite: () => void;
+  onUnfavorite: () => void;
+  isAllFavorites: boolean;
   onAdd: () => void;
   onDelete: () => void;
 }
@@ -19,6 +21,8 @@ export interface BulkSelectionMenuProps {
 export function BulkSelectionMenu({
   selectedCount,
   onFavorite,
+  onUnfavorite,
+  isAllFavorites,
   onAdd,
   onDelete
 }: BulkSelectionMenuProps) {
@@ -43,11 +47,15 @@ export function BulkSelectionMenu({
 
         {/* Actions */}
         <Pressable 
-          onPress={onFavorite}
+          onPress={isAllFavorites ? onUnfavorite : onFavorite}
           className="px-4 h-full items-center justify-center active:bg-border-subtle/50"
           hitSlop={10}
         >
-          <Star size={24} color={colors.textPrimary} />
+          {isAllFavorites ? (
+            <StarOff size={24} color={colors.textPrimary} />
+          ) : (
+            <Star size={24} color={colors.textPrimary} />
+          )}
         </Pressable>
         
         <View className="w-px h-8 bg-border-subtle" />
