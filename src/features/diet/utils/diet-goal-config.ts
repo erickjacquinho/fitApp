@@ -1,12 +1,10 @@
 export interface DietGoal {
   caloriesGoal: number;
-  toleranceMargin: number;
   objective: 'loss' | 'gain' | 'maintenance';
 }
 
 export const DEFAULT_DIET_GOAL: DietGoal = {
   caloriesGoal: 2200,
-  toleranceMargin: 100,
   objective: 'maintenance',
 };
 
@@ -17,4 +15,26 @@ export const DEFAULT_DIET_GOAL: DietGoal = {
  */
 export function getDietGoal(): DietGoal {
   return DEFAULT_DIET_GOAL;
+}
+
+export type DietComplianceStatus = 'success' | 'warning' | 'error';
+
+/**
+ * Categorizes the caloric compliance of a given intake against the target goal.
+ * Rule:
+ * - "warning" (Próximo): intake < goal * 0.7
+ * - "error" (Desvio): intake > goal * 1.2
+ * - "success" (Meta Batida): goal * 0.7 <= intake <= goal * 1.2
+ */
+export function getDietComplianceStatus(calories: number, goal: number): DietComplianceStatus {
+  const lowerLimit = goal * 0.7;
+  const upperLimit = goal * 1.2;
+
+  if (calories < lowerLimit) {
+    return 'warning';
+  } else if (calories > upperLimit) {
+    return 'error';
+  } else {
+    return 'success';
+  }
 }

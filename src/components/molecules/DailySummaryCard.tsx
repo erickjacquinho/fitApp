@@ -9,7 +9,7 @@ import { ColoredMacros } from './ColoredMacros';
 import { Pressable, View } from 'react-native';
 import { PluralText } from '@/components/ui/plural-text';
 import { Progress } from '@/components/ui/progress';
-import { getDietGoal } from '../../features/diet/utils/diet-goal-config';
+import { getDietGoal, getDietComplianceStatus } from '../../features/diet/utils/diet-goal-config';
 
 interface DailySummaryCardProps {
   date: string; // YYYY-MM-DD
@@ -32,7 +32,7 @@ export const DailySummaryCard = ({
   mealCount,
   onPress,
   isFirst = false,
-  isLast = false
+  isLast = false,
 }: DailySummaryCardProps) => {
   const today = new Date();
   let displayDate = '';
@@ -48,20 +48,22 @@ export const DailySummaryCard = ({
     }
   }
 
-  const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
+  const { caloriesGoal: goal } = getDietGoal();
   const percentage = Math.min(Math.round((calories / goal) * 100), 100);
-  const diff = calories - goal;
 
   let statusText = '';
   let statusBadgeStyle = '';
   let fillStyle = 'bg-diet-error';
   let accessibilityStatusText = '';
-  if (Math.abs(diff) <= margin) {
+
+  const compliance = getDietComplianceStatus(calories, goal);
+
+  if (compliance === 'success') {
     statusText = 'Meta Batida';
     statusBadgeStyle = 'text-diet-success bg-diet-success/10 border-diet-success/30';
     fillStyle = 'bg-diet-success';
     accessibilityStatusText = 'Meta de calorias atingida';
-  } else if (diff < -margin) {
+  } else if (compliance === 'warning') {
     statusText = 'Próximo';
     statusBadgeStyle = 'text-diet-warning bg-diet-warning/10 border-diet-warning/30';
     fillStyle = 'bg-diet-warning';

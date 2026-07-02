@@ -10,7 +10,7 @@ import { Icon } from '@/components/ui/icon';
 import { Flame, Target } from 'lucide-react-native';
 import { cn } from '@/lib/utils';
 import { DailySummary } from '../types';
-import { getDietGoal } from '../utils/diet-goal-config';
+import { getDietGoal, getDietComplianceStatus } from '../utils/diet-goal-config';
 
 interface SectionData {
   key: string;
@@ -51,7 +51,7 @@ export const CalendarSummaryScreen = () => {
       grouped[sectionKey].push(item);
     });
 
-    const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
+    const { caloriesGoal: goal } = getDietGoal();
 
     return Object.keys(grouped).map((key) => {
       const items = grouped[key];
@@ -64,7 +64,7 @@ export const CalendarSummaryScreen = () => {
       const totalCalories = items.reduce((acc, curr) => acc + curr.calories, 0);
       const avgCalories = Math.round(totalCalories / items.length);
 
-      const metCount = items.filter((curr) => Math.abs(curr.calories - goal) <= margin).length;
+      const metCount = items.filter((curr) => getDietComplianceStatus(curr.calories, goal) === 'success').length;
       const adherenceRate = Math.round((metCount / items.length) * 100);
 
       return {
@@ -119,7 +119,7 @@ export const CalendarSummaryScreen = () => {
   }
 
   const HeatmapCard = () => {
-    const { caloriesGoal: goal, toleranceMargin: margin } = getDietGoal();
+    const { caloriesGoal: goal } = getDietGoal();
 
     return (
       <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4">
@@ -149,11 +149,11 @@ export const CalendarSummaryScreen = () => {
             let dotColor = 'bg-surface/30 border-border-subtle';
             let textColor = 'text-text-disabled';
             if (day.summary) {
-              const diff = day.summary.calories - goal;
-              if (Math.abs(diff) <= margin) {
+              const compliance = getDietComplianceStatus(day.summary.calories, goal);
+              if (compliance === 'success') {
                 dotColor = 'bg-diet-success border-diet-success/20';
                 textColor = 'text-text-inverse';
-              } else if (diff < -margin) {
+              } else if (compliance === 'warning') {
                 dotColor = 'bg-diet-warning border-diet-warning/20';
                 textColor = 'text-text-inverse';
               } else {
