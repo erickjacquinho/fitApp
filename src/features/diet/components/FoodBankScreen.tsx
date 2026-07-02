@@ -131,7 +131,7 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1">
         <View 
-          className="my-4 flex-row items-center rounded-xl bg-surface-elevated p-1"
+          className="mt-4 mb-3 flex-row items-center rounded-xl bg-surface-elevated p-1"
           onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         >
           {containerWidth > 0 && (
