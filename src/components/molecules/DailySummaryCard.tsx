@@ -66,18 +66,15 @@ export const DailySummaryCard = ({
 
   if (Math.abs(diff) <= 100) {
     statusText = 'Meta Batida';
-    statusBadgeStyle = 'text-success bg-success/10 border-success/30';
-    fillStyle = 'bg-success';
+    statusBadgeStyle = 'text-primary bg-primary/10 border-primary/30';
     accessibilityStatusText = 'Meta de calorias atingida';
   } else if (diff < -100) {
     statusText = 'Próximo';
-    statusBadgeStyle = 'text-warning bg-warning/10 border-warning/30';
-    fillStyle = 'bg-warning';
+    statusBadgeStyle = 'text-text-secondary bg-surface-elevated border-border-subtle';
     accessibilityStatusText = 'Abaixo da meta de calorias';
   } else {
     statusText = 'Desvio';
-    statusBadgeStyle = 'text-error bg-error/10 border-error/30';
-    fillStyle = 'bg-error';
+    statusBadgeStyle = 'text-text-secondary bg-surface-elevated border-border-subtle';
     accessibilityStatusText = 'Excedeu a meta de calorias';
   }
 
@@ -123,7 +120,7 @@ export const DailySummaryCard = ({
           </View>
         </View>
 
-        <Progress value={percentage} indicatorClassName={fillStyle} className="h-1.5 rounded-full" />
+        <Progress value={percentage} indicatorClassName="bg-primary" className="h-1.5 rounded-full" />
 
         <View className="flex-row justify-between items-center">
           <ColoredMacros protein={protein} carbs={carbs} fat={fat} />

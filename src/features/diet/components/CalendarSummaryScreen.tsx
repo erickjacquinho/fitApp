@@ -34,10 +34,11 @@ const CalendarSummarySkeleton = () => (
 );
 
 export const CalendarSummaryScreen = () => {
-  const { summaries, loading } = useCalendarSummary();
+  const { summaries, loading, error } = useCalendarSummary();
   const router = useRouter();
 
   const sections = React.useMemo<SectionData[]>(() => {
+    if (error || !summaries) return [];
     const grouped: Record<string, DailySummary[]> = {};
     
     summaries.forEach((item) => {
@@ -100,6 +101,22 @@ export const CalendarSummaryScreen = () => {
     return <CalendarSummarySkeleton />;
   }
 
+  if (error) {
+    return (
+      <View className="flex-1 p-4 justify-center items-center bg-background gap-4">
+        <Text variant="title" className="text-error font-bold mb-2">Erro de Carregamento</Text>
+        <Text variant="text" className="text-text-secondary text-center font-mono text-[11px] p-4 bg-surface-elevated rounded border border-border-subtle w-full">
+          {error.message || String(error)}
+        </Text>
+        {error.stack && (
+          <Text variant="caption" className="text-text-disabled text-left font-mono text-[9px] p-3 bg-surface border border-border-subtle rounded w-full overflow-hidden" numberOfLines={10}>
+            {error.stack.slice(0, 500)}
+          </Text>
+        )}
+      </View>
+    );
+  }
+
   const HeatmapCard = () => (
     <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4">
       <View className="flex-row justify-between items-center mb-3">
@@ -125,15 +142,19 @@ export const CalendarSummaryScreen = () => {
       {/* Heatmap Grid */}
       <View className="flex-row flex-wrap justify-between gap-y-2">
         {heatmapDays.map((day, idx) => {
-          let dotColor = 'bg-surface-elevated border-border-subtle';
+          let dotColor = 'bg-surface/30 border-border-subtle';
+          let textColor = 'text-text-disabled';
           if (day.summary) {
             const diff = day.summary.calories - 2200;
             if (Math.abs(diff) <= 100) {
-              dotColor = 'bg-success border-success/30';
+              dotColor = 'bg-primary border-primary/20';
+              textColor = 'text-text-inverse';
             } else if (diff < -100) {
-              dotColor = 'bg-warning border-warning/30';
+              dotColor = 'bg-primary/20 border-primary/30';
+              textColor = 'text-primary';
             } else {
-              dotColor = 'bg-error border-error/30';
+              dotColor = 'bg-surface-elevated border-border-strong';
+              textColor = 'text-text-secondary';
             }
           }
           return (
@@ -142,7 +163,7 @@ export const CalendarSummaryScreen = () => {
               className={cn('w-8 h-8 rounded-lg items-center justify-center border', dotColor)}
               accessibilityLabel={`${format(day.date, "d 'de' MMMM", { locale: ptBR })}: ${day.summary ? `${day.summary.calories} kcal` : 'sem registro'}`}
             >
-              <Text variant="caption" className="text-[10px] font-bold text-text-primary">
+              <Text variant="caption" className={cn('text-[10px] font-bold', textColor)}>
                 {day.dayOfMonth}
               </Text>
             </View>
@@ -153,15 +174,15 @@ export const CalendarSummaryScreen = () => {
       {/* Legend */}
       <View className="flex-row justify-between mt-3 pt-3 border-t border-border-subtle">
         <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-success" />
+          <View className="w-2.5 h-2.5 rounded-full bg-primary" />
           <Text variant="caption" className="text-[10px] text-text-secondary">Meta</Text>
         </View>
         <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-warning" />
+          <View className="w-2.5 h-2.5 rounded-full bg-primary/40" />
           <Text variant="caption" className="text-[10px] text-text-secondary">Próximo</Text>
         </View>
         <View className="flex-row items-center gap-1.5">
-          <View className="w-2.5 h-2.5 rounded-full bg-error" />
+          <View className="w-2.5 h-2.5 rounded-full bg-border-strong" />
           <Text variant="caption" className="text-[10px] text-text-secondary">Desvio</Text>
         </View>
         <View className="flex-row items-center gap-1.5">
