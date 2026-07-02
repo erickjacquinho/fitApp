@@ -18,3 +18,12 @@ export interface ItemDTO {
   foodId: string;
   quantity: number;
 }
+
+export interface DailySummary {
+  date: string;
+  mealCount: number;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}

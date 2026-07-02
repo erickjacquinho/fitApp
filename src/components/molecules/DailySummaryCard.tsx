@@ -1,26 +1,38 @@
 import { Text } from '@/components/ui/text';
 import React from 'react';
-import { Macros } from '../../features/diet/utils/macro-utils';
 import { cn } from '@/lib/utils';
 
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import { ColoredMacros } from './ColoredMacros';
-import { CaloriesText } from './CaloriesText';
 import { Pressable, View } from 'react-native';
 import { PluralText } from '@/components/ui/plural-text';
+import { Progress } from '@/components/ui/progress';
 
 interface DailySummaryCardProps {
   date: string; // YYYY-MM-DD
-  macros: Macros;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
   mealCount: number;
   onPress: () => void;
   isFirst?: boolean;
   isLast?: boolean;
 }
 
-export const DailySummaryCard = ({ date, macros, mealCount, onPress, isFirst = false, isLast = false }: DailySummaryCardProps) => {
+export const DailySummaryCard = ({
+  date,
+  calories,
+  protein,
+  carbs,
+  fat,
+  mealCount,
+  onPress,
+  isFirst = false,
+  isLast = false
+}: DailySummaryCardProps) => {
   const [yyyy, mm, dd] = date.split('-');
   const targetDate = new Date(parseInt(yyyy), parseInt(mm) - 1, parseInt(dd));
   const today = new Date();
@@ -43,35 +55,78 @@ export const DailySummaryCard = ({ date, macros, mealCount, onPress, isFirst = f
     }
   }
 
+  const goal = 2200;
+  const percentage = Math.min(Math.round((calories / goal) * 100), 100);
+  const diff = calories - goal;
+
+  let statusText = '';
+  let statusBadgeStyle = '';
+  let fillStyle = '';
+  let accessibilityStatusText = '';
+
+  if (Math.abs(diff) <= 100) {
+    statusText = 'Meta Batida';
+    statusBadgeStyle = 'text-success bg-success/10 border-success/30';
+    fillStyle = 'bg-success';
+    accessibilityStatusText = 'Meta de calorias atingida';
+  } else if (diff < -100) {
+    statusText = 'Próximo';
+    statusBadgeStyle = 'text-warning bg-warning/10 border-warning/30';
+    fillStyle = 'bg-warning';
+    accessibilityStatusText = 'Abaixo da meta de calorias';
+  } else {
+    statusText = 'Desvio';
+    statusBadgeStyle = 'text-error bg-error/10 border-error/30';
+    fillStyle = 'bg-error';
+    accessibilityStatusText = 'Excedeu a meta de calorias';
+  }
+
   return (
     <View>
       <Pressable 
         onPress={onPress}
         accessibilityRole="button"
-        accessibilityLabel={`Ver resumo de ${displayDate}`}
+        accessibilityLabel={`${displayDate}, ${mealCount} refeições. ${calories} de ${goal} calorias consumidas, ${accessibilityStatusText}.`}
         className={cn(
-          'flex-row justify-between items-center active:bg-surface-elevated px-4 py-3 bg-surface',
-          "border-border-subtle",
-          "border-x border-b",
-          isFirst && "rounded-t-lg border-t",
-          isLast && "rounded-b-lg",
-          !isFirst && !isLast && "rounded-none"
+          'flex-col active:bg-surface-elevated px-4 py-3 bg-surface',
+          'border-border-subtle',
+          'border-x border-b',
+          'gap-2',
+          isFirst && 'rounded-t-lg border-t',
+          isLast && 'rounded-b-lg',
+          !isFirst && !isLast && 'rounded-none'
         )}
       >
-        <View className="flex-1 mr-3 justify-center gap-1">
-          <Text variant="subtitle" className="text-text-primary" numberOfLines={1}>{displayDate}</Text>
-          <PluralText 
-            count={mealCount} 
-            singular="refeição" 
-            plural="refeições" 
-            zero="Nenhuma refeição"
-            variant="caption" 
-            className="text-text-secondary" 
-          />
+        <View className="flex-row justify-between items-start">
+          <View className="flex-1 mr-3 justify-center gap-1">
+            <View className="flex-row items-center gap-2">
+              <View className={cn('px-2 py-0.5 rounded-md border', statusBadgeStyle)}>
+                <Text variant="caption" className="font-bold text-[10px] uppercase">{statusText}</Text>
+              </View>
+              <Text variant="subtitle" className="text-text-primary font-bold" numberOfLines={1}>
+                {displayDate}
+              </Text>
+            </View>
+            <PluralText 
+              count={mealCount} 
+              singular="refeição" 
+              plural="refeições" 
+              zero="Nenhuma refeição"
+              variant="caption" 
+              className="text-text-secondary pl-1" 
+            />
+          </View>
+          <View className="items-end justify-center">
+            <Text variant="label" className="font-mono font-semibold text-text-primary">
+              {calories} <Text className="text-text-secondary font-sans text-xs">/ {goal} kcal</Text>
+            </Text>
+          </View>
         </View>
-        <View className="items-end justify-center gap-1">
-          <CaloriesText calories={Math.round(macros.calories)} />
-          <ColoredMacros protein={Math.round(macros.protein)} carbs={Math.round(macros.carbs)} fat={Math.round(macros.fat)} />
+
+        <Progress value={percentage} indicatorClassName={fillStyle} className="h-1.5 rounded-full" />
+
+        <View className="flex-row justify-between items-center">
+          <ColoredMacros protein={protein} carbs={carbs} fat={fat} />
         </View>
       </Pressable>
     </View>
