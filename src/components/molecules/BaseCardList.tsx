@@ -41,7 +41,7 @@ export function BaseCardList({
         isFirst && 'border-t rounded-t-xl',
         isLast && 'rounded-b-xl',
         isActive && 'bg-surface-elevated opacity-70',
-        isSelected && 'bg-primary/10',
+        isSelected && 'bg-selected',
         className
       )}
     >

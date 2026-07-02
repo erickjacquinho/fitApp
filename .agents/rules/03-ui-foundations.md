@@ -3,7 +3,7 @@
 ## 1. Mineral Warm Palette (Blue-First)
 FitApp uses the Mineral Warm palette with a strict **blue-first** rule. Olive tokens are legacy and forbidden.
 - **Primary / Active / Focus**: `primary` (Never olive).
-- **Background / Surface**: `background`, `surface`, `surface-elevated`.
+- **Background / Surface**: `background`, `surface`, `surface-elevated`, `selected`.
 - **Text**: `text-primary`, `text-secondary`, `text-inverse`, `text-disabled`.
 - **Border**: `border-subtle`, `border-strong`, `border-control`, `border-focus`.
 - **Status**: `error`, `warning`, `success`, `info`.

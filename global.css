@@ -71,6 +71,7 @@
     --color-surface: var(--color-neutral-50);
     --color-surface-elevated: var(--color-neutral-0);
     --color-surface-disabled: var(--color-neutral-100);
+    --color-surface-selected: var(--color-surface-elevated);
 
     --color-border-subtle: var(--color-neutral-200);
     --color-border-strong: var(--color-neutral-300);
@@ -204,6 +205,7 @@
       --color-surface: #211A17;
       --color-surface-elevated: #2B221E;
       --color-surface-disabled: #15110F;
+      --color-surface-selected: var(--color-surface-elevated);
 
       --color-border-subtle: #443832;
       --color-border-strong: #5A4C45;

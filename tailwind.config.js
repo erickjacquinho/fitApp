@@ -16,10 +16,12 @@ module.exports = {
       },
       colors: {
         background: 'var(--color-background)',
+        selected: 'var(--color-surface-selected)',
         surface: {
           DEFAULT: 'var(--color-surface)',
           elevated: 'var(--color-surface-elevated)',
           disabled: 'var(--color-surface-disabled)',
+          selected: 'var(--color-surface-selected)',
         },
         border: {
           subtle: 'var(--color-border-subtle)',
