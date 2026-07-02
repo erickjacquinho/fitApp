@@ -1,5 +1,6 @@
 import { database } from '../../../db';
 import { DailySummary } from '../types';
+import { Q } from '@nozbe/watermelondb';
 
 export class DietRawQueriesService {
   static async fetchDailySummaries(): Promise<DailySummary[]> {
@@ -20,7 +21,9 @@ export class DietRawQueriesService {
     `;
 
     try {
-      const rawResult = await database.adapter.unsafeQueryRaw(sql, []);
+      const rawResult = await database.get('meals').query(
+        Q.unsafeSqlQuery(sql, [])
+      ).unsafeFetchRaw();
 
       return rawResult.map((row: any) => ({
         date: row.date,
@@ -32,7 +35,7 @@ export class DietRawQueriesService {
       }));
     } catch (error) {
       console.error('Error fetching raw daily summaries:', error);
-      return [];
+      throw error;
     }
   }
 }
