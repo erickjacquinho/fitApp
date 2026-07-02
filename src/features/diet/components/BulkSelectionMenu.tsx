@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { Star, Plus, Trash2 } from 'lucide-react-native';
 import Animated, { 
   FadeInDown,
@@ -29,13 +29,12 @@ export function BulkSelectionMenu({
 
   return (
     <Animated.View 
-      entering={FadeInDown.springify().damping(15)}
+      entering={FadeInDown.springify().damping(22).mass(0.8).stiffness(150)}
       exiting={FadeOutDown}
       className="absolute bottom-6 left-0 right-0 items-center justify-center pointer-events-box-none"
     >
       <View 
-        className="flex-row items-center bg-surface-elevated rounded-full px-2 h-14 shadow-md border border-border-subtle overflow-hidden pointer-events-auto"
-        style={styles.shadow}
+        className="flex-row items-center bg-surface-elevated rounded-full px-2 h-14 border border-border-subtle overflow-hidden pointer-events-auto"
       >
         {/* Count Badge */}
         <View className="px-3 border-r border-border-subtle items-center justify-center">
@@ -74,13 +73,3 @@ export function BulkSelectionMenu({
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 8,
-  }
-});
