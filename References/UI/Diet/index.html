@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitApp - Diet History UX Concept</title>
+  <!-- Google Fonts for Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Premium CSS Variables aligned with Mineral Warm & App Palette */
+    :root {
+      --background-outer: #0d0f12;
+      --background-device: #14171a;
+      --surface: #1e2227;
+      --surface-elevated: #292e36;
+      --border-subtle: #2d333b;
+      --border-strong: #3f4752;
+      
+      --primary: #3b82f6; /* Blue-first Rule */
+      --primary-hover: #60a5fa;
+      
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-disabled: #4b5563;
+      
+      /* Semantic/Status Colors */
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #06b6d4;
+      
+      /* Macros Tone */
+      --protein: #f43f5e;
+      --carbohydrate: #fbbf24;
+      --fat: #34d399;
+      
+      --font-main: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background-outer);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(244, 63, 94, 0.04) 0%, transparent 40%);
+    }
+
+    header.demo-header {
+      margin-bottom: 2rem;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    header.demo-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    header.demo-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Device Container Mocking Mobile viewport */
+    .device-mockup {
+      width: 380px;
+      height: 800px;
+      background-color: var(--background-device);
+      border: 11px solid #2d333b;
+      border-radius: 48px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                  0 0 0 2px rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island Notch */
+    .device-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 25px;
+      background-color: #2d333b;
+      border-radius: 20px;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .device-notch::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: #111827;
+      border-radius: 50%;
+      position: absolute;
+      right: 20px;
+    }
+
+    /* Status Bar */
+    .device-status-bar {
+      height: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 24px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      user-select: none;
+    }
+
+    .device-status-bar .icons {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* App Shell View inside the Device */
+    .app-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-bottom: 24px;
+      scrollbar-width: none;
+    }
+
+    .app-screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Header component */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .app-header .btn-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.2s;
+    }
+
+    .app-header .btn-icon:active {
+      background-color: var(--surface);
+    }
+
+    .app-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* Scrollable Content */
+    .app-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* consistency block card */
+    .consistency-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meta-value {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+
+    /* Calendar Grid / Heatmap */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .heatmap-day {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s, filter 0.2s;
+    }
+
+    .heatmap-day:hover {
+      transform: scale(1.1);
+      filter: brightness(1.15);
+    }
+
+    .heatmap-day.success {
+      background-color: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--success);
+    }
+
+    .heatmap-day.warning {
+      background-color: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--warning);
+    }
+
+    .heatmap-day.error {
+      background-color: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: var(--error);
+    }
+
+    .heatmap-day.empty {
+      background-color: rgba(75, 85, 99, 0.1);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* Tooltip */
+    .heatmap-day::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%) scale(0.85);
+      background-color: #0d0f12;
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s, transform 0.15s;
+      z-index: 100;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+
+    .heatmap-day:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* Grid Weekday Headers */
+    .weekday-headers {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .weekday-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    /* Heatmap Legend */
+    .heatmap-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.success { background-color: var(--success); }
+    .legend-dot.warning { background-color: var(--warning); }
+    .legend-dot.error { background-color: var(--error); }
+
+    /* Timeline Month Groups */
+    .month-group-header {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+
+    .month-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .month-stats {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .month-stats span i {
+      color: var(--primary);
+      margin-right: 3px;
+    }
+
+    /* Daily summary list */
+    .summary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Daily Card */
+    .daily-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: background-color 0.2s, transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .daily-card:hover {
+      background-color: var(--surface-elevated);
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .daily-card:active {
+      transform: translateY(0);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .status-badge.success {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-badge.warning {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge.error {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: var(--error);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .date-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .meal-count-caption {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    .calories-group {
+      text-align: right;
+    }
+
+    .calories-val {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .calories-val span {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+
+    /* Custom horizontal progress bar matching design system */
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background-color: var(--border-subtle);
+      border-radius: 100px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-bar-fill.success { background-color: var(--success); }
+    .progress-bar-fill.warning { background-color: var(--warning); }
+    .progress-bar-fill.error { background-color: var(--error); }
+
+    /* Macros row */
+    .macros-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .macro-stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .macro-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .macro-dot.protein { background-color: var(--protein); }
+    .macro-dot.carbs { background-color: var(--carbohydrate); }
+    .macro-dot.fat { background-color: var(--fat); }
+
+    .macro-stat span {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Home Indicator bar of iOS/Android standard */
+    .device-home-bar {
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 8px;
+    }
+
+    .device-home-bar::after {
+      content: '';
+      width: 120px;
+      height: 5px;
+      background-color: var(--border-strong);
+      border-radius: 100px;
+    }
+
+    /* Navigation Footer tabs (mocked) */
+    .app-nav-tabs {
+      height: 56px;
+      border-top: 1px solid var(--border-subtle);
+      background-color: var(--surface);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-disabled);
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-tab-item.active {
+      color: var(--primary);
+    }
+
+    .nav-tab-item i {
+      font-size: 1.1rem;
+    }
+
+    /* Toast Notification Mockup */
+    .toast-tip {
+      margin-top: 1.5rem;
+      background-color: rgba(59, 130, 246, 0.1);
+      border: 1px dashed rgba(59, 130, 246, 0.3);
+      padding: 12px 16px;
+      border-radius: 12px;
+      max-width: 380px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .toast-tip strong {
+      color: var(--primary);
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="demo-header">
+    <h1>Conceito Visual de Histórico</h1>
+    <p>Protótipo interativo demonstrando a consistência metabólica, grade mensal de adesão e agrupamento temporal da dieta no <strong>FitApp</strong>.</p>
+  </header>
+
+  <!-- Phone Mockup Frame -->
+  <div class="device-mockup">
+    <div class="device-notch"></div>
+    
+    <!-- Status Bar -->
+    <div class="device-status-bar">
+      <span>17:59</span>
+      <div class="icons">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-three-quarters"></i>
+      </div>
+    </div>
+
+    <!-- App Main Screen -->
+    <div class="app-screen">
+      <header class="app-header">
+        <button class="btn-icon" aria-label="Voltar"><i class="fa-solid fa-chevron-left"></i></button>
+        <h2>Histórico</h2>
+        <button class="btn-icon" aria-label="Opções"><i class="fa-solid fa-ellipsis"></i></button>
+      </header>
+
+      <div class="app-content">
+        
+        <!-- Section: Monthly Consistency Heatmap -->
+        <div class="consistency-card">
+          <div class="section-title">
+            Consistência Mensal
+            <span class="meta-value">Meta: 2200 kcal</span>
+          </div>
+          
+          <div class="weekday-headers">
+            <div class="weekday-label">D</div>
+            <div class="weekday-label">S</div>
+            <div class="weekday-label">T</div>
+            <div class="weekday-label">Q</div>
+            <div class="weekday-label">Q</div>
+            <div class="weekday-label">S</div>
+            <div class="weekday-label">S</div>
+          </div>
+          
+          <div class="heatmap-grid">
+            <!-- June Week 4 & July Week 1-3 Mock data -->
+            <div class="heatmap-day empty" data-tooltip="28/06: Sem registro">-</div>
+            <div class="heatmap-day empty" data-tooltip="29/06: Sem registro">-</div>
+            <div class="heatmap-day success" data-tooltip="30/06: 2150 kcal (Meta Batida)">30</div>
+            <div class="heatmap-day success" data-tooltip="01/07: 2210 kcal (Meta Batida)">1</div>
+            <div class="heatmap-day success" data-tooltip="02/07: 2180 kcal (Meta Batida)">2</div>
+            <div class="heatmap-day warning" data-tooltip="03/07: 1980 kcal (Leve Déficit)">3</div>
+            <div class="heatmap-day error" data-tooltip="04/07: 2580 kcal (Excesso)">4</div>
+            
+            <div class="heatmap-day success" data-tooltip="05/07: 2205 kcal (Meta Batida)">5</div>
+            <div class="heatmap-day success" data-tooltip="06/07: 2190 kcal (Meta Batida)">6</div>
+            <div class="heatmap-day success" data-tooltip="07/07: 2230 kcal (Meta Batida)">7</div>
+            <div class="heatmap-day success" data-tooltip="08/07: 2170 kcal (Meta Batida)">8</div>
+            <div class="heatmap-day success" data-tooltip="09/07: 2200 kcal (Meta Batida)">9</div>
+            <div class="heatmap-day warning" data-tooltip="10/07: 1950 kcal (Leve Déficit)">10</div>
+            <div class="heatmap-day success" data-tooltip="11/07: 2195 kcal (Meta Batida)">11</div>
+            
+            <div class="heatmap-day success" data-tooltip="12/07: 2215 kcal (Meta Batida)">12</div>
+            <div class="heatmap-day error" data-tooltip="13/07: 2650 kcal (Excesso)">13</div>
+            <div class="heatmap-day success" data-tooltip="14/07: 2180 kcal (Meta Batida)">14</div>
+            <div class="heatmap-day success" data-tooltip="15/07: 2200 kcal (Meta Batida)">15</div>
+            <div class="heatmap-day success" data-tooltip="16/07: 2210 kcal (Meta Batida)">16</div>
+            <div class="heatmap-day success" data-tooltip="17/07: 2225 kcal (Meta Batida)">17</div>
+            <div class="heatmap-day empty" data-tooltip="Hoje (Sem Refeições)">18</div>
+          </div>
+          
+          <div class="heatmap-legend">
+            <div class="legend-item"><div class="legend-dot success"></div> Meta</div>
+            <div class="legend-item"><div class="legend-dot warning"></div> Próximo</div>
+            <div class="legend-item"><div class="legend-dot error"></div> Desvio</div>
+          </div>
+        </div>
+
+        <!-- Section Timeline: Julho de 2026 -->
+        <div>
+          <div class="month-group-header">
+            <div class="month-title">Julho de 2026</div>
+            <div class="month-stats">
+              <span><i class="fa-solid fa-fire-flame-curved"></i> Média: 2184 kcal/dia</span>
+              <span><i class="fa-solid fa-bullseye"></i> Adesão: 88%</span>
+            </div>
+          </div>
+
+          <div class="summary-list">
+            
+            <!-- Card: Hoje (Empty/under-logged status) -->
+            <div class="daily-card" onclick="alert('Navegando para Dieta > 17/07/2026 na Tela Principal')">
+              <div class="card-top">
+                <div class="card-title-group">
+                  <span class="status-badge warning">Próximo</span>
+                  <div class="date-text">Hoje</div>
+                </div>
+                <div class="calories-group">
+                  <div class="calories-val">1950 <span>/ 2200 kcal</span></div>
+                  <div class="meal-count-caption">3 refeições</div>
+                </div>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill warning" style="width: 88%"></div>
+              </div>
+              <div class="macros-row">
+                <div class="macro-stat"><div class="macro-dot protein"></div>P: <span>142g</span></div>
+                <div class="macro-stat"><div class="macro-dot carbs"></div>C: <span>198g</span></div>
+                <div class="macro-stat"><div class="macro-dot fat"></div>G: <span>65g</span></div>
+              </div>
+            </div>
+
+            <!-- Card: Ontem (Success status) -->
+            <div class="daily-card" onclick="alert('Navegando para Dieta > 16/07/2026 na Tela Principal')">
+              <div class="card-top">
+                <div class="card-title-group">
+                  <span class="status-badge success">Meta Batida</span>
+                  <div class="date-text">Ontem</div>
+                </div>
+                <div class="calories-group">
+                  <div class="calories-val">2210 <span>/ 2200 kcal</span></div>
+                  <div class="meal-count-caption">5 refeições</div>
+                </div>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill success" style="width: 100%"></div>
+              </div>
+              <div class="macros-row">
+                <div class="macro-stat"><div class="macro-dot protein"></div>P: <span>160g</span></div>
+                <div class="macro-stat"><div class="macro-dot carbs"></div>C: <span>238g</span></div>
+                <div class="macro-stat"><div class="macro-dot fat"></div>G: <span>68g</span></div>
+              </div>
+            </div>
+
+            <!-- Card: Anteontem (Error/Surplus status) -->
+            <div class="daily-card" onclick="alert('Navegando para Dieta > 15/07/2026 na Tela Principal')">
+              <div class="card-top">
+                <div class="card-title-group">
+                  <span class="status-badge error">Excesso</span>
+                  <div class="date-text">Quarta-feira, 15 de Julho</div>
+                </div>
+                <div class="calories-group">
+                  <div class="calories-val">2580 <span>/ 2200 kcal</span></div>
+                  <div class="meal-count-caption">4 refeições</div>
+                </div>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill error" style="width: 100%"></div>
+              </div>
+              <div class="macros-row">
+                <div class="macro-stat"><div class="macro-dot protein"></div>P: <span>175g</span></div>
+                <div class="macro-stat"><div class="macro-dot carbs"></div>C: <span>290g</span></div>
+                <div class="macro-stat"><div class="macro-dot fat"></div>G: <span>82g</span></div>
+              </div>
+            </div>
+
+            <!-- Card: Older Day (Success) -->
+            <div class="daily-card" onclick="alert('Navegando para Dieta > 14/07/2026 na Tela Principal')">
+              <div class="card-top">
+                <div class="card-title-group">
+                  <span class="status-badge success">Meta Batida</span>
+                  <div class="date-text">Terça-feira, 14 de Julho</div>
+                </div>
+                <div class="calories-group">
+                  <div class="calories-val">2180 <span>/ 2200 kcal</span></div>
+                  <div class="meal-count-caption">4 refeições</div>
+                </div>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill success" style="width: 99%"></div>
+              </div>
+              <div class="macros-row">
+                <div class="macro-stat"><div class="macro-dot protein"></div>P: <span>155g</span></div>
+                <div class="macro-stat"><div class="macro-dot carbs"></div>C: <span>230g</span></div>
+                <div class="macro-stat"><div class="macro-dot fat"></div>G: <span>70g</span></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Navigation Tabs Mockup -->
+    <nav class="app-nav-tabs">
+      <a href="#" class="nav-tab-item"><i class="fa-solid fa-chart-simple"></i>Estatísticas</a>
+      <a href="#" class="nav-tab-item"><i class="fa-solid fa-dumbbell"></i>Treino</a>
+      <a href="#" class="nav-tab-item"><i class="fa-solid fa-house"></i>Home</a>
+      <a href="#" class="nav-tab-item active"><i class="fa-solid fa-apple-whole"></i>Dieta</a>
+      <a href="#" class="nav-tab-item"><i class="fa-solid fa-user"></i>Perfil</a>
+    </nav>
+
+    <!-- OS Home bar -->
+    <div class="device-home-bar"></div>
+  </div>
+
+  <div class="toast-tip">
+    💡 <strong>Dica de Interação:</strong> Passe o mouse pelos dias da grade para ver os detalhes calóricos diários (tooltips) e clique nos cartões diários para simular o redirecionamento.
+  </div>
+
+</body>
+</html>
