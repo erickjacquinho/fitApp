@@ -54,6 +54,9 @@ module.exports = {
           DEFAULT: 'var(--color-success)',
         },
         error: 'var(--color-error)',
+        'diet-success': 'var(--color-diet-success)',
+        'diet-warning': 'var(--color-diet-warning)',
+        'diet-error': 'var(--color-diet-error)',
         link: {
           DEFAULT: 'var(--color-link)',
           visited: 'var(--color-link-visited)',

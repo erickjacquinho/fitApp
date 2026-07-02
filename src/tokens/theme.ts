@@ -22,6 +22,9 @@ export interface ThemeColors {
   warning: string;
   success: string;
   error: string;
+  dietSuccess: string;
+  dietWarning: string;
+  dietError: string;
   link: string;
   linkVisited: string;
   scrim: string;
@@ -85,6 +88,9 @@ export const lightTheme: ThemeColors = {
   warning: '#8A6A00',
   success: '#556B4D',
   error: '#C44732',
+  dietSuccess: '#00875A',
+  dietWarning: '#D97706',
+  dietError: '#E11D48',
   link: '#1008BA',
   linkVisited: '#5D4055',
   scrim: 'rgba(24, 17, 14, 0.56)',
@@ -113,6 +119,9 @@ export const darkTheme: ThemeColors = {
   warning: '#CEC094',
   success: '#B9C1B2',
   error: '#E6B2A8',
+  dietSuccess: '#34D399',
+  dietWarning: '#FBBF24',
+  dietError: '#FB7185',
   link: '#9A96FA',
   linkVisited: '#C6B6C0',
   scrim: 'rgba(0, 0, 0, 0.68)',

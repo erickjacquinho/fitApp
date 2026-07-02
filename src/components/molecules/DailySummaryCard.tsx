@@ -61,20 +61,22 @@ export const DailySummaryCard = ({
 
   let statusText = '';
   let statusBadgeStyle = '';
-  let fillStyle = '';
+  let fillStyle = 'bg-diet-error';
   let accessibilityStatusText = '';
-
   if (Math.abs(diff) <= 100) {
     statusText = 'Meta Batida';
-    statusBadgeStyle = 'text-primary bg-primary/10 border-primary/30';
+    statusBadgeStyle = 'text-diet-success bg-diet-success/10 border-diet-success/30';
+    fillStyle = 'bg-diet-success';
     accessibilityStatusText = 'Meta de calorias atingida';
   } else if (diff < -100) {
     statusText = 'Próximo';
-    statusBadgeStyle = 'text-text-secondary bg-surface-elevated border-border-subtle';
+    statusBadgeStyle = 'text-diet-warning bg-diet-warning/10 border-diet-warning/30';
+    fillStyle = 'bg-diet-warning';
     accessibilityStatusText = 'Abaixo da meta de calorias';
   } else {
     statusText = 'Desvio';
-    statusBadgeStyle = 'text-text-secondary bg-surface-elevated border-border-subtle';
+    statusBadgeStyle = 'text-diet-error bg-diet-error/10 border-diet-error/30';
+    fillStyle = 'bg-diet-error';
     accessibilityStatusText = 'Excedeu a meta de calorias';
   }
 
@@ -120,7 +122,7 @@ export const DailySummaryCard = ({
           </View>
         </View>
 
-        <Progress value={percentage} indicatorClassName="bg-primary" className="h-1.5 rounded-full" />
+        <Progress value={percentage} indicatorClassName={fillStyle} className="h-1.5 rounded-full" />
 
         <View className="flex-row justify-between items-center">
           <ColoredMacros protein={protein} carbs={carbs} fat={fat} />

@@ -92,6 +92,9 @@
     --color-warning: var(--color-mustard-500);
     --color-success: var(--color-moss-500);
     --color-error: var(--color-tomato-500);
+    --color-diet-success: #00875A;
+    --color-diet-warning: #D97706;
+    --color-diet-error: #E11D48;
     --color-link: var(--color-blue-900);
     --color-link-visited: var(--color-plum-900);
     --color-data-1: var(--color-blue-500);
@@ -224,6 +227,9 @@
       --color-warning: var(--color-mustard-200);
       --color-success: var(--color-moss-200);
       --color-error: var(--color-tomato-200);
+      --color-diet-success: #34D399;
+      --color-diet-warning: #FBBF24;
+      --color-diet-error: #FB7185;
       --color-link: var(--color-blue-200);
       --color-link-visited: var(--color-plum-200);
       --color-data-1: var(--color-blue-200);
