@@ -20,16 +20,7 @@ export class DietRawQueriesService {
     `;
 
     try {
-      const adapter = database.adapter as any;
-      const underlying = adapter.underlyingAdapter;
-      
-      let rawResult: any[] = [];
-      if (underlying && typeof underlying.query === 'function') {
-        rawResult = await underlying.query(sql, []);
-      } else {
-        console.warn('underlyingAdapter query not available, returning empty summary list');
-        return [];
-      }
+      const rawResult = await database.adapter.unsafeQueryRaw(sql, []);
 
       return rawResult.map((row: any) => ({
         date: row.date,
