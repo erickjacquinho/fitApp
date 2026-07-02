@@ -21,14 +21,14 @@ export type DietComplianceStatus = 'success' | 'warning' | 'error';
 
 /**
  * Categorizes the caloric compliance of a given intake against the target goal.
- * Rule:
- * - "warning" (Próximo): intake < goal * 0.7
- * - "error" (Desvio): intake > goal * 1.2
- * - "success" (Meta Batida): goal * 0.7 <= intake <= goal * 1.2
+ * Rule (Proportional 10% margin):
+ * - "warning" (Próximo): intake < goal * 0.9
+ * - "error" (Desvio): intake > goal * 1.1
+ * - "success" (Meta Batida): goal * 0.9 <= intake <= goal * 1.1
  */
 export function getDietComplianceStatus(calories: number, goal: number): DietComplianceStatus {
-  const lowerLimit = goal * 0.7;
-  const upperLimit = goal * 1.2;
+  const lowerLimit = goal * 0.9;
+  const upperLimit = goal * 1.1;
 
   if (calories < lowerLimit) {
     return 'warning';
