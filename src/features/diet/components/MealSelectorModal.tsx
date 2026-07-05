@@ -42,9 +42,6 @@ function MealSelectorModalComponent({ visible, onClose, onSelect, meals }: MealS
                 onPress={() => onSelect(item.id)}
               >
                 <Text variant="subtitle">{item.name}</Text>
-                {item.time && (
-                  <Text variant="caption" className="text-text-secondary mt-1">{item.time}</Text>
-                )}
               </TouchableOpacity>
             )}
             ListEmptyComponent={

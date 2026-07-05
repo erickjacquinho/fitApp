@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "id": "verify-code-implementations",
+      "event": "PostToolUse",
+      "command": "node c:/Programmer/fitApp/.agents/hooks/verify-code.js"
+    }
+  ]
+}

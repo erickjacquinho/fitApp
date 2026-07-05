@@ -22,3 +22,13 @@ FitApp uses the Mineral Warm palette with a strict **blue-first** rule. Olive to
 - **Criação sobre Improviso**: Se um token semântico não existir para o seu caso de uso, você DEVE criá-lo no `theme.ts` e `tailwind.config.js` em vez de improvisar com Tailwind puro.
 - Legacy tokens (`accent-*`, `primary-*` olive, `secondary-*` olive) are **deprecated**. Do not use them in new or migrated code.
 - If repeated utilities are used 3+ times, create a shared Atom instead of copying classes.
+
+## 4. Animations & Gestures (Reanimated)
+- **Swipeable obrigatório**: Use `ReanimatedSwipeable` (de `react-native-gesture-handler/ReanimatedSwipeable`), NUNCA o `Swipeable` legado. O legado usa `AnimatedInterpolation` cujos listeners não disparam com native driver.
+- **Threshold detection**: Use `useAnimatedReaction` + `runOnJS` monitorando `SharedValue`. NUNCA use `addListener` em `AnimatedInterpolation`.
+- **Estilos em views animadas**: EXCEÇÃO à regra Zero Hardcoded Styles — `Reanimated.View` e `Animated.View` DEVEM usar `StyleSheet.create` ou `useAnimatedStyle`. NativeWind `className` não funciona por padrão nesses componentes; `cssInterop()` pode habilitar mas é frágil com Reanimated v4.x.
+- **Haptic feedback**: Usar `expo-haptics` ao cruzar thresholds de gestos destrutivos (obrigatório para ações irreversíveis por arrasto).
+- **Overscroll fill**: Usar `containerStyle` no `ReanimatedSwipeable` para cor de fundo do overscroll. NUNCA usar Views absolutas com offsets extremos.
+- **Friction**: Preferir `overshootFriction` para controlar resistência apenas no overshoot. `friction` afeta o gesto inteiro e pode impedir o usuário de atingir thresholds distantes.
+- **Hooks em render callbacks**: Reanimated hooks (`useAnimatedReaction`, `useAnimatedStyle`) não podem rodar dentro de `renderRightActions` diretamente. Extrair o conteúdo em um componente React separado.
+- **Callback ref pattern**: Armazenar callbacks em `useRef` ao passá-los para `runOnJS` — evita stale closures capturadas pelo `useAnimatedReaction`.

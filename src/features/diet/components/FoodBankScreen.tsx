@@ -141,13 +141,13 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
 
   return (
     <View className="flex-1">
-      <View className="py-compact gap-4">
+      <View className="pt-compact pb-content-gap">
         <SearchBar value={search} onChangeText={setSearch} placeholder="Buscar alimentos..." />
       </View>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1">
         <View 
-          className="mt-4 mb-3 flex-row items-center rounded-xl bg-surface-elevated p-1"
+          className="mb-content-gap flex-row items-center rounded-xl bg-surface-elevated p-1"
           onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         >
           {containerWidth > 0 && (
@@ -192,11 +192,11 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
           <FlatList keyboardShouldPersistTaps="handled"
             data={filteredMeals}
             keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-content-bottom gap-3 px-screen-x"
+            contentContainerClassName="pb-content-bottom gap-content-gap px-screen-x"
             renderItem={({ item }) => (
               <MealCard 
                 meal={item} 
-                onDelete={async (id) => await MealService.delete(id)}
+                onDelete={async (id: string) => await MealService.delete(id)}
                 onEdit={() => {}} 
               />
             )}
@@ -272,7 +272,7 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
       <MealSelectorModal
         visible={mealSelectorVisible}
         onClose={() => setMealSelectorVisible(false)}
-        onSelect={(selectedMealId) => {
+        onSelect={(selectedMealId: string) => {
           setMealSelectorVisible(false);
           const foodIds = Array.from(bulkSelections).join(',');
           router.push({ pathname: '/diet/bulk-add-food-to-meal', params: { mealId: selectedMealId, foodIds } });

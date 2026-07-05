@@ -46,7 +46,7 @@ export interface SwipeableRowProps {
   features?: SwipeFeature[];
   handlers?: Partial<Record<SwipeFeature, () => void>>;
   onPress?: () => void;
-  children?: React.ReactNode;
+  children?: React.ReactNode | ((props: { isSwiped: boolean }) => React.ReactNode);
   className?: string;
 }
 
@@ -58,6 +58,7 @@ export function SwipeableRow({
   className,
 }: SwipeableRowProps) {
   const swipeableRef = React.useRef<any>(null);
+  const [isSwiped, setIsSwiped] = React.useState(false);
   const hasAutoTriggered = React.useRef(false);
   const colors = useThemeColors();
 
@@ -100,11 +101,13 @@ export function SwipeableRow({
   }, []);
 
   const handleSwipeableClose = React.useCallback(() => {
+    setIsSwiped(false);
     hasAutoTriggered.current = false;
     isPastThreshold.current = false;
   }, []);
 
   const handleSwipeableWillOpen = React.useCallback(() => {
+    setIsSwiped(true);
     if (isPastThreshold.current) {
       fireAutoDelete();
     }
@@ -133,16 +136,20 @@ export function SwipeableRow({
     );
   }, [activeFeatures, totalWidth, autoTriggerFeature, triggerHaptic, handlers, colors, onThresholdCrossed]);
 
-  const content = <View className={className}>{children}</View>;
+  const renderedChildren = typeof children === 'function' ? children({ isSwiped }) : children;
+  const content = <View className={className}>{renderedChildren}</View>;
 
   let isFirst = false;
   let isLast = false;
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child)) {
-      if (child.props.isFirst) isFirst = true;
-      if (child.props.isLast) isLast = true;
-    }
-  });
+  
+  if (typeof children !== 'function') {
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child)) {
+        if (child.props.isFirst) isFirst = true;
+        if (child.props.isLast) isLast = true;
+      }
+    });
+  }
 
   if (activeFeatures.length === 0) {
     return onPress ? (

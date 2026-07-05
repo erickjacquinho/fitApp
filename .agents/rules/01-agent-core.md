@@ -16,5 +16,5 @@
 4. **Validation**: Review generated files. Keep EXACT dependency versions (no `^` or `~`). Ensure generic registry classes map correctly to FitApp tokens in `tailwind.config.js` (e.g., `bg-background`, `text-primary`, `text-error`).
 
 ## 3. UI Constraints
-- **Zero Hardcoded Styles**: Never use inline styles, `StyleSheet.create`, or arbitrary Tailwind values (e.g., `bg-[#FFF]`, `p-[13px]`). Use strict `tailwind.config.js` tokens.
+- **Zero Hardcoded Styles**: Never use inline styles, `StyleSheet.create`, or arbitrary Tailwind values (e.g., `bg-[#FFF]`, `p-[13px]`). Use strict `tailwind.config.js` tokens. **Exceção**: `Reanimated.View` / `Animated.View` (ver `03-ui-foundations.md` §4).
 - **Screen Wrapper**: Full-screen pages in `app/` MUST use the `<Screen>` wrapper (`src/components/ui/screen.tsx`). NEVER render `<Screen>` inside feature components. Use `scrollable={false}` for FlatLists. Do not duplicate headers.

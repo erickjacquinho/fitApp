@@ -12,6 +12,7 @@ export interface BaseCardListProps {
   isLast?: boolean;
   isActive?: boolean;
   isSelected?: boolean;
+  isSwiped?: boolean;
   className?: string;
   testID?: string;
 }
@@ -25,6 +26,7 @@ export function BaseCardList({
   isLast = false,
   isActive = false,
   isSelected = false,
+  isSwiped = false,
   className,
   testID,
 }: BaseCardListProps) {
@@ -36,7 +38,7 @@ export function BaseCardList({
       disabled={disabled || (!onPress && !onLongPress)}
       className={cn(
         'flex-row justify-between items-center px-4 py-3 bg-surface',
-        (onPress || onLongPress) && !disabled && 'active:bg-surface-elevated',
+        (onPress || onLongPress) && !disabled && (isSwiped ? 'bg-surface-elevated' : 'active:bg-surface-elevated'),
         'border-border-subtle border-x border-b',
         isFirst && 'border-t rounded-t-xl',
         isLast && 'rounded-b-xl',

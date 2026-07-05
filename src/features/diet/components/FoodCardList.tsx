@@ -1,4 +1,6 @@
 import { Text } from '@/components/ui/text';
+import { Icon } from '@/components/ui/icon';
+import { Star } from 'lucide-react-native';
 import React from 'react';
 import { View } from 'react-native';
 import { SwipeableRow } from '../../../components/molecules/SwipeableRow';
@@ -39,31 +41,40 @@ function FoodCardListComponent({
   const fat = Math.round(food.fat);
 
   return (
-    <SwipeableRow onDelete={onDelete}>
-      <BaseCardList
-        onPress={onPress}
-        onLongPress={onLongPress}
-        isFirst={isFirst}
-        isLast={isLast}
-        isSelected={isSelected}
-        className={className}
-      >
-        <View className="flex-1 mr-3 justify-center gap-1">
-          <Text variant="subtitle" className={cn("text-text-primary", isSelected && "text-primary")} numberOfLines={1}>{food.name}</Text>
-          <Text variant="caption" className="text-text-secondary" numberOfLines={1}>
-            {food.preparationWeight} g
-          </Text>
-        </View>
-        <View className="items-end justify-center gap-1">
-          <CaloriesText calories={calories} />
-          <ColoredMacros protein={protein} carbs={carbs} fat={fat} />
-        </View>
-        {actionSlot && (
-          <View className="ml-3">
-            {actionSlot}
+    <SwipeableRow 
+      features={onDelete ? ['delete'] : undefined}
+      handlers={onDelete ? { delete: onDelete } : undefined}
+    >
+      {({ isSwiped }) => (
+        <BaseCardList
+          onPress={onPress}
+          onLongPress={onLongPress}
+          isFirst={isFirst}
+          isLast={isLast}
+          isSelected={isSelected}
+          isSwiped={isSwiped}
+          className={className}
+        >
+          <View className="flex-1 mr-3 justify-center gap-1">
+            <View className="flex-row items-center gap-1">
+              <Text variant="subtitle" className={cn("text-text-primary flex-shrink", isSelected && "text-primary")} numberOfLines={1}>{food.name}</Text>
+              {food.isFavorite && <Icon as={Star} size={14} className="text-[var(--color-amber-600)]" fill="currentColor" />}
+            </View>
+            <Text variant="caption" className="text-text-secondary" numberOfLines={1}>
+              {food.preparationWeight} g
+            </Text>
           </View>
-        )}
-      </BaseCardList>
+          <View className="items-end justify-center gap-1">
+            <CaloriesText calories={calories} />
+            <ColoredMacros protein={protein} carbs={carbs} fat={fat} />
+          </View>
+          {actionSlot && (
+            <View className="ml-3">
+              {actionSlot}
+            </View>
+          )}
+        </BaseCardList>
+      )}
     </SwipeableRow>
   );
 }
