@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator, Pressable } from 'react-native';
+import { View, ActivityIndicator, Pressable, FlatList, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { TrainingProgressBar } from './TrainingProgressBar';
-import { ExecuteExerciseModal } from './ExecuteExerciseModal';
-import { ExerciseListItem } from './ExerciseListItem';
+import { ExerciseColumn } from './ExerciseColumn';
+import { PaginationDots } from '@/components/ui/PaginationDots';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
-import Exercise from '../../../db/models/Exercise';
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
 import { useThemeColors } from '../../../hooks/use-theme-colors';
@@ -14,12 +13,11 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS, Easing
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
-  const [activeExercise, setActiveExercise] = useState<Exercise | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { primary } = useThemeColors();
+  const { width } = Dimensions.get('window');
 
   const {
-    session,
     block,
     exercises,
     isLoading,
@@ -27,27 +25,11 @@ export function WorkoutSessionScreen() {
     handleDeleteSet,
     handleFinishWorkout,
     getExerciseExecutions,
-    isExerciseCompleted,
     getCompletedExercisesCount,
     feedback,
     setFeedback,
     clearFeedback,
   } = useWorkoutSession(params.sessionId, params.blockId);
-
-  const handleOpenExerciseModal = (exercise: Exercise) => {
-    setActiveExercise(exercise);
-    setIsModalVisible(true);
-  };
-
-  const handleSaveSetCallback = async (setNumber: number, reps: number, weight: number) => {
-    if (!activeExercise) return;
-    await handleSaveSet(activeExercise.id, setNumber, reps, weight);
-  };
-
-  const handleDeleteSetCallback = async (setNumber: number) => {
-    if (!activeExercise) return;
-    await handleDeleteSet(activeExercise.id, setNumber);
-  };
 
   const progress = useSharedValue(0);
 
@@ -96,88 +78,76 @@ export function WorkoutSessionScreen() {
   }
 
   return (
-    <View className="py-4 pb-content-bottom">
-      {block && (
-        <Text variant="title" className="mb-2 font-bold">
-          Treino {block.name}
-        </Text>
-      )}
-
-      <TrainingProgressBar
-        completed={getCompletedExercisesCount()}
-        total={exercises.length}
-      />
-
-      <Text variant="label" className="mb-3 text-text-secondary">
-        Exercícios
-      </Text>
-
-      {exercises.map((exercise, index) => {
-        const exExecs = getExerciseExecutions(exercise.id);
-        const completed = isExerciseCompleted(exercise.id, exercise.sets);
-        
-        return (
-          <ExerciseListItem
-            key={exercise.id}
-            name={exercise.name}
-            setsCount={exExecs.length}
-            targetSets={exercise.sets}
-            repsMin={exercise.repsMin}
-            repsMax={exercise.repsMax}
-            advancedTechnique={exercise.advancedTechnique || undefined}
-            isCompleted={completed}
-            onPress={() => handleOpenExerciseModal(exercise)}
-            isFirst={index === 0}
-            isLast={index === exercises.length - 1}
-          />
-        );
-      })}
-
-      {exercises.length === 0 && (
-        <Card className="my-8 items-center justify-center py-10 border-dashed">
-          <Text variant="text" className="text-text-secondary text-center">
-            Nenhum exercício neste bloco de treino.
+    <View className="flex-1 py-4 justify-between">
+      <View className="px-4">
+        {block && (
+          <Text variant="title" className="mb-2 font-bold">
+            Treino {block.name}
           </Text>
-        </Card>
-      )}
+        )}
 
-      <Pressable
-        onPressIn={handleHoldStart}
-        onPressOut={handleHoldEnd}
-        className="my-6 min-h-control-lg bg-success rounded-md overflow-hidden justify-center items-center relative active:opacity-90"
-      >
-        <Animated.View 
-          className="absolute left-0 top-0 bottom-0 bg-text-inverse opacity-35" 
-          style={animatedProgressStyle} 
+        <TrainingProgressBar
+          completed={getCompletedExercisesCount()}
+          total={exercises.length}
         />
-        <Text variant="label" className="text-text-inverse font-bold z-10">
-          Segure para finalizar treino
-        </Text>
-      </Pressable>
 
-      {activeExercise && (
-        <ExecuteExerciseModal
-          visible={isModalVisible}
-          onClose={() => {
-            setIsModalVisible(false);
-            setActiveExercise(null);
+        {/* Modular, monochromatic PaginationDots positioned cleanly */}
+        <View className="mt-2 mb-4 items-center">
+          <PaginationDots total={exercises.length} active={activeIndex} />
+        </View>
+      </View>
+
+      {exercises.length > 0 ? (
+        <FlatList
+          data={exercises}
+          keyExtractor={(item) => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={width}
+          decelerationRate="fast"
+          onMomentumScrollEnd={(e) => {
+            const index = Math.round(e.nativeEvent.contentOffset.x / width);
+            setActiveIndex(index);
           }}
-          exerciseName={activeExercise.name}
-          exerciseId={activeExercise.id}
-          sessionId={session?.id || ''}
-          targetSets={activeExercise.sets}
-          repsMin={activeExercise.repsMin}
-          repsMax={activeExercise.repsMax}
-          repsReserve={activeExercise.repsReserve ?? undefined}
-          initialExecutions={getExerciseExecutions(activeExercise.id).map((e) => ({
-            setNumber: e.setNumber,
-            repsDone: e.repsDone,
-            weight: e.weight,
-          }))}
-          onSaveSet={handleSaveSetCallback}
-          onDeleteSet={handleDeleteSetCallback}
+          renderItem={({ item }) => (
+            <View style={{ width }}>
+              <ExerciseColumn
+                exercise={item}
+                executions={getExerciseExecutions(item.id)}
+                onSaveSet={handleSaveSet}
+                onDeleteSet={handleDeleteSet}
+              />
+            </View>
+          )}
+          className="flex-1"
         />
+      ) : (
+        <View className="flex-1 justify-center px-4">
+          <Card className="my-8 items-center justify-center py-10 border-dashed">
+            <Text variant="text" className="text-text-secondary text-center">
+              Nenhum exercício neste bloco de treino.
+            </Text>
+          </Card>
+        </View>
       )}
+
+      {/* Persistent Hold to Finish Button at the bottom */}
+      <View className="px-4 pb-content-bottom">
+        <Pressable
+          onPressIn={handleHoldStart}
+          onPressOut={handleHoldEnd}
+          className="my-3 min-h-control-lg bg-success rounded-md overflow-hidden justify-center items-center relative active:opacity-90"
+        >
+          <Animated.View 
+            className="absolute left-0 top-0 bottom-0 bg-text-inverse opacity-35" 
+            style={animatedProgressStyle} 
+          />
+          <Text variant="label" className="text-text-inverse font-bold z-10">
+            Segure para finalizar treino
+          </Text>
+        </Pressable>
+      </View>
 
       <FeedbackDialog
         visible={!!feedback}

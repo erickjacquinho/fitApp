@@ -6,8 +6,8 @@ export default function ActiveSessionRoute() {
   return (
     <Screen
       header={<Header title="Treino em andamento" showBackButton />}
-      scrollable={true}
-      withPadding={true}
+      scrollable={false}
+      withPadding={false}
     >
       <WorkoutSessionScreen />
     </Screen>
