@@ -48,6 +48,8 @@ export interface SwipeableRowProps {
   onPress?: () => void;
   children?: React.ReactNode | ((props: { isSwiped: boolean }) => React.ReactNode);
   className?: string;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 export function SwipeableRow({
@@ -56,12 +58,17 @@ export function SwipeableRow({
   onPress,
   children,
   className,
+  isFirst: isFirstProp = false,
+  isLast: isLastProp = false,
 }: SwipeableRowProps) {
   const swipeableRef = React.useRef<any>(null);
   const [isSwiped, setIsSwiped] = React.useState(false);
   const [isSwipeActive, setIsSwipeActive] = React.useState(false);
   const hasAutoTriggered = React.useRef(false);
   const colors = useThemeColors();
+
+  let isFirst = isFirstProp;
+  let isLast = isLastProp;
 
   const activeFeatures = (features ?? []).filter(f => handlers?.[f]);
   const totalWidth = activeFeatures.length * ACTION_WIDTH;
@@ -139,16 +146,16 @@ export function SwipeableRow({
         handlers={handlers}
         colors={colors}
         swipeableRef={swipeableRef}
+        isFirst={isFirst}
+        isLast={isLast}
       />
     );
-  }, [activeFeatures, totalWidth, autoTriggerFeature, triggerHaptic, handlers, colors, onThresholdCrossed]);
+  }, [activeFeatures, totalWidth, autoTriggerFeature, triggerHaptic, handlers, colors, onThresholdCrossed, isFirst, isLast]);
 
   const renderedChildren = typeof children === 'function' ? children({ isSwiped }) : children;
   const content = <View className={className}>{renderedChildren}</View>;
 
-  let isFirst = false;
-  let isLast = false;
-  
+
   if (typeof children !== 'function') {
     React.Children.forEach(children, (child) => {
       if (React.isValidElement(child)) {
@@ -215,6 +222,8 @@ function RightActionsContent({
   handlers,
   colors,
   swipeableRef,
+  isFirst,
+  isLast,
 }: {
   prog: SharedValue<number>;
   drag: SharedValue<number>;
@@ -227,6 +236,8 @@ function RightActionsContent({
   handlers?: Partial<Record<SwipeFeature, () => void>>;
   colors: ThemeColors;
   swipeableRef: React.RefObject<any>;
+  isFirst: boolean;
+  isLast: boolean;
 }) {
   // Monitora o drag e dispara haptic + auto-delete ao cruzar o threshold
   useAnimatedReaction(
@@ -266,6 +277,8 @@ function RightActionsContent({
             totalFeatures={activeFeatures.length}
             prog={prog}
             swipeableRef={swipeableRef}
+            isFirst={isFirst}
+            isLast={isLast}
           />
         );
       })}
@@ -286,6 +299,8 @@ function ActionButton({
   totalFeatures,
   prog,
   swipeableRef,
+  isFirst,
+  isLast,
 }: {
   label: string;
   icon: LucideIcon;
@@ -296,6 +311,8 @@ function ActionButton({
   totalFeatures: number;
   prog: SharedValue<number>;
   swipeableRef: React.RefObject<any>;
+  isFirst: boolean;
+  isLast: boolean;
 }) {
   const animatedStyle = useAnimatedStyle(() => {
     const translateX = interpolate(
@@ -311,7 +328,11 @@ function ActionButton({
     <Reanimated.View
       style={[
         styles.actionButton,
-        { backgroundColor: bgColor },
+        { 
+          backgroundColor: bgColor,
+          borderTopRightRadius: (isFirst && index === 0) ? 12 : 0,
+          borderBottomRightRadius: (isLast && index === 0) ? 12 : 0,
+        },
         animatedStyle,
       ]}
     >
@@ -339,6 +360,8 @@ const styles = StyleSheet.create({
     width: ACTION_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 1,
+    marginBottom: 1,
   },
   actionPressable: {
     flex: 1,

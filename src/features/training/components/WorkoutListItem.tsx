@@ -25,9 +25,11 @@ interface LeftActionProps {
   dragAnim: SharedValue<number>;
   primaryColor: string;
   textInverseColor: string;
+  isFirst: boolean;
+  isLast: boolean;
 }
 
-const LeftAction = ({ dragAnim, primaryColor, textInverseColor }: LeftActionProps) => {
+const LeftAction = ({ dragAnim, primaryColor, textInverseColor, isFirst, isLast }: LeftActionProps) => {
   const animatedStyle = useAnimatedStyle(() => {
     const scale = interpolate(dragAnim.value, [0, 50, 100], [0, 1, 1.2], Extrapolation.CLAMP);
     return {
@@ -36,7 +38,16 @@ const LeftAction = ({ dragAnim, primaryColor, textInverseColor }: LeftActionProp
   });
 
   return (
-    <View style={[styles.leftAction, { backgroundColor: primaryColor }]}>
+    <View 
+      style={[
+        styles.leftAction, 
+        { 
+          backgroundColor: primaryColor,
+          borderTopLeftRadius: isFirst ? 12 : 0,
+          borderBottomLeftRadius: isLast ? 12 : 0,
+        }
+      ]}
+    >
       <Reanimated.View style={animatedStyle}>
         <Icon as={Play} size={24} color={textInverseColor} />
       </Reanimated.View>
@@ -68,6 +79,8 @@ export const WorkoutListItem = ({
         dragAnim={dragAnim}
         primaryColor={colors.primary}
         textInverseColor={colors.textInverse}
+        isFirst={isFirst}
+        isLast={isLast}
       />
     );
   };
@@ -133,5 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 24,
+    marginTop: 1,
+    marginBottom: 1,
   },
 });

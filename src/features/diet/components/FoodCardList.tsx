@@ -44,6 +44,8 @@ function FoodCardListComponent({
     <SwipeableRow 
       features={onDelete ? ['delete'] : undefined}
       handlers={onDelete ? { delete: onDelete } : undefined}
+      isFirst={isFirst}
+      isLast={isLast}
     >
       {({ isSwiped }) => (
         <BaseCardList
