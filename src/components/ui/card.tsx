@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const cardVariants = cva(
-  'flex flex-col gap-4 rounded-md p-card shadow-none',
+  'flex flex-col gap-4 rounded-xl p-card shadow-none',
   {
     variants: {
       variant: {
