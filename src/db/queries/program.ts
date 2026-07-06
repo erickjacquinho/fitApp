@@ -21,3 +21,13 @@ export const observeBlockExercises = (blockId: string) => {
     .query(Q.where('block_id', blockId), Q.sortBy('order', Q.asc))
     .observeWithColumns(['order', 'name', 'sets']);
 };
+
+export const observeProgramCompletedSessions = (programId: string) => {
+  return database.collections
+    .get('workout_sessions')
+    .query(
+      Q.where('program_id', programId),
+      Q.where('status', 'completed')
+    )
+    .observeCount();
+};

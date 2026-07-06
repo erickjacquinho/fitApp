@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, Pressable } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { Text } from '../../../components/ui/text';
-import { GripVertical } from 'lucide-react-native';
+import { GripVertical, Play } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { BaseCardList } from '../../../components/molecules/BaseCardList';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Reanimated, { SharedValue, useAnimatedStyle, interpolate, Extrapolation } from 'react-native-reanimated';
+import { useThemeColors } from '@/hooks/use-theme-colors';
 
 import { BlockWithSets } from '../hooks/useProgramSummary';
 
@@ -13,9 +16,34 @@ interface WorkoutListItemProps {
   drag?: () => void;
   isActive?: boolean;
   onPress?: () => void;
+  onStartSession?: () => void;
   isFirst?: boolean;
   isLast?: boolean;
 }
+
+interface LeftActionProps {
+  dragAnim: SharedValue<number>;
+  primaryColor: string;
+  textInverseColor: string;
+}
+
+const LeftAction = ({ dragAnim, primaryColor, textInverseColor }: LeftActionProps) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    const scale = interpolate(dragAnim.value, [0, 50, 100], [0, 1, 1.2], Extrapolation.CLAMP);
+    return {
+      transform: [{ scale }],
+    };
+  });
+
+  return (
+    <View style={[styles.leftAction, { backgroundColor: primaryColor }]}>
+      <Reanimated.View style={animatedStyle}>
+        <Icon as={Play} size={24} color={textInverseColor} />
+      </Reanimated.View>
+      <Text variant="label" className="text-text-inverse font-bold ml-2">Iniciar</Text>
+    </View>
+  );
+};
 
 export const WorkoutListItem = ({
   item,
@@ -23,12 +51,37 @@ export const WorkoutListItem = ({
   drag,
   isActive,
   onPress,
+  onStartSession,
   isFirst = false,
   isLast = false,
 }: WorkoutListItemProps) => {
   const { block, validSets, totalSets } = item;
+  const colors = useThemeColors();
+  const swipeableRef = React.useRef<any>(null);
 
-  return (
+  const renderLeftActions = (
+    prog: SharedValue<number>,
+    dragAnim: SharedValue<number>
+  ) => {
+    return (
+      <LeftAction
+        dragAnim={dragAnim}
+        primaryColor={colors.primary}
+        textInverseColor={colors.textInverse}
+      />
+    );
+  };
+
+  const handleSwipeableOpen = () => {
+    swipeableRef.current?.close();
+    if (onStartSession) {
+      setTimeout(() => {
+        onStartSession();
+      }, 200);
+    }
+  };
+
+  const content = (
     <BaseCardList
       onPress={onPress}
       onLongPress={isReordering ? drag : undefined}
@@ -54,4 +107,31 @@ export const WorkoutListItem = ({
       </View>
     </BaseCardList>
   );
+
+  if (isReordering) {
+    return content;
+  }
+
+  return (
+    <View className={`overflow-hidden ${isFirst ? 'rounded-t-xl' : ''} ${isLast ? 'rounded-b-xl' : ''}`}>
+      <ReanimatedSwipeable
+        ref={swipeableRef}
+        renderLeftActions={renderLeftActions}
+        leftThreshold={60}
+        onSwipeableOpen={handleSwipeableOpen}
+        friction={2}
+      >
+        {content}
+      </ReanimatedSwipeable>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  leftAction: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 24,
+  },
+});

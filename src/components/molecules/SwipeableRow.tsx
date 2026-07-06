@@ -59,6 +59,7 @@ export function SwipeableRow({
 }: SwipeableRowProps) {
   const swipeableRef = React.useRef<any>(null);
   const [isSwiped, setIsSwiped] = React.useState(false);
+  const [isSwipeActive, setIsSwipeActive] = React.useState(false);
   const hasAutoTriggered = React.useRef(false);
   const colors = useThemeColors();
 
@@ -100,13 +101,19 @@ export function SwipeableRow({
     isPastThreshold.current = crossed;
   }, []);
 
+  const handleOpenStartDrag = React.useCallback(() => {
+    setIsSwipeActive(true);
+  }, []);
+
   const handleSwipeableClose = React.useCallback(() => {
+    setIsSwipeActive(false);
     setIsSwiped(false);
     hasAutoTriggered.current = false;
     isPastThreshold.current = false;
   }, []);
 
   const handleSwipeableWillOpen = React.useCallback(() => {
+    setIsSwipeActive(true);
     setIsSwiped(true);
     if (isPastThreshold.current) {
       fireAutoDelete();
@@ -145,8 +152,8 @@ export function SwipeableRow({
   if (typeof children !== 'function') {
     React.Children.forEach(children, (child) => {
       if (React.isValidElement(child)) {
-        if (child.props.isFirst) isFirst = true;
-        if (child.props.isLast) isLast = true;
+        if ((child.props as any).isFirst) isFirst = true;
+        if ((child.props as any).isLast) isLast = true;
       }
     });
   }
@@ -166,7 +173,8 @@ export function SwipeableRow({
       rightThreshold={ACTION_WIDTH * 0.4}
       overshootRight={true}
       friction={2}
-      containerStyle={edgeConfig ? { backgroundColor: colors[edgeConfig.bgToken] } : undefined}
+      containerStyle={isSwipeActive && edgeConfig ? { backgroundColor: colors[edgeConfig.bgToken] } : undefined}
+      onSwipeableOpenStartDrag={handleOpenStartDrag}
       onSwipeableWillOpen={handleSwipeableWillOpen}
       onSwipeableClose={handleSwipeableClose}
     >

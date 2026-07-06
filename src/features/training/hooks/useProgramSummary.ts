@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { database } from '../../../db';
 import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
-import { observeProgram, observeProgramBlocks } from '../../../db/queries/program';
+import { observeProgram, observeProgramBlocks, observeProgramCompletedSessions } from '../../../db/queries/program';
 
 export interface BlockWithSets {
   block: TrainingBlock;
@@ -13,6 +13,7 @@ export interface BlockWithSets {
 export function useProgramSummary(programId: string) {
   const [program, setProgram] = useState<Program | null>(null);
   const [blocks, setBlocks] = useState<BlockWithSets[]>([]);
+  const [completedSessionsCount, setCompletedSessionsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -49,9 +50,15 @@ export function useProgramSummary(programId: string) {
       },
     });
 
+    const sessionsSubscription = observeProgramCompletedSessions(programId).subscribe({
+      next: (count) => setCompletedSessionsCount(count),
+      error: (err) => console.error('Error fetching sessions count:', err),
+    });
+
     return () => {
       programSubscription.unsubscribe();
       blocksSubscription.unsubscribe();
+      sessionsSubscription.unsubscribe();
     };
   }, [programId]);
 
@@ -82,6 +89,7 @@ export function useProgramSummary(programId: string) {
   return {
     program,
     blocks,
+    completedSessionsCount,
     isLoading,
     error,
     updateBlocksOrder,
