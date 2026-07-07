@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Edit2 } from 'lucide-react-native';
@@ -9,10 +9,8 @@ import { Header } from '@/components/molecules/Header';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { ConfirmModal } from '@/components/organisms/ConfirmModal';
 import { ProgramSummaryScreen } from '@/features/training/components/ProgramSummaryScreen';
 import { useProgramSummary } from '@/features/training/hooks/useProgramSummary';
-import { SessionService } from '@/features/training/services/session-service';
 import { useThemeColors } from '@/hooks/use-theme-colors';
 
 export default function ProgramSummaryRoute() {
@@ -21,54 +19,10 @@ export default function ProgramSummaryRoute() {
   const colors = useThemeColors();
 
   const { program, blocks, completedSessionsCount, isLoading, error, updateBlocksOrder } = useProgramSummary(id || '');
-  const [activeSession, setActiveSession] = useState<any>(null);
-  const [activeSessionConfirmVisible, setActiveSessionConfirmVisible] = useState(false);
-
-  const checkActiveSession = useCallback(async () => {
-    if (!id) return;
-    try {
-      const active = await SessionService.getActiveSession();
-      setActiveSession(active);
-    } catch (err) {
-      console.error('Error fetching active session:', err);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    checkActiveSession();
-  }, [checkActiveSession]);
 
   if (!id) {
     return null;
   }
-
-  const handleStartSession = async (blockId: string) => {
-    if (activeSession && activeSession.programId !== id) {
-      setActiveSessionConfirmVisible(true);
-      return;
-    }
-    
-    // If there is an active session for this same program, we should probably resume it
-    if (activeSession && activeSession.programId === id) {
-      router.push({
-        pathname: '/training/active',
-        params: { sessionId: activeSession.id, blockId },
-      });
-      return;
-    }
-
-    try {
-      const targetDate = new Date().toISOString().split('T')[0];
-      const session = await SessionService.startSession(id, targetDate);
-      await checkActiveSession();
-      router.push({
-        pathname: '/training/active',
-        params: { sessionId: session.id, blockId },
-      });
-    } catch (err) {
-      console.error('Error starting session:', err);
-    }
-  };
 
   let formattedDate = '';
   if (program?.createdAt) {
@@ -136,22 +90,6 @@ export default function ProgramSummaryRoute() {
         onWorkoutPress={(blockId) => {
           router.push(`/training/block/${blockId}`);
         }}
-        onStartSession={handleStartSession}
-      />
-      
-      <ConfirmModal
-        visible={activeSessionConfirmVisible}
-        onCancel={() => setActiveSessionConfirmVisible(false)}
-        onConfirm={() => {
-          setActiveSessionConfirmVisible(false);
-          setTimeout(() => {
-            router.push('/training/active');
-          }, 200);
-        }}
-        title="Treino em andamento"
-        description="Você já possui uma sessão em andamento. Retome ou finalize o treino primeiro."
-        confirmLabel="Ir para o treino"
-        cancelLabel="Cancelar"
       />
     </Screen>
   );

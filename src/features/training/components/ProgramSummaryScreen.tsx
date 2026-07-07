@@ -16,7 +16,6 @@ interface ProgramSummaryScreenProps {
   updateBlocksOrder: (blocks: TrainingBlock[]) => void;
   onEditProgram: () => void;
   onWorkoutPress: (blockId: string) => void;
-  onStartSession: (blockId: string) => void;
 }
 
 export const ProgramSummaryScreen = ({
@@ -26,7 +25,6 @@ export const ProgramSummaryScreen = ({
   updateBlocksOrder,
   onEditProgram,
   onWorkoutPress,
-  onStartSession,
 }: ProgramSummaryScreenProps) => {
 
   const renderItem = ({ item, drag, isActive, getIndex }: RenderItemParams<BlockWithSets>) => {
@@ -43,7 +41,6 @@ export const ProgramSummaryScreen = ({
         isFirst={isFirst}
         isLast={isLast}
         onPress={() => onWorkoutPress(item.block.id)}
-        onStartSession={() => onStartSession(item.block.id)}
       />
     );
   };
