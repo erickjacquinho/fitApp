@@ -1,36 +1,57 @@
 import React from 'react';
-import { View } from 'react-native';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { View, Dimensions } from 'react-native';
+import Animated, { useAnimatedStyle, interpolate, SharedValue, Extrapolation } from 'react-native-reanimated';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface PaginationDotsProps {
   total: number;
-  active: number;
+  scrollX: SharedValue<number>;
 }
 
-export function PaginationDots({ total, active }: PaginationDotsProps) {
+export function PaginationDots({ total, scrollX }: PaginationDotsProps) {
   if (total <= 1) return null;
 
   return (
-    <View className="flex-row items-center justify-center gap-2 py-2">
+    <View className="flex-row items-center justify-center gap-2 py-2 bg-transparent">
       {Array.from({ length: total }).map((_, index) => {
-        const isActive = index === active;
-
-        return <Dot key={index} isActive={isActive} />;
+        return <Dot key={index} index={index} scrollX={scrollX} />;
       })}
     </View>
   );
 }
 
 interface DotProps {
-  isActive: boolean;
+  index: number;
+  scrollX: SharedValue<number>;
 }
 
-function Dot({ isActive }: DotProps) {
+function Dot({ index, scrollX }: DotProps) {
   const animatedStyle = useAnimatedStyle(() => {
+    const inputRange = [
+      (index - 1) * SCREEN_WIDTH,
+      index * SCREEN_WIDTH,
+      (index + 1) * SCREEN_WIDTH,
+    ];
+
+    const width = interpolate(
+      scrollX.value,
+      inputRange,
+      [6, 16, 6],
+      Extrapolation.CLAMP
+    );
+
+    const opacity = interpolate(
+      scrollX.value,
+      inputRange,
+      [0.3, 1, 0.3],
+      Extrapolation.CLAMP
+    );
+
     return {
-      width: isActive ? withTiming(16, { duration: 200 }) : withTiming(6, { duration: 200 }),
+      width,
       height: 6,
-      opacity: isActive ? withTiming(1, { duration: 200 }) : withTiming(0.3, { duration: 200 }),
+      opacity,
     };
   });
 

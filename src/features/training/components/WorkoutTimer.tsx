@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Clock } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
+import { Badge } from '@/components/ui/badge';
 
 interface WorkoutTimerProps {
   startDate: number;
@@ -41,13 +41,11 @@ export function WorkoutTimer({ startDate, endDate }: WorkoutTimerProps) {
   };
 
   return (
-    <View
-      className="flex-row items-center gap-1.5 bg-surface-elevated px-2.5 py-1 rounded-full border border-border-subtle"
-    >
+    <Badge variant="secondary" shape="pill">
       <Icon as={Clock} size={14} className="text-primary" />
       <Text variant="caption" className="text-text-primary font-mono font-bold tracking-widest mt-0.5">
         {formatDuration(elapsed)}
       </Text>
-    </View>
+    </Badge>
   );
 }

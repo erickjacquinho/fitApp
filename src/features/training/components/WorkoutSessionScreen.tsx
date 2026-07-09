@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, ActivityIndicator, Pressable, ScrollView, Alert } from 'react-native';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
+import React, { useRef } from 'react';
+import { View, ActivityIndicator, Alert } from 'react-native';
+import { useLocalSearchParams, useNavigation, router } from 'expo-router';
+import { ArrowLeft, Check, Plus } from 'lucide-react-native';
 import { Header } from '@/components/molecules/Header';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -14,7 +14,6 @@ import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import * as Haptics from 'expo-haptics';
-import { Check, Plus } from 'lucide-react-native';
 
 
 export function WorkoutSessionScreen() {
@@ -26,11 +25,8 @@ export function WorkoutSessionScreen() {
     block,
     exercises,
     isLoading,
-    handleSaveSet,
-    handleDeleteSet,
     handleFinishWorkout,
     getExerciseExecutions,
-    getCompletedExercisesCount,
     handleRemoveExerciseFromSession,
     handleReorderExercises,
     feedback,
@@ -81,9 +77,6 @@ export function WorkoutSessionScreen() {
       </View>
     );
   }
-
-  const completedCount = getCompletedExercisesCount();
-  const totalCount = exercises.length;
 
   return (
     <View className="flex-1 bg-background">
@@ -159,6 +152,17 @@ export function WorkoutSessionScreen() {
                   // TODO: Implement replace logic
                 }}
                 onDelete={() => confirmRemoveExercise(item.id, item.name)}
+                onPress={() => {
+                  if (session) {
+                    router.push({
+                      pathname: '/training/exercise-kanban',
+                      params: {
+                        sessionId: session.id,
+                        initialExerciseId: item.id,
+                      },
+                    });
+                  }
+                }}
               />
             );
           }}
