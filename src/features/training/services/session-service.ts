@@ -143,6 +143,26 @@ export class SessionService {
     });
   }
 
+  static async updateSessionTime(
+    sessionId: string,
+    newStartDate: number,
+    newEndDate?: number | null
+  ): Promise<WorkoutSession> {
+    return await database.write(async () => {
+      const session = await this.sessionsCollection.find(sessionId);
+      if (!session) {
+        throw new Error('Workout session not found');
+      }
+
+      return await session.update((record) => {
+        record.startDate = newStartDate;
+        if (newEndDate !== undefined) {
+          record.endDate = newEndDate;
+        }
+      });
+    });
+  }
+
   static async getHistory(): Promise<WorkoutSession[]> {
     return await this.sessionsCollection
       .query(Q.sortBy('start_date', Q.desc))

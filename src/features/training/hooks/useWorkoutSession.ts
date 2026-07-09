@@ -11,6 +11,7 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
   const [session, setSession] = useState<WorkoutSession | null>(null);
   const [block, setBlock] = useState<TrainingBlock | null>(null);
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [skippedExerciseIds, setSkippedExerciseIds] = useState<string[]>([]);
   const [executions, setExecutions] = useState<ExerciseExecution[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [feedback, setFeedback] = useState<PresentationFeedback | null>(null);
@@ -110,8 +111,29 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     });
   };
 
+  const handleUpdateSessionTime = async (newStartDate: number, newEndDate?: number | null) => {
+    if (!session) return;
+    await SessionService.updateSessionTime(session.id, newStartDate, newEndDate);
+    const updated = await SessionService.getSessionDetails(session.id);
+    setSession(updated.session);
+  };
+
   const getExerciseExecutions = (exerciseId: string) => {
     return executions.filter((e) => e.exerciseId === exerciseId);
+  };
+
+  const handleRemoveExerciseFromSession = async (exerciseId: string) => {
+    // We only skip it locally for this session
+    setSkippedExerciseIds((prev) => [...prev, exerciseId]);
+    // Also delete any logged sets for this exercise in this session, if they exist
+    const execs = getExerciseExecutions(exerciseId);
+    if (session && execs.length > 0) {
+      for (const exec of execs) {
+        await SessionService.deleteSet(session.id, exerciseId, exec.setNumber);
+      }
+      const updatedExecs = await session.executions.fetch();
+      setExecutions(updatedExecs);
+    }
   };
 
   const isExerciseCompleted = (exerciseId: string, targetSets: number) => {
@@ -119,22 +141,37 @@ export function useWorkoutSession(sessionIdParam?: string, blockIdParam?: string
     return execs.length >= targetSets && execs.every((e) => e.repsDone > 0 && e.weight > 0);
   };
 
+  const activeExercises = exercises.filter((ex) => !skippedExerciseIds.includes(ex.id));
+
+  const handleReorderExercises = (newOrder: Exercise[]) => {
+    // Only update the active exercises in the list, preserving skipped ones in the background if we needed to
+    // But since the DraggableFlatList will give us the array of active exercises, we can just replace the whole state
+    // with the new order + any skipped ones at the end (or just overwrite the active ones)
+    
+    // Simplest approach: just update the exercises state by rearranging them
+    const skipped = exercises.filter((ex) => skippedExerciseIds.includes(ex.id));
+    setExercises([...newOrder, ...skipped]);
+  };
+
   const getCompletedExercisesCount = () => {
-    return exercises.filter((ex) => isExerciseCompleted(ex.id, ex.sets)).length;
+    return activeExercises.filter((ex) => isExerciseCompleted(ex.id, ex.sets)).length;
   };
 
   return {
     session,
     block,
-    exercises,
+    exercises: activeExercises,
     executions,
     isLoading,
     handleSaveSet,
     handleDeleteSet,
     handleFinishWorkout,
+    handleUpdateSessionTime,
     getExerciseExecutions,
     isExerciseCompleted,
     getCompletedExercisesCount,
+    handleRemoveExerciseFromSession,
+    handleReorderExercises,
     feedback,
     setFeedback,
     clearFeedback,

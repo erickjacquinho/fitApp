@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-07T01:54:00Z",
+  "title": "Design System: FitApp",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Active Accent (Mineral Blue)",
+        "canonical": "oklch(40% 0.35 270)",
+        "tonalRamp": ["#0800FF", "#0C04DC", "#160E8C", "#9A96FA", "#C6C3F8"]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Page Background (Warm Parchment)",
+        "canonical": "oklch(94% 0.01 70)",
+        "tonalRamp": ["#FCFAF6", "#F3EFE7", "#DED8CF", "#C5BAAE", "#A3988F", "#7A7069", "#4B413B", "#241C18"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Container Surface (Soft White)",
+        "canonical": "oklch(98% 0.005 70)"
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Primary Ink (Dark Espresso)",
+        "canonical": "oklch(18% 0.015 60)"
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headers and high-level summary metrics." },
+      "headline": { "displayName": "Headline", "purpose": "Main section headers." },
+      "title": { "displayName": "Title", "purpose": "Card headers and primary actions." },
+      "body": { "displayName": "Body", "purpose": "Standard text descriptions, logs, list items." },
+      "label": { "displayName": "Label", "purpose": "Form field headers, eyebrows, and stats identifiers." },
+      "caption": { "displayName": "Caption", "purpose": "Secondary logs, minor descriptions." }
+    },
+    "shadows": [
+      {
+        "name": "shadow-floating",
+        "value": "0 2px 8px rgba(31, 27, 22, 0.08)",
+        "purpose": "Permitted exclusively for temporary, floating bottom sheets."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration-base",
+        "value": "180ms",
+        "purpose": "Default duration for state transitions."
+      },
+      {
+        "name": "easing-standard",
+        "value": "cubic-bezier(0.2, 0.0, 0, 1.0)",
+        "purpose": "Exponential deceleration curve."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary action button with standard height and padding.",
+      "html": "<button class=\"ds-btn-primary\">CONTINUE</button>",
+      "css": ".ds-btn-primary { background: #0800FF; color: #FFFFFF; border-radius: 8px; height: 44px; padding: 0 16px; font-weight: 700; font-family: sans-serif; border: none; justify-content: center; align-items: center; } .ds-btn-primary:active { opacity: 0.8; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Standard single-line text input field.",
+      "html": "<input type=\"text\" class=\"ds-input-text\" placeholder=\"Enter value...\" />",
+      "css": ".ds-input-text { background: #FCFAF6; color: #241C18; border: 1px solid #C5BAAE; border-radius: 8px; height: 48px; padding: 0 16px; font-family: sans-serif; font-size: 16px; outline: none; } .ds-input-text:focus { border-color: #0800FF; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Sculpted Ledger",
+    "overview": "The Sculpted Ledger represents the fusion of an analog, high-craft physical logbook with the absolute precision of a digital tracking system. It is designed for heavy gym trainees who metrically analyze their workouts and diet daily. The interface feels solid, reliable, and grounded.",
+    "keyCharacteristics": [
+      "Mineral Warm Palette: Built on soft earth/warm neutral surfaces with a sharp blue focus/active color.",
+      "Flat-By-Default Layering: Hierarchy is communicated by nested color layers instead of drop shadows.",
+      "Data Density with Dignity: Metrics are presented cleanly in structured grids and lists.",
+      "Extreme Touch Feasibility: Touch targets exceed 44px for easy interaction during heavy physical strain."
+    ],
+    "rules": [
+      {
+        "name": "The Blue-First Active Rule",
+        "body": "The primary color for all interactive states, focused states, selection, and the protein macro is Mineral Blue. Olive is deprecated and strictly forbidden.",
+        "section": "colors"
+      },
+      {
+        "name": "The Restrained Intensity Rule",
+        "body": "Brand colors should occupy <=10% of any given screen surface. Visual strength comes from restraint.",
+        "section": "colors"
+      },
+      {
+        "name": "The Clean Grotesque Rule",
+        "body": "No serif headings or decorative handwriting fonts. Use structured Helvetica variations to convey stability and focus.",
+        "section": "typography"
+      },
+      {
+        "name": "The Layer-Not-Shadow Rule",
+        "body": "Depth is created through contrasting surface tones rather than box shadows. Drop shadows are prohibited for static cards, buttons, or list items.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use strict semantic Tailwind/NativeWind tokens (e.g., bg-surface, text-error) for all visual elements.",
+      "Do group related metrics inside a structured 4-column layout with gap-content-gap (16px) or gap-section-gap (32px).",
+      "Do verify contrast limits (body text must be at least 4.5:1 against the underlying surface).",
+      "Do use ReanimatedSwipeable and expo-haptics for any interactive row gestures (e.g., deleting a food log)."
+    ],
+    "donts": [
+      "Don't use arbitrary Tailwind utility overrides (bg-blue-500, text-red-400 or custom inline colors).",
+      "Don't use decorative sketch/doodle SVGs or hand-drawn borders.",
+      "Don't use side-stripe borders (e.g. colored left-borders on cards or alerts).",
+      "Don't pair borders with wide drop shadows (no ghost-cards).",
+      "Don't use gradient text under any circumstance.",
+      "Don't use uppercase, widely tracked eyebrows on every section by reflex."
+    ]
+  }
+}

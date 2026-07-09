@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
-import { View, ActivityIndicator, Pressable, FlatList, Dimensions } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { TrainingProgressBar } from './TrainingProgressBar';
-import { ExerciseColumn } from './ExerciseColumn';
-import { PaginationDots } from '@/components/ui/PaginationDots';
-import { useWorkoutSession } from '../hooks/useWorkoutSession';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ActivityIndicator, Pressable, ScrollView, Alert } from 'react-native';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
+import { Header } from '@/components/molecules/Header';
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Text } from "@/components/ui/text";
 import { Card } from "@/components/ui/card";
+import { MacroExerciseListItem } from './MacroExerciseListItem';
+import { DraggableList } from '@/components/organisms/DraggableList';
+import { WorkoutTimer } from './WorkoutTimer';
+import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS, Easing } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
+import { Check, Plus } from 'lucide-react-native';
+
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
-  const [activeIndex, setActiveIndex] = useState(0);
   const { primary } = useThemeColors();
-  const { width } = Dimensions.get('window');
 
   const {
+    session,
     block,
     exercises,
     isLoading,
@@ -26,23 +31,23 @@ export function WorkoutSessionScreen() {
     handleFinishWorkout,
     getExerciseExecutions,
     getCompletedExercisesCount,
+    handleRemoveExerciseFromSession,
+    handleReorderExercises,
     feedback,
     setFeedback,
     clearFeedback,
   } = useWorkoutSession(params.sessionId, params.blockId);
 
-  const progress = useSharedValue(0);
-
-  const animatedProgressStyle = useAnimatedStyle(() => {
-    return {
-      width: `${progress.value * 100}%`,
-    };
-  });
+  const navigation = useNavigation();
+  const isFinishingRef = useRef(false);
 
   const onConfirmFinish = async () => {
     try {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      isFinishingRef.current = true;
       await handleFinishWorkout();
     } catch {
+      isFinishingRef.current = false;
       setFeedback({
         type: 'error',
         title: 'Erro ao finalizar',
@@ -51,103 +56,154 @@ export function WorkoutSessionScreen() {
     }
   };
 
-  const handleHoldStart = () => {
-    progress.value = withTiming(1, {
-      duration: 1500,
-      easing: Easing.linear,
-    }, (finished) => {
-      if (finished) {
-        progress.value = 0; // reset
-        runOnJS(onConfirmFinish)();
-      }
-    });
-  };
-
-  const handleHoldEnd = () => {
-    if (progress.value < 1) {
-      progress.value = withTiming(0, { duration: 200 });
-    }
+  const confirmRemoveExercise = (exerciseId: string, exerciseName: string) => {
+    Alert.alert(
+      'Remover exercício',
+      `Deseja remover ${exerciseName} da sessão atual? Ele não será apagado do plano de treino original.`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { 
+          text: 'Remover', 
+          style: 'destructive',
+          onPress: () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            handleRemoveExerciseFromSession(exerciseId);
+          }
+        },
+      ]
+    );
   };
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center bg-background">
         <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
 
+  const completedCount = getCompletedExercisesCount();
+  const totalCount = exercises.length;
+
   return (
-    <View className="flex-1 py-4 justify-between">
-      <View className="px-4">
-        {block && (
-          <Text variant="title" className="mb-2 font-bold">
-            Treino {block.name}
-          </Text>
-        )}
-
-        <TrainingProgressBar
-          completed={getCompletedExercisesCount()}
-          total={exercises.length}
-        />
-
-        {/* Modular, monochromatic PaginationDots positioned cleanly */}
-        <View className="mt-2 mb-4 items-center">
-          <PaginationDots total={exercises.length} active={activeIndex} />
-        </View>
-      </View>
+    <View className="flex-1 bg-background">
+      {/* Integrated Header */}
+      <Header
+        title="Treino em andamento"
+        headerLeft={
+          <Button
+            accessibilityLabel="Voltar"
+            variant="ghost"
+            size="icon"
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              navigation.goBack();
+            }}
+            className="-ml-1"
+          >
+            <Icon as={ArrowLeft} size={24} className="text-text-primary" />
+          </Button>
+        }
+        headerRight={
+          <Button
+            accessibilityLabel="Concluir"
+            variant="ghost"
+            size="icon"
+            onPress={onConfirmFinish}
+            className="-mr-1"
+          >
+            <Icon as={Check} size={24} className="text-primary" />
+          </Button>
+        }
+      />
 
       {exercises.length > 0 ? (
-        <FlatList
+        <DraggableList
           data={exercises}
+          onReorder={handleReorderExercises}
           keyExtractor={(item) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={width}
-          decelerationRate="fast"
-          onMomentumScrollEnd={(e) => {
-            const index = Math.round(e.nativeEvent.contentOffset.x / width);
-            setActiveIndex(index);
-          }}
-          renderItem={({ item }) => (
-            <View style={{ width }}>
-              <ExerciseColumn
-                exercise={item}
-                executions={getExerciseExecutions(item.id)}
-                onSaveSet={handleSaveSet}
-                onDeleteSet={handleDeleteSet}
-              />
+          contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View className="mb-6 mt-2">
+              <View className="flex-row items-center justify-between mb-4">
+                <Text variant="h3" className="text-text-primary font-bold flex-1 mr-4">
+                  {block ? `Treino ${block.name}` : 'Treino atual'}
+                </Text>
+                {session && (
+                  <WorkoutTimer 
+                    startDate={session.startDate} 
+                    endDate={session.endDate}
+                  />
+                )}
+              </View>
             </View>
-          )}
-          className="flex-1"
+          }
+          renderItem={(item, isActive, drag, index) => {
+            const executions = getExerciseExecutions(item.id);
+            const completedSets = executions.length;
+            const totalSets = Math.max(item.sets, completedSets);
+            
+            return (
+              <MacroExerciseListItem
+                exercise={item}
+                order={(index ?? 0) + 1}
+                completedSets={completedSets}
+                totalSets={totalSets}
+                isFirst={index === 0}
+                isLast={index === exercises.length - 1}
+                drag={drag}
+                isActive={isActive}
+                onReplace={() => {
+                  console.log('Substituir', item.id);
+                  // TODO: Implement replace logic
+                }}
+                onDelete={() => confirmRemoveExercise(item.id, item.name)}
+              />
+            );
+          }}
+          ListFooterComponent={
+            <View className="mt-4">
+              <Button
+                variant="outline"
+                className="w-full"
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  console.log('Add exercise');
+                  // TODO: Open exercise catalog to add to session
+                }}
+              >
+                <Icon as={Plus} size={20} className="text-text-primary mr-2" />
+                <Text>Adicionar Exercício</Text>
+              </Button>
+            </View>
+          }
         />
       ) : (
         <View className="flex-1 justify-center px-4">
-          <Card className="my-8 items-center justify-center py-10 border-dashed">
-            <Text variant="text" className="text-text-secondary text-center">
-              Nenhum exercício neste bloco de treino.
+          <Card className="items-center justify-center p-6 border-dashed border-2 border-border-subtle bg-surface">
+            <Text variant="h3" className="text-text-primary font-bold text-center mb-2">
+              Treino Vazio
             </Text>
+            <Text variant="text" className="text-text-secondary text-center mb-6">
+              Adicione exercícios para começar a treinar.
+            </Text>
+            <Button
+              className="w-full mt-4"
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                console.log('Add exercise');
+                // TODO: Open exercise catalog to add to session
+              }}
+            >
+              <Icon as={Plus} size={20} className="text-text-inverse mr-2" />
+              <Text>Adicionar Exercício</Text>
+            </Button>
           </Card>
         </View>
       )}
 
-      {/* Persistent Hold to Finish Button at the bottom */}
-      <View className="px-4 pb-content-bottom">
-        <Pressable
-          onPressIn={handleHoldStart}
-          onPressOut={handleHoldEnd}
-          className="my-3 min-h-control-lg bg-success rounded-md overflow-hidden justify-center items-center relative active:opacity-90"
-        >
-          <Animated.View 
-            className="absolute left-0 top-0 bottom-0 bg-text-inverse opacity-35" 
-            style={animatedProgressStyle} 
-          />
-          <Text variant="label" className="text-text-inverse font-bold z-10">
-            Segure para finalizar treino
-          </Text>
-        </Pressable>
-      </View>
+
 
       <FeedbackDialog
         visible={!!feedback}

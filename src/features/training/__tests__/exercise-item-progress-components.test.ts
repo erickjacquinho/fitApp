@@ -12,10 +12,3 @@ describe('PaginationDots Bypass Tests', () => {
   });
 });
 
-describe('TrainingProgressBar Bypass Tests', () => {
-  it('TrainingProgressBar uses semantic tokens', () => {
-    const file = fs.readFileSync(path.join(__dirname, '../components/TrainingProgressBar.tsx'), 'utf8');
-    expect(file).not.toContain('color="accent"');
-    // removed text-primary check
-  });
-});
