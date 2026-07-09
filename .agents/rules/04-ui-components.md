@@ -2,6 +2,7 @@
 
 ## 1. Component Rules
 - **Canonical Primitives**: Must live in `src/components/ui/` and originate from `@react-native-reusables`.
+- **States**: Every interactive component must define default, hover, focus, active, disabled, loading, and error states. Don't ship with half of these.
 - **Card vs View**: Use `Card` (nested cards are forbidden) to group independent content. Use `View` for structural layout, padding, and background coloration without elevation.
 - **Popups**: NEVER use native `Modal` directly. Use `AlertDialog` (blocking decisions), `Dialog` (supplementary content), or `BottomSheetModal` (non-blocking).
 - **Icons (Lucide)**: Use `as` prop. Sizes: `icon-sm` (16px), `icon-md` (20px), `icon-lg` (24px). Primary action icons use `blue-500`. Ícones isolados ou em botões transparentes (ghost/outline) **NUNCA** devem ter background color, nem mesmo em estados de press/hover; utilize apenas variação de opacidade (ex: `active:opacity-80`).
@@ -15,8 +16,8 @@
 ## 3. Data Display & Lists
 - **Grouped List Box Pattern**: All lists (history, workouts, foods) MUST use the grouped box pattern. The component calculates `isFirst` and `isLast` and passes to the item to apply dynamic borders/radius (`rounded-t-lg`, `border-b`, etc).
 - **Progress**: Include readable numeric values. Do not rely only on color.
-- **Empty States**: Must have a short title, context, and one clear CTA. Do not use illustration-heavy states.
-- **Feedback**: Use skeletons (mirroring final layout) for content-heavy loading. Use Toast for non-blocking confirmation.
+- **Empty States**: Must teach the interface, not just say "nothing here." Have a short title, context, and one clear CTA. Do not use illustration-heavy states.
+- **Feedback**: Use skeletons (mirroring final layout) for content-heavy loading, not spinners in the middle of content. Use Toast for non-blocking confirmation.
 
 ## 4. Swipeable & Gesture-Based Rows
 - **Componente canônico**: `SwipeableRow` (`src/components/molecules/SwipeableRow.tsx`). API baseada em features: `features={['edit', 'delete']}`.

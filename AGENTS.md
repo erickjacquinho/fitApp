@@ -22,3 +22,8 @@ Before ANY execution, you MUST read the following rules when applicable:
 5. `05-ui-layout-navigation.md`: Page structure (`<Screen>` wrappers), Layout grid, Tabs.
 6. `06-ui-content-a11y.md`: PT-BR voice, Touch targets, Accessibility roles.
 7. `07-validation-gate.md`: Required commands, dependency versions, and Android smoke testing.
+
+## 5. Design Context
+- **Product Strategy**: FitApp targets heavy gym trainees with an offline-first approach (logging/analytics).
+- **Core Principles**: *Speed over Splop*, *Data Density with Dignity*, *Uncompromising Autonomy*. The tool should disappear into the task.
+- **Visual Design**: Mineral Warm palette (strict blue-first), Helvetica Now grotesque pairings, flat elevation strategy, and consistent component vocabulary.
