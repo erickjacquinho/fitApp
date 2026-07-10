@@ -5,6 +5,7 @@ import Animated, {
   withTiming, 
   withSpring 
 } from 'react-native-reanimated';
+import { animationTokens } from '@/tokens/animations';
 import { cn } from '@/lib/utils';
 import { useColorScheme } from 'nativewind';
 import { lightTheme, darkTheme } from '@/tokens/theme';
@@ -33,8 +34,8 @@ export function CarouselIndicator({ total, currentIndex, className }: CarouselIn
 function Dot({ isActive, colors }: { isActive: boolean; colors: any }) {
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      width: withSpring(isActive ? 24 : 8, { damping: 15, stiffness: 150 }),
-      backgroundColor: withTiming(isActive ? colors.primary : colors.borderSubtle, { duration: 250 })
+      width: withSpring(isActive ? 24 : 8, animationTokens.physics.spring.snappy),
+      backgroundColor: withTiming(isActive ? colors.primary : colors.borderSubtle, { duration: animationTokens.duration.slow })
     };
   });
 

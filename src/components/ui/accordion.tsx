@@ -12,6 +12,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { animationTokens, motionPatterns } from '@/tokens/animations';
 
 function Accordion({
   children,
@@ -23,7 +24,7 @@ function Accordion({
       <AccordionPrimitive.Root
         {...(props as AccordionPrimitive.RootProps)}
         asChild={Platform.OS !== 'web'}>
-        <Animated.View layout={LinearTransition.duration(200)}>{children}</Animated.View>
+        <Animated.View layout={LinearTransition.duration(motionPatterns.expandable.expand.duration as number).easing(motionPatterns.expandable.expand.easing!)}>{children}</Animated.View>
       </AccordionPrimitive.Root>
     </LayoutAnimationConfig>
   );
@@ -47,7 +48,7 @@ function AccordionItem({
       {...props}>
       <Animated.View
         className="native:overflow-hidden"
-        layout={Platform.select({ native: LinearTransition.duration(200) })}>
+        layout={Platform.select({ native: LinearTransition.duration(motionPatterns.expandable.expand.duration as number).easing(motionPatterns.expandable.expand.easing!) })}>
         {children}
       </Animated.View>
     </AccordionPrimitive.Item>
@@ -66,7 +67,7 @@ function AccordionTrigger({
   const { isExpanded } = AccordionPrimitive.useItemContext();
 
   const progress = useDerivedValue(
-    () => (isExpanded ? withTiming(1, { duration: 250 }) : withTiming(0, { duration: 200 })),
+    () => (isExpanded ? withTiming(1, motionPatterns.expandable.expand) : withTiming(0, motionPatterns.expandable.collapse)),
     [isExpanded]
   );
   const chevronStyle = useAnimatedStyle(
@@ -128,7 +129,7 @@ function AccordionContent({
         )}
         {...props}>
         <Animated.View
-          exiting={Platform.select({ native: FadeOutUp.duration(200) })}
+          exiting={Platform.select({ native: FadeOutUp.duration(motionPatterns.expandable.collapse.duration as number).easing(motionPatterns.expandable.collapse.easing!) })}
           className={cn('px-4 pb-4', className)}>
           {children}
         </Animated.View>

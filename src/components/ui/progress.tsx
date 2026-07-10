@@ -8,6 +8,7 @@ import Animated, {
   useDerivedValue,
   withSpring,
 } from 'react-native-reanimated';
+import { animationTokens } from '@/tokens/animations';
 
 function Progress({
   className,
@@ -60,7 +61,7 @@ function NativeIndicator({ value, className }: IndicatorProps) {
     return {
       width: withSpring(
         `${interpolate(progress.value, [0, 100], [1, 100], Extrapolation.CLAMP)}%`,
-        { overshootClamping: true }
+        { ...animationTokens.physics.spring.snappy, overshootClamping: true }
       ),
     };
   }, [value]);

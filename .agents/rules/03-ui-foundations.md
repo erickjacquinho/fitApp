@@ -38,7 +38,13 @@ FitApp uses the Mineral Warm palette with a strict **blue-first** rule. Olive to
 - **Threshold detection**: Use `useAnimatedReaction` + `runOnJS` monitorando `SharedValue`. NUNCA use `addListener` em `AnimatedInterpolation`.
 - **Estilos em views animadas**: EXCEÇÃO à regra Zero Hardcoded Styles — `Reanimated.View` e `Animated.View` DEVEM usar `StyleSheet.create` ou `useAnimatedStyle`. NativeWind `className` não funciona por padrão nesses componentes; `cssInterop()` pode habilitar mas é frágil com Reanimated v4.x.
 - **Haptic feedback**: Usar `expo-haptics` ao cruzar thresholds de gestos destrutivos (obrigatório para ações irreversíveis por arrasto).
-- **Transitions**: 150–250 ms on most transitions. Motion conveys state change, feedback, loading, or reveal, not decoration. No orchestrated page-load sequences.
+- **Motion Patterns (Mandatory)**: ALWAYS consume `motionPatterns` from `src/tokens/animations.ts` for unified visual feedback. Identical component types (overlays, interactives, form controls) MUST NOT have arbitrary or hardcoded animation configs.
+- **Disney Principles (Strict compliance)**:
+  - **Timing**: User-initiated animations must complete under 300ms (150ms-250ms).
+  - **Easing**: Entrances and focus states must use `easing.entrance` (ease-out). Exits and blurs must use `easing.exit` (ease-in). Never use linear easing for motion.
+  - **Physics**: Active states use a subtle squash deformation (`scale: 0.98`). Always use springs (`physics.spring.snappy`, etc.) for overshoot-and-settle.
+  - **Staging/Stagger**: Stagger delays in lists must not exceed 50ms per item (use `motionPatterns.list.staggerDelay` = 30ms).
+- **Transitions**: Motion conveys state change, feedback, loading, or reveal, not decoration. No orchestrated page-load sequences.
 - **Overscroll fill**: Usar `containerStyle` no `ReanimatedSwipeable` para cor de fundo do overscroll. NUNCA usar Views absolutas com offsets extremos.
 - **Friction**: Preferir `overshootFriction` para controlar resistência apenas no overshoot. `friction` afeta o gesto inteiro e pode impedir o usuário de atingir thresholds distantes.
 - **Hooks em render callbacks**: Reanimated hooks (`useAnimatedReaction`, `useAnimatedStyle`) não podem rodar dentro de `renderRightActions` diretamente. Extrair o conteúdo em um componente React separado.

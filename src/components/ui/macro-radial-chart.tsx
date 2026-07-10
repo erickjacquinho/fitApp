@@ -62,6 +62,8 @@ export function MacroRadialChart({
     const addRotation = 300 + Math.random() * 420;
     targetRotation.current += addRotation;
     
+    // [Exception]: This animation is intentionally 'for fun' (easter egg)
+    // and bypasses the timing-under-300ms strict rule.
     rotation.value = withTiming(targetRotation.current, {
       duration: 1000,
       easing: Easing.out(Easing.cubic),

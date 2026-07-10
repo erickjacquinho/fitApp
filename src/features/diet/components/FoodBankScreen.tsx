@@ -16,6 +16,7 @@ import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { MealService } from '../services/meal-service';
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { animationTokens } from '@/tokens/animations';
 import { cn } from '@/lib/utils';
 
 import { Text } from "@/components/ui/text";
@@ -48,11 +49,7 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
   const animatedIndicatorStyle = useAnimatedStyle(() => {
     return {
       transform: [{
-        translateX: withSpring(activeIndex * tabWidth, {
-          mass: 1,
-          damping: 25,
-          stiffness: 250,
-        })
+        translateX: withSpring(activeIndex * tabWidth, animationTokens.physics.spring.snappy)
       }],
       width: tabWidth,
     };

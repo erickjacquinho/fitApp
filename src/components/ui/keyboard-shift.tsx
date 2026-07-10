@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
+import { motionPatterns } from '@/tokens/animations';
 
 interface KeyboardShiftProps {
   /** Content to shift upward when the keyboard opens. */
@@ -48,17 +49,11 @@ export function KeyboardShift({
     const showSub = Keyboard.addListener('keyboardDidShow', (e) => {
       const keyboardHeight = e.endCoordinates.height;
       // Shift up by half the keyboard height + extra breathing room
-      shift.value = withTiming(-(keyboardHeight / 2 + offset), {
-        duration: 250,
-        easing: Easing.out(Easing.quad),
-      });
+      shift.value = withTiming(-(keyboardHeight / 2 + offset), motionPatterns.expandable.expand);
     });
 
     const hideSub = Keyboard.addListener('keyboardDidHide', () => {
-      shift.value = withTiming(0, {
-        duration: 200,
-        easing: Easing.out(Easing.quad),
-      });
+      shift.value = withTiming(0, motionPatterns.expandable.collapse);
     });
 
     return () => {

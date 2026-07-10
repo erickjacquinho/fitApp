@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import React, { useState, useEffect, useRef } from 'react';
 import { Platform, TextInput, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
+import { motionPatterns } from '@/tokens/animations';
 
 export interface InputProps extends React.ComponentProps<typeof TextInput> {
   hasError?: boolean;
@@ -39,12 +40,12 @@ const Input = React.forwardRef<TextInput, InputProps>(
     const [frame, setFrame] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
     const handleFocus = (e: any) => {
-      focusAnim.value = withTiming(1, { duration: 150, easing: Easing.out(Easing.ease) });
+      focusAnim.value = withTiming(1, motionPatterns.formControl.focus);
       if (onFocus) onFocus(e);
     };
 
     const handleBlur = (e: any) => {
-      focusAnim.value = withTiming(0, { duration: 150, easing: Easing.in(Easing.ease) });
+      focusAnim.value = withTiming(0, motionPatterns.formControl.blur);
       if (onBlur) onBlur(e);
     };
 
