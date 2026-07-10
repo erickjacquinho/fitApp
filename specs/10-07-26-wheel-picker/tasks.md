@@ -8,10 +8,9 @@
   - Haptics: isolar corretamente usando `runOnJS` para não disparar loucamente caso haja pulos grandes no Scroll.
   - *Skill ideal: react-native-architecture*
 - `[ ]` **1.2. Refatorar Micro-Animações do WheelItem:**
-  - Extrair a interpolação para usar Mola (`withSpring`) quando `isScrolling === 0`.
-  - Ajustar as propriedades de Overshoot e Damping conforme a regra de "spring for overshoot".
+  - Extrair a interpolação para usar transições ou animações otimizadas (evitar mola e bounce exagerado para UI) quando `isScrolling === 0`.
   - Fazer os itens fora do index central terem opacidade nula no repouso, e opacidade (0.4) apenas nos +1 e -1 imediatos quando rolando.
-  - *Skill ideal: 12-principles-of-animation*
+  - *Skill ideal: emil-design-eng*
 
 ## 2. Navigation & Screens Phase
 - `[ ]` **2.1. Criar Rota de Demonstração (`app/wheel-picker-demo.tsx`):**

@@ -2,19 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { Screen } from '@/components/ui/screen';
 import { Header } from '@/components/molecules/Header';
-import WheelPicker from '@quidone/react-native-wheel-picker';
 import { Text } from '@/components/ui/text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useColorScheme } from 'nativewind';
-import { lightTheme, darkTheme } from '@/tokens/theme';
+import { DragToAdjust } from '@/components/ui/drag-to-adjust';
 
 export default function WheelPickerDemoPage() {
-  const [weight, setWeight] = useState(20);
-  const [intensity, setIntensity] = useState('Moderado');
+  const [weightIndex, setWeightIndex] = useState(10); // 10 + 10 = 20kg
+  const [intensityIndex, setIntensityIndex] = useState(1); // 'Moderado'
   const insets = useSafeAreaInsets();
-  
-  const { colorScheme } = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
 
   const numberData = useMemo(() => 
     Array.from({ length: 91 }, (_, i) => ({ value: i + 10, label: `${i + 10} kg` })),
@@ -27,70 +22,36 @@ export default function WheelPickerDemoPage() {
   const renderItem = ({ item }: { item: string }) => {
     if (item === 'numbers') {
       return (
-        <View className="gap-6 mb-12 w-full bg-surface-elevated p-6 rounded-2xl border border-border-subtle shadow-floating">
+        <View className="gap-6 mb-12 w-full bg-surface p-6 rounded-2xl border border-border-subtle shadow-floating">
           <View className="items-center mb-2">
             <Text variant="h3" className="font-bold text-primary mb-1">Carga do Exercício</Text>
-            <Text variant="p" className="text-secondary text-center">Deslize para selecionar o peso utilizado na última série.</Text>
+            <Text variant="p" className="text-secondary text-center">Deslize para cima ou baixo para alterar.</Text>
           </View>
           
-          <View className="py-2 w-full h-48 justify-center items-center">
-            <WheelPicker
-              data={numberData}
-              value={weight}
-              onValueChanged={({ item: { value } }) => setWeight(value)}
-              width="100%"
-              itemHeight={48}
-              itemTextStyle={{
-                fontSize: 22,
-                color: colors.textPrimary,
-                fontWeight: '600',
-              }}
-              overlayItemStyle={{
-                backgroundColor: colorScheme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                borderRadius: 12,
-              }}
-            />
-          </View>
-
-          <View className="items-center bg-surface p-4 rounded-xl border border-border-subtle mt-2">
-            <Text variant="caption" className="text-secondary uppercase tracking-widest mb-1 font-semibold">Valor Registrado</Text>
-            <Text variant="h2" className="font-bold text-primary">{weight} kg</Text>
-          </View>
+          <DragToAdjust
+            data={numberData}
+            selectedIndex={weightIndex}
+            onIndexChanged={setWeightIndex}
+            sensitivity={25}
+          />
         </View>
       );
     }
 
     if (item === 'strings') {
       return (
-        <View className="gap-6 w-full bg-surface-elevated p-6 rounded-2xl border border-border-subtle shadow-floating">
+        <View className="gap-6 w-full bg-surface p-6 rounded-2xl border border-border-subtle shadow-floating">
           <View className="items-center mb-2">
             <Text variant="h3" className="font-bold text-primary mb-1">Intensidade (RPE)</Text>
-            <Text variant="p" className="text-secondary text-center">Como foi o esforço percebido?</Text>
+            <Text variant="p" className="text-secondary text-center">Deslize para cima ou baixo para alterar.</Text>
           </View>
           
-          <View className="py-2 w-full h-48 justify-center items-center">
-            <WheelPicker
-              data={stringData}
-              value={intensity}
-              onValueChanged={({ item: { value } }) => setIntensity(value)}
-              width="100%"
-              itemHeight={48}
-              itemTextStyle={{
-                fontSize: 22,
-                color: colors.textPrimary,
-                fontWeight: '600',
-              }}
-              overlayItemStyle={{
-                backgroundColor: colorScheme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                borderRadius: 12,
-              }}
-            />
-          </View>
-
-          <View className="items-center bg-surface p-4 rounded-xl border border-border-subtle mt-2">
-            <Text variant="caption" className="text-secondary uppercase tracking-widest mb-1 font-semibold">Esforço Registrado</Text>
-            <Text variant="h2" className="font-bold text-primary">{intensity}</Text>
-          </View>
+          <DragToAdjust
+            data={stringData}
+            selectedIndex={intensityIndex}
+            onIndexChanged={setIntensityIndex}
+            sensitivity={40}
+          />
         </View>
       );
     }
