@@ -29,6 +29,7 @@ module.exports = {
           control: 'var(--color-border-control)',
           'control-hover': 'var(--color-border-control-hover)',
           focus: 'var(--color-border-focus)',
+          'focus-ring': 'var(--color-border-focus-ring)',
         },
         text: {
           primary: 'var(--color-text-primary)',

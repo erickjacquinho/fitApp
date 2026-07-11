@@ -54,6 +54,8 @@
     --color-border-control: var(--color-neutral-500);
     --color-border-control-hover: var(--color-neutral-600);
     --color-border-focus: var(--color-blue-500);
+    /* Focus Ring: specific semantic neutral token for the standalone FocusRing component */
+    --color-border-focus-ring: var(--color-neutral-100);
 
     --color-text-primary: var(--color-neutral-900);
     --color-text-secondary: var(--color-neutral-600);
@@ -188,6 +190,8 @@
       --color-border-control: #766860;
       --color-border-control-hover: #C5BAAE;
       --color-border-focus: var(--color-blue-200);
+      /* Focus Ring: strictly maps to app background in dark mode for maximum subtlety */
+      --color-border-focus-ring: #15110F;
 
       --color-text-primary: #F8F3EB;
       --color-text-secondary: #C9BFB5;

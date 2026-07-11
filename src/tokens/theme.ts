@@ -9,6 +9,8 @@ export interface ThemeColors {
   borderStrong: string;
   borderControl: string;
   borderFocus: string;
+  /** Specialized semantic token for the custom native FocusRing component. Maps to a neutral color to avoid visual clashes. */
+  borderFocusRing: string;
   textPrimary: string;
   textSecondarySurface: string;
   textSecondaryBackground: string;
@@ -75,6 +77,7 @@ export const lightTheme: ThemeColors = {
   borderStrong: '#C5BAAE',
   borderControl: '#7A7069',
   borderFocus: '#0800FF',
+  borderFocusRing: '#F3EFE7',
   textPrimary: '#241C18',
   textSecondarySurface: '#7A7069',
   textSecondaryBackground: '#625851',
@@ -106,6 +109,7 @@ export const darkTheme: ThemeColors = {
   borderStrong: '#5A4C45',
   borderControl: '#766860',
   borderFocus: '#9A96FA',
+  borderFocusRing: '#15110F',
   textPrimary: '#F8F3EB',
   textSecondarySurface: '#C9BFB5',
   textSecondaryBackground: '#C9BFB5',
