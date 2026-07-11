@@ -146,7 +146,12 @@ export function WorkoutExerciseKanbanScreen({
           ref={flatListRef as any}
           data={exercises}
           horizontal
-          pagingEnabled
+          snapToInterval={SCREEN_WIDTH}
+          snapToAlignment="center"
+          decelerationRate="fast"
+          disableIntervalMomentum={true}
+          bounces={true}
+          overScrollMode="always"
           showsHorizontalScrollIndicator={false}
           onScroll={scrollHandler}
           scrollEventThrottle={16}
