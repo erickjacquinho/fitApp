@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from "@/components/ui/text";
 import { Q } from '@nozbe/watermelondb';
 import withObservables from '@nozbe/with-observables';
@@ -7,7 +6,6 @@ import React, { useState } from 'react';
 import { Platform, UIManager, View } from 'react-native';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
 import { database } from '../../../db';
 import Meal from '../../../db/models/Meal';
@@ -16,9 +14,8 @@ import { MealService } from '../services/meal-service';
 import { DailyBalance } from './DailyBalance';
 import { EditMealModal } from './EditMealModal';
 import { MealCard } from './MealCard';
-
-const FOOTER_ENTER = FadeIn.duration(200).easing(Easing.ease);
-const FOOTER_EXIT = FadeOut.duration(200).easing(Easing.ease);
+import { MenuScreenSkeleton } from './MenuScreenSkeleton';
+import { MenuReorderFooter } from './MenuReorderFooter';
 
 interface MenuScreenProps {
   meals: Meal[];
@@ -125,7 +122,6 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: Men
   React.useEffect(() => {
     const ensureDefaultMeal = async () => {
       if (meals.length === 0) {
-        // Automatically create a default meal so there's always at least 1
         await MealService.createWithItems({ name: 'Refeição 1', quantity: 1, preparationState: '' }, [], selectedDate);
       }
     };
@@ -162,7 +158,7 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: Men
             contentContainerClassName="pb-content-bottom pt-4 px-screen-x"
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            activationDistance={isReordering ? 8 : 1000} // Disable drag accidentally when not reordering
+            activationDistance={isReordering ? 8 : 1000}
             ListHeaderComponent={
               <View>
                 <DailyBalance 
@@ -187,97 +183,34 @@ function MenuScreenComponent({ meals, selectedDate, onSelectDate, menuRef }: Men
         </GestureHandlerRootView>
 
         {isReordering && (
-          <Animated.View 
-            entering={FOOTER_ENTER}
-            exiting={FOOTER_EXIT}
-            className="flex-row items-center justify-between px-screen-x py-4"
-          >
-            <Button variant="outline" className="flex-1 mr-2" onPress={cancelReorder}>
-              <Text>Cancelar</Text>
-            </Button>
-            <Button className="flex-1 ml-2" onPress={confirmReorder}>
-              <Text>Confirmar</Text>
-            </Button>
-          </Animated.View>
+          <MenuReorderFooter onCancel={cancelReorder} onConfirm={confirmReorder} />
         )}
       </View>
 
-      {showSkeleton && (
-        <View className="absolute inset-0 bg-background z-10 pt-4 px-screen-x">
-          <View className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-row items-center justify-between py-4 px-card">
-            <View className="flex-row items-center justify-between w-full">
-              <View className="flex-1 items-center">
-                <Skeleton className="size-24 rounded-full" />
-              </View>
-              <View className="flex-1 items-center gap-2">
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-3 w-10" />
-              </View>
-              <View className="flex-1 items-center gap-2">
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-3 w-10" />
-              </View>
-              <View className="flex-1 items-center gap-2">
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-3 w-10" />
-              </View>
-            </View>
-          </View>
-          
-          <View className="gap-0">
-            {[1, 2, 3].map((i) => (
-              <View key={i} className="mb-6 overflow-hidden border border-border-subtle rounded-lg bg-surface flex-col">
-                <View className="px-4 h-control-md bg-surface flex-row justify-between items-center">
-                  <Skeleton className="h-6 w-24" />
-                  <Skeleton className="h-4 w-12" />
-                </View>
-                <View className="h-1 w-full flex-row overflow-hidden bg-border-subtle">
-                  <Skeleton className="h-1 w-full" />
-                </View>
-                <View className="flex-col">
-                  <View className="gap-0">
-                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
-                    <Skeleton className="h-food-card w-full rounded-none border-b border-border-subtle" />
-                  </View>
-                  <View className="px-4 h-control-md flex-row justify-between items-center bg-surface border-b border-border-subtle">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-4 w-40" />
-                  </View>
-                  <View className="h-control-md flex-row items-center justify-center w-full">
-                    <Skeleton className="h-4 w-40" />
-                  </View>
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-      )}
+      {showSkeleton && <MenuScreenSkeleton />}
 
-        <EditMealModal
-          visible={!!editingMeal}
-          onClose={() => setEditingMeal(null)}
-          meal={editingMeal}
-          onSave={async (mealId, name, time) => {
-            try {
-              await MealService.updateBasicInfo(mealId, name, time);
-              setEditingMeal(null);
-            } catch (err) {
-              console.error('Failed to update meal info:', err);
-            }
-          }}
-        />
+      <EditMealModal
+        visible={!!editingMeal}
+        onClose={() => setEditingMeal(null)}
+        meal={editingMeal}
+        onSave={async (mealId, name, time) => {
+          try {
+            await MealService.updateBasicInfo(mealId, name, time);
+            setEditingMeal(null);
+          } catch (err) {
+            console.error('Failed to update meal info:', err);
+          }
+        }}
+      />
 
-        <ConfirmModal 
-          visible={deleteModalVisible}
-          title="Remover refeição?"
-          description="Esta ação removerá a refeição do seu menu diário."
-          onConfirm={handleDelete}
-          onCancel={() => setDeleteModalVisible(false)}
-          isDestructive
-        />
+      <ConfirmModal 
+        visible={deleteModalVisible}
+        title="Remover refeição?"
+        description="Esta ação removerá a refeição do seu menu diário."
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteModalVisible(false)}
+        isDestructive
+      />
     </>
   );
 }

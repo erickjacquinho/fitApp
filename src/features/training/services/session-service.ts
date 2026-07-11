@@ -43,27 +43,23 @@ export class SessionService {
     });
   }
 
-  static async pauseSession(sessionId: string): Promise<WorkoutSession> {
+  private static async updateSession(sessionId: string, updater: (record: WorkoutSession) => void): Promise<WorkoutSession> {
     return await database.write(async () => {
       const session = await this.sessionsCollection.find(sessionId);
-      if (!session) {
-        throw new Error('Workout session not found');
-      }
-      return await session.update((record) => {
-        record.status = 'paused';
-      });
+      if (!session) throw new Error('Workout session not found');
+      return await session.update(updater);
+    });
+  }
+
+  static async pauseSession(sessionId: string): Promise<WorkoutSession> {
+    return await this.updateSession(sessionId, (record) => {
+      record.status = 'paused';
     });
   }
 
   static async resumeSession(sessionId: string): Promise<WorkoutSession> {
-    return await database.write(async () => {
-      const session = await this.sessionsCollection.find(sessionId);
-      if (!session) {
-        throw new Error('Workout session not found');
-      }
-      return await session.update((record) => {
-        record.status = 'active';
-      });
+    return await this.updateSession(sessionId, (record) => {
+      record.status = 'active';
     });
   }
 
@@ -80,7 +76,6 @@ export class SessionService {
     data: ExecutionDTO
   ): Promise<ExerciseExecution> {
     return await database.write(async () => {
-      // Check if this set execution already exists to update it, or create a new one
       const existingExecutions = await this.executionsCollection
         .query(
           Q.where('workout_session_id', sessionId),
@@ -90,8 +85,7 @@ export class SessionService {
         .fetch();
 
       if (existingExecutions.length > 0) {
-        const existing = existingExecutions[0];
-        return await existing.update((exec) => {
+        return await existingExecutions[0].update((exec) => {
           exec.repsDone = data.repsDone;
           exec.weight = data.weight;
           exec.repsReserveDone = data.repsReserveDone ?? null;
@@ -130,16 +124,9 @@ export class SessionService {
   }
 
   static async finishSession(sessionId: string): Promise<WorkoutSession> {
-    return await database.write(async () => {
-      const session = await this.sessionsCollection.find(sessionId);
-      if (!session) {
-        throw new Error('Workout session not found');
-      }
-
-      return await session.update((record) => {
-        record.status = 'completed';
-        record.endDate = Date.now();
-      });
+    return await this.updateSession(sessionId, (record) => {
+      record.status = 'completed';
+      record.endDate = Date.now();
     });
   }
 
@@ -148,18 +135,11 @@ export class SessionService {
     newStartDate: number,
     newEndDate?: number | null
   ): Promise<WorkoutSession> {
-    return await database.write(async () => {
-      const session = await this.sessionsCollection.find(sessionId);
-      if (!session) {
-        throw new Error('Workout session not found');
+    return await this.updateSession(sessionId, (record) => {
+      record.startDate = newStartDate;
+      if (newEndDate !== undefined) {
+        record.endDate = newEndDate;
       }
-
-      return await session.update((record) => {
-        record.startDate = newStartDate;
-        if (newEndDate !== undefined) {
-          record.endDate = newEndDate;
-        }
-      });
     });
   }
 

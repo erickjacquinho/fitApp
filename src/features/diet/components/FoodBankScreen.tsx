@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { View, FlatList, Pressable } from 'react-native';
+import { View } from 'react-native';
 import { SearchBar } from '../../../components/molecules/SearchBar';
 import { FoodCardList } from './FoodCardList';
-import { MealCard } from './MealCard';
 import { BulkSelectionMenu } from './BulkSelectionMenu';
 import { MealSelectorModal } from './MealSelectorModal';
 import { useFoodBank } from '../hooks/useFoodBank';
@@ -13,13 +12,10 @@ import Food from '../../../db/models/Food';
 import Meal from '../../../db/models/Meal';
 import { Q } from '@nozbe/watermelondb';
 import { ConfirmModal } from '../../../components/organisms/ConfirmModal';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
-import { MealService } from '../services/meal-service';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { animationTokens } from '@/tokens/animations';
-import { cn } from '@/lib/utils';
+import { Tabs } from '@/components/ui/tabs';
 
-import { Text } from "@/components/ui/text";
+import { FoodBankTabsHeader } from './FoodBank/FoodBankTabsHeader';
+import { FoodBankFoodTab, FoodBankMealTab } from './FoodBank/FoodBankTabsContent';
 
 interface FoodBankScreenProps {
   foods: Food[];
@@ -41,19 +37,6 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
   const [mealSelectorVisible, setMealSelectorVisible] = useState(false);
   const [selectedFoodId, setSelectedFoodId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('todos');
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  const activeIndex = TABS.findIndex(t => t.id === activeTab);
-  const tabWidth = containerWidth > 0 ? (containerWidth - 8) / 3 : 0;
-
-  const animatedIndicatorStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{
-        translateX: withSpring(activeIndex * tabWidth, animationTokens.physics.spring.snappy)
-      }],
-      width: tabWidth,
-    };
-  }, [activeIndex, tabWidth]);
 
   const {
     search,
@@ -143,81 +126,28 @@ function FoodBankScreenComponent({ foods, meals = [], mealId }: FoodBankScreenPr
       </View>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1">
-        <View 
-          className="mb-content-gap flex-row items-center rounded-xl bg-surface-elevated p-1"
-          onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
-        >
-          {containerWidth > 0 && (
-            <Animated.View 
-              className="absolute top-1 bottom-1 rounded-lg bg-surface border border-border-subtle"
-              style={[{ left: 4 }, animatedIndicatorStyle]}
-            />
-          )}
-          {TABS.map((tab) => (
-            <Pressable
-              key={tab.id}
-              className="flex-1 items-center justify-center py-2 min-h-touch-target"
-              onPress={() => {
-                if (activeTab !== tab.id) {
-                  clearSelection();
-                  setActiveTab(tab.id);
-                }
-              }}
-            >
-              <Text className={cn("font-bold text-label", activeTab === tab.id ? "text-text-primary" : "text-text-secondary")}>
-                {tab.label}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+        <FoodBankTabsHeader 
+          tabs={TABS} 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          clearSelection={clearSelection} 
+        />
 
-        <TabsContent value="todos" className="flex-1">
-          <FlatList keyboardShouldPersistTaps="handled"
-            data={filteredFoods}
-            keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-content-bottom"
-            renderItem={renderFoodItem}
-            ListEmptyComponent={
-              <View className="items-center py-20">
-                <Text className="text-text-secondary">Nenhum alimento encontrado.</Text>
-              </View>
-            }
-          />
-        </TabsContent>
+        <FoodBankFoodTab 
+          value="todos"
+          foods={filteredFoods}
+          renderFoodItem={renderFoodItem}
+          emptyMessage="Nenhum alimento encontrado."
+        />
 
-        <TabsContent value="refeicoes" className="flex-1">
-          <FlatList keyboardShouldPersistTaps="handled"
-            data={filteredMeals}
-            keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-content-bottom gap-content-gap px-screen-x"
-            renderItem={({ item }) => (
-              <MealCard 
-                meal={item} 
-                onDelete={async (id: string) => await MealService.delete(id)}
-                onEdit={() => {}} 
-              />
-            )}
-            ListEmptyComponent={
-              <View className="items-center py-20">
-                <Text className="text-text-secondary">Nenhuma refeição encontrada.</Text>
-              </View>
-            }
-          />
-        </TabsContent>
+        <FoodBankMealTab meals={filteredMeals} />
 
-        <TabsContent value="favoritos" className="flex-1">
-          <FlatList keyboardShouldPersistTaps="handled"
-            data={favoriteFoods}
-            keyExtractor={(item) => item.id}
-            contentContainerClassName="pb-content-bottom"
-            renderItem={renderFoodItem}
-            ListEmptyComponent={
-              <View className="items-center py-20">
-                <Text className="text-text-secondary">Nenhum favorito encontrado.</Text>
-              </View>
-            }
-          />
-        </TabsContent>
+        <FoodBankFoodTab 
+          value="favoritos"
+          foods={favoriteFoods}
+          renderFoodItem={renderFoodItem}
+          emptyMessage="Nenhum favorito encontrado."
+        />
       </Tabs>
 
       <ConfirmModal 

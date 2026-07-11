@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { WorkoutService } from '../services/workout-service';
+import { ProgramService } from '../services/program-service';
 import { SessionService } from '../services/session-service';
 import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
@@ -28,7 +28,7 @@ export function useProgramList() {
       const active = await SessionService.getActiveSession();
       setActiveSession(active);
 
-      const allPrograms = await WorkoutService.getAllPrograms();
+      const allPrograms = await ProgramService.getAllPrograms();
       const pinned: ProgramWithBlocks[] = [];
       const others: ProgramWithBlocks[] = [];
 
@@ -52,7 +52,7 @@ export function useProgramList() {
 
   const deleteProgram = async (id: string) => {
     try {
-      await WorkoutService.deleteProgram(id);
+      await ProgramService.deleteProgram(id);
       await loadData();
     } catch (err) {
       console.error('Error deleting program:', err);
@@ -76,7 +76,7 @@ export function useProgramList() {
 
   const togglePin = async (id: string, isPinned: boolean) => {
     try {
-      await WorkoutService.toggleProgramPin(id, isPinned);
+      await ProgramService.toggleProgramPin(id, isPinned);
       await loadData();
     } catch (err) {
       console.error('Error toggling pin:', err);

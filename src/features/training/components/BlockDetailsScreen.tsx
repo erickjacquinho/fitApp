@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ActivityIndicator, ScrollView } from 'react-native';
+import { View, ActivityIndicator, ScrollView, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
@@ -99,46 +99,50 @@ export function BlockDetailsScreen({ blockId }: { blockId: string }) {
 
   return (
     <View className="flex-1 py-4 justify-between bg-background">
-      <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <Text variant="title" className="mb-4 font-bold text-text-primary">
-          {block.name}
-        </Text>
-        
-        <Text variant="label" className="mb-3 text-text-secondary">
-          Exercícios Planejados
-        </Text>
-
-        {exercises.length === 0 ? (
+      <FlatList
+        data={exercises}
+        keyExtractor={ex => ex.id}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={
+          <View className="mb-4">
+            <Text variant="title" className="mb-4 font-bold text-text-primary">
+              {block.name}
+            </Text>
+            <Text variant="label" className="text-text-secondary">
+              Exercícios Planejados
+            </Text>
+          </View>
+        }
+        ListEmptyComponent={
           <View className="my-8 items-center justify-center py-10">
             <Text variant="text" className="text-text-secondary text-center">
               Nenhum exercício neste treino.
             </Text>
           </View>
-        ) : (
-          exercises.map((ex, index) => (
-            <BaseCardList
-              key={ex.id}
-              isFirst={index === 0}
-              isLast={index === exercises.length - 1}
-            >
-              <View className="flex-1">
-                <Text variant="subtitle" className="font-bold text-text-primary">
-                  {ex.name}
+        }
+        renderItem={({ item: ex, index }) => (
+          <BaseCardList
+            isFirst={index === 0}
+            isLast={index === exercises.length - 1}
+          >
+            <View className="flex-1">
+              <Text variant="subtitle" className="font-bold text-text-primary">
+                {ex.name}
+              </Text>
+              <Text variant="caption" className="text-text-secondary mt-1">
+                Séries: {ex.sets} x {ex.repsMin}-{ex.repsMax} reps
+                {ex.repsReserve !== null ? ` • RIR: ${ex.repsReserve}` : ''}
+              </Text>
+              {ex.advancedTechnique && (
+                <Text variant="caption" className="text-primary mt-1">
+                  Técnica: {ex.advancedTechnique}
                 </Text>
-                <Text variant="caption" className="text-text-secondary mt-1">
-                  Séries: {ex.sets} x {ex.repsMin}-{ex.repsMax} reps
-                  {ex.repsReserve !== null ? ` • RIR: ${ex.repsReserve}` : ''}
-                </Text>
-                {ex.advancedTechnique && (
-                  <Text variant="caption" className="text-primary mt-1">
-                    Técnica: {ex.advancedTechnique}
-                  </Text>
-                )}
-              </View>
-            </BaseCardList>
-          ))
+              )}
+            </View>
+          </BaseCardList>
         )}
-      </ScrollView>
+      />
 
       {/* Button to start workout session */}
       <View className="pb-content-bottom mt-4">

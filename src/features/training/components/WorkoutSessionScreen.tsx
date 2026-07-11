@@ -6,15 +6,15 @@ import { Header } from '@/components/molecules/Header';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from "@/components/ui/text";
-import { Card } from "@/components/ui/card";
 import { MacroExerciseListItem } from './MacroExerciseListItem';
 import { DraggableList } from '@/components/organisms/DraggableList';
-import { WorkoutTimer } from './WorkoutTimer';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { useThemeColors } from '../../../hooks/use-theme-colors';
 import { FeedbackDialog } from '@/components/organisms/FeedbackDialog';
 import * as Haptics from 'expo-haptics';
 
+import { WorkoutSessionListHeader } from './WorkoutSession/WorkoutSessionListHeader';
+import { EmptySessionCard } from './WorkoutSession/EmptySessionCard';
 
 export function WorkoutSessionScreen() {
   const params = useLocalSearchParams<{ sessionId?: string; blockId?: string }>();
@@ -80,7 +80,6 @@ export function WorkoutSessionScreen() {
 
   return (
     <View className="flex-1 bg-background">
-      {/* Integrated Header */}
       <Header
         title="Treino em andamento"
         headerLeft={
@@ -118,19 +117,7 @@ export function WorkoutSessionScreen() {
           contentContainerStyle={{ padding: 16, paddingBottom: 110 }}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
-            <View className="mb-6 mt-2">
-              <View className="flex-row items-center justify-between mb-4">
-                <Text variant="h3" className="text-text-primary font-bold flex-1 mr-4">
-                  {block ? `Treino ${block.name}` : 'Treino atual'}
-                </Text>
-                {session && (
-                  <WorkoutTimer 
-                    startDate={session.startDate} 
-                    endDate={session.endDate}
-                  />
-                )}
-              </View>
-            </View>
+            <WorkoutSessionListHeader block={block} session={session} />
           }
           renderItem={(item, isActive, drag, index) => {
             const executions = getExerciseExecutions(item.id);
@@ -147,19 +134,13 @@ export function WorkoutSessionScreen() {
                 isLast={index === exercises.length - 1}
                 drag={drag}
                 isActive={isActive}
-                onReplace={() => {
-                  console.log('Substituir', item.id);
-                  // TODO: Implement replace logic
-                }}
+                onReplace={() => console.log('Substituir', item.id)}
                 onDelete={() => confirmRemoveExercise(item.id, item.name)}
                 onPress={() => {
                   if (session) {
                     router.push({
                       pathname: '/training/exercise-kanban',
-                      params: {
-                        sessionId: session.id,
-                        initialExerciseId: item.id,
-                      },
+                      params: { sessionId: session.id, initialExerciseId: item.id },
                     });
                   }
                 }}
@@ -174,7 +155,6 @@ export function WorkoutSessionScreen() {
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log('Add exercise');
-                  // TODO: Open exercise catalog to add to session
                 }}
               >
                 <Icon as={Plus} size={20} className="text-text-primary mr-2" />
@@ -184,30 +164,8 @@ export function WorkoutSessionScreen() {
           }
         />
       ) : (
-        <View className="flex-1 justify-center px-4">
-          <Card className="items-center justify-center p-6 border-dashed border-2 border-border-subtle bg-surface">
-            <Text variant="h3" className="text-text-primary font-bold text-center mb-2">
-              Treino Vazio
-            </Text>
-            <Text variant="text" className="text-text-secondary text-center mb-6">
-              Adicione exercícios para começar a treinar.
-            </Text>
-            <Button
-              className="w-full mt-4"
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                console.log('Add exercise');
-                // TODO: Open exercise catalog to add to session
-              }}
-            >
-              <Icon as={Plus} size={20} className="text-text-inverse mr-2" />
-              <Text>Adicionar Exercício</Text>
-            </Button>
-          </Card>
-        </View>
+        <EmptySessionCard />
       )}
-
-
 
       <FeedbackDialog
         visible={!!feedback}
