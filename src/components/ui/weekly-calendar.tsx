@@ -88,7 +88,7 @@ export function WeeklyCalendar({
       if (targetX > MAX_TRANSLATE) targetX = MAX_TRANSLATE;
       if (targetX < MIN_TRANSLATE) targetX = MIN_TRANSLATE;
 
-      translateX.value = withSpring(targetX, { damping: 16, stiffness: 120 });
+      translateX.value = withTiming(targetX, { duration: 250, easing: Easing.out(Easing.cubic) });
     }
   }, [selectedDate, currentDate, MIN_TRANSLATE, translateX]);
 
@@ -98,21 +98,19 @@ export function WeeklyCalendar({
     })
     .onUpdate((event) => {
       let nextX = contextX.value + event.translationX;
-      // Rubber-banding
+      // Hard boundary - no rubber-banding bounce
       if (nextX > MAX_TRANSLATE) {
-        const overshoot = nextX - MAX_TRANSLATE;
-        nextX = MAX_TRANSLATE + (overshoot * 0.3); // Resistance
+        nextX = MAX_TRANSLATE;
       } else if (nextX < MIN_TRANSLATE) {
-        const overshoot = MIN_TRANSLATE - nextX;
-        nextX = MIN_TRANSLATE - (overshoot * 0.3);
+        nextX = MIN_TRANSLATE;
       }
       translateX.value = nextX;
     })
     .onEnd((event) => {
       if (translateX.value > MAX_TRANSLATE) {
-        translateX.value = withSpring(MAX_TRANSLATE, { damping: 16, stiffness: 120 });
+        translateX.value = withTiming(MAX_TRANSLATE, { duration: 250, easing: Easing.out(Easing.cubic) });
       } else if (translateX.value < MIN_TRANSLATE) {
-        translateX.value = withSpring(MIN_TRANSLATE, { damping: 16, stiffness: 120 });
+        translateX.value = withTiming(MIN_TRANSLATE, { duration: 250, easing: Easing.out(Easing.cubic) });
       } else {
         translateX.value = withDecay({
           velocity: event.velocityX,
@@ -128,12 +126,12 @@ export function WeeklyCalendar({
     };
   });
 
-  const handleJumpToToday = () => {
-    hojeScale.value = withSequence(
-      withTiming(0.9, { duration: 50 }),
-      withSpring(1, { damping: 12, stiffness: 200 })
-    );
-    onJumpToToday();
+  const handleHojePressIn = () => {
+    hojeScale.value = withSpring(0.96, { damping: 30, stiffness: 350 });
+  };
+
+  const handleHojePressOut = () => {
+    hojeScale.value = withSpring(1, { damping: 30, stiffness: 350 });
   };
 
   const hojeAnimatedStyle = useAnimatedStyle(() => ({
@@ -144,7 +142,12 @@ export function WeeklyCalendar({
     <View className="flex flex-col w-full gap-2 mt-4">
       <View className="flex-row items-center justify-between px-screen-x">
         <Animated.View style={hojeAnimatedStyle}>
-          <Button variant="link" onPress={handleJumpToToday}>
+          <Button 
+            variant="ghost" 
+            onPressIn={handleHojePressIn}
+            onPressOut={handleHojePressOut}
+            onPress={onJumpToToday}
+          >
             <Text className="text-primary font-bold">Hoje</Text>
           </Button>
         </Animated.View>
