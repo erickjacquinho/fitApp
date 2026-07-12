@@ -9,7 +9,7 @@
 
 ## 2. Forms
 - **Structure**: Single-column only. Order: 1. Label, 2. Input, 3. Helper/Error.
-- **Labels**: Required unless context is unmistakable. Do not rely solely on placeholders.
+- **Labels**: Required unless context is unmistakable. Do not rely solely on placeholders. Filtros e Dropdowns (Selects) **DEVEM** sempre ter uma label alinhada acima do componente.
 - **Errors**: Validate on submit by default. Use `text-error` tokens next to the field.
 - **Actions**: Async actions must disable duplicate submissions.
 

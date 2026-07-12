@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { AnimatePresence, MotiView } from 'moti';
+import { AnimatePresence } from 'moti';
+import { PopoverAnimation } from '@/components/ui/popover-animation';
 import * as DropdownMenuPrimitive from '@rn-primitives/dropdown-menu';
 import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
@@ -57,12 +58,11 @@ export function DropdownMenuSubContent({
     <AnimatePresence>
       {open && (
         <DropdownMenuPrimitive.SubContent forceMount asChild {...props}>
-          <MotiView
-            from={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.96 }}
-            transition={{ type: 'timing', duration: open ? 150 : 120 }}
-            style={{ transformOrigin: 'center' }}
+          <PopoverAnimation
+            style={Platform.select({
+              native: { transformOrigin: (props as any).side === 'top' ? 'bottom' : (props as any).side === 'left' ? 'right' : (props as any).side === 'right' ? 'left' : 'top' },
+              web: undefined,
+            })}
             className={cn(
               'bg-surface-elevated border-border-subtle overflow-hidden rounded-md border p-1 shadow-floating',
               Platform.select({
@@ -72,7 +72,7 @@ export function DropdownMenuSubContent({
             )}
           >
             {children}
-          </MotiView>
+          </PopoverAnimation>
         </DropdownMenuPrimitive.SubContent>
       )}
     </AnimatePresence>

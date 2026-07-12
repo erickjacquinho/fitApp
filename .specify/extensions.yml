@@ -1,0 +1,7 @@
+hooks:
+  after_plan:
+    - extension: "Speckit Implement Auto-Trigger"
+      command: "speckit.implement"
+      description: "Automatically invokes the implementation skill after generating the implementation plan."
+      optional: false
+      enforce_in_planning_mode: true # Strictly forces autonomous planning mode to use this hook instead of manual execution

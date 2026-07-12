@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Edit2 } from 'lucide-react-native';
+import { Edit2, History } from 'lucide-react-native';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Screen } from '@/components/ui/screen';
@@ -35,14 +35,23 @@ export default function ProgramSummaryRoute() {
   }
 
   const HeaderRight = () => (
-    <Button
-      variant="ghost"
-      size="icon"
-      onPress={() => router.push(`/training/edit-program/${id}`)}
-      className="-mr-1"
-    >
-      <Icon as={Edit2} size={20} color={colors.textPrimary} />
-    </Button>
+    <View className="flex-row items-center">
+      <Button
+        variant="ghost"
+        size="icon"
+        onPress={() => router.push(`/training/program/${id}/history`)}
+      >
+        <Icon as={History} size={20} color={colors.textPrimary} />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        onPress={() => router.push(`/training/edit-program/${id}`)}
+        className="-mr-1"
+      >
+        <Icon as={Edit2} size={20} color={colors.textPrimary} />
+      </Button>
+    </View>
   );
 
   if (isLoading) {

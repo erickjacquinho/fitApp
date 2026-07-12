@@ -9,7 +9,7 @@ import { Check, ChevronDown, ChevronDownIcon, ChevronUpIcon } from 'lucide-react
 cssInterop(SelectPrimitive.Value, { className: 'style' });
 cssInterop(SelectPrimitive.ItemText, { className: 'style' });
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View, type ViewStyle } from 'react-native';
 import { AnimatePresence } from 'moti';
 import { PopoverAnimation } from '@/components/ui/popover-animation';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
@@ -120,7 +120,7 @@ function SelectContent({
               style={Platform.select({
                 native: StyleSheet.flatten([
                   StyleSheet.absoluteFill,
-                  { zIndex: 50 }
+                  { zIndex: 50 } as any
                 ])
               })}
               className="bg-transparent"
@@ -137,9 +137,9 @@ function SelectContent({
                       transformOrigin:
                         props.side === 'top'
                           ? 'bottom'
-                          : props.side === 'left'
+                          : (props.side as string) === 'left'
                             ? 'right'
-                            : props.side === 'right'
+                            : (props.side as string) === 'right'
                               ? 'left'
                               : 'top',
                       width: triggerWidth,

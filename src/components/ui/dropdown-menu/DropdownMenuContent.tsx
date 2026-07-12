@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Platform, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
-import { AnimatePresence, MotiView } from 'moti';
+import { AnimatePresence } from 'moti';
+import { PopoverAnimation } from '@/components/ui/popover-animation';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as DropdownMenuPrimitive from '@rn-primitives/dropdown-menu';
@@ -51,12 +52,11 @@ export function DropdownMenuContent({
                 onTouchStart={(e) => e.stopPropagation()}
                 {...props}
               >
-                <MotiView
-                  from={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ type: 'timing', duration: open ? 150 : 120 }}
-                  style={{ transformOrigin: 'center' }}
+                <PopoverAnimation
+                  style={Platform.select({
+                    native: { transformOrigin: props.side === 'top' ? 'bottom' : (props.side as string) === 'left' ? 'right' : (props.side as string) === 'right' ? 'left' : 'top' },
+                    web: undefined,
+                  })}
                   className={cn(
                     'bg-surface-elevated border-border-subtle min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-floating',
                     Platform.select({
@@ -72,7 +72,7 @@ export function DropdownMenuContent({
                   <TextClassContext.Provider value="text-text-primary">
                     {children}
                   </TextClassContext.Provider>
-                </MotiView>
+                </PopoverAnimation>
               </DropdownMenuPrimitive.Content>
             </DropdownMenuPrimitive.Overlay>
           )}

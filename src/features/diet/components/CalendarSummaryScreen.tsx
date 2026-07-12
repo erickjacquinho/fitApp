@@ -114,7 +114,7 @@ export const CalendarSummaryScreen = () => {
         contentContainerClassName="pb-content-bottom"
         ListHeaderComponent={<HeatmapCard heatmapDays={heatmapDays} />}
         renderSectionHeader={({ section: { title, avgCalories, adherenceRate } }) => (
-          <View className="bg-background pt-4 pb-2 px-4 border-b border-border-subtle mb-2">
+          <View className="bg-background pt-4 pb-2 border-b border-border-subtle mb-2">
             <Text variant="subtitle" className="text-text-primary font-bold uppercase tracking-wide">
               {title}
             </Text>
@@ -139,7 +139,7 @@ export const CalendarSummaryScreen = () => {
           const isLast = index === section.data.length - 1;
 
           return (
-            <View className="px-4">
+            <View>
               <DailySummaryCard
                 date={item.date}
                 calories={item.calories}

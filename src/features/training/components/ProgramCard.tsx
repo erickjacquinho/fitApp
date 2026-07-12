@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Pressable, useColorScheme } from 'react-native';
 import { router } from 'expo-router';
-import { Trash2, Pin, PinOff } from 'lucide-react-native';
+import { Trash2, Zap, ZapOff } from 'lucide-react-native';
 import Program from '../../../db/models/Program';
 import TrainingBlock from '../../../db/models/TrainingBlock';
 import { Button } from "@/components/ui/button";
@@ -74,23 +74,16 @@ export function ProgramCard({
         }}
       >
         {({ pressed }) => {
-          // Apply absolute blue 500 (#0800FF) background in dark mode when active, and blue 600 (#0C04DC) when pressed
-          const cardStyle = isDark && isActive 
-            ? { backgroundColor: pressed ? '#0C04DC' : '#0800FF' } 
-            : undefined;
-
-          // Conditional styles based on active state, dark mode preference, and pressed state
+          // Conditional styles based on active state and pressed state
           const cardClass = cn(
             isActive 
-              ? isDark 
-                ? 'border-text-primary border' 
-                : `border-primary border ${pressed ? 'bg-surface-elevated' : 'bg-surface'}`
+              ? `border-primary border ${pressed ? 'bg-surface-elevated' : 'bg-surface'}`
               : `border-border-subtle ${pressed ? 'bg-surface-elevated' : 'bg-surface'}`,
             hasActiveSession && "rounded-b-none border-b-0"
           );
 
           return (
-            <Card className={cardClass} style={cardStyle}>
+            <Card key={`card-${hasActiveSession}`} className={cardClass}>
               <View className="flex-row items-start justify-between">
                 <View className="flex-1 pr-2">
                   <Text variant="subtitle" className={titleClass}>
@@ -109,7 +102,7 @@ export function ProgramCard({
                     size="icon"
                     onPress={() => onTogglePin(program.id, !isPinned)}
                   >
-                    <Icon as={isPinned ? PinOff : Pin} size={16} className={pinIconClass} />
+                    <Icon as={isPinned ? ZapOff : Zap} size={16} className={pinIconClass} />
                   </Button>
                   <Button
                     accessibilityLabel={`Excluir ${program.name}`}

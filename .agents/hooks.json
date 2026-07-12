@@ -4,6 +4,16 @@
       "id": "verify-code-implementations",
       "event": "PostToolUse",
       "command": "node c:/Programmer/fitApp/.agents/hooks/verify-code.js"
+    },
+    {
+      "id": "post-prompt-concise",
+      "event": "PreInvocation",
+      "command": "node c:/Programmer/fitApp/.agents/hooks/post-prompt.js"
+    },
+    {
+      "id": "enforce-speckit-implement",
+      "event": "PreInvocation",
+      "command": "node c:/Programmer/fitApp/.agents/hooks/enforce-speckit.js"
     }
   ]
 }

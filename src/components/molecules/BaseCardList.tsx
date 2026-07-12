@@ -3,6 +3,8 @@ import { View } from 'react-native';
 import { LongPressable } from '@/components/ui/long-pressable';
 import { cn } from '@/lib/utils';
 
+import { AccessibilityRole } from 'react-native';
+
 export interface BaseCardListProps {
   children: React.ReactNode;
   onPress?: () => void;
@@ -15,6 +17,8 @@ export interface BaseCardListProps {
   isSwiped?: boolean;
   className?: string;
   testID?: string;
+  accessibilityLabel?: string;
+  accessibilityRole?: AccessibilityRole;
 }
 
 export function BaseCardList({
@@ -29,10 +33,14 @@ export function BaseCardList({
   isSwiped = false,
   className,
   testID,
+  accessibilityLabel,
+  accessibilityRole,
 }: BaseCardListProps) {
   return (
     <LongPressable
       testID={testID}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole={accessibilityRole}
       onPress={onPress}
       onLongPress={onLongPress}
       disabled={disabled || (!onPress && !onLongPress)}

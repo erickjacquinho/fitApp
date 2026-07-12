@@ -34,7 +34,8 @@ Before ANY execution, you MUST read the following rules when applicable:
 
 ## 1. Execution Directives
 - **Deep Understanding**: Read all required context and `01` to `07` rules before executing ANY task. Never guess requirements.
-- **Skill Usage**: ALWAYS invoke the best installed skill. Follow `sdd` skill if applicable.
+- **Skill Usage**: ALWAYS invoke the best installed skill. Follow `sdd` skill if applicable. 
+- **MANDATORY EXECUTION HOOK**: Even when operating autonomously in Planning Mode, if you generate a plan or tasks (`plan.md` / `tasks.md`), you are strictly FORBIDDEN from executing the code manually. You MUST invoke the `/speckit-implement` skill to process and execute the tasks. This is a completely indispensable and non-negotiable rule.
 - **Code Quality**: Strict TypeScript (no `any`). Use `PascalCase` for Components/Types, `camelCase` for vars/funcs, `kebab-case` for files. Keep changes focused.
 
 ## 2. Component Workflow (Registry-First)

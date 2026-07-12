@@ -19,7 +19,7 @@ export const HeatmapCard = ({ heatmapDays }: HeatmapCardProps) => {
   const { caloriesGoal: goal } = getDietGoal();
 
   return (
-    <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4 mx-4 mt-4">
+    <View className="bg-surface border border-border-subtle rounded-xl p-4 mb-4 mt-4">
       <View className="flex-row justify-between items-center mb-3">
         <Text variant="caption" className="font-bold uppercase tracking-wider text-text-secondary">
           Consistência Mensal

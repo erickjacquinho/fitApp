@@ -1,92 +1,37 @@
 import { Text } from '@/components/ui/text';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFocusEffect, router } from 'expo-router';
-import { Calendar, Clock, Dumbbell, ChevronRight } from 'lucide-react-native';
+import { Dumbbell, ChevronRight } from 'lucide-react-native';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useWorkoutHistory } from '../hooks/useWorkoutHistory';
-import { Card } from "@/components/ui/card";
 import { Icon } from '@/components/ui/icon';
 import { useThemeColors } from '../../../hooks/use-theme-colors';
 import WorkoutSession from '@/db/models/WorkoutSession';
+import { HistorySessionCard } from './HistorySessionCard';
 
-const formatDate = (timestamp: number) => {
-  const d = new Date(timestamp);
-  return d.toLocaleDateString(undefined, {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
 
-const getDuration = (start: number, end?: number | null) => {
-  if (!end) return 'N/A';
-  const diffMs = end - start;
-  const diffMins = Math.round(diffMs / 1000 / 60);
-  return `${diffMins} min`;
-};
-
-function HistorySessionItem({ session }: { session: WorkoutSession }) {
-  const [programName, setProgramName] = useState('Carregando programa...');
-
-  React.useEffect(() => {
-    session.program.fetch().then((p: any) => {
-      if (p) setProgramName(p.name);
-    });
-  }, [session]);
-
-  return (
-    <TouchableOpacity
-      accessibilityRole="button"
-      accessibilityLabel="Ver detalhes do treino"
-      onPress={() =>
-        router.push({
-          pathname: `/training/details/[id]`,
-          params: { id: session.id },
-        })
-      }
-      activeOpacity={0.7}
-    >
-      <Card className="mb-3 p-4 flex-row items-center justify-between border border-border-subtle bg-surface active:opacity-80">
-        <View className="flex-1 pr-2">
-          <Text variant="subtitle" className="font-bold">
-            {programName}
-          </Text>
-          
-          <View className="flex-row items-center gap-4 mt-2">
-            <View className="flex-row items-center gap-1">
-              <Icon as={Calendar} size={16} className="text-text-secondary" />
-              <Text variant="caption" className="text-text-secondary">
-                {formatDate(session.startDate)}
-              </Text>
-            </View>
-
-            <View className="flex-row items-center gap-1">
-              <Icon as={Clock} size={16} className="text-text-secondary" />
-              <Text variant="caption" className="text-text-secondary">
-                {getDuration(session.startDate, session.endDate)}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <Icon as={ChevronRight} className="text-text-secondary" />
-      </Card>
-    </TouchableOpacity>
+export function HistoryScreen({ programId }: { programId?: string }) {
+  const [selectedOption, setSelectedOption] = useState<{ label: string, value: string } | undefined>(
+    programId ? { label: '', value: programId } : { label: 'Todos os programas', value: 'all' }
   );
-}
-
-export function HistoryScreen() {
-  const { history, isLoading, loadHistory } = useWorkoutHistory();
+  const { history, programs, isLoading, loadHistory } = useWorkoutHistory(selectedOption?.value || 'all');
   const { primary } = useThemeColors();
+  const insets = useSafeAreaInsets();
+  
+  const contentInsets = {
+    top: insets.top,
+    bottom: insets.bottom,
+    left: 12,
+    right: 12,
+  };
 
   useFocusEffect(
     useCallback(() => {
       loadHistory();
     }, [loadHistory])
   );
-
 
   if (isLoading) {
     return (
@@ -98,10 +43,44 @@ export function HistoryScreen() {
 
   return (
     <View className="py-4 pb-content-bottom">
+      {!programId && (
+        <View className="mb-4">
+          <Text className="text-sm font-medium text-secondary mb-1.5 ml-1">
+            Filtrar por programa
+          </Text>
+          <Select value={selectedOption} onValueChange={setSelectedOption}>
+            <SelectTrigger className="w-full">
+              <SelectValue
+                placeholder="Todos os programas"
+              />
+            </SelectTrigger>
+            <SelectContent insets={contentInsets} className="w-full">
+              <SelectGroup>
+                <SelectLabel>Programas</SelectLabel>
+                <SelectItem label="Todos os programas" value="all">
+                  Todos os programas
+                </SelectItem>
+                {programs.map((p) => (
+                  <SelectItem key={p.id} label={p.name} value={p.id}>
+                    {p.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </View>
+      )}
 
-      {history.map((session) => (
-        <HistorySessionItem key={session.id} session={session} />
-      ))}
+      <View className="w-full">
+        {history.map((session, index) => (
+          <HistorySessionCard 
+            key={session.id} 
+            session={session} 
+            isFirst={index === 0}
+            isLast={index === history.length - 1}
+          />
+        ))}
+      </View>
 
       {history.length === 0 && (
         <View className="my-12 items-center justify-center py-10">
@@ -112,7 +91,7 @@ export function HistoryScreen() {
             Nenhum treino registrado
           </Text>
           <Text variant="text" className="text-text-secondary text-center">
-            Finalize um treino para criar seu histórico.
+            Os treinos que você concluir aparecerão aqui.
           </Text>
         </View>
       )}

@@ -1,34 +1,33 @@
 import { Screen } from '@/components/ui/screen';
 import { Header } from '@/components/molecules/Header';
 import { DashboardScreen } from '../../src/features/dashboard/components/DashboardScreen';
+import { DashboardCalendar } from '../../src/features/dashboard/components/DashboardCalendar';
 import { useDashboardMetrics } from '../../src/features/dashboard/hooks/useDashboardMetrics';
 import { RefreshControl } from 'react-native';
 import { useColorScheme } from 'nativewind';
 import { lightTheme, darkTheme } from '@/tokens/theme';
-import { useRouter } from 'expo-router';
-import { Button } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
+import { useCallback } from 'react';
 
 export default function DashboardPage() {
   const { metrics, isLoading, refetch } = useDashboardMetrics();
   const { colorScheme } = useColorScheme();
   const colors = colorScheme === 'dark' ? darkTheme : lightTheme;
-  const router = useRouter();
+
+  const handleDateChange = useCallback((date: Date) => {
+    // We would pass this date to the metrics hook or some global state
+    // For now we just log it or handle it minimally
+    console.log('Selected date in Dashboard:', date);
+  }, []);
 
   return (
     <Screen
       header={
         <Header 
           title="Dashboard" 
-          headerRight={
-            <Button variant="ghost" onPress={() => router.push('/wheel-picker-demo')}>
-              <Text className="text-primary font-bold">Roleta</Text>
-            </Button>
-          } 
         />
       }
       scrollable={true}
-      withPadding={true}
+      withPadding={false}
       scrollViewProps={{
         refreshControl: (
           <RefreshControl
@@ -39,6 +38,7 @@ export default function DashboardPage() {
         )
       }}
     >
+      <DashboardCalendar onDateChange={handleDateChange} />
       <DashboardScreen metrics={metrics} isLoading={isLoading} refetch={refetch} />
     </Screen>
   );
