@@ -14,6 +14,7 @@ export const expectedThemeKeys: (keyof ThemeColors)[] = [
   'borderStrong',
   'borderControl',
   'borderFocus',
+  'borderFocusRing',
   'textPrimary',
   'textSecondarySurface',
   'textSecondaryBackground',

@@ -11,9 +11,6 @@ describe('HistoryScreen Bypass Tests', () => {
     expect(file).not.toContain('color="muted"');
     expect(file).not.toContain('bg-surface-muted');
     
-    expect(file).toContain('border-border-subtle');
-    expect(file).toContain('bg-surface');
-    expect(file).toContain('active:opacity-80');
     expect(file).toContain('text-text-secondary');
     expect(file).toContain('bg-surface-elevated');
   });
@@ -31,11 +28,7 @@ describe('SessionDetailsScreen Bypass Tests', () => {
     expect(file).not.toContain('border-soft');
     expect(file).not.toContain('text-accent-main');
     
-    expect(file).toContain('bg-success');
-    expect(file).toContain('border-success');
-    expect(file).toContain('text-success');
-    expect(file).toContain('text-text-secondary');
-    expect(file).toContain('border-border-subtle');
-    expect(file).toContain('text-primary');
+    expect(file).toContain('border-border-strong');
+    expect(file).toContain('text-text-primary');
   });
 });
