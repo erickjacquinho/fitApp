@@ -176,5 +176,16 @@ export default schemaMigrations({
         }),
       ],
     },
+    {
+      toVersion: 10,
+      steps: [
+        addColumns({
+          table: 'workout_sessions',
+          columns: [
+            { name: 'notes', type: 'string', isOptional: true },
+          ],
+        }),
+      ],
+    },
   ],
 });

@@ -12,8 +12,10 @@ export interface ExerciseSummary {
 export function useWorkoutDetails(id?: string) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
   const [programName, setProgramName] = useState('');
+  const [notes, setNotes] = useState<string>('');
   const [exercisesSummary, setExercisesSummary] = useState<ExerciseSummary[]>([]);
   const [totalVolume, setTotalVolume] = useState(0);
+  const [validSets, setValidSets] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -29,15 +31,23 @@ export function useWorkoutDetails(id?: string) {
           setProgramName(program.name);
         }
 
+        if (currentSession.notes) {
+          setNotes(currentSession.notes);
+        }
+
         const summariesMap: { [key: string]: ExerciseSummary } = {};
         let totalVol = 0;
+        let validSetsCount = 0;
 
         for (const exec of executions) {
           const exercise = await exec.exercise.fetch();
           if (!exercise) continue;
 
           const vol = exec.weight * exec.repsDone;
-          totalVol += vol;
+          if (exec.repsDone > 0) {
+            totalVol += vol;
+            validSetsCount += 1;
+          }
 
           if (!summariesMap[exercise.id]) {
             summariesMap[exercise.id] = {
@@ -63,6 +73,7 @@ export function useWorkoutDetails(id?: string) {
 
         setExercisesSummary(summaries);
         setTotalVolume(totalVol);
+        setValidSets(validSetsCount);
       } catch (err) {
         console.error('Error loading session details:', err);
       } finally {
@@ -76,8 +87,10 @@ export function useWorkoutDetails(id?: string) {
   return {
     session,
     programName,
+    notes,
     exercisesSummary,
     totalVolume,
+    validSets,
     isLoading,
   };
 }

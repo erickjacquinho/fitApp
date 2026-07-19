@@ -143,6 +143,12 @@ export class SessionService {
     });
   }
 
+  static async updateSessionNotes(sessionId: string, notes: string): Promise<WorkoutSession> {
+    return await this.updateSession(sessionId, (record) => {
+      record.notes = notes;
+    });
+  }
+
   static async getHistory(): Promise<WorkoutSession[]> {
     return await this.sessionsCollection
       .query(Q.sortBy('start_date', Q.desc))

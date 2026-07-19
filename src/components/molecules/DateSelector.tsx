@@ -42,7 +42,7 @@ export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) 
   };
 
   return (
-    <View className="flex-row items-center justify-center gap-4">
+    <View className="flex-row items-center justify-center">
       <Button accessibilityLabel="Dia anterior" variant="ghost" size="icon" onPress={() => changeDate(-1)}>
         <Icon as={ChevronLeft} size={24} />
       </Button>
