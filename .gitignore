@@ -60,3 +60,6 @@ Thumbs.db
 temp_fit_app/
 .temp_db/
 *.apk
+.tools/
+*.rar
+
