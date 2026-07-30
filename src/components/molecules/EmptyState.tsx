@@ -22,7 +22,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <View className="flex-1 items-center justify-center py-10 px-6 gap-2">
-      <View className="mb-2 h-16 w-16 items-center justify-center rounded-full bg-surface-sunken">
+      <View className="mb-2 h-16 w-16 items-center justify-center rounded-full bg-surface-sunken" accessibilityElementsHidden={true} importantForAccessibility="no">
         <Icon as={IconComponent} size={32} className="text-text-secondary" />
       </View>
       <Text variant="title" className="text-center">

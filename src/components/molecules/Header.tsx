@@ -28,11 +28,12 @@ export function Header({ title, showBackButton, headerLeft, headerRight, customT
         <View className="flex-1 items-start justify-center">
           {headerLeft ? headerLeft : showBackButton ? (
             <Button
+              accessibilityRole="button"
               accessibilityLabel="Voltar"
               variant="ghost"
               size="icon"
               onPress={() => router.back()}
-              className="-ml-1"
+              className="min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
             >
               <Icon as={ArrowLeft} size={24} />
             </Button>

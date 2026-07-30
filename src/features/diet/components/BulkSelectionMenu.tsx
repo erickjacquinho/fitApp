@@ -48,7 +48,9 @@ export function BulkSelectionMenu({
         {/* Actions */}
         <Pressable 
           onPress={isAllFavorites ? onUnfavorite : onFavorite}
-          className="px-4 h-full items-center justify-center active:bg-border-subtle/50"
+          accessibilityRole="button"
+          accessibilityLabel={isAllFavorites ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          className="px-4 h-full items-center justify-center min-w-[44px] active:opacity-80"
           hitSlop={10}
         >
           {isAllFavorites ? (
@@ -62,7 +64,9 @@ export function BulkSelectionMenu({
 
         <Pressable 
           onPress={onAdd}
-          className="px-4 h-full items-center justify-center active:bg-border-subtle/50"
+          accessibilityRole="button"
+          accessibilityLabel="Adicionar selecionados à refeição"
+          className="px-4 h-full items-center justify-center min-w-[44px] active:opacity-80"
           hitSlop={10}
         >
           <Plus size={24} color={colors.textPrimary} />
@@ -72,7 +76,9 @@ export function BulkSelectionMenu({
 
         <Pressable 
           onPress={onDelete}
-          className="px-4 h-full items-center justify-center active:bg-destructive/10"
+          accessibilityRole="button"
+          accessibilityLabel="Excluir selecionados"
+          className="px-4 h-full items-center justify-center min-w-[44px] active:opacity-80"
           hitSlop={10}
         >
           <Trash2 size={24} color={colors.error} />

@@ -81,7 +81,7 @@ export function WorkoutSessionScreen() {
   return (
     <View className="flex-1 bg-background">
       <Header
-        title="Treino em andamento"
+        title="Treino em Andamento"
         headerLeft={
           <Button
             accessibilityLabel="Voltar"
@@ -91,18 +91,18 @@ export function WorkoutSessionScreen() {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               navigation.goBack();
             }}
-            className="-ml-1"
+            className="min-h-touch-target min-w-touch-target items-center justify-center active:opacity-80"
           >
             <Icon as={ArrowLeft} size={24} className="text-text-primary" />
           </Button>
         }
         headerRight={
           <Button
-            accessibilityLabel="Concluir"
+            accessibilityLabel="Concluir treino"
             variant="ghost"
             size="icon"
             onPress={onConfirmFinish}
-            className="-mr-1"
+            className="min-h-touch-target min-w-touch-target items-center justify-center active:opacity-80"
           >
             <Icon as={Check} size={24} className="text-primary" />
           </Button>
@@ -151,13 +151,13 @@ export function WorkoutSessionScreen() {
             <View className="mt-4">
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full flex-row items-center justify-center min-h-control-lg"
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log('Add exercise');
                 }}
               >
-                <Icon as={Plus} size={20} className="text-text-primary mr-2" />
+                <Icon as={Plus} size={18} className="text-text-primary mr-2" />
                 <Text>Adicionar Exercício</Text>
               </Button>
             </View>

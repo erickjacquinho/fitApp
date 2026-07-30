@@ -48,7 +48,7 @@ export default function DietTab() {
             </Button>
           }
           headerRight={
-            <View className="-mr-2 flex-row items-center gap-2">
+            <View className="flex-row items-center gap-1">
               <Button accessibilityLabel="Ver calendário" variant="ghost" size="icon" onPress={() => router.push('/diet/calendar-summary')}>
                 <Icon as={CalendarDays} size={24} />
               </Button>

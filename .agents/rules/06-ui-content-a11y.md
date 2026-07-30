@@ -7,7 +7,7 @@ FitApp UI copy must be short, direct, and written in **Brazilian Portuguese**.
 - **Explanatory text**: Do not explain the interface when the control label is enough.
 
 ## 2. Accessibility
-- **Touch Targets**: Interactive elements must use at least `min-h-touch-target` (44px). Icon-only controls must preserve the touch target even if the icon is smaller.
-- **Contrast**: Primary text must have strong contrast. Do not rely solely on color for error, success, selection, or disabled states.
-- **Roles & Labels**: Every interactive element needs an appropriate `accessibilityRole`. Icon-only actions need an `accessibilityLabel`.
+- **Touch Targets**: Interactive elements must use at least `min-h-touch-target` (44px) or `hitSlop`. Icon-only controls must preserve the 44px touch target even if the rendered icon size is 16px or 20px.
+- **Contrast**: Primary text and icon glyphs must have strong contrast (>= 4.5:1 for body/small glyphs, >= 3:1 for large UI glyphs). Do not rely solely on color for error, success, selection, or disabled states.
+- **Roles & Labels for Icons**: Every icon-only interactive element MUST define `accessibilityRole="button"` and a localized Brazilian Portuguese `accessibilityLabel` (e.g., `accessibilityLabel="Voltar à tela anterior"`). Decorative icons next to text labels must set `accessibilityElementsHidden={true}` or `importantForAccessibility="no"` to prevent redundant screen reader chatter.
 - **Disabled States**: Must be visually muted and completely non-interactive.

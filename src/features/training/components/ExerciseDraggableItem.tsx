@@ -18,10 +18,11 @@ export function ExerciseDraggableItem({ item, drag, isActive }: RenderItemParams
     >
       <Pressable
         onPressIn={drag}
-        className="p-2 mr-2"
-        hitSlop={8}
+        className="p-2 mr-2 min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
+        accessibilityRole="button"
+        accessibilityLabel={`Reordenar ${item.name}`}
       >
-        <Icon as={GripVertical} size={20} className="text-text-disabled" />
+        <Icon as={GripVertical} size={20} className="text-text-secondary" />
       </Pressable>
       
       <View className="flex-1">
