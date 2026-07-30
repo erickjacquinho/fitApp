@@ -127,8 +127,12 @@ function MealCardContent({ meal, items, onDelete, onEdit, isReordering, drag }: 
       >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Pressable accessibilityLabel={`Opções de ${meal.name}`} className="p-1">
-              <Icon as={EllipsisVertical} className="text-text-primary" size={16} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Opções da refeição ${meal.name}`}
+              className="min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
+            >
+              <Icon as={EllipsisVertical} className="text-text-primary" size={20} />
             </Pressable>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-32">

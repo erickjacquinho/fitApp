@@ -3,13 +3,23 @@ import { Text } from '@/components/ui/text';
 import { Clock } from 'lucide-react-native';
 import { Icon } from '@/components/ui/icon';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-interface WorkoutTimerProps {
+export interface WorkoutTimerProps {
   startDate: number;
   endDate?: number | null;
+  className?: string;
+  textClassName?: string;
+  iconClassName?: string;
 }
 
-export function WorkoutTimer({ startDate, endDate }: WorkoutTimerProps) {
+export function WorkoutTimer({
+  startDate,
+  endDate,
+  className,
+  textClassName,
+  iconClassName,
+}: WorkoutTimerProps) {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -41,9 +51,9 @@ export function WorkoutTimer({ startDate, endDate }: WorkoutTimerProps) {
   };
 
   return (
-    <Badge variant="secondary" shape="pill">
-      <Icon as={Clock} size={14} className="text-primary" />
-      <Text variant="caption" className="text-text-primary font-mono font-bold tracking-widest mt-0.5">
+    <Badge variant="secondary" shape="pill" className={className}>
+      <Icon as={Clock} size={14} className={cn("text-primary", iconClassName)} />
+      <Text variant="caption" className={cn("text-text-primary font-mono font-bold tracking-widest mt-0.5", textClassName)}>
         {formatDuration(elapsed)}
       </Text>
     </Badge>

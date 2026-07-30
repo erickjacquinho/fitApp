@@ -6,7 +6,7 @@ import { Platform, View } from 'react-native';
 
 const badgeVariants = cva(
   cn(
-    'group shrink-0 flex-row items-center justify-center gap-1 overflow-hidden border border-transparent px-2 py-1',
+    'group shrink-0 flex-row items-center justify-center gap-1 overflow-hidden border px-2 py-1',
     Platform.select({
       web: 'w-fit whitespace-nowrap [&>svg]:pointer-events-none [&>svg]:size-3',
     })
@@ -14,18 +14,19 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary',
+        default: 'bg-primary border-primary',
         secondary: 'bg-surface-elevated border-border-subtle',
-        destructive: 'bg-error',
-        outline: 'border border-border-subtle bg-transparent',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        info: 'bg-info',
-        neutral: 'bg-surface-disabled',
+        destructive: 'bg-error border-error',
+        outline: 'border-border-subtle bg-surface',
+        success: 'bg-success border-success',
+        warning: 'bg-warning border-warning',
+        info: 'bg-info border-info',
+        neutral: 'bg-surface-disabled border-border-subtle',
+        inverse: 'bg-text-primary border-text-primary',
       },
       shape: {
         default: 'rounded-sm',
-        pill: 'rounded-full px-2.5 py-1 gap-1.5',
+        pill: 'rounded-full px-2.5 py-0.5 gap-1.5',
       },
     },
     defaultVariants: {
@@ -46,6 +47,7 @@ const badgeTextVariants = cva('text-caption font-bold leading-caption', {
       warning: 'text-text-primary',
       info: 'text-text-inverse',
       neutral: 'text-text-primary',
+      inverse: 'text-text-inverse',
     },
   },
   defaultVariants: {

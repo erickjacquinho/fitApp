@@ -22,9 +22,8 @@ export default function FoodBankRoute() {
               variant="ghost"
               size="icon"
               onPress={() => router.push('/diet/create-food')}
-              className="-mr-1"
             >
-              <Icon as={Plus} size={24} className="text-text" />
+              <Icon as={Plus} size={24} className="text-text-primary" />
             </Button>
           }
         />

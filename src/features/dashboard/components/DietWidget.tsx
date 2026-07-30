@@ -51,7 +51,7 @@ export function DietWidget({
           size="sm"
           onPress={() => router.push('/diet/create-meal')}
         >
-          <Icon as={Plus} size={16} />
+          <Icon as={Plus} size={16} accessibilityElementsHidden={true} importantForAccessibility="no" />
           <Text variant="caption">
             Adicionar refeição
           </Text>

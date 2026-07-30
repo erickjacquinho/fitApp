@@ -193,6 +193,9 @@ module.exports = {
         "control-lg": "var(--size-control-lg)",
         "input-md": "var(--size-input-md)",
       },
+      minWidth: {
+        "touch-target": "var(--size-touch-target)",
+      },
       maxHeight: {
         sheet: "var(--size-bottom-sheet-max-height)",
       },

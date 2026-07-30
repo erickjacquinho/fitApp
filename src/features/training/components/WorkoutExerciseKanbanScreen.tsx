@@ -108,7 +108,6 @@ export function WorkoutExerciseKanbanScreen({
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 navigation.goBack();
               }}
-              className="-ml-1"
             >
               <Icon as={ArrowLeft} size={24} className="text-text-primary" />
             </Button>

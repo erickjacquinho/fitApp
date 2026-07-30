@@ -43,16 +43,30 @@ export const DateSelector = ({ selectedDate, onSelectDate }: DateSelectorProps) 
 
   return (
     <View className="flex-row items-center justify-center">
-      <Button accessibilityLabel="Dia anterior" variant="ghost" size="icon" onPress={() => changeDate(-1)}>
+      <Button
+        accessibilityRole="button"
+        accessibilityLabel="Dia anterior"
+        variant="ghost"
+        size="icon"
+        onPress={() => changeDate(-1)}
+        className="min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
+      >
         <Icon as={ChevronLeft} size={24} />
       </Button>
       <LongPressable 
-        className="w-date-selector items-center justify-center" 
+        className="w-date-selector items-center justify-center min-h-[44px]" 
         onLongPress={() => router.push('/diet/calendar-summary')}
       >
         <Text variant="subtitle" className="text-center font-bold">{formatDateLabel(selectedDate)}</Text>
       </LongPressable>
-      <Button accessibilityLabel="Próximo dia" variant="ghost" size="icon" onPress={() => changeDate(1)}>
+      <Button
+        accessibilityRole="button"
+        accessibilityLabel="Próximo dia"
+        variant="ghost"
+        size="icon"
+        onPress={() => changeDate(1)}
+        className="min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
+      >
         <Icon as={ChevronRight} size={24} />
       </Button>
     </View>

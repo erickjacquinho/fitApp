@@ -35,21 +35,22 @@ export default function ProgramSummaryRoute() {
   }
 
   const HeaderRight = () => (
-    <View className="flex-row items-center">
+    <View className="flex-row items-center gap-1">
       <Button
+        accessibilityLabel="Histórico do plano"
         variant="ghost"
         size="icon"
         onPress={() => router.push(`/training/program/${id}/history`)}
       >
-        <Icon as={History} size={20} color={colors.textPrimary} />
+        <Icon as={History} size={24} className="text-text-primary" />
       </Button>
       <Button
+        accessibilityLabel="Editar plano"
         variant="ghost"
         size="icon"
         onPress={() => router.push(`/training/edit-program/${id}`)}
-        className="-mr-1"
       >
-        <Icon as={Edit2} size={20} color={colors.textPrimary} />
+        <Icon as={Edit2} size={24} className="text-text-primary" />
       </Button>
     </View>
   );

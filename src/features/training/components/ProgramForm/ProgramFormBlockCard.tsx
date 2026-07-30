@@ -25,7 +25,7 @@ export function ProgramFormBlockCard({ block, bIdx, isExpanded, onToggleExpand, 
         />
         <View className="flex-row items-center gap-1">
           <Button variant="ghost" size="icon" className="h-control-sm w-control-sm" onPress={() => handleRemoveBlock(block.id)}>
-            <Icon as={Trash2} size={16} className="text-error" />
+            <Icon as={Trash2} size={16} className="text-text-secondary" />
           </Button>
           <Button variant="ghost" size="icon" className="h-control-sm w-control-sm" onPress={onToggleExpand}>
             <Icon as={isExpanded ? ChevronUp : ChevronDown} size={20} className="text-text-secondary" />
@@ -81,7 +81,7 @@ export function ProgramFormBlockCard({ block, bIdx, isExpanded, onToggleExpand, 
                         </View>
 
                         <Button variant="ghost" size="icon" className="h-8 w-8" onPress={() => handleRemoveExercise(block.id, item.id)}>
-                          <Icon as={Trash2} size={16} className="text-error" />
+                          <Icon as={Trash2} size={16} className="text-text-secondary" />
                         </Button>
                       </Pressable>
                     </ScaleDecorator>

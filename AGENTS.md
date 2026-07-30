@@ -158,6 +158,13 @@ FitApp uses the Mineral Warm palette with a strict **blue-first** rule. Olive to
 - **Guard contra double-fire**: Usar `React.useRef(false)` para impedir que `useAnimatedReaction` dispare callbacks múltiplas vezes quando o drag oscila ao redor do threshold. Resetar o guard em `onSwipeableClose`.
 - **Ordem visual vs array**: A animação de `translateX` inverte a ordem visual dos botões. O primeiro item do array fica na borda direita visual (junto ao overscroll). Considerar isso ao escolher a cor do `containerStyle`.
 
+## 5. Regras do Componente Canônico Badge
+- **Componente Canônico**: `Badge` (`src/components/ui/badge.tsx`).
+- **Proibição de Translucidez**: É estritamente proibido usar opacidade ou transparências (ex: `bg-black/20`, `bg-white/15`, `opacity-*`) em badges. Todas as badges DEVEM usar cores 100% sólidas da paleta Mineral Warm.
+- **Relação Borda x Fundo (Baixo Contraste entre Si)**: A borda de uma badge DEVE ter baixo contraste em relação ao seu próprio fundo (ex: `bg-surface-elevated border-border-subtle`, `bg-primary border-primary` ou `bg-white border-white`), evitando contornos escuros dividindo a pílula.
+- **Alto Contraste de Leitura**: O alto contraste fica concentrado exclusivamente no conteúdo interno (texto e ícone) em relação ao fundo da badge (ex: texto `text-text-primary` ou `text-text-inverse`).
+- **Geometria**: Pílulas de status/cronômetro DEVEM usar `shape="pill"` (`rounded-full px-2.5 py-0.5 gap-1.5`). Badges de contadores isolados DEVEM usar `shape="default"` (`rounded-md px-2 py-0.5`).
+
 ---
 
 # 05. UI Layout & Navigation

@@ -7,23 +7,121 @@ import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { cn } from '@/lib/utils';
 import { format, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, subMonths, addMonths, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import * as Haptics from 'expo-haptics';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedReaction,
   withDecay,
   withSpring,
+  withTiming,
+  FadeIn,
+  FadeOut,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { motionPatterns } from '@/tokens/animations';
+import { animationTokens, motionPatterns } from '@/tokens/animations';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SCREEN_PADDING = 16;
-const GAP = 10;
+const CONTAINER_PADDING = 8;
+const GAP = 6;
 const VISIBLE_DAYS = 7;
-// Base width for 7 days + 14px added width for increased card prominence and personality
-const BASE_DAY_WIDTH = (SCREEN_WIDTH - 2 * SCREEN_PADDING - GAP * (VISIBLE_DAYS - 1)) / VISIBLE_DAYS;
-const DAY_WIDTH = Math.round(BASE_DAY_WIDTH + 14);
+
+// Base width calculation for 7 days fitting within the unified card container
+const AVAILABLE_WIDTH = SCREEN_WIDTH - (2 * SCREEN_PADDING) - (2 * CONTAINER_PADDING);
+const BASE_DAY_WIDTH = (AVAILABLE_WIDTH - GAP * (VISIBLE_DAYS - 1)) / VISIBLE_DAYS;
+const DAY_WIDTH = Math.max(42, Math.round(BASE_DAY_WIDTH));
+
+interface DayPillProps {
+  day: Date;
+  isSelected: boolean;
+  isToday: boolean;
+  dayWidth: number;
+  onSelect: (day: Date) => void;
+}
+
+function DayPill({ day, isSelected, isToday, dayWidth, onSelect }: DayPillProps) {
+  const pressScale = useSharedValue(1);
+  const selectionProgress = useSharedValue(isSelected ? 1 : 0);
+
+  React.useEffect(() => {
+    selectionProgress.value = withSpring(isSelected ? 1 : 0, animationTokens.physics.spring.snappy);
+  }, [isSelected, selectionProgress]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const scale = pressScale.value + (selectionProgress.value * 0.035);
+    return {
+      transform: [{ scale }],
+    };
+  });
+
+  const handlePressIn = React.useCallback(() => {
+    pressScale.value = withTiming(animationTokens.physics.activeScale, {
+      duration: animationTokens.duration.fast,
+      easing: animationTokens.easing.entrance,
+    });
+  }, [pressScale]);
+
+  const handlePressOut = React.useCallback(() => {
+    pressScale.value = withSpring(1, motionPatterns.interactive.pressOut);
+  }, [pressScale]);
+
+  const handlePress = React.useCallback(() => {
+    Haptics.selectionAsync().catch(() => {});
+    onSelect(day);
+  }, [day, onSelect]);
+
+  const dayLabel = format(day, "EEEE, d 'de' MMMM", { locale: ptBR });
+
+  return (
+    <Animated.View style={animatedStyle}>
+      <Pressable
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        accessibilityRole="button"
+        accessibilityLabel={dayLabel}
+        accessibilityState={{ selected: isSelected }}
+        className={cn(
+          'flex-col items-center justify-between rounded-2xl h-20 py-2 min-h-touch-target',
+          isSelected 
+            ? 'bg-primary shadow-xs' 
+            : 'bg-transparent'
+        )}
+        style={{ width: dayWidth }}
+      >
+        <Text 
+          variant="caption" 
+          className={cn(
+            'capitalize font-semibold tracking-tight text-xs',
+            isSelected ? 'text-text-inverse opacity-90' : 'text-text-secondary'
+          )}
+        >
+          {format(day, 'eee', { locale: ptBR }).substring(0, 3)}
+        </Text>
+        <Text 
+          variant="h4" 
+          className={cn(
+            'font-extrabold text-base',
+            isSelected ? 'text-text-inverse' : 'text-text-primary'
+          )}
+        >
+          {format(day, 'd')}
+        </Text>
+        {isToday ? (
+          <View 
+            className={cn(
+              'w-1.5 h-1.5 rounded-full mb-0.5',
+              isSelected ? 'bg-text-inverse' : 'bg-primary'
+            )} 
+          />
+        ) : (
+          <View className="w-1.5 h-1.5 mb-0.5" />
+        )}
+      </Pressable>
+    </Animated.View>
+  );
+}
 
 export interface WeeklyCalendarProps {
   currentDate: Date;
@@ -68,7 +166,7 @@ export function WeeklyCalendar({
 
   const MAX_TRANSLATE = 0;
   const contentWidth = daysInMonth.length * DAY_WIDTH + (daysInMonth.length > 0 ? (daysInMonth.length - 1) * GAP : 0);
-  const viewportWidth = SCREEN_WIDTH - 2 * SCREEN_PADDING;
+  const viewportWidth = AVAILABLE_WIDTH;
   const MIN_TRANSLATE = -(Math.max(0, contentWidth - viewportWidth));
 
   // Reaction to catch inertia overshoot at boundary limits and trigger smooth elastic pull-back
@@ -95,7 +193,7 @@ export function WeeklyCalendar({
       let targetX = -(index * (DAY_WIDTH + GAP));
 
       // Adjust so the selected day is centered
-      const centerOffset = (SCREEN_WIDTH - 2 * SCREEN_PADDING - DAY_WIDTH) / 2;
+      const centerOffset = (AVAILABLE_WIDTH - DAY_WIDTH) / 2;
       targetX += centerOffset;
 
       if (targetX > MAX_TRANSLATE) targetX = MAX_TRANSLATE;
@@ -136,17 +234,40 @@ export function WeeklyCalendar({
     });
 
   const animatedStyle = useAnimatedStyle(() => {
+    const scale = withSpring(isDragging.value ? 0.99 : 1, animationTokens.physics.spring.gentle);
     return {
-      transform: [{ translateX: translateX.value }],
+      transform: [
+        { translateX: translateX.value },
+        { scale },
+      ],
     };
   });
 
+  const handleJumpToTodayPress = React.useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+    onJumpToToday();
+  }, [onJumpToToday]);
+
+  const handlePrevMonthPress = React.useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    onMonthChange(subMonths(currentDate, 1));
+  }, [currentDate, onMonthChange]);
+
+  const handleNextMonthPress = React.useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    onMonthChange(addMonths(currentDate, 1));
+  }, [currentDate, onMonthChange]);
+
+  const formattedMonth = React.useMemo(() => {
+    return format(currentDate, 'MMM, yyyy', { locale: ptBR });
+  }, [currentDate]);
+
   return (
-    <View className="flex flex-col w-full gap-2 mt-4">
+    <View className="flex flex-col w-full gap-2.5 mt-2">
       <View className="flex-row items-center justify-between px-screen-x">
         <Button 
           variant="ghost" 
-          onPress={onJumpToToday}
+          onPress={handleJumpToTodayPress}
           accessibilityRole="button"
           accessibilityLabel="Ir para a data de hoje"
           className="active:opacity-80"
@@ -158,24 +279,30 @@ export function WeeklyCalendar({
           <Button 
             variant="ghost" 
             size="icon" 
-            onPress={() => onMonthChange(subMonths(currentDate, 1))}
+            onPress={handlePrevMonthPress}
             accessibilityRole="button"
             accessibilityLabel="Mês anterior"
-            className="min-h-touch-target min-w-[44px] active:opacity-80"
+            className="min-h-touch-target min-w-touch-target active:opacity-80"
           >
             <Icon as={ChevronLeft} size={20} className="text-text-primary" />
           </Button>
-          <Text variant="large" className="capitalize font-semibold w-28 text-center">
-            {format(currentDate, 'MMM, yyyy', { locale: ptBR })}
-          </Text>
+          <Animated.View 
+            key={formattedMonth} 
+            entering={FadeIn.duration(animationTokens.duration.fast)} 
+            exiting={FadeOut.duration(animationTokens.duration.fast)}
+          >
+            <Text variant="large" className="capitalize font-semibold w-28 text-center">
+              {formattedMonth}
+            </Text>
+          </Animated.View>
           <Button 
             variant="ghost" 
             size="icon" 
-            onPress={() => onMonthChange(addMonths(currentDate, 1))}
+            onPress={handleNextMonthPress}
             disabled={isNextMonthDisabled}
             accessibilityRole="button"
             accessibilityLabel="Próximo mês"
-            className="min-h-touch-target min-w-[44px] active:opacity-80"
+            className="min-h-touch-target min-w-touch-target active:opacity-80"
           >
             <Icon 
               as={ChevronRight} 
@@ -186,62 +313,30 @@ export function WeeklyCalendar({
         </View>
       </View>
 
-      <GestureDetector gesture={panGesture}>
-        <View className="overflow-hidden pl-screen-x pr-screen-x py-1">
-          <Animated.View style={[styles.container, animatedStyle]}>
-            {daysInMonth.map((day) => {
-              const isSelected = isSameDay(day, selectedDate);
-              const isToday = isSameDay(day, new Date());
-              const dayLabel = format(day, "EEEE, d 'de' MMMM", { locale: ptBR });
-              return (
-                <Pressable
-                  key={day.toISOString()}
-                  onPress={() => onDateSelect(day)}
-                  accessibilityRole="button"
-                  accessibilityLabel={dayLabel}
-                  accessibilityState={{ selected: isSelected }}
-                  className={cn(
-                    'flex-col items-center justify-between rounded-xl h-22 py-2.5 border min-h-touch-target active:opacity-80',
-                    isSelected 
-                      ? 'bg-primary border-primary shadow-sm' 
-                      : 'bg-surface-elevated border-border-subtle'
-                  )}
-                  style={{ width: DAY_WIDTH }}
-                >
-                  <Text 
-                    variant="caption" 
-                    className={cn(
-                      'capitalize font-semibold tracking-wide',
-                      isSelected ? 'text-text-inverse' : 'text-text-secondary'
-                    )}
-                  >
-                    {format(day, 'eee', { locale: ptBR }).substring(0, 3)}
-                  </Text>
-                  <Text 
-                    variant="h4" 
-                    className={cn(
-                      'font-extrabold text-base',
-                      isSelected ? 'text-text-inverse' : 'text-text-primary'
-                    )}
-                  >
-                    {format(day, 'd')}
-                  </Text>
-                  {isToday ? (
-                    <View 
-                      className={cn(
-                        'w-1.5 h-1.5 rounded-full',
-                        isSelected ? 'bg-text-inverse' : 'bg-primary'
-                      )} 
+      <View className="px-screen-x">
+        <View className="bg-surface-elevated border border-border-subtle rounded-3xl p-2 overflow-hidden shadow-xs">
+          <GestureDetector gesture={panGesture}>
+            <View className="overflow-hidden">
+              <Animated.View style={[styles.container, animatedStyle]}>
+                {daysInMonth.map((day) => {
+                  const isSelected = isSameDay(day, selectedDate);
+                  const isToday = isSameDay(day, new Date());
+                  return (
+                    <DayPill
+                      key={day.toISOString()}
+                      day={day}
+                      isSelected={isSelected}
+                      isToday={isToday}
+                      dayWidth={DAY_WIDTH}
+                      onSelect={onDateSelect}
                     />
-                  ) : (
-                    <View className="w-1.5 h-1.5" />
-                  )}
-                </Pressable>
-              );
-            })}
-          </Animated.View>
+                  );
+                })}
+              </Animated.View>
+            </View>
+          </GestureDetector>
         </View>
-      </GestureDetector>
+      </View>
     </View>
   );
 }

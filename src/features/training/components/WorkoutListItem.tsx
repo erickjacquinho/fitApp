@@ -39,7 +39,12 @@ export const WorkoutListItem = ({
     >
       <View className="flex-row items-center flex-1">
         {isReordering && (
-          <Pressable onPressIn={drag} className="p-1 mr-2">
+          <Pressable
+            onPressIn={drag}
+            className="p-2 mr-2 min-h-[44px] min-w-[44px] items-center justify-center active:opacity-80"
+            accessibilityRole="button"
+            accessibilityLabel={`Reordenar bloco ${block.name}`}
+          >
             <Icon as={GripVertical} size={20} className="text-text-secondary" /> 
           </Pressable>
         )}
